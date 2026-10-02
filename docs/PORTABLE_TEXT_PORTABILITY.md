@@ -16,7 +16,7 @@ was tested here through a Web Prolog node.
 | Trealla | character atoms | native/default | Direct fit; executable Web Prolog suite passes 7/7 |
 | Scryer | character atoms | native/default and recommended | Direct fit |
 | SWI | native string object | `double_quotes(chars)`, module-local | Feasible, but every public reader and generated source module must be controlled |
-| SICStus 4.10 | character codes | configurable volatile `double_quotes=chars` flag | Feasible, but invasive: the manual warns that most SICStus code assumes `codes` |
+| SICStus 4.10 | character codes | configurable, global, volatile `double_quotes=chars` flag | Feasible, but invasive: unlike SWI, modules cannot isolate the setting, and the manual warns that most SICStus code assumes `codes` |
 | GNU Prolog | configurable; commonly codes | `double_quotes=chars` | Feasible through its global startup flag |
 | Ciao 1.25 | character-code/byte list in the tested reader | No verified character-atom mode | Requires a Web Prolog reader or source transformation; the reported ISO flag is misleading |
 | XSB 5.0 manual | character codes | No: `double_quotes` is fixed to `codes` | Requires a Web Prolog reader or source transformation |
@@ -30,7 +30,9 @@ and all generated/private module contexts covered by the executable suite.
 The SICStus 4.10.1 manual documents three values for the volatile ISO
 `double_quotes` flag: `codes` (the default), `chars`, and `atom`. With `chars`,
 `"SICStus"` reads as a list of one-character atoms. This is exactly the draft's
-term semantics.
+term semantics. The same manual explicitly says that all SICStus Prolog flags
+are global rather than local to a module or Prolog text. This differs from
+SWI-Prolog, where `double_quotes` is maintained per module.
 
 There are two qualifications:
 
@@ -40,13 +42,15 @@ There are two qualifications:
 2. The documented `read_term/[2,3]` options do not include a per-read
    double-quote override. A SICStus port would need either a carefully isolated
    node runtime or a reader/source boundary that safely changes and restores
-   the volatile flag.
+   the volatile global flag. Module separation alone cannot protect SICStus
+   libraries that expect code lists.
 
 This assessment is documentation-based; SICStus was not installed locally.
 
 Primary references:
 
 - [SICStus 4.10.1 documentation index](https://sicstus.sics.se/documentation.html)
+- [SICStus Prolog flags are global](https://sicstus.sics.se/sicstus/docs/latest/html/sicstus/ref_002dlps_002dflg.html)
 - [SICStus strings as lists](https://sicstus.sics.se/sicstus/docs/4.8.0/html/sicstus/ref_002dsyn_002dcpt_002dsli.html)
 - [SICStus `read_term/[2,3]`](https://sicstus.sics.se/sicstus/docs/4.3.4/html/sicstus/mpg_002dref_002dread_005fterm.html)
 
