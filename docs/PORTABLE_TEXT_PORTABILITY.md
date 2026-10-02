@@ -16,7 +16,7 @@ was tested here through a Web Prolog node.
 | Trealla | character atoms | native/default | Direct fit; executable Web Prolog suite passes 7/7 |
 | Scryer | character atoms | native/default and recommended | Direct fit |
 | SWI | native string object | `double_quotes(chars)`, module-local | Feasible, but every public reader and generated source module must be controlled |
-| SICStus 4.10 | character codes | configurable, global, volatile `double_quotes=chars` flag | Feasible, but invasive: unlike SWI, modules cannot isolate the setting, and the manual warns that most SICStus code assumes `codes` |
+| SICStus 4.10 | character codes | dynamically configurable, global, volatile `double_quotes=chars` flag | Feasible for a serialized reader by saving, changing, and restoring the flag; modules cannot isolate it |
 | GNU Prolog | configurable; commonly codes | `double_quotes=chars` | Feasible through its global startup flag |
 | Ciao 1.25 | character-code/byte list in the tested reader | No verified character-atom mode | Requires a Web Prolog reader or source transformation; the reported ISO flag is misleading |
 | XSB 5.0 manual | character codes | No: `double_quotes` is fixed to `codes` | Requires a Web Prolog reader or source transformation |
@@ -34,16 +34,39 @@ term semantics. The same manual explicitly says that all SICStus Prolog flags
 are global rather than local to a module or Prolog text. This differs from
 SWI-Prolog, where `double_quotes` is maintained per module.
 
-There are two qualifications:
+The global scope does not mean that a SICStus process must permanently use
+`chars`. `prolog_flag/3` is explicitly documented as a way to save a flag,
+change it, and restore it later. A Web Prolog reader can therefore use the
+following pattern, with cleanup protection in real code:
+
+```prolog
+prolog_flag(double_quotes, Old, chars),
+call_cleanup(
+    read_term(Stream, Term, Options),
+    prolog_flag(double_quotes, _, Old)
+)
+```
+
+This is viable when all reads in a runtime are serialized. A SICStus runtime
+can run in only one thread and is not generally thread-safe. SICStus supports
+several independent runtimes, optionally in separate operating-system threads,
+but describes them as heavyweight and suitable only in small numbers.
+
+There are still two qualifications:
 
 1. SICStus says that most code assumes the default `codes` setting and advises
    against changing it. A node-wide switch could therefore affect libraries
    outside the Web Prolog boundary.
 2. The documented `read_term/[2,3]` options do not include a per-read
-   double-quote override. A SICStus port would need either a carefully isolated
-   node runtime or a reader/source boundary that safely changes and restores
-   the volatile global flag. Module separation alone cannot protect SICStus
-   libraries that expect code lists.
+   double-quote override. Every Web Prolog read and source-loading path must use
+   the save/change/restore wrapper. The old value must be restored on failure
+   and exceptions, and trusted library loading should happen outside the
+   `chars` interval. Module separation alone cannot provide that protection.
+
+For a single-runtime, serialized ISOTOPE node, these constraints look
+reasonable. Native ACTOR concurrency would need a materially different design,
+such as multiple processes/runtimes or concurrency outside the Prolog runtime;
+the text flag itself would then be local to each independent runtime.
 
 This assessment is documentation-based; SICStus was not installed locally.
 
@@ -51,6 +74,8 @@ Primary references:
 
 - [SICStus 4.10.1 documentation index](https://sicstus.sics.se/documentation.html)
 - [SICStus Prolog flags are global](https://sicstus.sics.se/sicstus/docs/latest/html/sicstus/ref_002dlps_002dflg.html)
+- [SICStus `prolog_flag/3` save/change/restore pattern](https://sicstus.sics.se/sicstus/docs/4.5.0/html/sicstus/mpg_002dref_002dprolog_005fflag.html)
+- [SICStus multiple runtimes and threads](https://sicstus.sics.se/sicstus/docs/4.6.0/html/sicstus/Threads.html)
 - [SICStus strings as lists](https://sicstus.sics.se/sicstus/docs/4.8.0/html/sicstus/ref_002dsyn_002dcpt_002dsli.html)
 - [SICStus `read_term/[2,3]`](https://sicstus.sics.se/sicstus/docs/4.3.4/html/sicstus/mpg_002dref_002dread_005fterm.html)
 
