@@ -7,12 +7,12 @@ another runtime.
 
 ## Status
 
-The first executable draft profile is
-[`actor-core-0.1`](profiles/actor-core-0.1.md). Its dependency-free black-box
-runner contains seven cases extracted from behaviours exercised against both
-the SWI and Trealla nodes. This remains a draft: passing it means only that a
-candidate passes the explicitly listed ACTOR Core 0.1 cases, not that it
-implements the entire ACTOR roadmap.
+The executable draft profiles are
+[`actor-core-0.1`](profiles/actor-core-0.1.md) and
+[`portable-text-0.1`](profiles/portable-text-0.1.md). The dependency-free
+black-box runner contains cases exercised against both the SWI and Trealla
+nodes. These remain drafts: passing one means only that a candidate passes its
+explicitly listed cases.
 
 ## Profiles
 
@@ -81,6 +81,20 @@ python3 runner/run.py \
 Use `--case AC-004` to select one case. Failure classifications can be added
 with `--classifications path/to/classifications.json`; see
 [`docs/FAILURE_CLASSIFICATION.md`](docs/FAILURE_CLASSIFICATION.md).
+
+To test the opt-in portable-text draft without changing the node:
+
+```sh
+python3 runner/run.py \
+  --manifest cases/portable-text-0.1.json \
+  --ws-url ws://127.0.0.1:3060/ws \
+  --advertised-profile actor \
+  --candidate candidate-name
+```
+
+The `actor` argument in this invocation describes the transport surface used
+by the current runner. It does not claim that portable-text semantics are part
+of the deployed ACTOR profile.
 
 ## Provenance and license
 

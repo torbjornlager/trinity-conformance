@@ -290,6 +290,11 @@ def row_value(event: dict[str, Any], name: str) -> str:
     return value
 
 
+def prolog_quote_atom(value: str) -> str:
+    """Render source text as a portable single-quoted Prolog atom."""
+    return "'" + value.replace("'", "''") + "'"
+
+
 def case_ac_001(candidate: Candidate) -> None:
     with Harness(candidate) as harness:
         welcome = harness.welcome or {}
@@ -419,6 +424,65 @@ def case_ac_007(candidate: Candidate) -> None:
         harness.halt()
 
 
+def require_goal_success(candidate: Candidate, goal: str) -> None:
+    with Harness(candidate) as harness:
+        harness.spawn_shell()
+        harness.call(goal, "[limit(1)]")
+        success = harness.recv("success")
+        require(success.get("more") is False,
+                f"portable text goal was not deterministic: {success!r}")
+        harness.halt()
+
+
+def case_txt_001(candidate: Candidate) -> None:
+    require_goal_success(candidate, 'member("abc",[[a,b,c]])')
+
+
+def case_txt_002(candidate: Candidate) -> None:
+    require_goal_success(candidate, 'member("",[[]])')
+
+
+def case_txt_003(candidate: Candidate) -> None:
+    require_goal_success(candidate, 'member("å",[[\'å\']])')
+
+
+def case_txt_004(candidate: Candidate) -> None:
+    require_goal_success(candidate, 'phrase(("ab","cd"),"abcd")')
+
+
+def case_txt_005(candidate: Candidate) -> None:
+    source = 'portable_literal :- append("ab",[],[a,b]).'
+    options = f"[session(true),src_text({prolog_quote_atom(source)})]"
+    with Harness(candidate) as harness:
+        harness.spawn_shell(options)
+        harness.call("portable_literal", "[limit(1)]")
+        success = harness.recv("success")
+        require(success.get("more") is False,
+                f"loaded text predicate was not deterministic: {success!r}")
+        harness.halt()
+
+
+def case_txt_006(candidate: Candidate) -> None:
+    with Harness(candidate) as harness:
+        harness.spawn_shell()
+        harness.call('member(Text,["ab"])', "[limit(1)]")
+        first = harness.recv("success")
+        rendered = row_value(first, "Text")
+        require(re.fullmatch(r'[\[\]a-zA-Z,"\' ]+', rendered) is not None,
+                f"unsafe serialized text term: {rendered!r}")
+        harness.call(f"append({rendered},[],[a,b])", "[limit(1)]")
+        second = harness.recv("success")
+        require(second.get("more") is False,
+                f"round-tripped text goal was not deterministic: {second!r}")
+        harness.halt()
+
+
+def case_txt_007(candidate: Candidate) -> None:
+    require_goal_success(
+        candidate, 'append("ab",[c,d],"abcd")'
+    )
+
+
 CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-001": case_ac_001,
     "AC-002": case_ac_002,
@@ -427,6 +491,13 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-005": case_ac_005,
     "AC-006": case_ac_006,
     "AC-007": case_ac_007,
+    "TXT-001": case_txt_001,
+    "TXT-002": case_txt_002,
+    "TXT-003": case_txt_003,
+    "TXT-004": case_txt_004,
+    "TXT-005": case_txt_005,
+    "TXT-006": case_txt_006,
+    "TXT-007": case_txt_007,
 }
 
 

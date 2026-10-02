@@ -1,0 +1,51 @@
+{
+  "suite": "portable-text-0.1",
+  "schema_version": 1,
+  "required_advertised_profile": "actor",
+  "protocol_version": 1,
+  "draft_feature": "double_quotes_chars",
+  "cases": [
+    {
+      "id": "TXT-001",
+      "title": "A double-quoted literal is a list of one-character atoms",
+      "requirement": "literal_semantics",
+      "goal": "member(\"abc\",[[a,b,c]])"
+    },
+    {
+      "id": "TXT-002",
+      "title": "The empty double-quoted literal is the empty list",
+      "requirement": "empty_literal",
+      "goal": "member(\"\",[[]])"
+    },
+    {
+      "id": "TXT-003",
+      "title": "A non-ASCII literal contains one Unicode character atom rather than UTF-8 bytes",
+      "requirement": "unicode_characters",
+      "goal": "member(\"å\",[['å']])"
+    },
+    {
+      "id": "TXT-004",
+      "title": "Double-quoted terminals retain DCG list semantics",
+      "requirement": "dcg_terminals",
+      "goal": "phrase((\"ab\",\"cd\"),\"abcd\")"
+    },
+    {
+      "id": "TXT-005",
+      "title": "Source loaded into a session uses character-list semantics",
+      "requirement": "loaded_source",
+      "source": "portable_literal :- append(\"ab\",[],[a,b])."
+    },
+    {
+      "id": "TXT-006",
+      "title": "A serialized text binding can be resubmitted with the same list meaning",
+      "requirement": "term_round_trip",
+      "goal": "member(Text,[\"ab\"])"
+    },
+    {
+      "id": "TXT-007",
+      "title": "Double-quoted text supports ordinary relational list operations",
+      "requirement": "list_operations",
+      "goal": "append(\"ab\",[c,d],\"abcd\")"
+    }
+  ]
+}

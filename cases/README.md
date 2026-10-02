@@ -5,6 +5,13 @@ manifest. Each entry has a stable ID, an observable requirement category, and
 source-test provenance. `runner/run.py` maps those IDs to black-box protocol
 procedures.
 
+[`portable-text-0.1.json`](portable-text-0.1.json) is an independent opt-in
+draft. Its `TXT-*` cases specify double-quoted text as a list of one-character
+atoms in submitted goals, loaded source, DCGs, list operations, Unicode text,
+and serialized-term round trips. The initial runner reaches those semantics
+through an ACTOR session; this does not make the draft an implicit requirement
+of every node already advertising `actor`.
+
 The remaining extraction backlog is grouped by the minimum advertised
 profile.
 
