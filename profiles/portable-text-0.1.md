@@ -56,6 +56,12 @@ syntax with the module-local `double_quotes` flag. These facts motivate the
 draft, but the normative requirement is the observable contract above rather
 than any one implementation's representation.
 
+Not every established runtime offers this reader mode. In particular, Ciao
+and XSB currently require reader adaptation rather than a flag change. See the
+[portable text portability survey](../docs/PORTABLE_TEXT_PORTABILITY.md). This
+is why the profile remains experimental and why conformance is determined by
+observable cases rather than the value reported by `double_quotes`.
+
 ## References
 
 - [SWI-Prolog flags: `double_quotes`](https://www.swi-prolog.org/pldoc/man?section=flags)

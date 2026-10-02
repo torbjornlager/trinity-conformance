@@ -96,6 +96,10 @@ The `actor` argument in this invocation describes the transport surface used
 by the current runner. It does not claim that portable-text semantics are part
 of the deployed ACTOR profile.
 
+The cross-runtime implications for SICStus, Ciao, XSB, and the systems already
+considered are recorded in
+[`docs/PORTABLE_TEXT_PORTABILITY.md`](docs/PORTABLE_TEXT_PORTABILITY.md).
+
 ## Provenance and license
 
 The initial inventory was derived from `trinity-demonstrator` and
