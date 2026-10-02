@@ -1,7 +1,12 @@
-# Candidate conformance cases
+# Conformance cases
 
-No cases in this directory are normative or executable yet. The following is
-the initial extraction backlog, grouped by the minimum advertised profile.
+[`actor-core-0.1.json`](actor-core-0.1.json) is the first executable case
+manifest. Each entry has a stable ID, an observable requirement category, and
+source-test provenance. `runner/run.py` maps those IDs to black-box protocol
+procedures.
+
+The remaining extraction backlog is grouped by the minimum advertised
+profile.
 
 ## RELATION
 
@@ -44,6 +49,6 @@ the initial extraction backlog, grouped by the minimum advertised profile.
 - inherited prompt/respond input
 - connection loss, cleanup, and reconnect behaviour
 
-Before implementation, each item must receive a stable ID and an exact wire
-or API contract. Existing implementation tests are evidence for defining the
-contract, not the contract itself.
+Before implementation, each remaining item must receive a stable ID and an
+exact wire or API contract. Existing implementation tests are evidence for
+defining the contract, not the contract itself.

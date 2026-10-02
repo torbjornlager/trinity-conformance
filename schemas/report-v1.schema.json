@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/torbjornlager/trinity-conformance/schemas/report-v1.schema.json",
+  "title": "Trinity conformance report v1",
+  "type": "object",
+  "required": [
+    "suite",
+    "schema_version",
+    "candidate",
+    "ws_url",
+    "advertised_profile",
+    "started_at",
+    "duration_ms",
+    "counts",
+    "results"
+  ],
+  "properties": {
+    "suite": {"type": "string"},
+    "schema_version": {"const": 1},
+    "candidate": {"type": "string"},
+    "ws_url": {"type": "string"},
+    "advertised_profile": {
+      "enum": ["relation", "isobase", "isotope", "actor"]
+    },
+    "started_at": {"type": "string", "format": "date-time"},
+    "duration_ms": {"type": "integer", "minimum": 0},
+    "counts": {
+      "type": "object",
+      "required": ["pass", "fail", "unsupported"],
+      "additionalProperties": false,
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0},
+        "fail": {"type": "integer", "minimum": 0},
+        "unsupported": {"type": "integer", "minimum": 0}
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status", "duration_ms"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[A-Z]+-[0-9]{3}$"},
+          "title": {"type": "string"},
+          "status": {"enum": ["pass", "fail", "unsupported"]},
+          "duration_ms": {"type": "integer", "minimum": 0},
+          "detail": {"type": "string"},
+          "classification": {
+            "enum": [
+              "unclassified",
+              "protocol_implementation_defect",
+              "runtime_defect",
+              "deliberately_unsupported",
+              "specification_ambiguity"
+            ]
+          },
+          "issue": {"type": "string"},
+          "note": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

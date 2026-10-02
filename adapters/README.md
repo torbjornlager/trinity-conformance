@@ -22,3 +22,11 @@ Candidate configuration will eventually need at least:
 
 Wire-level cases should prefer the `external` adapter so that a new
 implementation does not require changes to the conformance logic.
+
+## Current adapter
+
+`runner/run.py` implements the first `external` adapter directly. It accepts a
+WebSocket URL, optional bearer token, optional Origin header, advertised
+profile, and timeout. Candidate process management remains deliberately out
+of scope: CI or a developer starts the node, waits for readiness, invokes the
+runner, and then stops the node.

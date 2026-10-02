@@ -7,14 +7,12 @@ another runtime.
 
 ## Status
 
-This is an initial holding repository. It records the test inventory and the
-portable test cases identified during the Trealla port, but it does not yet
-contain an executable conformance runner. No implementation should currently
-claim conformance based on this repository.
-
-The first executable tranche should extract black-box cases from Trinity's
-wire-level interoperability tier. Portable actor and toplevel API cases can
-then be added behind small runtime adapters.
+The first executable draft profile is
+[`actor-core-0.1`](profiles/actor-core-0.1.md). Its dependency-free black-box
+runner contains seven cases extracted from behaviours exercised against both
+the SWI and Trealla nodes. This remains a draft: passing it means only that a
+candidate passes the explicitly listed ACTOR Core 0.1 cases, not that it
+implements the entire ACTOR roadmap.
 
 ## Profiles
 
@@ -37,6 +35,9 @@ unrestricted development mode rather than an initial portability target.
 - `adapters/` — thin process-launch and local-API adapters
 - `docs/` — profile, provenance, and source-test inventories
 - `reports/` — dated baseline and candidate-node reports
+- `profiles/` — versioned observable contracts
+- `runner/` — candidate-neutral external-node runner
+- `schemas/` — machine-readable report formats
 
 Implementation-specific unit tests remain in their implementation
 repositories. In particular, SWI PlUnit internals and Trealla regression tests
@@ -53,6 +54,33 @@ An eventual runner should distinguish:
 
 Untested behaviour must never be counted as passing, and an unsupported
 higher profile must not make a lower-profile implementation appear broken.
+
+## Running ACTOR Core 0.1
+
+The runner uses only the Python 3 standard library and connects to an already
+running node. It never imports implementation code.
+
+```sh
+python3 runner/run.py \
+  --ws-url ws://127.0.0.1:3060/ws \
+  --advertised-profile actor \
+  --candidate trealla-local \
+  --report reports/trealla-local.json
+```
+
+For a private node, keep the secret out of the command line:
+
+```sh
+export TRINITY_TEST_TOKEN='...'
+python3 runner/run.py \
+  --ws-url wss://node.example/ws \
+  --token-env TRINITY_TEST_TOKEN \
+  --candidate node-name
+```
+
+Use `--case AC-004` to select one case. Failure classifications can be added
+with `--classifications path/to/classifications.json`; see
+[`docs/FAILURE_CLASSIFICATION.md`](docs/FAILURE_CLASSIFICATION.md).
 
 ## Provenance and license
 
