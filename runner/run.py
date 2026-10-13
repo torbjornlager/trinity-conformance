@@ -277,7 +277,7 @@ class Harness:
         if self.shell is None:
             return
         self.send({"command": "toplevel_halt", "pid": self.shell})
-        self.recv_type("halted")
+        self.recv_type("halted", limit=32)
         self.shell = None
 
 
@@ -424,6 +424,175 @@ def case_ac_007(candidate: Candidate) -> None:
         harness.halt()
 
 
+def require_source_goal_success(candidate: Candidate, source: str, goal: str) -> None:
+    options = f"[session(true),src_text({prolog_quote_atom(source)})]"
+    with Harness(candidate) as harness:
+        harness.spawn_shell(options)
+        harness.call(goal, "[limit(1)]")
+        # Supervisor operations legitimately surface child down events on the
+        # owning browser connection before the enclosing goal completes.
+        success = harness.recv_type("success", limit=32)
+        require(success.get("more") is False,
+                f"behaviour goal was not deterministic: {success!r}")
+        harness.halt()
+
+
+SERVER_SOURCE = (
+    "counter(inc,N,ok,N1):-N1 is N+1. "
+    "counter(get,N,val(N),N). "
+    "counter2(get,N,seen(N),N). "
+    "counter2(inc,N,added(N1),N1):-N1 is N+1."
+)
+
+SUPERVISOR_SOURCE = (
+    "forever:-receive({stop->true}). "
+    "crasher(Delay):-sleep(Delay),exit(crash). "
+    "finisher(Delay):-sleep(Delay). "
+    "fridge(store(F),Foods,ok,[F|Foods]). "
+    "fridge(take(F),Foods,ok(F),Rest):-select(F,Foods,Rest),!. "
+    "fridge(take(_),Foods,not_found,Foods)."
+)
+
+
+def case_bh_001(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SERVER_SOURCE,
+        "server_spawn(counter,0,Pid),"
+        "server_request(Pid,inc,ok),server_request(Pid,inc,ok),"
+        "server_request(Pid,get,val(2)),server_halt(Pid,true)",
+    )
+
+
+def case_bh_002(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SERVER_SOURCE,
+        "server_spawn(counter,0,Pid),"
+        "server_promise(Pid,inc,R1),server_promise(Pid,inc,R2),"
+        "R1\\=R2,server_yield(R1,ok),server_yield(R2,ok),"
+        "server_request(Pid,get,val(2)),server_halt(Pid,true)",
+    )
+
+
+def case_bh_003(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SERVER_SOURCE,
+        "server_spawn(counter,0,Pid),server_request(Pid,inc,ok),"
+        "server_upgrade(Pid,counter2,[src_predicates([counter2/4])]),"
+        "server_request(Pid,get,seen(1)),server_request(Pid,inc,added(2)),"
+        "server_halt(Pid,true)",
+    )
+
+
+def case_bh_004(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([child(a,[start(forever)]),"
+        "child(b,[start(forever)])],Sup,[src_predicates([forever/0])]),"
+        "supervisor_which_children(Sup,[info(a,A,worker,permanent),"
+        "info(b,B,worker,permanent)]),A\\=B,A\\=undefined,B\\=undefined,"
+        "supervisor_count_children(Sup,[specs-2,active-2,supervisors-0,workers-2]),"
+        "supervisor_halt(Sup)",
+    )
+
+
+def case_bh_005(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([],Sup,[src_predicates([forever/0])]),"
+        "supervisor_spawn_child(Sup,child(dynamic,[start(forever)]),ok),"
+        "supervisor_which_children(Sup,[info(dynamic,P1,worker,permanent)]),"
+        "supervisor_terminate_child(Sup,dynamic,ok),"
+        "supervisor_respawn_child(Sup,dynamic,ok(P2)),P1\\=P2,"
+        "supervisor_terminate_child(Sup,dynamic,ok),"
+        "supervisor_delete_child(Sup,dynamic,ok),"
+        "supervisor_which_children(Sup,[]),supervisor_halt(Sup)",
+    )
+
+
+def case_bh_006(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([child(stable,[start(forever)]),"
+        "child(flaky,[start(crasher(0.1)),restart(permanent)])],Sup,"
+        "[strategy(one_for_one),intensity(5),period(10),"
+        "src_predicates([forever/0,crasher/1])]),"
+        "supervisor_which_children(Sup,[info(stable,S1,_,_),info(flaky,F1,_,_)]),"
+        "sleep(0.3),supervisor_which_children(Sup,"
+        "[info(stable,S2,_,_),info(flaky,F2,_,_)]),S1==S2,F1\\=F2,"
+        "supervisor_halt(Sup)",
+    )
+
+
+def case_bh_007(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([child(a,[start(forever)]),"
+        "child(b,[start(forever)]),"
+        "child(c,[start(crasher(0.1)),restart(permanent)])],Sup,"
+        "[strategy(one_for_all),intensity(5),period(10),"
+        "src_predicates([forever/0,crasher/1])]),"
+        "supervisor_which_children(Sup,[info(a,A1,_,_),info(b,B1,_,_),info(c,C1,_,_)]),"
+        "sleep(0.3),supervisor_which_children(Sup,"
+        "[info(a,A2,_,_),info(b,B2,_,_),info(c,C2,_,_)]),"
+        "A1\\=A2,B1\\=B2,C1\\=C2,supervisor_halt(Sup)",
+    )
+
+
+def case_bh_008(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([child(keeper,[start(forever)]),"
+        "child(temp,[start(crasher(0.05)),restart(temporary)]),"
+        "child(trans,[start(finisher(0.05)),restart(transient)])],Sup,"
+        "[intensity(5),period(10),"
+        "src_predicates([forever/0,crasher/1,finisher/1])]),"
+        "sleep(0.2),supervisor_which_children(Sup,Children),"
+        "Children=[info(keeper,K,worker,permanent),"
+        "info(trans,undefined,worker,transient)],K\\=undefined,supervisor_halt(Sup)",
+    )
+
+
+def case_bh_009(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "Inner=[child(i1,[start(forever)]),child(i2,[start(forever)])],"
+        "supervisor_spawn([child(inner,[start(start_sub_supervisor(Inner,"
+        "[strategy(one_for_one),intensity(3),period(10)])),"
+        "type(supervisor),restart(permanent),shutdown(infinity)]),"
+        "child(outer,[start(forever)])],Sup,"
+        "[intensity(5),period(10),src_predicates([forever/0])]),"
+        "supervisor_which_children(Sup,[info(inner,I1,_,_),info(outer,O1,_,_)]),"
+        "exit(I1,kill),sleep(0.25),supervisor_which_children(Sup,"
+        "[info(inner,I2,_,_),info(outer,O2,_,_)]),I1\\=I2,O1==O2,"
+        "supervisor_halt(Sup)",
+    )
+
+
+def case_bh_010(candidate: Candidate) -> None:
+    require_source_goal_success(
+        candidate,
+        SUPERVISOR_SOURCE,
+        "supervisor_spawn([child(fridge_service,[start(server(fridge,"
+        "[initial_state([])])),restart(permanent),shutdown(1)])],Sup,"
+        "[src_predicates([fridge/4])]),"
+        "supervisor_which_children(Sup,[info(fridge_service,Pid,_,_)]),"
+        "server_request(fridge_service,store(milk),ok),"
+        "server_request(fridge_service,take(milk),ok(milk)),"
+        "monitor(Pid,Ref),supervisor_terminate_child(Sup,fridge_service,ok),"
+        "receive({down(Pid,Ref,true)->true},[timeout(2),on_timeout(fail)]),"
+        "supervisor_halt(Sup)",
+    )
+
+
 def require_goal_success(candidate: Candidate, goal: str) -> None:
     with Harness(candidate) as harness:
         harness.spawn_shell()
@@ -491,6 +660,16 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-005": case_ac_005,
     "AC-006": case_ac_006,
     "AC-007": case_ac_007,
+    "BH-001": case_bh_001,
+    "BH-002": case_bh_002,
+    "BH-003": case_bh_003,
+    "BH-004": case_bh_004,
+    "BH-005": case_bh_005,
+    "BH-006": case_bh_006,
+    "BH-007": case_bh_007,
+    "BH-008": case_bh_008,
+    "BH-009": case_bh_009,
+    "BH-010": case_bh_010,
     "TXT-001": case_txt_001,
     "TXT-002": case_txt_002,
     "TXT-003": case_txt_003,

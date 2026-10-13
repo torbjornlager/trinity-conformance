@@ -15,6 +15,12 @@ of every node already advertising `actor`.
 The remaining extraction backlog is grouped by the minimum advertised
 profile.
 
+[`actor-behaviours-0.1.json`](actor-behaviours-0.1.json) is an opt-in,
+black-box generic-server and supervisor suite. Its cases consolidate portable
+semantics from the implementation-specific SWI and Trealla unit suites while
+leaving runtime internals and implementation workarounds in their home
+repositories.
+
 ## RELATION
 
 - accepted advertised relation

@@ -1,0 +1,98 @@
+{
+  "suite": "actor-behaviours-0.1",
+  "schema_version": 1,
+  "required_advertised_profile": "actor",
+  "protocol_version": 1,
+  "cases": [
+    {
+      "id": "BH-001",
+      "title": "Generic server requests thread callback state",
+      "requirement": "server_state",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/server_actor_tests.pl",
+        "trealla-port:server_actor_tests.pl:basic_spawn_and_request,state_threading,counter_state"
+      ]
+    },
+    {
+      "id": "BH-002",
+      "title": "Generic server promises correlate asynchronous replies",
+      "requirement": "server_promise",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/server_actor_tests.pl",
+        "trealla-port:server_actor_tests.pl:async_promise_yield,multiple_async_promises"
+      ]
+    },
+    {
+      "id": "BH-003",
+      "title": "Generic server upgrade replaces the callback and preserves state",
+      "requirement": "server_upgrade",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/server_actor_tests.pl",
+        "trealla-port:server_actor_tests.pl:hot_code_swap,upgrade_preserves_state"
+      ]
+    },
+    {
+      "id": "BH-004",
+      "title": "Supervisor starts and counts distinct worker children",
+      "requirement": "supervisor_startup",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:basic_startup,count_children"
+      ]
+    },
+    {
+      "id": "BH-005",
+      "title": "Supervisor supports dynamic start, terminate, restart, and delete",
+      "requirement": "supervisor_dynamic_children",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:dynamic_start_child,dynamic_terminate_and_delete,dynamic_restart_child"
+      ]
+    },
+    {
+      "id": "BH-006",
+      "title": "One-for-one restart replaces only the failed child",
+      "requirement": "supervisor_one_for_one",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:one_for_one_restart"
+      ]
+    },
+    {
+      "id": "BH-007",
+      "title": "One-for-all restart replaces every child",
+      "requirement": "supervisor_one_for_all",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:one_for_all"
+      ]
+    },
+    {
+      "id": "BH-008",
+      "title": "Temporary and transient children are not restarted after terminal exits",
+      "requirement": "supervisor_restart_policy",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:temporary_not_restarted,transient_normal_exit"
+      ]
+    },
+    {
+      "id": "BH-009",
+      "title": "Nested supervisor failure restarts its subtree without restarting siblings",
+      "requirement": "supervisor_nested",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:nested_supervision,cascade_cleanup"
+      ]
+    },
+    {
+      "id": "BH-010",
+      "title": "Supervisor manages a generic server child with graceful shutdown",
+      "requirement": "supervisor_server_child",
+      "provenance": [
+        "trinity-demonstrator:tests/tiers/behaviours/supervisor_actor_tests.pl",
+        "trealla-port:supervisor_actor_tests.pl:server_child,server_child_timed_shutdown_is_graceful"
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@ another runtime.
 
 The executable draft profiles are
 [`actor-core-0.1`](profiles/actor-core-0.1.md) and
+[`actor-behaviours-0.1`](profiles/actor-behaviours-0.1.md), and
 [`portable-text-0.1`](profiles/portable-text-0.1.md). The dependency-free
 black-box runner contains cases exercised against both the SWI and Trealla
 nodes. These remain drafts: passing one means only that a candidate passes its
@@ -99,6 +100,16 @@ of the deployed ACTOR profile.
 The cross-runtime implications for SICStus, Ciao, XSB, and the systems already
 considered are recorded in
 [`docs/PORTABLE_TEXT_PORTABILITY.md`](docs/PORTABLE_TEXT_PORTABILITY.md).
+
+To test the shared generic-server and supervisor behaviour contract:
+
+```sh
+python3 runner/run.py \
+  --manifest cases/actor-behaviours-0.1.json \
+  --ws-url ws://127.0.0.1:3060/ws \
+  --advertised-profile actor \
+  --candidate candidate-name
+```
 
 ## Provenance and license
 
