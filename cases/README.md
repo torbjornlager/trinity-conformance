@@ -21,6 +21,11 @@ semantics from the implementation-specific SWI and Trealla unit suites while
 leaving runtime internals and implementation workarounds in their home
 repositories.
 
+[`demonstrator-tutorials-0.1.json`](demonstrator-tutorials-0.1.json) contains
+topology-dependent regressions extracted from the published tutorials. These
+are black-box browser-protocol tests, but they are not profile requirements:
+for example, `DEMO-019` intentionally contacts the demonstrator's N3 and N4.
+
 ## RELATION
 
 - accepted advertised relation

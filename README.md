@@ -111,6 +111,22 @@ python3 runner/run.py \
   --candidate candidate-name
 ```
 
+The demonstrator-specific tutorial regressions are deliberately separate
+from the ACTOR profile because they may call named nodes in the deployed
+Trinity topology. For example, tutorial 19 loads source through a browser
+WebSocket session on the candidate and resolves promises through N3 and N4:
+
+```sh
+python3 runner/run.py \
+  --manifest cases/demonstrator-tutorials-0.1.json \
+  --ws-url ws://127.0.0.1:13060/ws \
+  --advertised-profile actor \
+  --candidate trealla-n5
+```
+
+Private deployments reached through a trusted local proxy can add its
+verified identity header with `--header 'X-Web-Prolog-User: owner@example.test'`.
+
 ## Provenance and license
 
 The initial inventory was derived from `trinity-demonstrator` and

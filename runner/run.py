@@ -55,6 +55,7 @@ class WebSocket:
         token: str | None = None,
         origin: str | None = None,
         insecure_tls: bool = False,
+        extra_headers: tuple[str, ...] = (),
     ) -> None:
         parsed = urlsplit(url)
         if parsed.scheme not in {"ws", "wss"} or not parsed.hostname:
@@ -79,7 +80,7 @@ class WebSocket:
         if port and port not in {80, 443}:
             host = f"{host}:{port}"
         key = base64.b64encode(os.urandom(16)).decode("ascii")
-        headers = [
+        request_headers = [
             f"GET {path} HTTP/1.1",
             f"Host: {host}",
             "Upgrade: websocket",
@@ -88,10 +89,11 @@ class WebSocket:
             "Sec-WebSocket-Version: 13",
         ]
         if token:
-            headers.append(f"Authorization: Bearer {token}")
+            request_headers.append(f"Authorization: Bearer {token}")
         if origin:
-            headers.append(f"Origin: {origin}")
-        request = "\r\n".join(headers) + "\r\n\r\n"
+            request_headers.append(f"Origin: {origin}")
+        request_headers.extend(extra_headers)
+        request = "\r\n".join(request_headers) + "\r\n\r\n"
         self.sock.sendall(request.encode("ascii"))
         response = self._read_headers()
         status = response.split("\r\n", 1)[0]
@@ -203,6 +205,7 @@ class Candidate:
     token: str | None
     origin: str | None
     insecure_tls: bool
+    headers: tuple[str, ...]
 
 
 class Harness:
@@ -219,6 +222,7 @@ class Harness:
             self.candidate.token,
             self.candidate.origin,
             self.candidate.insecure_tls,
+            self.candidate.headers,
         )
         self.send({"command": "transport_hello", "version": 1,
                    "browser_pids": True, "io_ack": True})
@@ -652,6 +656,42 @@ def case_txt_007(candidate: Candidate) -> None:
     )
 
 
+TUTORIAL_019_SOURCE = """
+asynch_test_4(Answer1, Answer2) :-
+    promise('https://n3.elfenbenstornet.se', (p(X),sleep(0.2)), Ref1, [
+        template(X),
+        offset(1),
+        src_text("p(a). p(b).")
+    ]),
+    promise('https://n4.elfenbenstornet.se', (p(Y),sleep(0.1)), Ref2, [
+        template(Y),
+        limit(1),
+        src_list([p(c), p(d)])
+    ]),
+    yield(Ref1, Answer1),
+    yield(Ref2, Answer2).
+""".strip()
+
+
+def case_demo_019(candidate: Candidate) -> None:
+    options = (
+        "[session(true),src_text("
+        + prolog_quote_atom(TUTORIAL_019_SOURCE)
+        + ")]"
+    )
+    with Harness(candidate) as harness:
+        harness.spawn_shell(options)
+        harness.call("asynch_test_4(Answer1,Answer2)", "[limit(1)]")
+        success = harness.recv_type("success", limit=32)
+        require(success.get("more") is False,
+                f"tutorial 19 returned another solution: {success!r}")
+        require(row_value(success, "Answer1") == "success([b],false)",
+                f"unexpected N3 promise answer: {success!r}")
+        require(row_value(success, "Answer2") == "success([c],true)",
+                f"unexpected N4 promise answer: {success!r}")
+        harness.halt()
+
+
 CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-001": case_ac_001,
     "AC-002": case_ac_002,
@@ -677,6 +717,7 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "TXT-005": case_txt_005,
     "TXT-006": case_txt_006,
     "TXT-007": case_txt_007,
+    "DEMO-019": case_demo_019,
 }
 
 
@@ -693,6 +734,10 @@ def main() -> int:
     parser.add_argument("--token", help="bearer token; prefer --token-env")
     parser.add_argument("--token-env", help="environment variable containing a bearer token")
     parser.add_argument("--origin")
+    parser.add_argument(
+        "--header", action="append", default=[],
+        help="additional WebSocket upgrade header (repeatable; NAME: VALUE)",
+    )
     parser.add_argument("--timeout", type=float, default=5.0)
     parser.add_argument("--insecure-tls", action="store_true")
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -718,8 +763,12 @@ def main() -> int:
     if unknown:
         parser.error("unknown case ID(s): " + ", ".join(sorted(unknown)))
 
+    for header in args.header:
+        if ":" not in header or "\r" in header or "\n" in header:
+            parser.error("--header must be a single NAME: VALUE header line")
     candidate = Candidate(args.ws_url, args.advertised_profile, args.timeout,
-                          token, args.origin, args.insecure_tls)
+                          token, args.origin, args.insecure_tls,
+                          tuple(args.header))
     required_profile = manifest["required_advertised_profile"]
     results: list[dict[str, Any]] = []
     started_at = datetime.now(timezone.utc).isoformat()
