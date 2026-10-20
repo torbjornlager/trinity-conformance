@@ -10,6 +10,7 @@ another runtime.
 The executable draft profiles are
 [`actor-core-0.1`](profiles/actor-core-0.1.md),
 [`actor-behaviours-0.1`](profiles/actor-behaviours-0.1.md),
+[`actor-supervisors-0.1`](profiles/actor-supervisors-0.1.md),
 [`portable-text-0.1`](profiles/portable-text-0.1.md), and
 [`actor-workers-0.1`](profiles/actor-workers-0.1.md). The dependency-free
 black-box runner contains cases exercised against both the SWI and Trealla
@@ -147,3 +148,18 @@ verified identity header with `--header 'X-Web-Prolog-User: owner@example.test'`
 The initial inventory was derived from `trinity-demonstrator` and
 `trealla-port`. See [NOTICE.md](NOTICE.md). This repository is distributed
 under the [MIT License](LICENSE).
+
+## Supervisor cleanup conformance and diagnostics
+
+Run the identical public-interface cleanup cases against each isolated native
+node using `--manifest cases/actor-supervisors-0.1.json`. They exercise startup
+rollback, dynamic-addition and explicit-respawn retry, restart-budget exhaustion
+under all three strategies, shutdown policies and monitor/message preservation. See the [profile](profiles/actor-supervisors-0.1.md) for coverage
+limits; runtime regression tests still cover never-published provisional pids.
+
+Run `--manifest cases/supervisor-diagnostics-0.1.json` separately. The runtime-bound
+nested-specification admission difference remains unresolved. The historical
+repeated-cleanup and replacement-name-conflict cases now pass with native SWI's
+zero-time polling repair; they retain their diagnostic identifiers and remain
+outside the shared profile's pass count. See the
+[repair results](reports/2026-10-20-zero-poll-repair.md).

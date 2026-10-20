@@ -300,7 +300,7 @@ def row_value(event: dict[str, Any], name: str) -> str:
 
 def prolog_quote_atom(value: str) -> str:
     """Render source text as a portable single-quoted Prolog atom."""
-    return "'" + value.replace("'", "''") + "'"
+    return "'" + value.replace("\\", "\\\\").replace("'", "''") + "'"
 
 
 def case_ac_001(candidate: Candidate) -> None:
@@ -601,6 +601,174 @@ def case_bh_010(candidate: Candidate) -> None:
     )
 
 
+
+# Public-interface fixtures: no implementation modules, private hooks, shared
+# host database or runtime-specific exception injection. Occupied ordinary names
+# cause deterministic startup failures; each case uses only its own names.
+SUPERVISOR_CLEANUP_SOURCE = (
+    ":- dynamic retired/1. "
+    "probe(ping,S,pong,S). "
+    "probe(hold,Parent,ok,Parent):-Parent!holding,receive({release->true}). "
+    "await(P,R,Why):-receive({down(P,R,Why)->assertz(retired(P))},"
+    "[timeout(2),on_timeout(throw(missing_down(P,R)))]). "
+    "stop_probe(P):-setup_call_cleanup(monitor(P,R),"
+    "(exit(P,kill),await(P,R,_)),demonitor(R,[flush])). "
+    "cleanup(P):-(nonvar(P),\\+retired(P)->catch(stop_probe(P),_,true);true). "
+    "finish(S):-setup_call_cleanup(monitor(S,R),"
+    "(supervisor_halt(S),await(S,R,true)),demonitor(R,[flush])). "
+    "permitted(0,_,P,P):-!. "
+    "permitted(N,S,P,Last):-setup_call_cleanup(monitor(P,R),"
+    "(server_halt(P,true),await(P,R,true)),demonitor(R,[flush])),"
+    "supervisor_which_children(S,[info(sc_a,_,_,_),info(sc_b,New,_,_),info(sc_c,_,_,_)]),"
+    "ground(New),New\\==P,N1 is N-1,permitted(N1,S,New,Last). "
+    "absent(Name):-whereis(Name,undefined)."
+)
+
+
+def supervisor_cleanup_goal(candidate: Candidate, goal: str) -> None:
+    require_source_goal_success(candidate, SUPERVISOR_CLEANUP_SOURCE, goal)
+
+
+def case_sc_001(candidate: Candidate) -> None:
+    supervisor_cleanup_goal(candidate,
+        "setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_bad),src_predicates([probe/4])]),"
+        "setup_call_cleanup(true,"
+        "(supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
+        "child(sc_c,[start(server(probe,[])),shutdown(0.1)]),"
+        "child(sc_bad,[start(server(probe,[]))])],Sup,"
+        "[monitor(true),src_predicates([probe/4])]),"
+        "await(Sup,Sup,exception(Error)),nonvar(Error),absent(sc_a),absent(sc_c),"
+        "whereis(sc_bad,Block),server_request(Block,ping,pong,[timeout(1),on_timeout(throw(blocker_unresponsive))])),cleanup(Sup)),cleanup(Block))")
+
+
+def dynamic_addition_goal() -> str:
+    return (
+        "setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_b),src_predicates([probe/4])]),"
+        "setup_call_cleanup(supervisor_spawn([child(sc_a,[start(server(probe,[]))])],Sup,"
+        "[src_predicates([probe/4])]),"
+        "(supervisor_which_children(Sup,[info(sc_a,A,_,_)]),"
+        "supervisor_spawn_child(Sup,child(sc_b,[start(server(probe,[]))]),Failed),"
+        "Failed=error(Error),nonvar(Error),server_request(A,ping,pong,[timeout(1),on_timeout(throw(sibling_unresponsive))]),"
+        "supervisor_which_children(Sup,[info(sc_a,A,_,_)]),stop_probe(Block),"
+        "supervisor_spawn_child(Sup,child(sc_b,[start(server(probe,[]))]),ok),"
+        "supervisor_count_children(Sup,[specs-2,active-2,supervisors-0,workers-2]),"
+        "finish(Sup)),cleanup(Sup)),cleanup(Block))")
+
+
+def case_sc_002(candidate: Candidate) -> None:
+    supervisor_cleanup_goal(candidate, dynamic_addition_goal())
+
+def case_sc_003(candidate: Candidate) -> None:
+    supervisor_cleanup_goal(candidate,
+        "setup_call_cleanup(supervisor_spawn([child(sc_a,[start(server(probe,[]))]),"
+        "child(sc_b,[start(server(probe,[]))])],Sup,"
+        "[src_predicates([probe/4])]),"
+        "(supervisor_which_children(Sup,[info(sc_a,A,_,_),info(sc_b,Old,_,_)]),"
+        "supervisor_terminate_child(Sup,sc_b,ok),"
+        "setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_b),src_predicates([probe/4])]),"
+        "(supervisor_respawn_child(Sup,sc_b,Failed),Failed=error(Error),nonvar(Error),"
+        "supervisor_which_children(Sup,[info(sc_a,A,_,_),info(sc_b,undefined,_,_)]),"
+        "server_request(A,ping,pong,[timeout(1),on_timeout(throw(sibling_unresponsive))]),stop_probe(Block),"
+        "supervisor_respawn_child(Sup,sc_b,ok(New)),ground(New),New\\==Old,"
+        "supervisor_which_children(Sup,[info(sc_a,A,_,_),info(sc_b,New,_,_)]),"
+        "supervisor_respawn_child(Sup,sc_b,error(running)),"
+        "supervisor_respawn_child(Sup,absent,error(not_found))),cleanup(Block)),finish(Sup)),cleanup(Sup))")
+
+
+def automatic_failure(candidate: Candidate, strategy: str) -> None:
+    supervisor_cleanup_goal(candidate,
+        "setup_call_cleanup(supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
+        "child(sc_b,[start(server(probe,[])),shutdown(0.1)]),"
+        "child(sc_c,[start(server(probe,[])),shutdown(0.1)])],Sup,"
+        f"[strategy({strategy}),intensity(5),monitor(true),src_predicates([probe/4])]),"
+        "(supervisor_which_children(Sup,[info(sc_a,A,_,_),info(sc_b,B,_,_),info(sc_c,C,_,_)]),"
+        "unregister(sc_b),setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_b),src_predicates([probe/4])]),"
+        "setup_call_cleanup((monitor(A,RA),monitor(C,RC),monitor(Sup,RS)),"
+        "(self(Self),Self!unrelated_supervisor_message,server_halt(B,true),"
+        "await(Sup,Sup,restart_failed(sc_b,Error)),nonvar(Error),"
+        "await(Sup,RS,restart_failed(sc_b,Error)),await(A,RA,true),await(C,RC,true),"
+        "receive({unrelated_supervisor_message->true},[timeout(0),on_timeout(fail)]),"
+        "absent(sc_a),absent(sc_c),whereis(sc_b,Block),server_request(Block,ping,pong,[timeout(1),on_timeout(throw(blocker_unresponsive))])),"
+        "(demonitor(RA,[flush]),demonitor(RC,[flush]),demonitor(RS,[flush]))),cleanup(Block))),cleanup(Sup))")
+
+
+def case_scd_003(candidate: Candidate) -> None:
+    automatic_failure(candidate, "one_for_one")
+
+
+def case_scd_004(candidate: Candidate) -> None:
+    automatic_failure(candidate, "one_for_all")
+
+
+def case_scd_005(candidate: Candidate) -> None:
+    automatic_failure(candidate, "rest_for_one")
+
+
+def intensity_cleanup(candidate: Candidate, strategy: str, budget: int = 0,
+                      policies: bool = False) -> None:
+    # The blocked callback demonstrates numeric-timeout escalation; the other
+    # server demonstrates brutal_kill. Otherwise both siblings stop gracefully.
+    a_options = "[initial_state(Parent)]" if policies else "[]"
+    a_policy = "0.05" if policies else "infinity"
+    c_policy = "brutal_kill" if policies else "0.1"
+    a_reason, c_reason = ("shutdown", "kill") if policies else ("true", "true")
+    hold = ("server_promise(A,hold,Hold),receive({holding->true},"
+            "[timeout(2),on_timeout(fail)]),nonvar(Hold),") if policies else ""
+    supervisor_cleanup_goal(candidate,
+        "self(Parent),setup_call_cleanup(supervisor_spawn(["
+        f"child(sc_a,[start(server(probe,{a_options})),shutdown({a_policy})]),"
+        "child(sc_b,[start(server(probe,[])),shutdown(0.1)]),"
+        f"child(sc_c,[start(server(probe,[])),shutdown({c_policy})])],Sup,"
+        f"[strategy({strategy}),intensity({budget}),period(100),monitor(true),"
+        "src_predicates([probe/4])]),"
+        "(supervisor_which_children(Sup,[info(sc_a,A,_,_),info(sc_b,B,_,_),info(sc_c,C,_,_)]),"
+        "setup_call_cleanup((monitor(A,RA),monitor(C,RC),monitor(Sup,RS)),"
+        f"(permitted({budget},Sup,B,Last),{hold}"
+        "Parent!unrelated_intensity_message,server_halt(Last,true),"
+        "await(Sup,Sup,shutdown),await(Sup,RS,shutdown),"
+        f"await(A,RA,{a_reason}),await(C,RC,{c_reason}),"
+        "receive({unrelated_intensity_message->true},[timeout(0),on_timeout(fail)]),"
+        "absent(sc_a),absent(sc_b),absent(sc_c)),"
+        "(demonitor(RA,[flush]),demonitor(RC,[flush]),demonitor(RS,[flush])))),cleanup(Sup))")
+
+
+def case_sc_007(candidate: Candidate) -> None:
+    intensity_cleanup(candidate, "one_for_one")
+
+
+def case_sc_008(candidate: Candidate) -> None:
+    intensity_cleanup(candidate, "one_for_all")
+
+
+def case_sc_009(candidate: Candidate) -> None:
+    intensity_cleanup(candidate, "rest_for_one")
+
+
+def case_sc_010(candidate: Candidate) -> None:
+    intensity_cleanup(candidate, "one_for_one", budget=2)
+
+
+def case_sc_011(candidate: Candidate) -> None:
+    intensity_cleanup(candidate, "one_for_one", policies=True)
+
+
+def case_scd_001(candidate: Candidate) -> None:
+    # Intentionally exploratory: SWI currently rejects the runtime-bound nested
+    # list at static admission, while Trealla accepts it. Not shared conformance.
+    require_source_goal_success(candidate, SUPERVISOR_SOURCE,
+        "Specs=[child(inner,[start(forever)])],"
+        "supervisor_spawn([child(sub,[start(start_sub_supervisor(Specs,[])),type(supervisor)])],"
+        "Sup,[src_predicates([forever/0])]),supervisor_halt(Sup)")
+
+
+def case_scd_002(candidate: Candidate) -> None:
+    # Preserve the initial fixture's redundant monitor/kill sequence as an
+    # independent observation; it is not part of the supervisor contract.
+    source = SUPERVISOR_CLEANUP_SOURCE.replace(
+        "cleanup(P):-(nonvar(P),\\+retired(P)->catch(stop_probe(P),_,true);true). ",
+        "cleanup(P):-(nonvar(P)->catch(stop_probe(P),_,true);true). ")
+    require_source_goal_success(candidate, source, dynamic_addition_goal())
+
 def require_goal_success(candidate: Candidate, goal: str) -> None:
     with Harness(candidate) as harness:
         harness.spawn_shell()
@@ -864,6 +1032,19 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "BH-008": case_bh_008,
     "BH-009": case_bh_009,
     "BH-010": case_bh_010,
+    "SC-001": case_sc_001,
+    "SC-002": case_sc_002,
+    "SC-003": case_sc_003,
+    "SC-007": case_sc_007,
+    "SC-008": case_sc_008,
+    "SC-009": case_sc_009,
+    "SC-010": case_sc_010,
+    "SC-011": case_sc_011,
+    "SCD-001": case_scd_001,
+    "SCD-002": case_scd_002,
+    "SCD-003": case_scd_003,
+    "SCD-004": case_scd_004,
+    "SCD-005": case_scd_005,
     "WC-001": case_wc_001,
     "WC-002": case_wc_002,
     "WC-003": case_wc_003,
