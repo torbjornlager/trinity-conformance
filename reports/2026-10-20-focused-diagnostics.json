@@ -1,0 +1,164 @@
+[
+  {
+    "candidate": "swi",
+    "goal": "parallel([X=one,Y=two])",
+    "events": [
+      {
+        "pid": 8672667471,
+        "reason": "true",
+        "ref": "8672667471@'http://localhost:39860'",
+        "type": "down"
+      },
+      {
+        "data": [
+          {
+            "X": "one",
+            "Y": "two"
+          }
+        ],
+        "more": false,
+        "pid": 3958641054,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "goal": "first_solution(X,[X=fast,(sleep(0.1),X=slow)])",
+    "events": [
+      {
+        "pid": 2489359908,
+        "reason": "kill",
+        "ref": "2489359908@'http://localhost:39860'",
+        "type": "down"
+      },
+      {
+        "data": [
+          {
+            "X": "fast"
+          }
+        ],
+        "more": false,
+        "pid": 1288615217,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "goal": "first_solution(X,[exit(killed),(sleep(0.1),X=ok)],[on_error(continue)])",
+    "events": [
+      {
+        "pid": 2843060965,
+        "reason": "true",
+        "ref": "2843060965@'http://localhost:39860'",
+        "type": "down"
+      },
+      {
+        "data": [
+          {
+            "X": "ok"
+          }
+        ],
+        "more": false,
+        "pid": 7863521526,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "goal": "catch(parallel([exit(killed)]),Error,true)",
+    "events": [
+      {
+        "data": [
+          {
+            "Error": "worker_exit(9573309308@'http://localhost:39860',killed)"
+          }
+        ],
+        "more": false,
+        "pid": 3623125449,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "goal": "parallel([X=one,Y=two])",
+    "events": [
+      {
+        "type": "success",
+        "pid": 2544143125,
+        "data": [
+          {
+            "X": "one",
+            "Y": "two"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "goal": "first_solution(X,[X=fast,(sleep(0.1),X=slow)])",
+    "events": [
+      {
+        "type": "success",
+        "pid": 2544512879,
+        "data": [
+          {
+            "X": "fast"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "goal": "first_solution(X,[exit(killed),(sleep(0.1),X=ok)],[on_error(continue)])",
+    "events": [
+      {
+        "type": "success",
+        "pid": 2544865826,
+        "data": [
+          {
+            "X": "ok"
+          }
+        ],
+        "more": true
+      },
+      {
+        "exception": "timed out"
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "goal": "catch(parallel([exit(killed)]),Error,true)",
+    "events": [
+      {
+        "type": "success",
+        "pid": 2545218773,
+        "data": [
+          {
+            "Error": "error(existence_error(procedure,exit/1),exit/1)"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "case": "BH-009 stage trace",
+    "events": [
+      {
+        "data": "Arguments are not sufficiently instantiated",
+        "details": "error(instantiation_error,_)",
+        "type": "error"
+      }
+    ]
+  }
+]

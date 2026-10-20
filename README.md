@@ -8,9 +8,10 @@ another runtime.
 ## Status
 
 The executable draft profiles are
-[`actor-core-0.1`](profiles/actor-core-0.1.md) and
-[`actor-behaviours-0.1`](profiles/actor-behaviours-0.1.md), and
-[`portable-text-0.1`](profiles/portable-text-0.1.md). The dependency-free
+[`actor-core-0.1`](profiles/actor-core-0.1.md),
+[`actor-behaviours-0.1`](profiles/actor-behaviours-0.1.md),
+[`portable-text-0.1`](profiles/portable-text-0.1.md), and
+[`actor-workers-0.1`](profiles/actor-workers-0.1.md). The dependency-free
 black-box runner contains cases exercised against both the SWI and Trealla
 nodes. These remain drafts: passing one means only that a candidate passes its
 explicitly listed cases.
@@ -110,6 +111,20 @@ python3 runner/run.py \
   --advertised-profile actor \
   --candidate candidate-name
 ```
+
+To test worker bindings, policies, determinism, supplied source and completed-call
+cleanup through public interfaces:
+
+```sh
+python3 runner/run.py \
+  --manifest cases/actor-workers-0.1.json \
+  --ws-url ws://127.0.0.1:3060/ws \
+  --candidate candidate-name --report reports/worker-result.json
+```
+
+The separate `cases/worker-diagnostics-0.1.json` manifest probes an unresolved
+worker-cleanup ownership race. Diagnostic results do not count toward the worker
+profile; a passing stress run does not establish that the race is fixed.
 
 The demonstrator-specific tutorial regressions are deliberately separate
 from the ACTOR profile because they may call named nodes in the deployed

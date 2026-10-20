@@ -1,0 +1,96 @@
+{
+  "suite": "actor-workers-0.1",
+  "schema_version": 1,
+  "required_advertised_profile": "actor",
+  "protocol_version": 1,
+  "cases": [
+    {
+      "id": "WC-001",
+      "title": "Parallel preserves independent bindings and accepts an empty list",
+      "requirement": "worker_bindings",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-002",
+      "title": "Parallel reports logical failure and propagates original exceptions",
+      "requirement": "worker_failure",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-003",
+      "title": "Both first_solution arities select a winner and reject an empty solver list",
+      "requirement": "first_winner",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-004",
+      "title": "Continue policies produce a final winning page after failure, exception or exit",
+      "requirement": "continue_determinism",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-005",
+      "title": "Unexpected exits and stop policies produce the documented outcome",
+      "requirement": "worker_exit_policy",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-006",
+      "title": "Workers resolve supplied predicates and preserve answer variable sharing",
+      "requirement": "worker_source_context",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-007",
+      "title": "A winning first_solution reclaims its loser and preserves unrelated state",
+      "requirement": "winner_cleanup",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    },
+    {
+      "id": "WC-008",
+      "title": "A failing parallel call reclaims its blocked sibling and preserves unrelated state",
+      "requirement": "error_cleanup",
+      "provenance": [
+        "shared manual:parallel/1 and first_solution/2-3",
+        "trealla-port:public_worker_routing_tests.pl",
+        "trealla-port:first_solution_determinism_tests.pl",
+        "trealla-port:worker_scope_tests.pl"
+      ]
+    }
+  ]
+}

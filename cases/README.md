@@ -70,3 +70,14 @@ for example, `DEMO-019` intentionally contacts the demonstrator's N3 and N4.
 Before implementation, each remaining item must receive a stable ID and an
 exact wire or API contract. Existing implementation tests are evidence for
 defining the contract, not the contract itself.
+
+## Worker combinators
+
+[`actor-workers-0.1.json`](actor-workers-0.1.json) is a separate draft public-interface
+profile with eight stable `WC-*` cases. The assertions and fixtures are identical
+for SWI and Trealla. See [its contract](../profiles/actor-workers-0.1.md) for the
+covered ordering, determinism and cleanup guarantees and the explicit exclusions.
+
+[`worker-diagnostics-0.1.json`](worker-diagnostics-0.1.json) is exploratory;
+`WCD-001` probes previously observed cleanup ownership errors. Its results are
+reported separately and are not used to claim or deny the worker profile.

@@ -254,6 +254,10 @@ class Harness:
             event = self.recv()
             if event.get("type") == expected_type:
                 return event
+            if expected_type == "success" and event.get("type") in {"failure", "error"}:
+                raise ConformanceFailure(
+                    f"expected success, got {event!r}; preceding events were {seen!r}"
+                )
             seen.append(event)
         raise ConformanceFailure(
             f"expected {expected_type}; preceding events were {seen!r}"
@@ -568,8 +572,8 @@ def case_bh_009(candidate: Candidate) -> None:
     require_source_goal_success(
         candidate,
         SUPERVISOR_SOURCE,
-        "Inner=[child(i1,[start(forever)]),child(i2,[start(forever)])],"
-        "supervisor_spawn([child(inner,[start(start_sub_supervisor(Inner,"
+        "supervisor_spawn([child(inner,[start(start_sub_supervisor("
+        "[child(i1,[start(forever)]),child(i2,[start(forever)])],"
         "[strategy(one_for_one),intensity(3),period(10)])),"
         "type(supervisor),restart(permanent),shutdown(infinity)]),"
         "child(outer,[start(forever)])],Sup,"
@@ -605,6 +609,156 @@ def require_goal_success(candidate: Candidate, goal: str) -> None:
         require(success.get("more") is False,
                 f"portable text goal was not deterministic: {success!r}")
         harness.halt()
+
+
+def worker_goal(candidate: Candidate, goal: str, *, source: str | None = None,
+                expected: str = "success", bindings: dict[str, str] | None = None) -> None:
+    """Observe a public answer, allowing preceding child monitor notifications.
+
+    Do not wrap the query in once/1: that would conceal a combinator choice point.
+    """
+    options = "[session(true)]" if source is None else (
+        f"[session(true),src_text({prolog_quote_atom(source)})]"
+    )
+    with Harness(candidate) as harness:
+        harness.spawn_shell(options)
+        harness.call(goal, "[limit(1)]")
+        for _ in range(64):
+            answer = harness.recv()
+            if answer.get("type") == "down":
+                continue
+            require(answer.get("type") == expected,
+                    f"expected {expected}, got {answer!r}; supplied_source={source is not None}")
+            if expected == "success":
+                require(isinstance(answer.get("data"), list) and len(answer["data"]) == 1
+                        and isinstance(answer["data"][0], dict),
+                        f"expected one binding row, got {answer!r}")
+                require(answer.get("more") is False,
+                        f"single-result worker query left a continuation: {answer!r}")
+                for name, value in (bindings or {}).items():
+                    require(row_value(answer, name) == value,
+                            f"wrong {name} binding: {answer!r}")
+            harness.halt()
+            return
+        raise ConformanceFailure("no terminal query answer after 64 child notifications")
+
+
+def worker_variants(candidate: Candidate, goal: str, **expectations: Any) -> None:
+    # A harmless private clause selects source-loaded execution without changing
+    # the goals or assertions. Neither path imports implementation modules.
+    for source in (None, "worker_probe(ok)."):
+        worker_goal(candidate, goal, source=source, **expectations)
+
+
+def continued_worker_goal(fault: str) -> str:
+    """A monitor gate forces the rejected worker to exit before the winner.
+
+    The caller's spawn monitor precedes the gate's monitor. The latter therefore
+    cannot release the winner until the caller's rejection notification is sent.
+    """
+    return (
+        "spawn((receive({broken(Bad)->true}),monitor(Bad,Barrier),Bad!release,"
+        "receive({down(Bad,Barrier,_)->true}),demonitor(Barrier,[flush]),"
+        "receive({waiting(Winner)->true}),Winner!go),Gate,[link(true),monitor(true)]),"
+        "first_solution(X,["
+        f"(self(Bad),Gate!broken(Bad),receive({{release->{fault}}})),"
+        "(self(Winner),Gate!waiting(Winner),receive({go->true}),X=ok)],"
+        "[on_fail(continue),on_error(continue)]),"
+        "receive({down(Gate,Gate,_)->true})"
+    )
+
+
+def case_wc_001(candidate: Candidate) -> None:
+    worker_variants(candidate, "parallel([]),parallel([X=one,Y=two])",
+                    bindings={"X": "one", "Y": "two"})
+
+
+def case_wc_002(candidate: Candidate) -> None:
+    worker_variants(candidate, "parallel([fail])", expected="failure")
+    worker_variants(candidate,
+                    "catch(parallel([throw(worker_test_error)]),E,true),"
+                    "nonvar(E),E==worker_test_error")
+
+
+def case_wc_003(candidate: Candidate) -> None:
+    # The blocked solver can never win; no timing assumption selects the result.
+    for source in (None, "worker_probe(ok)."):
+        for options in ("", ",[on_fail(continue),on_error(stop)]"):
+            worker_goal(candidate,
+                        "first_solution(X,[(receive({never->true}),X=blocked),"
+                        f"X=winner]{options})", source=source, bindings={"X": "winner"})
+    worker_variants(candidate, "first_solution(_,[])", expected="failure")
+
+
+def case_wc_004(candidate: Candidate) -> None:
+    for fault in ("fail", "throw(worker_test_error)", "exit(killed)"):
+        worker_variants(candidate, continued_worker_goal(fault), bindings={"X": "ok"})
+
+
+def case_wc_005(candidate: Candidate) -> None:
+    worker_variants(candidate,
+                    "catch(parallel([exit(killed)]),E,true),nonvar(E),"
+                    "E=worker_exit(_,killed)")
+    worker_variants(candidate,
+                    "catch(first_solution(_,[exit(killed)]),E,true),nonvar(E),"
+                    "E=worker_exit(_,killed)")
+    worker_variants(candidate,
+                    "first_solution(_,[fail,receive({never->true})],[on_fail(stop)])",
+                    expected="failure")
+    worker_variants(candidate,
+                    "catch(first_solution(_,[throw(worker_test_error),"
+                    "receive({never->true})],[on_error(stop)]),E,true),"
+                    "nonvar(E),E==worker_test_error")
+
+
+def case_wc_006(candidate: Candidate) -> None:
+    worker_goal(candidate,
+                "parallel([worker_probe(X)]),X=pair(A,B),var(A),A==B,"
+                "first_solution(Y,[worker_probe(Y)]),Y=pair(C,D),var(C),C==D",
+                source="worker_probe(pair(X,X)).")
+
+
+def cleanup_worker_goal(combinator: str) -> str:
+    # A blocked worker announces itself before the other worker is released.
+    # Cleanup is observed through public actor enumeration and monitor delivery.
+    result = "X=winner" if combinator == "first_solution" else "throw(worker_test_error)"
+    call = ("first_solution(X,Goals),X==winner" if combinator == "first_solution" else
+            "catch(parallel(Goals),E,true),nonvar(E),E==worker_test_error")
+    return (
+        "self(Caller),Caller!unrelated_worker_message,"
+        "spawn(receive({stop->true}),Witness,[link(true)]),monitor(Witness,AppRef),"
+        "spawn((receive({ready(Loser)->true}),monitor(Loser,Watch),"
+        "receive({waiting(Other)->Other!go}),receive({down(Loser,Watch,_)->true}),"
+        "demonitor(Watch,[flush]),Caller!loser_stopped),Gate,[link(true),monitor(true)]),"
+        "Goals=[(self(Loser),Caller!loser(Loser),Gate!ready(Loser),"
+        "receive({never->true})),"
+        f"(self(Other),Gate!waiting(Other),receive({{go->true}}),{result})],"
+        f"{call},receive({{loser(Loser)->true}}),"
+        "actors(Alive),\\+member(Loser,Alive),memberchk(Witness,Alive),"
+        "receive({loser_stopped->true}),receive({down(Gate,Gate,_)->true}),"
+        "receive({unrelated_worker_message->true}),Witness!stop,"
+        "receive({down(Witness,AppRef,true)->true}),demonitor(AppRef,[flush])"
+    )
+
+
+def case_wc_007(candidate: Candidate) -> None:
+    worker_variants(candidate, cleanup_worker_goal("first_solution"))
+
+
+def case_wc_008(candidate: Candidate) -> None:
+    worker_variants(candidate, cleanup_worker_goal("parallel"))
+
+
+def case_wcd_001(candidate: Candidate) -> None:
+    # Exploratory stress, separate from the executable worker contract. Keep
+    # candidate-specific ownership errors visible, without claiming a timing bound.
+    for attempt in range(8):
+        try:
+            worker_variants(candidate,
+                            "first_solution(X,[exit(killed),(sleep(0.01),X=ok)],"
+                            "[on_error(continue)]),X==ok")
+        except Exception as error:
+            raise ConformanceFailure(f"ownership stress iteration {attempt + 1}: {error}") from error
 
 
 def case_txt_001(candidate: Candidate) -> None:
@@ -710,6 +864,15 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "BH-008": case_bh_008,
     "BH-009": case_bh_009,
     "BH-010": case_bh_010,
+    "WC-001": case_wc_001,
+    "WC-002": case_wc_002,
+    "WC-003": case_wc_003,
+    "WC-004": case_wc_004,
+    "WC-005": case_wc_005,
+    "WC-006": case_wc_006,
+    "WC-007": case_wc_007,
+    "WC-008": case_wc_008,
+    "WCD-001": case_wcd_001,
     "TXT-001": case_txt_001,
     "TXT-002": case_txt_002,
     "TXT-003": case_txt_003,
