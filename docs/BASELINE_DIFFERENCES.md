@@ -15,7 +15,7 @@ entry here. Runtime repairs are outside the consolidation batch.
 | Nested supervisor admission | SCD-001 is an existing static-vs-runtime-bound admission difference. | Existing diagnostic remains separate. No input-policy repair or new waiver. |
 | Worker/supervisor races | Diagnostic passes only mean no occurrence in those attempts. | Preserve IDs and reports; do not promote a stress pass into a universal cleanup guarantee. |
 | Legacy transport | Untagged errors cannot reliably identify the command that caused them. | Modern capability and legacy fallback are distinct contracts. Tests do not infer spawn correlation from query correlation. |
-| Delegated lineage/cancellation | Trealla lacks `lineage_close`; remote effects may survive contact loss. | No blanket no-orphan or cancellation claim. Existing ownership, monitoring and cleanup qualifications stand. |
+| Delegated lineage/cancellation | Trealla now receives authenticated SWI lineage metadata and closes its local actors, registrations and promises on `lineage_close` or connection loss. Outbound propagation through further remote nodes remains unsupported. | Receiver support has focused regression and native SWI interoperability checks; this does not establish a blanket no-orphan or remote cancellation contract. Existing ownership, monitoring and cleanup qualifications stand. |
 | Browser/network surface | SWI-WASM executes inside a browser; it is not a GNU-style HTTP server. | Local language fixtures use real engines under Node. HTTP-server/wire-server cells are not applicable; browser network and UI cells are untested here. |
 
 The current matrix adds concrete failures observed in this run. If a shared
