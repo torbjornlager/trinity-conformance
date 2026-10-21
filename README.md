@@ -5,6 +5,17 @@ Web Prolog nodes. Its purpose is to test observable behaviour, independently
 of whether a candidate node is implemented in SWI-Prolog, Trealla Prolog, or
 another runtime.
 
+## Scoped interoperability baseline
+
+[Baseline 0.1](baselines/0.1.md) consolidates the existing nodes' selected
+observable contracts. The [coverage matrix](reports/2026-10-21-baseline-0.1/COVERAGE.md)
+includes GNU Prolog at ISOBASE level, native SWI/Trealla and local language
+assertions in both SWI-WASM modes. Required failures, exploratory differences,
+experimental text and unmeasured surfaces have separate accounting.
+See [reproduction](docs/BASELINE_RUNNER.md) and the
+[difference register](docs/BASELINE_DIFFERENCES.md). This is a scoped draft,
+not complete language, security or lifecycle certification.
+
 ## Status
 
 The executable draft profiles are

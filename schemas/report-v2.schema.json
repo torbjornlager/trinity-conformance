@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/torbjornlager/trinity-conformance/schemas/report-v2.schema.json",
+  "title": "Scoped endpoint-neutral baseline evidence v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "baseline",
+    "suite",
+    "scope",
+    "candidate",
+    "advertised_profile",
+    "endpoint",
+    "peer",
+    "started_at",
+    "duration_ms",
+    "counts",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "suite": {
+      "type": "string"
+    },
+    "scope": {
+      "enum": [
+        "required",
+        "diagnostic"
+      ]
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "advertised_profile": {
+      "enum": [
+        "relation",
+        "isobase",
+        "isotope",
+        "actor"
+      ]
+    },
+    "endpoint": {
+      "type": "string"
+    },
+    "peer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "pass",
+        "fail",
+        "unsupported",
+        "observed",
+        "diagnostic_error"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pass": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "diagnostic_error": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "duration_ms"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]{3}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "fail",
+              "unsupported",
+              "observed",
+              "diagnostic_error"
+            ]
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "detail": {
+            "type": "string"
+          },
+          "issue": {
+            "type": "string"
+          },
+          "observation": {}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

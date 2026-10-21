@@ -1,0 +1,50 @@
+{
+  "suite": "language-actor-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "LC-001",
+      "title": "Identity and references are opaque and stable",
+      "transport": "query",
+      "goal": "self(Self),self(Again),Self==Again,make_ref(A),make_ref(B),A\\==B"
+    },
+    {
+      "id": "LC-002",
+      "title": "Selective receive retains earlier unmatched data",
+      "transport": "query",
+      "goal": "self(S),S!baseline_b,S!baseline_a,receive({baseline_a->true}),receive({baseline_b->true})"
+    },
+    {
+      "id": "LC-003",
+      "title": "Failed guards preserve messages",
+      "transport": "query",
+      "goal": "self(S),S!baseline(1),receive({baseline(X) if X<0->fail},[timeout(0),on_timeout(true)]),receive({baseline(Y) if Y>0->Y==1})"
+    },
+    {
+      "id": "LC-004",
+      "title": "Parallel bindings failure and exception",
+      "transport": "query",
+      "goal": "parallel([]),parallel([X=one,Y=two]),X==one,Y==two,\\+parallel([fail]),catch(parallel([throw(baseline_error)]),E,true),E==baseline_error"
+    },
+    {
+      "id": "LC-005",
+      "title": "First solution returns one winner and applies continue policy",
+      "transport": "query",
+      "goal": "first_solution(X,[X=ok]),X==ok,first_solution(Y,[exit(killed),Y=ready],[on_error(continue)]),Y==ready"
+    },
+    {
+      "id": "LC-006",
+      "title": "Synchronous toplevel paging returns answer terms",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[session(true),monitor(true)]),toplevel_call_synch(P,member(X,[a,b,c]),A,[template(X),limit(2)]),A==success(P,[a,b],true),toplevel_next_synch(P,B),B==success(P,[c],false),var(X),toplevel_halt(P),receive({down(P,P,_)->true})"
+    },
+    {
+      "id": "LC-007",
+      "title": "Synchronous failure and exception remain answer terms",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[session(true),monitor(true)]),toplevel_call_synch(P,fail,A),A==failure(P),toplevel_call_synch(P,throw(baseline_error),B),B==error(P,baseline_error),toplevel_halt(P),receive({down(P,P,_)->true})"
+    }
+  ]
+}

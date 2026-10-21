@@ -1,0 +1,38 @@
+{
+  "suite": "interop-http-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "HC-001",
+      "title": "RPC preserves all pages",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "findall(X,rpc('__PEER__',member(X,[a,b,c]),[limit(2)]),Xs)",
+            "format": "prolog",
+            "template": "Xs"
+          },
+          "expect_prolog": "success([[a,b,c]],false)."
+        }
+      ]
+    },
+    {
+      "id": "HC-002",
+      "title": "Promise preserves template sharing and caller independence",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "promise('__PEER__',X=ok,Ref,[template(X-X),limit(1)]),var(X),yield(Ref,Answer),Answer=success([ok-ok],false),var(X)",
+            "format": "prolog",
+            "template": "ok"
+          },
+          "expect_prolog": "success([ok],false)."
+        }
+      ]
+    }
+  ]
+}

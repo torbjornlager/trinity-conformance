@@ -1,0 +1,26 @@
+{
+  "suite": "interop-actor-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "IX-001",
+      "title": "Remote source, synchronous paging and spawn monitor",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[node('__PEER__'),session(true),monitor(true),src_text('baseline_remote(a). baseline_remote(b).')]),toplevel_call_synch(P,baseline_remote(X),A,[template(X),limit(1),timeout(3)]),A==success(P,[a],true),toplevel_next_synch(P,B,[timeout(3)]),B==success(P,[b],false),var(X),toplevel_halt(P),receive({down(P,P,_)->true},[timeout(3),on_timeout(fail)])"
+    },
+    {
+      "id": "IX-002",
+      "title": "Canonical asynchronous answers preserve shared variables and quoted atoms",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[node('__PEER__'),session(true),monitor(true)]),toplevel_call(P,true,[template(row(pair(V,V),'a b'))]),receive({success(P,[row(pair(A,B),'a b')],false)->var(A),A==B},[timeout(3),on_timeout(fail)]),var(V),toplevel_halt(P),receive({down(P,P,_)->true},[timeout(3),on_timeout(fail)])"
+    },
+    {
+      "id": "IX-003",
+      "title": "Remote calls preserve an unrelated local monitor and message",
+      "transport": "query",
+      "goal": "self(S),S!baseline_kept,spawn(receive({stop->true}),Other,[monitor(true)]),toplevel_spawn(P,[node('__PEER__'),session(true),monitor(true)]),toplevel_call_synch(P,true,A,[timeout(3)]),A==success(P,[true],false),toplevel_halt(P),receive({down(P,P,_)->true},[timeout(3),on_timeout(fail)]),Other!stop,receive({down(Other,Other,_)->true},[timeout(3),on_timeout(fail)]),receive({baseline_kept->true})"
+    }
+  ]
+}

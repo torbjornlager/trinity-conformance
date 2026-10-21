@@ -1,0 +1,100 @@
+{
+  "suite": "isobase-diagnostics-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "diagnostic",
+  "cases": [
+    {
+      "id": "IBD-001",
+      "title": "Zero limit remains a recorded GNU/shared-contract difference",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "true",
+            "format": "prolog",
+            "template": "ok",
+            "limit": 0
+          }
+        }
+      ],
+      "issue": "GNU ISOBASE D01/K01; no zero-limit decision is made by this baseline"
+    },
+    {
+      "id": "IBD-002",
+      "title": "ISO power result type vs SWI arithmetic extension",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "X is 2**3,float(X)",
+            "format": "prolog",
+            "template": "ok"
+          }
+        }
+      ],
+      "issue": "GNU ISOBASE contract 0.2.0 B01: normative in that draft, not waived by this scoped baseline"
+    },
+    {
+      "id": "IBD-003",
+      "title": "Double-quoted character-list experiment",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "\"ab\"=[a,b]",
+            "format": "prolog",
+            "template": "ok"
+          }
+        }
+      ],
+      "issue": "Portable Text 0.1 remains experimental"
+    },
+    {
+      "id": "IBD-004",
+      "title": "Malformed goal error and HTTP status",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "broken(",
+            "format": "prolog",
+            "template": "ok"
+          }
+        }
+      ],
+      "issue": "Record response/status without freezing a new HTTP status rule"
+    },
+    {
+      "id": "IBD-005",
+      "title": "Numeric conversion type/error boundary",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((atom_length(42,N),Result=accepted(N)),Error,Result=rejected(Error))",
+            "template": "Result",
+            "format": "prolog"
+          }
+        }
+      ],
+      "issue": "GNU ISOBASE numeric/text reconciliation retains authority for its requirements"
+    },
+    {
+      "id": "IBD-006",
+      "title": "Unparenthesized operator goal in flat HTTP parameters",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "X=ok",
+            "template": "X",
+            "format": "json",
+            "_bare_goal": true
+          }
+        }
+      ],
+      "issue": "Record operator-framing differences; baseline requests frame goal and template in parentheses on every candidate"
+    }
+  ]
+}

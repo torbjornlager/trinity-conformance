@@ -105,6 +105,7 @@ class WebSocket:
             if ":" in line:
                 name, value = line.split(":", 1)
                 header_map[name.strip().lower()] = value.strip()
+        self.response_headers = header_map
         expected = base64.b64encode(
             hashlib.sha1((key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").encode()).digest()
         ).decode("ascii")

@@ -30,3 +30,13 @@ WebSocket URL, optional bearer token, optional Origin header, advertised
 profile, and timeout. Candidate process management remains deliberately out
 of scope: CI or a developer starts the node, waits for readiness, invokes the
 runner, and then stops the node.
+
+## Bounded baseline adapters
+
+`local_baseline.py` starts isolated loopback SWI, Trealla and GNU nodes with
+explicit fixture configuration, grants GNU only the test origins, captures
+provenance and cleans up its processes. It does not restart N3/N5.
+`wasm.cjs` imports the runtime repository's test-only engine setup and runs the
+same LC goal manifest in Worker/main modes. The coordinator is a test fixture;
+no browser server or real-network certification is inferred. See
+[the runner guide](../docs/BASELINE_RUNNER.md).

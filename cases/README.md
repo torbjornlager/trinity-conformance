@@ -81,3 +81,13 @@ covered ordering, determinism and cleanup guarantees and the explicit exclusions
 [`worker-diagnostics-0.1.json`](worker-diagnostics-0.1.json) is exploratory;
 `WCD-001` probes previously observed cleanup ownership errors. Its results are
 reported separately and are not used to claim or deny the worker profile.
+
+## Baseline 0.1 selections
+
+The [machine-readable index](../baselines/0.1.json) distinguishes required,
+supporting and diagnostic packs. New required packs are `isobase-http-0.1`,
+`language-actor-0.1`, `interop-http-0.1`, `interop-actor-0.1` and
+`wire-capabilities-0.1`. `isobase-diagnostics-0.1` records unresolved observations.
+Their stable IDs map to the [baseline contract](../baselines/0.1.md); the new
+runner accepts HTTP or WebSocket endpoints. Existing suites and their IDs are
+preserved, not silently merged into a claim that every node implements ACTOR.

@@ -1,0 +1,188 @@
+{
+  "suite": "isobase-http-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "IB-001",
+      "title": "Deterministic success",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "true",
+            "format": "prolog",
+            "template": "ok"
+          },
+          "expect_prolog": "success([ok],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-002",
+      "title": "Logical failure",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "fail",
+            "format": "prolog",
+            "template": "ok"
+          },
+          "expect_prolog": "failure."
+        }
+      ]
+    },
+    {
+      "id": "IB-003",
+      "title": "Paged enumeration and final-page state",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "member(X,[a,b,c])",
+            "format": "prolog",
+            "template": "X",
+            "limit": 2
+          },
+          "expect_prolog": "success([a,b],true)."
+        },
+        {
+          "params": {
+            "goal": "member(X,[a,b,c])",
+            "format": "prolog",
+            "template": "X",
+            "limit": 2,
+            "offset": 2
+          },
+          "expect_prolog": "success([c],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-004",
+      "title": "Offset and once stop at the requested slice",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "member(X,[a,b,c])",
+            "format": "prolog",
+            "template": "X",
+            "limit": 1,
+            "offset": 1,
+            "once": "true"
+          },
+          "expect_prolog": "success([b],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-005",
+      "title": "Uncaught exception is an error answer",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(baseline_probe)",
+            "format": "prolog",
+            "template": "ok"
+          },
+          "expect_prolog": "error(baseline_probe)."
+        }
+      ]
+    },
+    {
+      "id": "IB-006",
+      "title": "Supplied source executes in the request",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "baseline_q(X)",
+            "format": "prolog",
+            "template": "X",
+            "src_text": "baseline_q(a). baseline_q(b)."
+          },
+          "expect_prolog": "success([a,b],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-007",
+      "title": "Prolog template preserves variable sharing",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "true",
+            "format": "prolog",
+            "template": "pair(X,X)"
+          },
+          "expect_prolog": "success([pair(A,A)],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-008",
+      "title": "Distinct template variables stay distinct",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "true",
+            "format": "prolog",
+            "template": "pair(X,Y)"
+          },
+          "expect_prolog": "success([pair(A,B)],false)."
+        }
+      ]
+    },
+    {
+      "id": "IB-009",
+      "title": "JSON response exposes query bindings",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "X=ok",
+            "format": "json"
+          },
+          "expect_json": {
+            "type": "success",
+            "data": [
+              {
+                "X": "ok"
+              }
+            ],
+            "more": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "IB-010",
+      "title": "Request source does not leak into the next request",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "baseline_private",
+            "format": "prolog",
+            "template": "ok",
+            "src_text": "baseline_private."
+          },
+          "expect_prolog": "success([ok],false)."
+        },
+        {
+          "params": {
+            "goal": "baseline_private",
+            "format": "json"
+          },
+          "expect_json_type": "error"
+        }
+      ]
+    }
+  ]
+}
