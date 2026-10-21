@@ -18,6 +18,12 @@ The [HTTP client-context follow-up](reports/2026-10-21-http-client-context/COVER
 records the subsequent client availability repair, with the remaining failure explicit.
 The [GNU framing follow-up](reports/2026-10-21-gnu-request-framing/COVERAGE.md)
 records 94/94 required selections passing, with separate supporting failures retained.
+The [native conformance checkpoint](reports/2026-10-21-native-checkpoint/COVERAGE.md)
+reruns the committed SWI/Trealla implementations: 60/60 required selections and
+66/66 supporting ACTOR assertions pass with explicit fixture peer authentication.
+The native interoperability runner completes 69 invocation groups; parser,
+admission, HTTP-framing and experimental-text observations remain separate.
+GNU and browser engines were not rerun in that checkpoint.
 See [reproduction](docs/BASELINE_RUNNER.md) and the
 [difference register](docs/BASELINE_DIFFERENCES.md). This is a scoped draft,
 not complete language, security or lifecycle certification.
