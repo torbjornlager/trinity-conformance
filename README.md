@@ -16,6 +16,8 @@ The [HTTP source-loading follow-up](reports/2026-10-21-http-source-loading/COVER
 records the subsequent Trealla repair; the initial matrix remains historical evidence.
 The [HTTP client-context follow-up](reports/2026-10-21-http-client-context/COVERAGE.md)
 records the subsequent client availability repair, with the remaining failure explicit.
+The [GNU framing follow-up](reports/2026-10-21-gnu-request-framing/COVERAGE.md)
+records 94/94 required selections passing, with separate supporting failures retained.
 See [reproduction](docs/BASELINE_RUNNER.md) and the
 [difference register](docs/BASELINE_DIFFERENCES.md). This is a scoped draft,
 not complete language, security or lifecycle certification.
