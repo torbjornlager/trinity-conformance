@@ -12,6 +12,8 @@ observable contracts. The [coverage matrix](reports/2026-10-21-baseline-0.1/COVE
 includes GNU Prolog at ISOBASE level, native SWI/Trealla and local language
 assertions in both SWI-WASM modes. Required failures, exploratory differences,
 experimental text and unmeasured surfaces have separate accounting.
+The [HTTP source-loading follow-up](reports/2026-10-21-http-source-loading/COVERAGE.md)
+records the subsequent Trealla repair; the initial matrix remains historical evidence.
 See [reproduction](docs/BASELINE_RUNNER.md) and the
 [difference register](docs/BASELINE_DIFFERENCES.md). This is a scoped draft,
 not complete language, security or lifecycle certification.
