@@ -4,7 +4,7 @@ import argparse,json
 from pathlib import Path
 
 def render(directory,suite='links-monitors'):
- titles={'links-monitors':'Links and monitors','server-waits':'Generic-server waits','selective-receive':'Selective receive','toplevel-waits':'Synchronous toplevel waits','local-naming':'Local naming and registration','copying-isolation':'Actor copying and private-source isolation'}
+ titles={'links-monitors':'Links and monitors','server-waits':'Generic-server waits','selective-receive':'Selective receive','toplevel-waits':'Synchronous toplevel waits','local-naming':'Local naming and registration','copying-isolation':'Actor copying and private-source isolation','creation-validation':'Local creation-option validation'}
  if suite not in titles:raise ValueError('unknown local coverage suite: '+suite)
  reports={name:json.loads((directory/(name+'-'+suite+'.json')).read_text()) for name in ['swi','trealla']}
  total=sum(len(d['results']) for d in reports.values())
@@ -48,6 +48,11 @@ def render(directory,suite='links-monitors'):
     ['Child observations and release messages establish copying/isolation barriers.',
      'Minimal dynamic declarations enable the selected private-database mutation.']
     if suite=='copying-isolation' else
+    ['Formal error terms are checked without implementation-specific contexts.',
+     'Valid creation and exact termination acknowledgements bound startup checks.',
+     'This selection uses runtime-supplied option lists. The separate initial',
+     'literal-option run retains unresolved admission-path failures; see REPORT.md.']
+    if suite=='creation-validation' else
     ['Server callbacks announce acceptance and await explicit release/crash messages.',
      'A barrier request establishes reply readiness before mismatch/poll checks.']),
   'Both fixture nodes were stopped; runtime code, installed runtimes and n3/n5',
@@ -56,5 +61,5 @@ def render(directory,suite='links-monitors'):
  (directory/'COVERAGE.md').write_text('\n'.join(lines)+'\n')
 
 def main():
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('directory',type=Path);parser.add_argument('--suite',choices=['links-monitors','server-waits','selective-receive','toplevel-waits','local-naming','copying-isolation'],default='links-monitors');args=parser.parse_args();render(args.directory,args.suite)
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('directory',type=Path);parser.add_argument('--suite',choices=['links-monitors','server-waits','selective-receive','toplevel-waits','local-naming','copying-isolation','creation-validation'],default='links-monitors');args=parser.parse_args();render(args.directory,args.suite)
 if __name__=='__main__':main()

@@ -1,0 +1,44 @@
+{
+  "suite": "creation-validation-0.1",
+  "baseline": "creation-validation-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "CV-001",
+      "title": "Unknown spawn options identify the option family",
+      "transport": "query",
+      "goal": "catch(spawn(true,P,[unknown(creation_probe)]),E,true),E=error(domain_error(spawn_option,unknown(creation_probe)),_),var(P)"
+    },
+    {
+      "id": "CV-002",
+      "title": "Option lists and entries must be instantiated and proper",
+      "transport": "query",
+      "goal": "catch(spawn(true,P,Options),E1,true),E1=error(instantiation_error,_),var(Options),var(P),catch(spawn(true,Q,[monitor(true)|bad]),E2,true),E2=error(type_error(list,_),_),var(Q),catch(spawn(true,R,[Option]),E3,true),E3=error(instantiation_error,_),var(Option),var(R)"
+    },
+    {
+      "id": "CV-003",
+      "title": "Boolean and node values reject invalid types",
+      "transport": "query",
+      "goal": "catch(spawn(true,P,[link(maybe)]),E1,true),E1=error(type_error(boolean,maybe),_),var(P),catch(spawn(true,Q,[monitor(1)]),E2,true),E2=error(type_error(boolean,1),_),var(Q),catch(spawn(true,R,[node(42)]),E3,true),E3=error(type_error(atom_or_string,42),_),var(R)"
+    },
+    {
+      "id": "CV-004",
+      "title": "Later duplicate occurrences are validated",
+      "transport": "query",
+      "goal": "catch(spawn(true,P,[link(true),link(maybe)]),E1,true),E1=error(type_error(boolean,maybe),_),var(P),catch(toplevel_spawn(T,[session(true),session(maybe)]),E2,true),E2=error(type_error(boolean,maybe),_),var(T),catch(supervisor_spawn([],Sup,[period(1),period(0)]),E3,true),E3=error(domain_error(supervisor_period,0),_),var(Sup)"
+    },
+    {
+      "id": "CV-005",
+      "title": "Wrapper-only options are separated and first scalar setting wins",
+      "transport": "query",
+      "goal": "catch(spawn(true,P,[session(false)]),E1,true),E1=error(domain_error(spawn_option,session(false)),_),var(P),catch(spawn(true,Q,[strategy(one_for_one)]),E2,true),E2=error(domain_error(spawn_option,strategy(one_for_one)),_),var(Q),toplevel_spawn(T,[session(false),session(true),monitor(true)]),toplevel_call_synch(T,true,A,[timeout(2),on_timeout(throw(missing_wrapper_answer))]),A==success(T,[true],false),receive({down(T,T,true)->true},[timeout(2),on_timeout(throw(first_session_setting_not_preserved))]),supervisor_spawn([],Sup,[strategy(one_for_one),intensity(0),period(0.25),monitor(true)]),supervisor_which_children(Sup,Children),Children==[],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_supervisor_down))])"
+    },
+    {
+      "id": "CV-006",
+      "title": "Validation precedes source loading and application activation",
+      "transport": "query",
+      "goal": "self(S),catch(spawn(S!unexpected_creation,Rejected,[src_uri('file:///definitely-missing-creation-validation.pl'),unknown(creation_probe)]),E,true),E=error(domain_error(spawn_option,unknown(creation_probe)),_),var(Rejected),receive({unexpected_creation->fail},[timeout(0),on_timeout(true)]),spawn((S!valid_creation,receive({stop->true})),P,[monitor(true)]),receive({valid_creation->true},[timeout(2),on_timeout(throw(missing_valid_start))]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_valid_down))]),receive({unexpected_creation->fail},[timeout(0),on_timeout(true)])"
+    }
+  ]
+}

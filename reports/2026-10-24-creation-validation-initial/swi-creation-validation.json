@@ -1,0 +1,106 @@
+{
+  "advertised_profile": "actor",
+  "baseline": "0.1",
+  "candidate": "swi",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 3,
+    "observed": 0,
+    "pass": 3,
+    "unsupported": 0
+  },
+  "duration_ms": 118,
+  "endpoint": "ws://127.0.0.1:51977/ws",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 35,
+      "id": "CV-001",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(domain_error(spawn_option,unknown(creation_probe)),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "P"
+          }
+        ],
+        "more": false,
+        "pid": 3908476025,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Unknown spawn options identify the option family"
+    },
+    {
+      "detail": "ConformanceFailure: expected success, got {'data': 'Type error: list expected, found [monitor(true)|bad] (a compound term)', 'details': 'error(type_error(list,[monitor(true)|bad]),_)', 'type': 'error'}; preceding events were []",
+      "duration_ms": 11,
+      "id": "CV-002",
+      "status": "fail",
+      "title": "Option lists and entries must be instantiated and proper"
+    },
+    {
+      "detail": "ConformanceFailure: expected success, got {'data': \"node_sandbox:reject_forbidden_spawn_option/2: No permission to option sandboxed node(42)' (spawn option is disabled in sandbox mode)\", 'details': 'error(permission_error(option,sandboxed,node(42)),_)', 'type': 'error'}; preceding events were []",
+      "duration_ms": 12,
+      "id": "CV-003",
+      "status": "fail",
+      "title": "Boolean and node values reject invalid types"
+    },
+    {
+      "duration_ms": 12,
+      "id": "CV-004",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E1": "error(type_error(boolean,maybe),context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(type_error(boolean,maybe),context(toplevel_actors:toplevel_spawn/2,'invalid spawn wrapper option'))",
+            "E3": "error(domain_error(supervisor_period,0),context(supervisor_actor:supervisor_spawn/3,'invalid spawn wrapper option'))",
+            "P": "P",
+            "Sup": "Sup",
+            "T": "T"
+          }
+        ],
+        "more": false,
+        "pid": 7797314464,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Later duplicate occurrences are validated"
+    },
+    {
+      "duration_ms": 28,
+      "id": "CV-005",
+      "observation": {
+        "data": [
+          {
+            "A": "success(6406547053@'http://127.0.0.1:51977',[true],false)",
+            "BaselineResult": "passed",
+            "Children": "[]",
+            "E1": "error(domain_error(spawn_option,session(false)),context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(domain_error(spawn_option,strategy(one_for_one)),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "P",
+            "Q": "Q",
+            "Sup": "5420846718@'http://127.0.0.1:51977'",
+            "T": "6406547053@'http://127.0.0.1:51977'"
+          }
+        ],
+        "more": false,
+        "pid": 5881747082,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Wrapper-only options are separated and first scalar setting wins"
+    },
+    {
+      "detail": "ConformanceFailure: expected success, got {'data': 'Socket error: nodename nor servname provided, or not known', 'details': \"error(socket_error(eai_noname,'nodename nor servname provided, or not known'),_)\", 'type': 'error'}; preceding events were []",
+      "duration_ms": 20,
+      "id": "CV-006",
+      "status": "fail",
+      "title": "Validation precedes source loading and application activation"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "required",
+  "started_at": "2026-10-24T17:40:33.035034+00:00",
+  "suite": "creation-validation-0.1"
+}

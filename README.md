@@ -390,3 +390,31 @@ Minimal dynamic declarations support the selected private-database mutation;
 general directives, URI loading, source inheritance, module qualification,
 remote spawning and exhaustive sandbox-policy checks remain outside this pack.
 Historical matrices and existing runner defaults remain unchanged.
+
+## Local creation-option validation draft conformance
+
+The separate [Creation validation 0.1 pack](profiles/creation-validation-0.1.md)
+checks unknown options, list structure, invalid values, later duplicates, wrapper
+boundaries, first-setting precedence and validation before source loading/startup.
+Identical public-interface goals run on disposable native ACTOR nodes. The
+[24 October matrix](reports/2026-10-24-creation-validation/COVERAGE.md) records
+**12/12 runtime-supplied-option selections passing**. The initial literal-option
+run's five admission-path failures remain separate unresolved diagnostics; they
+are not covered by the final green matrix. Runtime code, installed runtimes and
+n3/n5 remain unchanged.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/creation-validation-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/creation-validation-results
+python3 runner/validate_reports.py /fresh/path/creation-validation-results
+python3 runner/links_coverage.py --suite creation-validation /fresh/path/creation-validation-results
+```
+
+Lists are delivered through ordinary messages to test runtime validation after
+query admission. Child specifications, statecharts, HTTP options, remote creation
+and concurrent startup races are outside this pack. Historical reports and
+existing runner defaults are unchanged.

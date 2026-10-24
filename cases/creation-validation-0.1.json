@@ -1,0 +1,44 @@
+{
+  "suite": "creation-validation-0.1",
+  "baseline": "creation-validation-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "CV-001",
+      "title": "Unknown spawn options identify the option family",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([unknown(creation_probe)]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,CVOptions1),E,true),nonvar(E),E=error(domain_error(spawn_option,unknown(creation_probe)),_),var(P)"
+    },
+    {
+      "id": "CV-002",
+      "title": "Option lists and entries must be instantiated and proper",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([monitor(true)|bad]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_2([Option]),receive({cv_options_2(CVOptions2)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,Options),E1,true),nonvar(E1),E1=error(instantiation_error,_),var(Options),var(P),catch(spawn(true,Q,CVOptions1),E2,true),nonvar(E2),E2=error(type_error(list,_),_),var(Q),catch(spawn(true,R,CVOptions2),E3,true),nonvar(E3),E3=error(instantiation_error,_),var(Option),var(R)"
+    },
+    {
+      "id": "CV-003",
+      "title": "Boolean and node values reject invalid types",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([link(maybe)]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_2([monitor(1)]),receive({cv_options_2(CVOptions2)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_3([node(42)]),receive({cv_options_3(CVOptions3)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,CVOptions1),E1,true),nonvar(E1),E1=error(type_error(boolean,maybe),_),var(P),catch(spawn(true,Q,CVOptions2),E2,true),nonvar(E2),E2=error(type_error(boolean,1),_),var(Q),catch(spawn(true,R,CVOptions3),E3,true),nonvar(E3),E3=error(type_error(atom_or_string,42),_),var(R)"
+    },
+    {
+      "id": "CV-004",
+      "title": "Later duplicate occurrences are validated",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([session(true),session(maybe)]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_2([link(true),link(maybe)]),receive({cv_options_2(CVOptions2)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_3([period(1),period(0)]),receive({cv_options_3(CVOptions3)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,CVOptions2),E1,true),nonvar(E1),E1=error(type_error(boolean,maybe),_),var(P),catch(toplevel_spawn(T,CVOptions1),E2,true),nonvar(E2),E2=error(type_error(boolean,maybe),_),var(T),catch(supervisor_spawn([],Sup,CVOptions3),E3,true),nonvar(E3),E3=error(domain_error(supervisor_period,0),_),var(Sup)"
+    },
+    {
+      "id": "CV-005",
+      "title": "Wrapper-only options are separated and first scalar setting wins",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([timeout(2),on_timeout(throw(first_session_setting_not_preserved))]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_2([strategy(one_for_one),intensity(0),period(0.25),monitor(true)]),receive({cv_options_2(CVOptions2)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_3([timeout(2),on_timeout(throw(missing_supervisor_down))]),receive({cv_options_3(CVOptions3)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_4([timeout(2),on_timeout(throw(missing_wrapper_answer))]),receive({cv_options_4(CVOptions4)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_5([session(false),session(true),monitor(true)]),receive({cv_options_5(CVOptions5)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_6([strategy(one_for_one)]),receive({cv_options_6(CVOptions6)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_7([session(false)]),receive({cv_options_7(CVOptions7)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,CVOptions7),E1,true),nonvar(E1),E1=error(domain_error(spawn_option,session(false)),_),var(P),catch(spawn(true,Q,CVOptions6),E2,true),nonvar(E2),E2=error(domain_error(spawn_option,strategy(one_for_one)),_),var(Q),toplevel_spawn(T,CVOptions5),toplevel_call_synch(T,true,A,CVOptions4),A==success(T,[true],false),receive({down(T,T,true)->true},CVOptions1),supervisor_spawn([],Sup,CVOptions2),supervisor_which_children(Sup,Children),Children==[],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},CVOptions3)"
+    },
+    {
+      "id": "CV-006",
+      "title": "Validation precedes source loading and application activation",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!cv_options_1([src_uri('file:///definitely-missing-creation-validation.pl'),unknown(creation_probe)]),receive({cv_options_1(CVOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_2([timeout(2),on_timeout(throw(missing_valid_start))]),receive({cv_options_2(CVOptions2)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_3([timeout(2),on_timeout(throw(missing_valid_down))]),receive({cv_options_3(CVOptions3)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_4([timeout(0),on_timeout(true)]),receive({cv_options_4(CVOptions4)->true},[timeout(2),on_timeout(throw(missing_option_data))]),CVSelf!cv_options_5([monitor(true)]),receive({cv_options_5(CVOptions5)->true},[timeout(2),on_timeout(throw(missing_option_data))]),self(S),catch(spawn(S!unexpected_creation,Rejected,CVOptions1),E,true),nonvar(E),E=error(domain_error(spawn_option,unknown(creation_probe)),_),var(Rejected),receive({unexpected_creation->fail},CVOptions4),spawn((S!valid_creation,receive({stop->true})),P,CVOptions5),receive({valid_creation->true},CVOptions2),P!stop,receive({down(P,P,true)->true},CVOptions3),receive({unexpected_creation->fail},CVOptions4)"
+    }
+  ]
+}
