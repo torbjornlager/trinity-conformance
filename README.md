@@ -480,3 +480,20 @@ to reproduce the ordinary exception/failure controls. The capture transport is
 restricted to diagnostic scope; observation of an error is never a required pass.
 No output markers or sleeps are used. Remote, browser/GNU, whitelist-policy and
 concurrency behavior are unmeasured; no runtime repair or engine report is implied.
+
+## Trealla nonbinding admission repair checkpoint
+
+The Trealla adapter repair was checked with the unchanged shared manifests on
+new disposable nodes. [Child-specification coverage](reports/2026-10-24-trealla-nonbinding-child-specs/COVERAGE.md)
+is now **7/12: Trealla 6/6 and SWI 1/6**. SWI's five required admission failures
+remain visible. [Admission diagnostics](reports/2026-10-24-trealla-nonbinding-admission-probes/DIAGNOSTICS.md)
+record Trealla's runtime child variable staying unbound and both messages matching;
+all 20 observations complete. [Creation validation](reports/2026-10-24-trealla-nonbinding-creation-validation/COVERAGE.md)
+remains **12/12**. Historical matrices and all manifests are unchanged.
+
+Use the existing local adapter/reproduction commands with the patched Trealla
+checkout, exact pinned SWI source, separate verified engines and fresh output
+paths. Reports identify the uncommitted patch through source hashes as well as
+its base commit. This is a source repair checkpoint, not an installed-runtime
+upgrade; installed executables and n3/n5 remain unchanged. Broader lifecycle,
+SWI admission/source-order findings and unrelated diagnostics remain separate.
