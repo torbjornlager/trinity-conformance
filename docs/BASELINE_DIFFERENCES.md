@@ -31,3 +31,8 @@ Ordinary actor sending and unification/throw-only callback controls complete
 successfully. This is a required failure within the new draft pack, not a waiver
 or a claim that promise timeout/retry generally fails. The exact implementation
 cause and repair remain for a separate batch. Runtime code was not changed.
+
+The [Trealla callback-context follow-up](../reports/2026-10-24-promise-callback-context/COVERAGE.md)
+passes PY-002 and all other PY selections unchanged after the adapter repair.
+Earlier failures remain in their original reports. This resolves the observed
+callback-context difference in this pack; it makes no wider lifecycle claim.

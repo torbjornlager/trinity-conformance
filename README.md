@@ -223,3 +223,9 @@ fresh output directory for the separate controls. If used outside the recorded
 nested report layout, link those diagnostics separately in the resulting report.
 The coverage renderer expects the main report directory to contain a
 `diagnostics/` result directory as in the published run.
+
+The [callback-context repair follow-up](reports/2026-10-24-promise-callback-context/COVERAGE.md)
+passes all 24 unchanged PY and eight HC selections on disposable native fixtures.
+The earlier failing matrix remains historical evidence. The broader runtime
+sandbox fixture's intermittent cascade timeout is recorded separately, not as a
+promise-pack failure or a resolved lifecycle issue.

@@ -15,7 +15,7 @@ def main():
  lines=['# Promise/yield draft 0.1 — 24 October 2026','',
  'Identical public-interface goals were run on disposable native SWI/Trealla nodes.',
  'This separately versioned pack does not change baseline 0.1. GNU and SWI-WASM',
- 'network behaviour are **not measured**. No runtime code or installed engine was changed.','',
+ 'network behaviour are **not measured**. The runner does not change runtime code or installed engines.','',
  '## Promise/yield selections','',
  '| Caller → HTTP peer | SWI | Trealla |','| --- | --- | --- |']
  for caller in ['swi','trealla']:lines.append('| '+caller+' | '+' | '.join(cell(f'{caller}-promise-yield-to-{peer}') for peer in ['swi','trealla'])+' |')
@@ -35,6 +35,7 @@ def main():
   for peer in ['swi','trealla']:
    n=f'{caller}-promise-diagnostics-to-{peer}';d=json.loads((root/'diagnostics'/(n+'.json')).read_text());lines.append(f"- [{caller} → {peer}](diagnostics/{n}.json): {d['counts']['observed']} observed, {d['counts']['diagnostic_error']} diagnostic errors.")
  lines+=['','## Required failures','']
+ if failed==0:lines.append('No selected promise/yield assertion failed in this run.')
  for caller in ['swi','trealla']:
   for peer in ['swi','trealla']:
    n=f'{caller}-promise-yield-to-{peer}'
