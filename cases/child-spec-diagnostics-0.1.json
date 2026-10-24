@@ -1,0 +1,20 @@
+{
+  "suite": "child-spec-diagnostics-0.1",
+  "baseline": "child-specs-0.1",
+  "status": "draft",
+  "scope": "diagnostic",
+  "cases": [
+    {
+      "id": "SVD-001",
+      "title": "Dynamic validation with stage-specific wait diagnostics",
+      "transport": "query",
+      "goal": "self(S),S!sv_existing([child(existing,[start((self(Me),S!existing_started(Me),receive({ping(From)->From!existing_ok,receive({ping(From2)->From2!existing_ok,receive({never->true})})}))),restart(temporary)])]),receive({sv_existing(Specs)->true},[timeout(2),on_timeout(throw(sv_missing_stage(1)))]),S!sv_invalid(child(retry,[])),receive({sv_invalid(Invalid)->true},[timeout(2),on_timeout(throw(sv_missing_stage(2)))]),S!sv_retry(child(retry,[start((self(Me),S!retry_started(Me),receive({never->true}))),restart(temporary)])),receive({sv_retry(Retry)->true},[timeout(2),on_timeout(throw(sv_missing_stage(3)))]),supervisor_spawn(Specs,Sup,[monitor(true)]),receive({existing_started(Existing)->true},[timeout(2),on_timeout(throw(sv_missing_stage(4)))]),monitor(Existing,R1),Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(sv_missing_stage(5)))]),supervisor_which_children(Sup,Before),catch(supervisor_spawn_child(Sup,Invalid,Rejected),E,true),nonvar(E),E=error(missing_start_option(retry),_),var(Rejected),supervisor_which_children(Sup,After),After==Before,Before==[info(existing,Existing,worker,temporary)],Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(sv_missing_stage(6)))]),supervisor_spawn_child(Sup,Retry,Added),Added==ok,receive({retry_started(New)->true},[timeout(2),on_timeout(throw(sv_missing_stage(7)))]),monitor(New,R2),supervisor_which_children(Sup,Final),Final==[info(existing,Existing,worker,temporary),info(retry,New,worker,temporary)],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(sv_missing_stage(8)))]),receive({down(Existing,R1,_)->true},[timeout(2),on_timeout(throw(sv_missing_stage(9)))]),receive({down(New,R2,_)->true},[timeout(2),on_timeout(throw(sv_missing_stage(10)))]),demonitor(R1,[flush]),demonitor(R2,[flush])"
+    },
+    {
+      "id": "SVD-002",
+      "title": "Runtime-bound child validation with entry output marker",
+      "transport": "query",
+      "goal": "writeln(sv_execution_entered),self(S),S!sv_data([child(a,[])]),receive({sv_data(Specs)->true},[timeout(2),on_timeout(throw(missing_data))]),catch(supervisor_spawn(Specs,P),E,true),nonvar(E),E=error(missing_start_option(a),_),var(P)"
+    }
+  ]
+}

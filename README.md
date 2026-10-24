@@ -418,3 +418,33 @@ Lists are delivered through ordinary messages to test runtime validation after
 query admission. Child specifications, statecharts, HTTP options, remote creation
 and concurrent startup races are outside this pack. Historical reports and
 existing runner defaults are unchanged.
+
+## Supervisor child-specification validation draft conformance
+
+The separate [Child specifications 0.1 pack](profiles/child-specs-0.1.md) selects
+missing starts, duplicate ids, malformed lists, invalid later duplicate options,
+nested early rejection and dynamic rejection/retry with sibling preservation.
+Identical public-interface goals run on disposable SWI and Trealla ACTOR nodes.
+The [24 October matrix](reports/2026-10-24-child-specs/COVERAGE.md) records **6/12
+passes: SWI 1/6, Trealla 5/6**. Required failures remain visible: SWI blocks
+runtime-bound initial lists during admission; Trealla misses the dynamic case's
+input message, with source inspection pointing to admission-time variable binding.
+Initial and diagnostic runs are retained separately. Runtime code, installed
+runtimes and n3/n5 remain unchanged.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/child-specs-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/child-spec-results
+python3 runner/validate_reports.py /fresh/path/child-spec-results
+python3 runner/links_coverage.py --suite child-specs /fresh/path/child-spec-results
+```
+
+Select `cases/child-spec-diagnostics-0.1.json` with a fresh output directory to run
+the separate probes. Their admission errors/output-probe timeout are not required
+coverage passes. Remote supervision, concurrency, exhaustive child options,
+restart policies and shutdown timing remain outside this pack. Historical
+matrices and runner defaults are unchanged.

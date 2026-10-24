@@ -102,4 +102,18 @@ class CreationValidationCoverage(unittest.TestCase):
    self.assertIn('validation sentinel',text)
    self.assertNotIn('Server callbacks',text)
 
+class ChildSpecCoverage(unittest.TestCase):
+ def test_child_failure_and_missing_cell_remain_visible(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   out=Path(tmp)
+   a=dict(counts={'pass':0,'fail':1},results=[dict(id='SV-TEST',status='fail',detail='child sentinel')])
+   b=dict(counts={'pass':0,'fail':0},results=[])
+   for name,data in [('swi',a),('trealla',b)]:
+    (out/(name+'-child-specs.json')).write_text(json.dumps(data))
+   links_coverage.render(out,'child-specs');text=(out/'COVERAGE.md').read_text()
+   self.assertIn('0/1 selected assertions pass; 1 failures',text)
+   self.assertIn('| SV-TEST | [fail](swi-child-specs.json) | not measured |',text)
+   self.assertIn('child sentinel',text)
+   self.assertNotIn('Server callbacks',text)
+
 if __name__=='__main__':unittest.main()

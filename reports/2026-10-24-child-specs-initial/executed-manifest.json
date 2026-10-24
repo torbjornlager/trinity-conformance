@@ -1,0 +1,44 @@
+{
+  "suite": "child-specs-0.1",
+  "baseline": "child-specs-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SV-001",
+      "title": "Required start is rejected without creating a supervisor",
+      "transport": "query",
+      "goal": "self(S),S!sv_specs([child(a,[])]),receive({sv_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),catch(supervisor_spawn(Specs,Sup),E,true),nonvar(E),E=error(missing_start_option(a),_),var(Sup)"
+    },
+    {
+      "id": "SV-002",
+      "title": "Initial child identifiers must be unique",
+      "transport": "query",
+      "goal": "self(S),S!sv_specs([child(a,[start(true)]),child(a,[start(true)])]),receive({sv_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),catch(supervisor_spawn(Specs,Sup),E,true),nonvar(E),E=error(permission_error(duplicate,supervisor_child_id,a),_),var(Sup)"
+    },
+    {
+      "id": "SV-003",
+      "title": "Malformed initial child and child-option lists are rejected",
+      "transport": "query",
+      "goal": "self(S),S!sv_outer([child(a,[start(true)])|bad]),receive({sv_outer(Outer)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),S!sv_inner([child(a,[start(true)|bad])]),receive({sv_inner(Inner)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),catch(supervisor_spawn(Outer,P),E1,true),nonvar(E1),E1=error(type_error(list,_),_),var(P),catch(supervisor_spawn(Inner,Q),E2,true),nonvar(E2),E2=error(type_error(list,_),_),var(Q)"
+    },
+    {
+      "id": "SV-004",
+      "title": "Later restart and shutdown occurrences are validated",
+      "transport": "query",
+      "goal": "self(S),S!sv_restart([child(a,[start(true),restart(temporary),restart(bad)])]),receive({sv_restart(Restart)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),S!sv_shutdown([child(a,[start(true),shutdown(0),shutdown(-1)])]),receive({sv_shutdown(Shutdown)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),catch(supervisor_spawn(Restart,P),E1,true),nonvar(E1),E1=error(Formal,_),var(P),(Formal==domain_error(supervisor_child_restart,bad)->true;Formal==type_error(oneof([permanent,transient,temporary]),bad)),catch(supervisor_spawn(Shutdown,Q),E2,true),nonvar(E2),E2=error(domain_error(supervisor_child_shutdown,-1),_),var(Q)"
+    },
+    {
+      "id": "SV-005",
+      "title": "Nested invalid specification is rejected before any initial startup",
+      "transport": "query",
+      "goal": "self(S),S!sv_nested([child(probe,[start((S!unexpected_nested_start,receive({never->true})))]),child(outer,[start(start_sub_supervisor([child(inner,[])],[]))])]),receive({sv_nested(Specs)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),actors(Before),catch(supervisor_spawn(Specs,Sup),E,true),nonvar(E),E=error(missing_start_option(inner),_),var(Sup),actors(After),sort(Before,Sorted),sort(After,Sorted),receive({unexpected_nested_start->fail},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "SV-006",
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "transport": "query",
+      "goal": "self(S),S!sv_existing([child(existing,[start((self(Me),S!existing_started(Me),receive({ping(From)->From!existing_ok,receive({ping(From2)->From2!existing_ok,receive({never->true})})}))),restart(temporary)])]),receive({sv_existing(Specs)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),S!sv_invalid(child(retry,[])),receive({sv_invalid(Invalid)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),S!sv_retry(child(retry,[start((self(Me),S!retry_started(Me),receive({never->true}))),restart(temporary)])),receive({sv_retry(Retry)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),supervisor_spawn(Specs,Sup,[monitor(true)]),receive({existing_started(Existing)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),monitor(Existing,R1),Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),supervisor_which_children(Sup,Before),catch(supervisor_spawn_child(Sup,Invalid,Rejected),E,true),nonvar(E),E=error(missing_start_option(retry),_),var(Rejected),supervisor_which_children(Sup,After),After==Before,Before==[info(existing,Existing,worker,temporary)],Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),supervisor_spawn_child(Sup,Retry,Added),Added==ok,receive({retry_started(New)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),monitor(New,R2),supervisor_which_children(Sup,Final),Final==[info(existing,Existing,worker,temporary),info(retry,New,worker,temporary)],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),receive({down(Existing,R1,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),receive({down(New,R2,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),demonitor(R1,[flush]),demonitor(R2,[flush])"
+    }
+  ]
+}
