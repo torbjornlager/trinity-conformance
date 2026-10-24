@@ -74,4 +74,18 @@ class LocalNamingCoverage(unittest.TestCase):
    self.assertIn('naming sentinel',text)
    self.assertNotIn('Server callbacks',text)
 
+class CopyingIsolationCoverage(unittest.TestCase):
+ def test_copying_failure_and_missing_cell_remain_visible(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   out=Path(tmp)
+   a=dict(counts={'pass':0,'fail':1},results=[dict(id='CI-TEST',status='fail',detail='copy sentinel')])
+   b=dict(counts={'pass':0,'fail':0},results=[])
+   for name,data in [('swi',a),('trealla',b)]:
+    (out/(name+'-copying-isolation.json')).write_text(json.dumps(data))
+   links_coverage.render(out,'copying-isolation');text=(out/'COVERAGE.md').read_text()
+   self.assertIn('0/1 selected assertions pass; 1 failures',text)
+   self.assertIn('| CI-TEST | [fail](swi-copying-isolation.json) | not measured |',text)
+   self.assertIn('copy sentinel',text)
+   self.assertNotIn('Server callbacks',text)
+
 if __name__=='__main__':unittest.main()

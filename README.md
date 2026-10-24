@@ -364,3 +364,29 @@ SWI's client namespaces and Trealla's node-wide ordinary names remain explicit.
 Cross-client isolation, remote aliases, concurrent races, service names and
 namespace teardown are outside this finite selection. Existing runner defaults
 and historical reports are unchanged.
+
+## Actor copying and private-source isolation draft conformance
+
+The separate [Copying and isolation 0.1 pack](profiles/copying-isolation-0.1.md)
+selects child pid substitution, independent parent/child bindings, preserved
+sharing, src_text/src_list loading and sibling/parent database isolation.
+Identical public-interface assertions execute on disposable native ACTOR nodes.
+The [24 October matrix](reports/2026-10-24-copying-isolation/COVERAGE.md) records
+**12/12 selections passing** on the first run. Runtime code, installed runtimes
+and n3/n5 remain unchanged.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/copying-isolation-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/copying-isolation-results
+python3 runner/validate_reports.py /fresh/path/copying-isolation-results
+python3 runner/links_coverage.py --suite copying-isolation /fresh/path/copying-isolation-results
+```
+
+Minimal dynamic declarations support the selected private-database mutation;
+general directives, URI loading, source inheritance, module qualification,
+remote spawning and exhaustive sandbox-policy checks remain outside this pack.
+Historical matrices and existing runner defaults remain unchanged.

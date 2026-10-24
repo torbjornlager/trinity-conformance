@@ -1,0 +1,45 @@
+{
+  "suite": "copying-isolation-0.1",
+  "baseline": "copying-isolation-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "goal": "self(S),spawn((self(Me),S!child_identity(P,Me)),P,[monitor(true)]),receive({child_identity(Embedded,Self)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Embedded==P,Self==P,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    },
+    {
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "goal": "self(S),spawn((X=child,S!child_bound(X),receive({release->true}),X==child,S!child_still_independent),P,[monitor(true)]),receive({child_bound(Value)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Value==child,var(X),X=parent,P!release,receive({child_still_independent->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    },
+    {
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "goal": "self(S),spawn((var(A),var(B),var(C),B\\==C,A=inside,S!copy_shape(pair(A,A),pair(B,C)),receive({verify->true}),var(B),var(C),B\\==C,S!message_copy_independent),P,[monitor(true)]),receive({copy_shape(pair(R1,R2),pair(U,V))->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),R1==inside,R2==inside,var(U),var(V),U\\==V,U=parent_received,var(V),var(A),var(B),var(C),B\\==C,P!verify,receive({message_copy_independent->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    },
+    {
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "goal": "self(S),spawn((findall(V,ci_text(V),Values),S!text_values(Values)),P,[monitor(true),src_text('ci_text(alpha). ci_text(beta).')]),receive({text_values(Values)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Values==[alpha,beta],receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    },
+    {
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "goal": "self(S),spawn((findall(Tag-Data,ci_clause(Tag,Data),Rows),S!clause_rows(Rows)),P,[monitor(true),src_list([ci_clause(first,X-X),ci_clause(second,pair(Y,Z))])]),receive({clause_rows(Rows)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Rows=[first-(A-B),second-pair(C,D)],var(A),A==B,var(C),var(D),C\\==D,A\\==C,A\\==D,var(X),var(Y),var(Z),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    },
+    {
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "source": ":- dynamic ci_value/1. ci_value(parent).",
+      "goal": "self(S),findall(V,ci_value(V),Before),Before==[parent],spawn((findall(V,ci_value(V),Initial),Initial==[left],retractall(ci_value(_)),assertz(ci_value(changed)),findall(V,ci_value(V),Changed),S!mutated(Changed),receive({stop->true})),P,[monitor(true),src_text(':- dynamic ci_value/1. ci_value(left).')]),spawn((S!sibling_ready,receive({read->true}),findall(V,ci_value(V),Values),S!sibling_values(Values),receive({stop->true})),Q,[monitor(true),src_text(':- dynamic ci_value/1. ci_value(right).')]),receive({mutated(Changed)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Changed==[changed],receive({sibling_ready->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Q!read,receive({sibling_values(Sibling)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),Sibling==[right],findall(V,ci_value(V),After),After==[parent],P!stop,Q!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))]),receive({down(Q,Q,true)->true},[timeout(2),on_timeout(throw(missing_copy_observation))])",
+      "transport": "query"
+    }
+  ]
+}
