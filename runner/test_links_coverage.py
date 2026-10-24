@@ -46,4 +46,18 @@ class SelectiveReceiveCoverage(unittest.TestCase):
    self.assertNotIn('Server callbacks',text)
    self.assertNotIn('LM-006',text)
 
+class ToplevelWaitCoverage(unittest.TestCase):
+ def test_toplevel_failure_remains_visible(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   out=Path(tmp)
+   for name in ['swi','trealla']:
+    failed=name=='trealla'
+    data=dict(counts={'pass':int(not failed),'fail':int(failed)},results=[dict(id='TW-TEST',status='fail' if failed else 'pass',detail='toplevel sentinel')])
+    (out/(name+'-toplevel-waits.json')).write_text(json.dumps(data))
+   links_coverage.render(out,'toplevel-waits');text=(out/'COVERAGE.md').read_text()
+   self.assertIn('1/2 selected assertions pass; 1 failures',text)
+   self.assertIn('[fail](trealla-toplevel-waits.json)',text)
+   self.assertIn('toplevel sentinel',text)
+   self.assertNotIn('Server callbacks',text)
+
 if __name__=='__main__':unittest.main()

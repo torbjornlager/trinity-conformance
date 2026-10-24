@@ -1,0 +1,115 @@
+{
+  "advertised_profile": "actor",
+  "baseline": "0.1",
+  "candidate": "swi",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 2,
+    "observed": 0,
+    "pass": 4,
+    "unsupported": 0
+  },
+  "duration_ms": 12347,
+  "endpoint": "ws://127.0.0.1:51572/ws",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 97,
+      "id": "TW-001",
+      "observation": {
+        "data": [
+          {
+            "A": "success(8127140562@'http://127.0.0.1:51572',[ok],false)",
+            "BaselineResult": "passed",
+            "E": "error(domain_error(synchronous_toplevel_target,other),context(toplevel_actors:toplevel_call_synch/4,'invalid synchronous toplevel option'))",
+            "P": "8127140562@'http://127.0.0.1:51572'",
+            "S": "5845397988@'http://127.0.0.1:51572'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 5845397988,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Caller targeting and independent query variables"
+    },
+    {
+      "detail": "timeout: timed out",
+      "duration_ms": 8016,
+      "id": "TW-002",
+      "status": "fail",
+      "title": "Timeout outcome and callback bindings failure exceptions and commitment"
+    },
+    {
+      "duration_ms": 2080,
+      "id": "TW-003",
+      "observation": {
+        "data": [
+          {
+            "A": "success(5720127708@'http://127.0.0.1:51572',[fresh],false)",
+            "BaselineResult": "passed",
+            "Early": "Early",
+            "P": "5720127708@'http://127.0.0.1:51572'",
+            "S": "8810520650@'http://127.0.0.1:51572'"
+          }
+        ],
+        "more": false,
+        "pid": 8810520650,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Late timed-out answer cannot satisfy the next synchronous wait"
+    },
+    {
+      "detail": "ConformanceFailure: expected success, got {'pid': 5843658958, 'type': 'failure'}; preceding events were []",
+      "duration_ms": 2037,
+      "id": "TW-004",
+      "status": "fail",
+      "title": "Output mismatch consumes selected slice and continuation advances"
+    },
+    {
+      "duration_ms": 35,
+      "id": "TW-005",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "toplevel_down(tw_death)",
+            "P": "4813363236@'http://127.0.0.1:51572'",
+            "R": "1454780890"
+          }
+        ],
+        "more": false,
+        "pid": 9744490299,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Termination during wait preserves independent and spawn monitors"
+    },
+    {
+      "duration_ms": 81,
+      "id": "TW-006",
+      "observation": {
+        "data": [
+          {
+            "A": "success(5706672908@'http://127.0.0.1:51572',[sync],false)",
+            "BaselineResult": "passed",
+            "P": "5706672908@'http://127.0.0.1:51572'",
+            "R": "3362887468",
+            "S": "3512981924@'http://127.0.0.1:51572'"
+          }
+        ],
+        "more": false,
+        "pid": 3512981924,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Synchronous wait preserves asynchronous answers and unrelated messages"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "required",
+  "started_at": "2026-10-24T17:21:38.786991+00:00",
+  "suite": "toplevel-waits-0.1"
+}

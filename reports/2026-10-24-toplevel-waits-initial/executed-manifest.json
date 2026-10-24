@@ -1,0 +1,50 @@
+{
+  "suite": "toplevel-waits-0.1",
+  "baseline": "toplevel-waits-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "TW-001",
+      "title": "Caller targeting and independent query variables",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),catch(toplevel_call_synch(P,true,_,[target(other)]),E,true),E=error(domain_error(synchronous_toplevel_target,other),_),toplevel_call_synch(P,X=ok,A,[target(S),template(X),timeout(2)]),A==success(P,[ok],false),var(X),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-002",
+      "title": "Timeout outcome and callback bindings failure exceptions and commitment",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),toplevel_call_synch(P,tw_gate(S,default),A,[timeout(0)]),var(A),receive({tw_ready(P,default)->true},[timeout(2)]),P!release,toplevel_call_synch(P,true,Barrier,[timeout(2)]),Barrier==success(P,[true],false),findall(V,toplevel_call_synch(P,tw_gate(S,binding),_,[timeout(0),on_timeout(member(V,[first,second]))]),Vs),Vs==[first],receive({tw_ready(P,binding)->true},[timeout(2)]),P!release,toplevel_call_synch(P,true,B,[timeout(2)]),B==success(P,[true],false),\\+toplevel_call_synch(P,tw_gate(S,failure),_,[timeout(0),on_timeout(fail)]),receive({tw_ready(P,failure)->true},[timeout(2)]),P!release,toplevel_call_synch(P,true,C,[timeout(2)]),C==success(P,[true],false),catch(toplevel_call_synch(P,tw_gate(S,exception),_,[timeout(0),on_timeout(throw(tw_callback))]),E,true),E==tw_callback,receive({tw_ready(P,exception)->true},[timeout(2)]),P!release,toplevel_call_synch(P,true,D,[timeout(2)]),D==success(P,[true],false),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-003",
+      "title": "Late timed-out answer cannot satisfy the next synchronous wait",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),toplevel_call_synch(P,tw_gate(S,old),Early,[template(old),timeout(0)]),var(Early),receive({tw_ready(P,old)->true},[timeout(2)]),P!release,toplevel_call_synch(P,true,A,[template(fresh),timeout(2)]),A==success(P,[fresh],false),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-004",
+      "title": "Output mismatch consumes selected slice and continuation advances",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "toplevel_spawn(P,[session(true)]),\\+toplevel_call_synch(P,member(X,[a,b,c]),wrong,[template(X),limit(1),timeout(2)]),toplevel_next_synch(P,A,[limit(1),timeout(2)]),A==success(P,[b],true),var(X),\\+toplevel_next_synch(P,wrong,[limit(1),timeout(2)]),toplevel_next_synch(P,B,[limit(1),timeout(2)]),B==failure(P),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-005",
+      "title": "Termination during wait preserves independent and spawn monitors",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,R),catch(toplevel_call_synch(P,exit(tw_death),_,[timeout(2)]),E,true),E==toplevel_down(tw_death),receive({down(P,P,tw_death)->true},[timeout(2)]),receive({down(P,R,tw_death)->true},[timeout(2)]),demonitor(R,[flush])"
+    },
+    {
+      "id": "TW-006",
+      "title": "Synchronous wait preserves asynchronous answers and unrelated messages",
+      "transport": "query",
+      "source": "tw_gate(S,Tag) :- self(Me), S ! tw_ready(Me,Tag), receive({release -> true}).",
+      "goal": "self(S),toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,R),S!tw_unrelated,toplevel_call(P,true,[template(async)]),toplevel_call_synch(P,true,A,[template(sync),timeout(2)]),A==success(P,[sync],false),receive({success(P,[async],false)->true},[timeout(0),on_timeout(fail)]),receive({tw_unrelated->true},[timeout(0),on_timeout(fail)]),toplevel_halt(P,true),receive({down(P,P,true)->true},[timeout(2)]),receive({down(P,R,true)->true},[timeout(2)]),demonitor(R,[flush])"
+    }
+  ]
+}
