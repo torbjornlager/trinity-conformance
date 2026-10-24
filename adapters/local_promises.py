@@ -29,7 +29,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ['swipl','tpl','swi-root','trealla-root','demonstrator-root','output']:parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--diagnostics-only',action='store_true')
+    parser.add_argument('--local-manifest',type=Path,help='run one local ACTOR pack per candidate, without a peer')
     a=parser.parse_args()
+    if a.local_manifest and a.diagnostics_only:parser.error('choose local manifest or promise diagnostics')
+    if a.local_manifest:a.local_manifest=a.local_manifest.resolve(strict=True)
     for key in ['swipl','tpl','swi_root','trealla_root','demonstrator_root']:setattr(a,key,getattr(a,key).resolve(strict=True))
     subprocess.run([sys.executable,str(a.demonstrator_root/'tools/pinned_swi.py'),'--native-root',str(a.swi_root),'--check'],check=True)
     a.output=a.output.resolve();a.output.mkdir(parents=True,exist_ok=False)
@@ -38,7 +41,7 @@ def main():
     for key in ['SWI_HOME_DIR','SWIPL_HOME_DIR','WP_CONFIG_FILE','WP_ASSET_ROOT','WP_WASM_SOURCE_DIR','WP_NATIVE_STATE','WP_NATIVE_MODE']:env.pop(key,None)
     runs=[];procs=[];logs=[];nodes={}
     provenance=dict(runs=runs,sources={name:dict(path=str(p),revision=git(p,'rev-parse','HEAD'),status=git(p,'status','--short')) for name,p in [('conformance',ROOT),('swi',a.swi_root),('trealla',a.trealla_root),('demonstrator',a.demonstrator_root)]},
-        inputs={str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'cases/promise-yield-0.1.json',ROOT/'cases/promise-diagnostics-0.1.json',ROOT/'profiles/promise-yield-0.1.md',ROOT/'cases/interop-http-0.1.json',ROOT/'runner/baseline.py',ROOT/'runner/run.py',Path(__file__)]},
+        inputs={str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'cases/promise-yield-0.1.json',ROOT/'cases/promise-diagnostics-0.1.json',ROOT/'profiles/promise-yield-0.1.md',ROOT/'cases/interop-http-0.1.json',ROOT/'runner/baseline.py',ROOT/'runner/run.py',Path(__file__),*([a.local_manifest] if a.local_manifest else [])]},
         versions={},nodes=nodes)
     for name,cmd in [('swi',[str(a.swipl),'--version']),('trealla',[str(a.tpl),'-g','current_prolog_flag(version_data,V),writeq(V),nl,halt'])]:
         r=subprocess.run(cmd,env=env,capture_output=True,text=True,timeout=10);provenance['versions'][name]=(r.stdout+r.stderr).strip()
@@ -61,12 +64,13 @@ def main():
                 except OSError:time.sleep(.05)
             else:raise TimeoutError(name+' startup')
         for caller in nodes:
-            for peer in nodes:
-                for suite in (['promise-diagnostics'] if a.diagnostics_only else ['promise-yield','interop-http']):
-                    label=f'{caller}-{suite}-to-{peer}';report=a.output/(label+'.json')
+            for peer in ([None] if a.local_manifest else nodes):
+                for suite in ([json.loads(a.local_manifest.read_text())['suite'].removesuffix('-0.1')] if a.local_manifest else (['promise-diagnostics'] if a.diagnostics_only else ['promise-yield','interop-http'])):
+                    label=f'{caller}-{suite}'+(f'-to-{peer}' if peer else '');report=a.output/(label+'.json')
                     endpoint=nodes[caller]['url']
                     if suite!='interop-http':endpoint=endpoint.replace('http:','ws:')+'/ws'
-                    cmd=[sys.executable,'runner/baseline.py','--manifest',f'cases/{suite}-0.1.json','--url',endpoint,'--peer',nodes[peer]['url'],'--candidate',caller,'--profile','actor','--timeout','8','--report',str(report)]
+                    cmd=[sys.executable,'runner/baseline.py','--manifest',str(a.local_manifest) if a.local_manifest else f'cases/{suite}-0.1.json','--url',endpoint,'--candidate',caller,'--profile','actor','--timeout','8','--report',str(report)]
+                    if peer:cmd+=['--peer',nodes[peer]['url']]
                     with (a.output/(label+'.log')).open('w') as log:
                         p=subprocess.Popen(cmd,cwd=ROOT,env=env,stdout=log,stderr=log,start_new_session=True)
                         try:code=p.wait(timeout=90)
@@ -86,5 +90,5 @@ def main():
         provenance['temporary_nodes_stopped']=all(p.poll() is not None for p in procs)
         provenance['engine_hashes']=before['engines'];provenance['preservation']=checks
         (a.output/'provenance.json').write_text(json.dumps(provenance,indent=2)+'\n')
-    return int(len(runs)!=(4 if a.diagnostics_only else 8) or any(r['exit_code']!=0 for r in runs) or not all(checks.values()))
+    return int(len(runs)!=(2 if a.local_manifest else (4 if a.diagnostics_only else 8)) or any(r['exit_code']!=0 for r in runs) or not all(checks.values()))
 if __name__=='__main__':raise SystemExit(main())

@@ -1,0 +1,44 @@
+{
+  "suite": "links-monitors-0.1",
+  "baseline": "links-monitors-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "LM-001",
+      "title": "Spawn monitoring preserves immediate success failure exception and explicit exit",
+      "transport": "query",
+      "goal": "spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2)]),spawn(fail,F,[monitor(true)]),receive({down(F,F,false)->true},[timeout(2)]),spawn(throw(lm_error),E,[monitor(true)]),receive({down(E,E,exception(lm_error))->true},[timeout(2)]),spawn(exit(lm_stop),K,[monitor(true)]),receive({down(K,K,lm_stop)->true},[timeout(2)])"
+    },
+    {
+      "id": "LM-002",
+      "title": "Explicit and spawn-time monitors are independent and preserve unrelated data",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P,[monitor(true)]),monitor(P,R),nonvar(R),R\\==P,S!lm_unrelated,P!stop,receive({down(P,R,true)->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)]),receive({lm_unrelated->true},[timeout(0)]),demonitor(R,[flush])"
+    },
+    {
+      "id": "LM-003",
+      "title": "Monitoring a terminated actor yields no_process with the returned reference",
+      "transport": "query",
+      "goal": "spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2)]),monitor(P,R),receive({down(P,R,no_process)->true},[timeout(2)]),demonitor(R,[flush])"
+    },
+    {
+      "id": "LM-004",
+      "title": "Child termination leaves its linked parent alive",
+      "transport": "query",
+      "goal": "self(S),spawn((self(Me),spawn(receive({finish->true}),Child,[monitor(true)]),S!lm_ready(Me,Child),receive({finish_child->Child!finish}),receive({down(Child,Child,true)->S!lm_child_finished(Me)},[timeout(2)]),receive({ping->S!lm_pong(Me)}),receive({stop->true})),Parent,[monitor(true)]),receive({lm_ready(Parent,C)->nonvar(C)},[timeout(2)]),Parent!finish_child,receive({lm_child_finished(Parent)->true},[timeout(2)]),Parent!ping,receive({lm_pong(Parent)->true},[timeout(2)]),Parent!stop,receive({down(Parent,Parent,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "LM-005",
+      "title": "A three-generation cascade delivers exact notifications under one deadline",
+      "transport": "query",
+      "goal": "self(S),S!lm_preserved,spawn((self(R),spawn((self(C),spawn((self(G),S!lm_grand_ready(G),receive({never->true})),GP),S!lm_child_ready(C,GP),receive({never->true})),CP),S!lm_root_ready(R,CP),receive({stop->exit(die)})),Root,[monitor(true)]),receive({lm_root_ready(Root,Child)->true},[timeout(2)]),receive({lm_child_ready(Child,Grand)->true},[timeout(2)]),receive({lm_grand_ready(Grand)->true},[timeout(2)]),monitor(Child,CR),monitor(Grand,GR),get_time(T),D is T+2,Root!stop,receive({down(Root,Root,die)->true},[deadline(D)]),receive({down(Child,CR,kill)->true},[deadline(D)]),receive({down(Grand,GR,kill)->true},[deadline(D)]),receive({lm_preserved->true},[timeout(0)]),demonitor(CR,[flush]),demonitor(GR,[flush])"
+    },
+    {
+      "id": "LM-006",
+      "title": "Demonitor withdrawal and scoped flush preserve unrelated monitors and messages",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,Drop),monitor(P,Keep),S!lm_keep,demonitor(Drop),P!stop,receive({down(P,Keep,true)->true},[timeout(2)]),receive({down(_,Drop,_)->fail},[timeout(0),on_timeout(true)]),receive({lm_keep->true},[timeout(0)]),demonitor(Keep,[flush]),spawn(receive({stop->true}),Q),monitor(Q,Flush),monitor(Q,Other),S!down(Q,Flush,fixture_one),S!down(Q,Flush,fixture_two),S!down(Q,Other,fixture_keep),S!lm_application,demonitor(Flush,[flush]),demonitor(Flush,[flush]),receive({down(Q,Other,fixture_keep)->true},[timeout(0)]),receive({lm_application->true},[timeout(0)]),Q!stop,receive({down(Q,Other,true)->true},[timeout(2)]),receive({down(_,Flush,_)->fail},[timeout(0),on_timeout(true)]),demonitor(Other,[flush])"
+    }
+  ]
+}

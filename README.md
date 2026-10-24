@@ -229,3 +229,31 @@ passes all 24 unchanged PY and eight HC selections on disposable native fixtures
 The earlier failing matrix remains historical evidence. The broader runtime
 sandbox fixture's intermittent cascade timeout is recorded separately, not as a
 promise-pack failure or a resolved lifecycle issue.
+
+## Links and monitors draft conformance
+
+The separate [Links and monitors 0.1 pack](profiles/links-monitors-0.1.md) covers
+local monitoring, exact exit reasons, independent references, one-way links,
+a readiness-synchronized cascade and scoped demonitor/flush behaviour. It uses
+identical public goals with no fixed sleeps or private runtime imports.
+The [24 October coverage matrix](reports/2026-10-24-links-monitors/COVERAGE.md)
+records **12/12 selections passing** on disposable SWI/Trealla ACTOR nodes.
+Remote monitoring and GNU/browser execution are not measured by this batch.
+
+The existing disposable fixture adapter also accepts a local ACTOR manifest:
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/links-monitors-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/links-results
+python3 runner/validate_reports.py /fresh/path/links-results
+python3 runner/links_coverage.py /fresh/path/links-results
+```
+
+The local-manifest mode runs once per candidate without an outbound peer. The
+promise mode and its existing manifests remain available. Pin validation,
+matching libraries, bounded subprocesses and preservation checks are shared;
+no installed engine or live n3/n5 process is used as a fixture.
