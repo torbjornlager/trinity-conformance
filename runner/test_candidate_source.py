@@ -34,4 +34,27 @@ class CandidateSource(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'unchanged pinned revision'):
                     adapter.validate_swi_source(p,p,True)
 
+    def test_explicit_descendant_requires_exact_revision_and_ancestry(self):
+        revision='a'*40
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp);self.fixture(p)
+            with patch.object(adapter,'git',side_effect=[revision,'']) as git:
+                out=adapter.validate_swi_source(p,p,True,revision)
+                self.assertEqual(out['candidate_base_revision'],revision)
+                self.assertEqual(out['pin_revision'],'pinned')
+                self.assertEqual(git.call_args.args[1:3],('merge-base','--is-ancestor'))
+            with patch.object(adapter,'git',side_effect=[revision,adapter.subprocess.CalledProcessError(1,['git','merge-base'])]):
+                with self.assertRaisesRegex(ValueError,'descend'):
+                    adapter.validate_swi_source(p,p,True,revision)
+    def test_revision_selection_is_not_an_implicit_bypass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp);self.fixture(p)
+            with self.assertRaisesRegex(ValueError,'explicit candidate'):
+                adapter.validate_swi_source(p,p,False,'a'*40)
+            with patch.object(adapter,'git',return_value='a'*40):
+                with self.assertRaisesRegex(ValueError,'full immutable'):
+                    adapter.validate_swi_source(p,p,True,'HEAD')
+                with self.assertRaisesRegex(ValueError,'explicitly selected revision'):
+                    adapter.validate_swi_source(p,p,True,'b'*40)
+
 if __name__=='__main__':unittest.main()

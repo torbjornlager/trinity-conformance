@@ -528,3 +528,22 @@ failure and a pre-existing whitelist framework-startup restriction. SWI's litera
 URI ordering finding also remains separate. These green ACTOR/blacklist cells do
 not erase those limits. The dependency pin, installed runtimes and n3/n5 are
 unchanged; promotion/deployment is a separate step.
+
+## SWI spawn source-validation checkpoint
+
+The plain SWI `spawn/3` candidate now rejects ground invalid options before URI
+preparation. The [admission matrix](reports/2026-10-24-swi-spawn-source-admission-probes/DIAGNOSTICS.md)
+records **20 completed diagnostic observations**: AP-009 gives a spawn-option
+error before entry rather than a source socket error. It remains an admission
+error; AP-010 retains catchable runtime validation. Separate
+[creation validation](reports/2026-10-24-swi-spawn-source-creation-validation/COVERAGE.md)
+and [child specifications](reports/2026-10-24-swi-spawn-source-child-specs/COVERAGE.md)
+each pass **12/12**. Historical matrices and manifests remain unchanged.
+
+To evaluate a later committed native base without updating the demonstrator pin,
+explicit candidate mode now accepts `--swi-candidate-revision FULL_COMMIT_SHA`.
+The checkout must have exactly that HEAD, and it must descend from the unchanged
+pin. A full immutable 40-character SHA is required. Omitting this option keeps
+the previous pinned-base candidate rule; omitting candidate mode keeps the strict
+clean-pin checker. Working-tree hashes, selected base, unchanged pin and fixture
+preservation checks are recorded. This is test-only selection, not a pin update.

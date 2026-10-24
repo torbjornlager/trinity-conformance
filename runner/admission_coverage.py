@@ -11,6 +11,11 @@ def summary(row):
         return 'INCOMPLETE: '+row.get('detail',obs.get('probe_error','no complete observation'))
     terminal=obs['terminal'];kind=terminal.get('type','unknown')
     parts=[kind,'entered' if obs['execution_entered'] else 'before entry']
+    if kind=='error':
+        formal=str(terminal.get('details',terminal.get('data','')))
+        if 'domain_error(spawn_option' in formal:parts.append('spawn_option error')
+        elif 'socket_error' in formal:parts.append('source socket error')
+        elif 'instantiation_error' in formal:parts.append('instantiation error')
     if kind=='success' and isinstance(terminal.get('data'),list) and len(terminal['data'])==1:
         values=terminal['data'][0]
         if 'PatternState' in values:

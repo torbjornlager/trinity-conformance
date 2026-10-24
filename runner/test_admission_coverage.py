@@ -24,4 +24,11 @@ class AdmissionMatrix(unittest.TestCase):
         self.assertIn('pattern already bound',text)
         self.assertIn('not_dispatched',text)
 
+    def test_outer_option_error_is_distinguished_from_source_failure(self):
+        def row(details):
+            return {'status':'observed','observation':{'complete':True,'execution_entered':False,'terminal':{'type':'error','details':details}}}
+        self.assertIn('spawn_option error',admission_coverage.summary(row('error(domain_error(spawn_option,unknown(x)),_)')))
+        self.assertIn('source socket error',admission_coverage.summary(row('error(socket_error(eai_noname,x),_)')))
+        self.assertIn('before entry',admission_coverage.summary(row('error(domain_error(spawn_option,x),_)')))
+
 if __name__=='__main__':unittest.main()
