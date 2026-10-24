@@ -1,0 +1,164 @@
+{
+  "advertised_profile": "actor",
+  "baseline": "0.1",
+  "candidate": "swi",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 0,
+    "observed": 0,
+    "pass": 6,
+    "unsupported": 0
+  },
+  "duration_ms": 189,
+  "endpoint": "ws://127.0.0.1:51750/ws",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 41,
+      "id": "LN-001",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Found": "1631529372@'http://127.0.0.1:51750'",
+            "From": "From",
+            "Gone": "undefined",
+            "Name": "ln_case_001",
+            "P": "1631529372@'http://127.0.0.1:51750'",
+            "S": "9494128644@'http://127.0.0.1:51750'"
+          }
+        ],
+        "more": false,
+        "pid": 9494128644,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Registration lookup and named message routing"
+    },
+    {
+      "duration_ms": 29,
+      "id": "LN-002",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "Already": "process_already_has_a_name(8698085764@'http://127.0.0.1:51750')",
+            "BaselineResult": "passed",
+            "Found": "8698085764@'http://127.0.0.1:51750'",
+            "From": "From",
+            "Name": "ln_case_002",
+            "Other": "ln_case_002_other",
+            "P": "8698085764@'http://127.0.0.1:51750'",
+            "Q": "5591499518@'http://127.0.0.1:51750'",
+            "S": "4594479922@'http://127.0.0.1:51750'",
+            "Taken": "name_is_in_use(ln_case_002)"
+          }
+        ],
+        "more": false,
+        "pid": 4594479922,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Occupied names and already named pids preserve original registrations"
+    },
+    {
+      "duration_ms": 21,
+      "id": "LN-003",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "From": "From",
+            "Name": "ln_case_003",
+            "P": "7294239894@'http://127.0.0.1:51750'",
+            "S": "9280763342@'http://127.0.0.1:51750'"
+          }
+        ],
+        "more": false,
+        "pid": 9280763342,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Unregistration is idempotent and leaves the actor running"
+    },
+    {
+      "duration_ms": 29,
+      "id": "LN-004",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "Found": "7967844704@'http://127.0.0.1:51750'",
+            "Gone": "undefined",
+            "Name": "ln_case_004",
+            "P": "5897810435@'http://127.0.0.1:51750'",
+            "Q": "7967844704@'http://127.0.0.1:51750'"
+          }
+        ],
+        "more": false,
+        "pid": 6740084075,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Observed local termination removes registration and permits name reuse"
+    },
+    {
+      "duration_ms": 30,
+      "id": "LN-005",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "E": "error(existence_error(process,8063520815@'http://127.0.0.1:51750'),context(actors:register/2,'local actor no longer exists'))",
+            "Found": "9705840949@'http://127.0.0.1:51750'",
+            "Name": "ln_case_005",
+            "P": "8063520815@'http://127.0.0.1:51750'",
+            "Q": "9705840949@'http://127.0.0.1:51750'"
+          }
+        ],
+        "more": false,
+        "pid": 3158254970,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Stale local pid registration is rejected without publishing a name"
+    },
+    {
+      "duration_ms": 39,
+      "id": "LN-006",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "Children": "[]",
+            "Failed": "Failed",
+            "Failure": "error(socket_error(eai_noname,'nodename nor servname provided, or not known'),_)",
+            "Found": "5214169666@'http://127.0.0.1:51750'",
+            "From": "From",
+            "Gone": "undefined",
+            "Loser": "Loser",
+            "Name": "ln_case_006",
+            "P": "5214169666@'http://127.0.0.1:51750'",
+            "Published": "2147024873@'http://127.0.0.1:51750'",
+            "S": "1536434990@'http://127.0.0.1:51750'",
+            "Sup": "2147024873@'http://127.0.0.1:51750'",
+            "Taken": "name_is_in_use(ln_case_006)"
+          }
+        ],
+        "more": false,
+        "pid": 1536434990,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Named creation rejects occupancy and releases failed startup reservations"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "required",
+  "started_at": "2026-10-24T17:28:11.707145+00:00",
+  "suite": "local-naming-0.1"
+}

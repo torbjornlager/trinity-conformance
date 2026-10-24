@@ -1,0 +1,146 @@
+{
+  "advertised_profile": "actor",
+  "baseline": "0.1",
+  "candidate": "swi",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 1,
+    "observed": 0,
+    "pass": 5,
+    "unsupported": 0
+  },
+  "duration_ms": 210,
+  "endpoint": "ws://127.0.0.1:51717/ws",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 45,
+      "id": "LN-001",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Found": "9806678354@'http://127.0.0.1:51717'",
+            "From": "From",
+            "Gone": "undefined",
+            "Id": "8633618327",
+            "Name": "ln_8633618327",
+            "P": "9806678354@'http://127.0.0.1:51717'",
+            "S": "7388602677@'http://127.0.0.1:51717'"
+          }
+        ],
+        "more": false,
+        "pid": 7388602677,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Registration lookup and named message routing"
+    },
+    {
+      "duration_ms": 32,
+      "id": "LN-002",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "Already": "process_already_has_a_name(3466605783@'http://127.0.0.1:51717')",
+            "BaselineResult": "passed",
+            "Found": "3466605783@'http://127.0.0.1:51717'",
+            "From": "From",
+            "Id": "4117951767",
+            "Name": "ln_4117951767",
+            "Other": "ln_other_4117951767",
+            "P": "3466605783@'http://127.0.0.1:51717'",
+            "Q": "2444822557@'http://127.0.0.1:51717'",
+            "S": "8748043275@'http://127.0.0.1:51717'",
+            "Taken": "name_is_in_use(ln_4117951767)"
+          }
+        ],
+        "more": false,
+        "pid": 8748043275,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Occupied names and already named pids preserve original registrations"
+    },
+    {
+      "duration_ms": 22,
+      "id": "LN-003",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "From": "From",
+            "Id": "5231941081",
+            "Name": "ln_5231941081",
+            "P": "8457254130@'http://127.0.0.1:51717'",
+            "S": "3313967285@'http://127.0.0.1:51717'"
+          }
+        ],
+        "more": false,
+        "pid": 3313967285,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Unregistration is idempotent and leaves the actor running"
+    },
+    {
+      "duration_ms": 31,
+      "id": "LN-004",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "Found": "7996266375@'http://127.0.0.1:51717'",
+            "Gone": "undefined",
+            "Id": "1283819304",
+            "Name": "ln_1283819304",
+            "P": "7199485426@'http://127.0.0.1:51717'",
+            "Q": "7996266375@'http://127.0.0.1:51717'"
+          }
+        ],
+        "more": false,
+        "pid": 9970094311,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Observed local termination removes registration and permits name reuse"
+    },
+    {
+      "duration_ms": 35,
+      "id": "LN-005",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "E": "error(existence_error(process,2715931608@'http://127.0.0.1:51717'),context(actors:register/2,'local actor no longer exists'))",
+            "Found": "1614448488@'http://127.0.0.1:51717'",
+            "Id": "5736545250",
+            "Name": "ln_5736545250",
+            "P": "2715931608@'http://127.0.0.1:51717'",
+            "Q": "1614448488@'http://127.0.0.1:51717'"
+          }
+        ],
+        "more": false,
+        "pid": 7186541123,
+        "type": "success"
+      },
+      "status": "pass",
+      "title": "Stale local pid registration is rejected without publishing a name"
+    },
+    {
+      "detail": "ConformanceFailure: expected success, got {'pid': 5830701126, 'type': 'failure'}; preceding events were [{'pid': 8821630527, 'reason': 'true', 'ref': \"8821630527@'http://127.0.0.1:51717'\", 'type': 'down'}]",
+      "duration_ms": 45,
+      "id": "LN-006",
+      "status": "fail",
+      "title": "Named creation rejects occupancy and releases failed startup reservations"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "required",
+  "started_at": "2026-10-24T17:27:02.860357+00:00",
+  "suite": "local-naming-0.1"
+}

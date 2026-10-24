@@ -1,0 +1,44 @@
+{
+  "suite": "local-naming-0.1",
+  "baseline": "local-naming-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "LN-001",
+      "title": "Registration lookup and named message routing",
+      "transport": "query",
+      "goal": "Name=ln_case_001,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),register(Name,P),whereis(Name,Found),Found==P,Name!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(missing_pong))]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))]),whereis(Name,Gone),Gone==undefined"
+    },
+    {
+      "id": "LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "transport": "query",
+      "goal": "Name=ln_case_002,Other=ln_case_002_other,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),spawn(receive({stop->true}),Q,[monitor(true)]),register(Name,P),catch(register(Name,Q),Taken,true),Taken==name_is_in_use(Name),catch(register(Other,P),Already,true),Already==process_already_has_a_name(P),whereis(Name,Found),Found==P,whereis(Other,Absent),Absent==undefined,Name!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(missing_pong))]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))]),Q!stop,receive({down(Q,Q,true)->true},[timeout(2),on_timeout(throw(missing_q_down))])"
+    },
+    {
+      "id": "LN-003",
+      "title": "Unregistration is idempotent and leaves the actor running",
+      "transport": "query",
+      "goal": "Name=ln_case_003,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),register(Name,P),unregister(Name),unregister(Name),whereis(Name,Absent),Absent==undefined,P!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(actor_was_terminated))]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))])"
+    },
+    {
+      "id": "LN-004",
+      "title": "Observed local termination removes registration and permits name reuse",
+      "transport": "query",
+      "goal": "Name=ln_case_004,spawn(receive({stop->true}),P,[monitor(true)]),register(Name,P),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_old_down))]),whereis(Name,Absent),Absent==undefined,spawn(receive({stop->true}),Q,[monitor(true)]),register(Name,Q),whereis(Name,Found),Found==Q,Q!stop,receive({down(Q,Q,true)->true},[timeout(2),on_timeout(throw(missing_new_down))]),whereis(Name,Gone),Gone==undefined"
+    },
+    {
+      "id": "LN-005",
+      "title": "Stale local pid registration is rejected without publishing a name",
+      "transport": "query",
+      "goal": "Name=ln_case_005,spawn(receive({stop->true}),P,[monitor(true)]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_stale_down))]),catch(register(Name,P),E,true),E=error(existence_error(process,P),_),whereis(Name,Absent),Absent==undefined,spawn(receive({stop->true}),Q,[monitor(true)]),register(Name,Q),whereis(Name,Found),Found==Q,Q!stop,receive({down(Q,Q,true)->true},[timeout(2),on_timeout(throw(missing_live_down))])"
+    },
+    {
+      "id": "LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "transport": "query",
+      "goal": "Name=ln_case_006,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),register(Name,P),catch(supervisor_spawn([child(probe,[start(S!unexpected_start)])],Loser,[name(Name)]),Taken,true),Taken==name_is_in_use(Name),var(Loser),whereis(Name,Found),Found==P,Name!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(missing_original))]),receive({unexpected_start->fail},[timeout(0),on_timeout(true)]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))]),catch(supervisor_spawn([],Failed,[name(Name),src_uri('file:///definitely-missing-local-naming-conformance.pl')]),Failure,true),nonvar(Failure),var(Failed),whereis(Name,Absent),Absent==undefined,supervisor_spawn([],Sup,[name(Name),monitor(true)]),whereis(Name,Published),Published==Sup,supervisor_which_children(Name,Children),Children==[],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_sup_down))]),whereis(Name,Gone),Gone==undefined"
+    }
+  ]
+}

@@ -337,3 +337,30 @@ python3 runner/links_coverage.py --suite toplevel-waits /fresh/path/toplevel-wai
 Existing runner/renderer defaults and historical baseline reports are unchanged.
 Remote transport, browsers, terminal I/O, concurrent clients and deadline accuracy
 under traffic are outside this finite contract selection.
+
+## Local naming and registration draft conformance
+
+The separate [Local naming 0.1 pack](profiles/local-naming-0.1.md) checks ordinary
+registration/routing, conflicts, idempotent removal, termination cleanup, stale
+local pids and named supervisor startup failure/retry. Identical public-interface
+goals execute on disposable native ACTOR nodes. The
+[24 October matrix](reports/2026-10-24-local-naming/COVERAGE.md) records **12/12
+selections passing**. Initial setup errors and the incidental sandbox/count-format
+differences are retained separately. Runtime code, installed runtimes and n3/n5
+remain unchanged.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/local-naming-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/local-naming-results
+python3 runner/validate_reports.py /fresh/path/local-naming-results
+python3 runner/links_coverage.py --suite local-naming /fresh/path/local-naming-results
+```
+
+SWI's client namespaces and Trealla's node-wide ordinary names remain explicit.
+Cross-client isolation, remote aliases, concurrent races, service names and
+namespace teardown are outside this finite selection. Existing runner defaults
+and historical reports are unchanged.
