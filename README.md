@@ -5,6 +5,14 @@ Web Prolog nodes. Its purpose is to test observable behaviour, independently
 of whether a candidate node is implemented in SWI-Prolog, Trealla Prolog, or
 another runtime.
 
+## Current consolidated results
+
+The [current coverage matrix](CURRENT_COVERAGE.md) brings together the latest
+committed results for each shared pack, including GNU ISOBASE and both WASM
+language modes. It records tested revisions/dates, unresolved diagnostics and
+unmeasured surfaces. This is an evidence roll-up, not a fresh combined runtime
+run. The dated sections below retain the historical sequence of repairs.
+
 ## Scoped interoperability baseline
 
 [Baseline 0.1](baselines/0.1.md) consolidates the existing nodes' selected
