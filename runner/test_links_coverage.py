@@ -31,4 +31,19 @@ class ServerWaitCoverage(unittest.TestCase):
    self.assertIn('wait sentinel',text)
    self.assertNotIn('LM-006',text)
 
+class SelectiveReceiveCoverage(unittest.TestCase):
+ def test_receive_suite_preserves_failure_and_scope(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   out=Path(tmp)
+   for name in ['swi','trealla']:
+    failed=name=='swi'
+    data=dict(counts={'pass':int(not failed),'fail':int(failed)},results=[dict(id='SR-TEST',status='fail' if failed else 'pass',detail='receive sentinel')])
+    (out/(name+'-selective-receive.json')).write_text(json.dumps(data))
+   links_coverage.render(out,'selective-receive');text=(out/'COVERAGE.md').read_text()
+   self.assertIn('1/2 selected assertions pass; 1 failures',text)
+   self.assertIn('[fail](swi-selective-receive.json)',text)
+   self.assertIn('receive sentinel',text)
+   self.assertNotIn('Server callbacks',text)
+   self.assertNotIn('LM-006',text)
+
 if __name__=='__main__':unittest.main()
