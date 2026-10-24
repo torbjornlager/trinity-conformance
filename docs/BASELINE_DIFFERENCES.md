@@ -21,3 +21,13 @@ entry here. Runtime repairs are outside the consolidation batch.
 The current matrix adds concrete failures observed in this run. If a shared
 manual statement and a draft test disagree, record the conflict and obtain a
 semantic decision before modifying either to match an implementation.
+
+## Separate promise/yield draft, 24 October 2026
+
+The [promise/yield matrix](../reports/2026-10-24-promise-yield/COVERAGE.md) does
+not alter baseline 0.1. PY-002 fails with Trealla as caller against either native
+peer: actor sending inside the timeout callback reports an undefined (!)/2.
+Ordinary actor sending and unification/throw-only callback controls complete
+successfully. This is a required failure within the new draft pack, not a waiver
+or a claim that promise timeout/retry generally fails. The exact implementation
+cause and repair remain for a separate batch. Runtime code was not changed.

@@ -1,0 +1,26 @@
+{
+  "suite": "promise-diagnostics-0.1",
+  "baseline": "promise-yield-0.1",
+  "status": "draft",
+  "scope": "diagnostic",
+  "cases": [
+    {
+      "id": "PYD-001",
+      "title": "Actor message sending outside a callback",
+      "transport": "query",
+      "goal": "self(S),S!promise_probe,receive({promise_probe->true},[timeout(1)])"
+    },
+    {
+      "id": "PYD-002",
+      "title": "Timeout callback using only unification",
+      "transport": "query",
+      "goal": "promise('__PEER__',(sleep(0.5),X=ok),R,[template(X)]),yield(R,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,yield(R,A,[timeout(5)]),A==success([ok],false)"
+    },
+    {
+      "id": "PYD-003",
+      "title": "Timeout callback invokes ordinary unification and exception control",
+      "transport": "query",
+      "goal": "promise('__PEER__',(sleep(0.5),X=ok),R,[template(X)]),catch(yield(R,_,[timeout(0),on_timeout(throw(callback_probe))]),E,true),E==callback_probe,yield(R,A,[timeout(5)]),A==success([ok],false)"
+    }
+  ]
+}

@@ -186,3 +186,40 @@ repeated-cleanup and replacement-name-conflict cases now pass with native SWI's
 zero-time polling repair; they retain their diagnostic identifiers and remain
 outside the shared profile's pass count. See the
 [repair results](reports/2026-10-20-zero-poll-repair.md).
+
+## Promise/yield draft conformance
+
+The separate [Promise/yield 0.1 pack](profiles/promise-yield-0.1.md) adds six public
+ACTOR-caller/HTTP-peer assertions without changing baseline 0.1. It covers local
+wait timeout/retry, callbacks, once, failure/error answers, reference collection
+and option-validation preservation. Existing HC-002 supplies sharing coverage.
+
+The [24 October matrix](reports/2026-10-24-promise-yield/COVERAGE.md) records
+22/24 new selections passing and 8/8 existing HTTP selections passing. Trealla's
+actor-send timeout callback fails against both peers; successful diagnostic
+controls remain separate and do not waive these required draft-pack failures.
+GNU and SWI-WASM network execution are unmeasured in this batch.
+
+```sh
+python3 adapters/local_promises.py \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/promise-results
+python3 adapters/local_promises.py --diagnostics-only \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/promise-results/diagnostics
+python3 runner/validate_reports.py /fresh/path/promise-results
+python3 runner/validate_reports.py /fresh/path/promise-results/diagnostics
+python3 runner/promise_coverage.py /fresh/path/promise-results
+```
+
+The adapter checks the demonstrator's native dependency pin, uses matching
+Trealla libraries and disposable loopback ACTOR nodes, and stops its fixtures.
+It does not install engines or use n3/n5. Add `--diagnostics-only` with a different
+fresh output directory for the separate controls. If used outside the recorded
+nested report layout, link those diagnostics separately in the resulting report.
+The coverage renderer expects the main report directory to contain a
+`diagnostics/` result directory as in the published run.

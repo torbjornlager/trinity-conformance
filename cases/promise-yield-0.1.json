@@ -1,0 +1,44 @@
+{
+  "suite": "promise-yield-0.1",
+  "baseline": "promise-yield-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "PY-001",
+      "title": "Default timeout preserves the promise for retry",
+      "transport": "query",
+      "goal": "promise('__PEER__',(sleep(0.5),X=ok),R,[template(X)]),yield(R,Early,[timeout(0)]),Early==timeout,yield(R,A,[timeout(5)]),A==success([ok],false),var(X)"
+    },
+    {
+      "id": "PY-002",
+      "title": "Timeout callback runs once and preserves retry and unrelated data",
+      "transport": "query",
+      "goal": "self(S),S!promise_unrelated,promise('__PEER__',(sleep(0.5),X=ok),R,[template(X)]),yield(R,Early,[timeout(0),on_timeout((S!promise_callback,Early=waiting))]),Early==waiting,yield(R,A,[timeout(5)]),A==success([ok],false),receive({promise_callback->true},[timeout(1)]),receive({promise_callback->fail},[timeout(0),on_timeout(true)]),receive({promise_unrelated->true},[timeout(1)])"
+    },
+    {
+      "id": "PY-003",
+      "title": "Once returns the complete first slice without continuation",
+      "transport": "query",
+      "goal": "promise('__PEER__',member(X,[a,b,c]),R,[template(X),limit(2),once(true)]),yield(R,A,[timeout(5)]),A==success([a,b],false),var(X)"
+    },
+    {
+      "id": "PY-004",
+      "title": "Logical failure and remote exceptions arrive as distinct answers",
+      "transport": "query",
+      "goal": "promise('__PEER__',fail,R),yield(R,A,[timeout(5)]),A==failure,promise('__PEER__',throw(promise_probe_error),R2),yield(R2,B,[timeout(5)]),B==error(promise_probe_error)"
+    },
+    {
+      "id": "PY-005",
+      "title": "Unknown and collected references raise the documented existence error",
+      "transport": "query",
+      "goal": "make_ref(Missing),catch(yield(Missing,_),E,true),nonvar(E),E=error(existence_error(promise,Missing),_),promise('__PEER__',true,R),yield(R,A,[timeout(5)]),A==success([true],false),catch(yield(R,_),E2,true),nonvar(E2),E2=error(existence_error(promise,R),_)"
+    },
+    {
+      "id": "PY-006",
+      "title": "Invalid wait options do not consume the promise",
+      "transport": "query",
+      "goal": "promise('__PEER__',X=ok,R,[template(X)]),catch(yield(R,_,[timeout(bad)]),E,true),nonvar(E),E=error(type_error(number,bad),_),yield(R,A,[timeout(5)]),A==success([ok],false),var(X)"
+    }
+  ]
+}
