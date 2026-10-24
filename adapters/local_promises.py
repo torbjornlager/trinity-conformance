@@ -25,24 +25,40 @@ def preservation(native,trealla,swipl,tpl):
     return dict(native_prolog=tree(native/'prolog'),trealla_sources={p.name:sha(p) for p in trealla.glob('*.pl')},
                 engines={str(p):sha(p) for p in [swipl,tpl]},library=tree(tpl.parent/'library'),live=live)
 
+def validate_swi_source(native,demonstrator,candidate=False):
+    pin_path=demonstrator/'dependencies/swi-prolog-node.json'
+    pin=json.loads(pin_path.read_text())
+    if candidate:
+        actual=git(native,'rev-parse','HEAD')
+        if actual!=pin['revision']:
+            raise ValueError('SWI candidate must start at the unchanged pinned revision')
+        for name in ['load.pl','pack.pl','prolog/web_prolog/node.pl']:
+            if not (native/name).is_file():raise ValueError('missing native candidate file: '+name)
+    else:
+        subprocess.run([sys.executable,str(demonstrator/'tools/pinned_swi.py'),'--native-root',str(native),'--check'],check=True)
+    return dict(mode='explicit working-tree candidate' if candidate else 'strict pinned dependency',
+                pin_path=str(pin_path),pin_sha256=sha(pin_path),pin_revision=pin['revision'])
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ['swipl','tpl','swi-root','trealla-root','demonstrator-root','output']:parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--swi-source-candidate',action='store_true',help='explicitly test a source patch over the unchanged pinned SWI revision; never changes the pin')
     parser.add_argument('--diagnostics-only',action='store_true')
     parser.add_argument('--local-manifest',type=Path,help='run one local ACTOR pack per candidate, without a peer')
     a=parser.parse_args()
     if a.local_manifest and a.diagnostics_only:parser.error('choose local manifest or promise diagnostics')
     if a.local_manifest:a.local_manifest=a.local_manifest.resolve(strict=True)
     for key in ['swipl','tpl','swi_root','trealla_root','demonstrator_root']:setattr(a,key,getattr(a,key).resolve(strict=True))
-    subprocess.run([sys.executable,str(a.demonstrator_root/'tools/pinned_swi.py'),'--native-root',str(a.swi_root),'--check'],check=True)
+    swi_input=validate_swi_source(a.swi_root,a.demonstrator_root,a.swi_source_candidate)
     a.output=a.output.resolve();a.output.mkdir(parents=True,exist_ok=False)
     before=preservation(a.swi_root,a.trealla_root,a.swipl,a.tpl)
+    before['dependency_pin']=swi_input['pin_sha256']
     env=dict(os.environ,TPL_LIBRARY_PATH=str(a.tpl.parent/'library'))
     for key in ['SWI_HOME_DIR','SWIPL_HOME_DIR','WP_CONFIG_FILE','WP_ASSET_ROOT','WP_WASM_SOURCE_DIR','WP_NATIVE_STATE','WP_NATIVE_MODE']:env.pop(key,None)
     runs=[];procs=[];logs=[];nodes={}
     provenance=dict(runs=runs,sources={name:dict(path=str(p),revision=git(p,'rev-parse','HEAD'),status=git(p,'status','--short')) for name,p in [('conformance',ROOT),('swi',a.swi_root),('trealla',a.trealla_root),('demonstrator',a.demonstrator_root)]},
         inputs={str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'cases/promise-yield-0.1.json',ROOT/'cases/promise-diagnostics-0.1.json',ROOT/'profiles/promise-yield-0.1.md',ROOT/'cases/interop-http-0.1.json',ROOT/'runner/baseline.py',ROOT/'runner/run.py',Path(__file__),*([a.local_manifest] if a.local_manifest else [])]},
-        versions={},nodes=nodes)
+        versions={},nodes=nodes,swi_source_input=swi_input)
     if a.local_manifest and any(c.get('transport')=='admission' for c in json.loads(a.local_manifest.read_text())['cases']):
         provenance['inputs']['runner/admission_probe.py']=sha(ROOT/'runner/admission_probe.py')
     for name,cmd in [('swi',[str(a.swipl),'--version']),('trealla',[str(a.tpl),'-g','current_prolog_flag(version_data,V),writeq(V),nl,halt'])]:
@@ -87,6 +103,7 @@ def main():
                 except subprocess.TimeoutExpired:os.killpg(p.pid,signal.SIGKILL);p.wait()
         for log in logs:log.close()
         after=preservation(a.swi_root,a.trealla_root,a.swipl,a.tpl)
+        after['dependency_pin']=sha(a.demonstrator_root/'dependencies/swi-prolog-node.json')
         checks={k:before[k]==after[k] for k in before}
         (a.output/'preservation.json').write_text(json.dumps(dict(checks=checks,before=before,after=after),indent=2)+'\n')
         provenance['temporary_nodes_stopped']=all(p.poll() is not None for p in procs)

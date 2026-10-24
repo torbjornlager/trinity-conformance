@@ -497,3 +497,34 @@ paths. Reports identify the uncommitted patch through source hashes as well as
 its base commit. This is a source repair checkpoint, not an installed-runtime
 upgrade; installed executables and n3/n5 remain unchanged. Broader lifecycle,
 SWI admission/source-order findings and unrelated diagnostics remain separate.
+
+## SWI runtime-bound supervisor admission checkpoint
+
+The native SWI working-tree repair closes its runtime-bound initial child-list
+barrier on the unchanged shared pack:
+[child specifications](reports/2026-10-24-swi-runtime-specs-child-specs/COVERAGE.md)
+now pass **12/12**, and [creation validation](reports/2026-10-24-swi-runtime-specs-creation-validation/COVERAGE.md)
+remains **12/12**. [Admission diagnostics](reports/2026-10-24-swi-runtime-specs-admission-probes/DIAGNOSTICS.md)
+record all 20 observations complete, including SWI's runtime list executing and
+its missing-start error becoming catchable. Historical matrices remain unchanged.
+
+The fixture adapter's default still requires the clean exact dependency pin.
+`--swi-source-candidate` explicitly permits a working-tree patch over that same
+pinned base, records source/pin hashes and verifies the pin remains unchanged.
+It does not modify or invoke a production launcher. Example:
+
+```sh
+python3 adapters/local_promises.py --swi-source-candidate \
+  --local-manifest cases/child-specs-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/pinned-base-native-working-tree \
+  --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/swi-candidate-results
+```
+
+The native verification report retains one unresolved full behaviour-tier cleanup
+failure and a pre-existing whitelist framework-startup restriction. SWI's literal
+URI ordering finding also remains separate. These green ACTOR/blacklist cells do
+not erase those limits. The dependency pin, installed runtimes and n3/n5 are
+unchanged; promotion/deployment is a separate step.
