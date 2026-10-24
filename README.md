@@ -257,3 +257,30 @@ The local-manifest mode runs once per candidate without an outbound peer. The
 promise mode and its existing manifests remain available. Pin validation,
 matching libraries, bounded subprocesses and preservation checks are shared;
 no installed engine or live n3/n5 process is used as a fixture.
+
+## Generic-server wait draft conformance
+
+The [Generic-server waits 0.1 pack](profiles/server-waits-0.1.md) selects public
+reply correlation, mismatch consumption, timeout/retry, callback outcomes,
+server-down reporting and scoped wait cleanup. Identical goals and callback
+source execute on disposable native ACTOR nodes using acceptance/release
+handshakes instead of sleeps. It does not amend baseline 0.1.
+
+The [24 October matrix](reports/2026-10-24-server-waits/COVERAGE.md) records
+**12/12 selections passing**. Remote servers, browser execution and unknown
+reference policy remain outside this batch; no runtime repair was made.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/server-waits-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/server-waits-results
+python3 runner/validate_reports.py /fresh/path/server-waits-results
+python3 runner/links_coverage.py --suite server-waits /fresh/path/server-waits-results
+```
+
+The existing matrix renderer's default remains the links-and-monitors pack;
+`--suite server-waits` selects the new report filenames and scope text. Both
+rendering paths preserve required failures and missing-case observations.

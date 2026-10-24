@@ -1,0 +1,50 @@
+{
+  "suite": "server-waits-0.1",
+  "baseline": "server-waits-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "server_spawn(sw_probe,0,P),server_promise(P,echo(first),R1),server_promise(P,echo(second),R2),R1\\==R2,server_yield(R2,reply(second),[timeout(2)]),server_yield(R1,reply(first),[timeout(0)]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "server_spawn(sw_probe,0,P),server_promise(P,echo(first),R1),server_promise(P,echo(second),R2),server_promise(P,echo(barrier),Barrier),server_yield(Barrier,reply(barrier),[timeout(2)]),\\+server_yield(R1,wrong,[timeout(0),on_timeout(throw(missing_selected_reply))]),server_yield(R2,reply(second),[timeout(0)]),server_yield(R1,Again,[timeout(0),on_timeout(Again=consumed)]),Again==consumed,server_halt(P,true)"
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),server_promise(P,block(S),R),receive({sw_blocked(P)->true},[timeout(2)]),server_yield(R,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,P!release,server_yield(R,released,[timeout(2)]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),server_promise(P,block(S),R),receive({sw_blocked(P)->true},[timeout(2)]),server_yield(R,Bound,[timeout(0),on_timeout(Bound=bound)]),Bound==bound,\\+server_yield(R,_,[timeout(0),on_timeout(fail)]),catch(server_yield(R,_,[timeout(0),on_timeout(throw(wait_callback))]),Error,true),Error==wait_callback,findall(V,server_yield(R,V,[timeout(0),on_timeout(member(V,[one,two]))]),Values),Values==[one,two],P!release,server_yield(R,released,[timeout(2)]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),monitor(P,Other),catch(server_request(P,die_now,_,[timeout(2)]),E,true),E==server_down(sw_death),receive({down(P,Other,sw_death)->true},[timeout(2)]),demonitor(Other,[flush]),server_spawn(sw_probe,0,Q),server_promise(Q,die_later(S),R,Mon),monitor(Q,Other2),receive({sw_blocked(Q)->true},[timeout(2)]),Q!crash,catch(server_yield(R,Mon,_,[timeout(2)]),E2,true),E2==server_down(sw_death),receive({down(Q,Other2,sw_death)->true},[timeout(2)]),demonitor(Other2,[flush])"
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P,[monitor(true)]),server_promise(P,block(S),R,Mon),monitor(P,Other),S!sw_unrelated,receive({sw_blocked(P)->true},[timeout(2)]),server_yield(R,Mon,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,P!release,server_yield(R,released,[timeout(2)]),server_promise(P,echo(ok),R2,M2),server_promise(P,echo(barrier),B),server_yield(B,reply(barrier),[timeout(2)]),\\+server_yield(R2,M2,wrong,[timeout(0),on_timeout(throw(missing_selected_reply))]),server_promise(P,block(S),R3,M3),receive({sw_blocked(P)->true},[timeout(2)]),catch(server_yield(R3,M3,_,[timeout(0),on_timeout(throw(sw_timeout))]),E,true),E==sw_timeout,P!release,server_yield(R3,released,[timeout(2)]),receive({sw_unrelated->true},[timeout(0)]),server_halt(P,true),receive({down(P,P,true)->true},[timeout(2)]),receive({down(P,Other,true)->true},[timeout(2)]),receive({down(_,Mon,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M2,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M3,_)->fail},[timeout(0),on_timeout(true)]),demonitor(Other,[flush])"
+    }
+  ]
+}
