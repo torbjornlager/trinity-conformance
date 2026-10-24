@@ -1,0 +1,88 @@
+{
+  "suite": "admission-paths-0.1",
+  "baseline": "diagnostic-only",
+  "status": "draft",
+  "scope": "diagnostic",
+  "cases": [
+    {
+      "id": "AP-001",
+      "pair": "valid-initial",
+      "variant": "literal",
+      "title": "Valid initial children: literal",
+      "transport": "admission",
+      "goal": "supervisor_spawn([child(probe,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-002",
+      "pair": "valid-initial",
+      "variant": "runtime",
+      "title": "Valid initial children: runtime",
+      "transport": "admission",
+      "goal": "self(S),S!initial_specs([child(probe,[start(receive({never->true})),restart(temporary)])]),receive({initial_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),supervisor_spawn(Specs,Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-003",
+      "pair": "missing-start",
+      "variant": "literal",
+      "title": "Missing start: literal",
+      "transport": "admission",
+      "goal": "catch(supervisor_spawn([child(probe,[])],Rejected),Error,true),nonvar(Error),var(Rejected)"
+    },
+    {
+      "id": "AP-004",
+      "pair": "missing-start",
+      "variant": "runtime",
+      "title": "Missing start: runtime",
+      "transport": "admission",
+      "goal": "self(S),S!invalid_specs([child(probe,[])]),receive({invalid_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(supervisor_spawn(Specs,Rejected),Error,true),nonvar(Error),var(Rejected)"
+    },
+    {
+      "id": "AP-005",
+      "pair": "dynamic-valid",
+      "variant": "literal",
+      "title": "Dynamic valid child: literal",
+      "transport": "admission",
+      "goal": "supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[start(receive({never->true})),restart(temporary)]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-006",
+      "pair": "dynamic-valid",
+      "variant": "runtime",
+      "title": "Dynamic valid child: runtime",
+      "transport": "admission",
+      "goal": "supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[start(receive({never->true})),restart(temporary)])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-007",
+      "pair": "dynamic-invalid",
+      "variant": "literal",
+      "title": "Dynamic missing start: literal",
+      "transport": "admission",
+      "goal": "supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-008",
+      "pair": "dynamic-invalid",
+      "variant": "runtime",
+      "title": "Dynamic missing start: runtime",
+      "transport": "admission",
+      "goal": "supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))])"
+    },
+    {
+      "id": "AP-009",
+      "pair": "validation-order",
+      "variant": "literal",
+      "title": "Unknown option before missing source: literal",
+      "transport": "admission",
+      "goal": "catch(spawn(true,Rejected,[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),Error,true),nonvar(Error),var(Rejected)"
+    },
+    {
+      "id": "AP-010",
+      "pair": "validation-order",
+      "variant": "runtime",
+      "title": "Unknown option before missing source: runtime",
+      "transport": "admission",
+      "goal": "self(S),S!creation_options([src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),receive({creation_options(Options)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(spawn(true,Rejected,Options),Error,true),nonvar(Error),var(Rejected)"
+    }
+  ]
+}

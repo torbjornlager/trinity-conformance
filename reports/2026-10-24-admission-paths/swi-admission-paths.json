@@ -1,0 +1,1485 @@
+{
+  "advertised_profile": "actor",
+  "baseline": "0.1",
+  "candidate": "swi",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 0,
+    "observed": 10,
+    "pass": 0,
+    "unsupported": 0
+  },
+  "duration_ms": 402,
+  "endpoint": "ws://127.0.0.1:52300/ws",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 110,
+      "id": "AP-001",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1460498688,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,4179824350@'http://127.0.0.1:52300',worker,temporary)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1460498688@'http://127.0.0.1:52300'",
+              "Sup": "7006840170@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 1460498688,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1460498688,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([child(probe,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 1460498688
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4179824350,
+              "reason": "shutdown",
+              "ref": "4179824350@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7006840170,
+              "reason": "true",
+              "ref": "7006840170@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,4179824350@'http://127.0.0.1:52300',worker,temporary)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1460498688@'http://127.0.0.1:52300'",
+                  "Sup": "7006840170@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 1460498688,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 1460498688
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1460498688,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1460498688
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1460498688,
+              "reason": "true",
+              "ref": "1460498688@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1460498688,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Valid initial children: literal"
+    },
+    {
+      "duration_ms": 14,
+      "id": "AP-002",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "no"
+            }
+          ],
+          "more": false,
+          "pid": 2070296063,
+          "type": "success"
+        },
+        "execution_entered": false,
+        "terminal": {
+          "data": "Arguments are not sufficiently instantiated",
+          "details": "error(instantiation_error,_)",
+          "type": "error"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2070296063,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!initial_specs([child(probe,[start(receive({never->true})),restart(temporary)])]),receive({initial_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),supervisor_spawn(Specs,Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 2070296063
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Arguments are not sufficiently instantiated",
+              "details": "error(instantiation_error,_)",
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 2070296063
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "no"
+                }
+              ],
+              "more": false,
+              "pid": 2070296063,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2070296063
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2070296063,
+              "reason": "true",
+              "ref": "2070296063@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2070296063,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Valid initial children: runtime"
+    },
+    {
+      "duration_ms": 14,
+      "id": "AP-003",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1003257348,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(missing_start_option(probe),supervisor)",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1003257348@'http://127.0.0.1:52300'",
+              "Rejected": "Rejected"
+            }
+          ],
+          "more": false,
+          "pid": 1003257348,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1003257348,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(supervisor_spawn([child(probe,[])],Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 1003257348
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(missing_start_option(probe),supervisor)",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1003257348@'http://127.0.0.1:52300'",
+                  "Rejected": "Rejected"
+                }
+              ],
+              "more": false,
+              "pid": 1003257348,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 1003257348
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1003257348,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1003257348
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1003257348,
+              "reason": "true",
+              "ref": "1003257348@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1003257348,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Missing start: literal"
+    },
+    {
+      "duration_ms": 14,
+      "id": "AP-004",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "no"
+            }
+          ],
+          "more": false,
+          "pid": 9166547233,
+          "type": "success"
+        },
+        "execution_entered": false,
+        "terminal": {
+          "data": "Arguments are not sufficiently instantiated",
+          "details": "error(instantiation_error,_)",
+          "type": "error"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9166547233,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!invalid_specs([child(probe,[])]),receive({invalid_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(supervisor_spawn(Specs,Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 9166547233
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Arguments are not sufficiently instantiated",
+              "details": "error(instantiation_error,_)",
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 9166547233
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "no"
+                }
+              ],
+              "more": false,
+              "pid": 9166547233,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9166547233
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9166547233,
+              "reason": "true",
+              "ref": "9166547233@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9166547233,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Missing start: runtime"
+    },
+    {
+      "duration_ms": 82,
+      "id": "AP-005",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1249318475,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,5904725825@'http://127.0.0.1:52300',worker,temporary)]",
+              "Error": "Error",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1249318475@'http://127.0.0.1:52300'",
+              "Reply": "ok",
+              "Sup": "4810266696@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 1249318475,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1249318475,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[start(receive({never->true})),restart(temporary)]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 1249318475
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5904725825,
+              "reason": "shutdown",
+              "ref": "5904725825@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4810266696,
+              "reason": "true",
+              "ref": "4810266696@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,5904725825@'http://127.0.0.1:52300',worker,temporary)]",
+                  "Error": "Error",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1249318475@'http://127.0.0.1:52300'",
+                  "Reply": "ok",
+                  "Sup": "4810266696@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 1249318475,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 1249318475
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1249318475,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1249318475
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1249318475,
+              "reason": "true",
+              "ref": "1249318475@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1249318475,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Dynamic valid child: literal"
+    },
+    {
+      "duration_ms": 88,
+      "id": "AP-006",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 8993725082,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,8912639510@'http://127.0.0.1:52300',worker,temporary)]",
+              "Error": "Error",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "8993725082@'http://127.0.0.1:52300'",
+              "Reply": "ok",
+              "S": "8993725082@'http://127.0.0.1:52300'",
+              "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+              "Sup": "1159810435@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 8993725082,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8993725082,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[start(receive({never->true})),restart(temporary)])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 8993725082
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8912639510,
+              "reason": "shutdown",
+              "ref": "8912639510@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1159810435,
+              "reason": "true",
+              "ref": "1159810435@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,8912639510@'http://127.0.0.1:52300',worker,temporary)]",
+                  "Error": "Error",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "8993725082@'http://127.0.0.1:52300'",
+                  "Reply": "ok",
+                  "S": "8993725082@'http://127.0.0.1:52300'",
+                  "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+                  "Sup": "1159810435@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 8993725082,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 8993725082
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 8993725082,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 8993725082
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8993725082,
+              "reason": "true",
+              "ref": "8993725082@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8993725082,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Dynamic valid child: runtime"
+    },
+    {
+      "duration_ms": 23,
+      "id": "AP-007",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 6403716969,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(missing_start_option(probe),supervisor)",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "6403716969@'http://127.0.0.1:52300'",
+              "Reply": "Reply",
+              "Sup": "9109230469@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 6403716969,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6403716969,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 6403716969
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9109230469,
+              "reason": "true",
+              "ref": "9109230469@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(missing_start_option(probe),supervisor)",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "6403716969@'http://127.0.0.1:52300'",
+                  "Reply": "Reply",
+                  "Sup": "9109230469@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 6403716969,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 6403716969
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 6403716969,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 6403716969
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6403716969,
+              "reason": "true",
+              "ref": "6403716969@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6403716969,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Dynamic missing start: literal"
+    },
+    {
+      "duration_ms": 22,
+      "id": "AP-008",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1885972543,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(missing_start_option(probe),supervisor)",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1885972543@'http://127.0.0.1:52300'",
+              "Reply": "Reply",
+              "S": "1885972543@'http://127.0.0.1:52300'",
+              "Spec": "child(probe,[])",
+              "Sup": "9072800075@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 1885972543,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1885972543,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 1885972543
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9072800075,
+              "reason": "true",
+              "ref": "9072800075@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(missing_start_option(probe),supervisor)",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1885972543@'http://127.0.0.1:52300'",
+                  "Reply": "Reply",
+                  "S": "1885972543@'http://127.0.0.1:52300'",
+                  "Spec": "child(probe,[])",
+                  "Sup": "9072800075@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 1885972543,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 1885972543
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1885972543,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1885972543
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1885972543,
+              "reason": "true",
+              "ref": "1885972543@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1885972543,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Dynamic missing start: runtime"
+    },
+    {
+      "duration_ms": 21,
+      "id": "AP-009",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "no"
+            }
+          ],
+          "more": false,
+          "pid": 9631574719,
+          "type": "success"
+        },
+        "execution_entered": false,
+        "terminal": {
+          "data": "Socket error: nodename nor servname provided, or not known",
+          "details": "error(socket_error(eai_noname,'nodename nor servname provided, or not known'),_)",
+          "type": "error"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9631574719,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(spawn(true,Rejected,[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 9631574719
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Socket error: nodename nor servname provided, or not known",
+              "details": "error(socket_error(eai_noname,'nodename nor servname provided, or not known'),_)",
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 9631574719
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "no"
+                }
+              ],
+              "more": false,
+              "pid": 9631574719,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9631574719
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9631574719,
+              "reason": "true",
+              "ref": "9631574719@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9631574719,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Unknown option before missing source: literal"
+    },
+    {
+      "duration_ms": 14,
+      "id": "AP-010",
+      "observation": {
+        "complete": true,
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 6306825312,
+          "type": "success"
+        },
+        "execution_entered": true,
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+              "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "6306825312@'http://127.0.0.1:52300'",
+              "Rejected": "Rejected",
+              "S": "6306825312@'http://127.0.0.1:52300'"
+            }
+          ],
+          "more": false,
+          "pid": 6306825312,
+          "type": "success"
+        },
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "browser_pids": true,
+              "command": "transport_hello",
+              "io_ack": true,
+              "version": 1
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6306825312,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!creation_options([src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),receive({creation_options(Options)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(spawn(true,Rejected,Options),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]",
+              "pid": 6306825312
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+                  "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "6306825312@'http://127.0.0.1:52300'",
+                  "Rejected": "Rejected",
+                  "S": "6306825312@'http://127.0.0.1:52300'"
+                }
+              ],
+              "more": false,
+              "pid": 6306825312,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]",
+              "pid": 6306825312
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 6306825312,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 6306825312
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6306825312,
+              "reason": "true",
+              "ref": "6306825312@'http://127.0.0.1:52300'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6306825312,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ]
+      },
+      "status": "observed",
+      "title": "Unknown option before missing source: runtime"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "diagnostic",
+  "started_at": "2026-10-24T17:59:03.905552+00:00",
+  "suite": "admission-paths-0.1"
+}

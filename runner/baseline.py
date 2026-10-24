@@ -135,8 +135,14 @@ def main() -> int:
             try:
                 if case['transport']=='http': observed=http_case(case,args.url,args.timeout,token,diagnostic)
                 elif case['transport']=='query': observed=query_case(case,args.url,args.timeout,token)
+                elif case['transport']=='admission':
+                    if not diagnostic:raise ValueError('admission probes require diagnostic scope')
+                    import admission_probe
+                    observed=admission_probe.observe(case,args.url,args.timeout,token)
                 else: observed=wire_case(case,args.url,args.timeout,token)
                 row.update(status='observed' if diagnostic else 'pass',observation=observed)
+                if case['transport']=='admission' and not observed['complete']:
+                    row.update(status='diagnostic_error',detail=observed.get('probe_error','incomplete admission probe'))
             except Exception as error:
                 row.update(status='diagnostic_error' if diagnostic else 'fail',detail=f'{type(error).__name__}: {error}')
         row['duration_ms']=round((time.monotonic()-before)*1000);rows.append(row)

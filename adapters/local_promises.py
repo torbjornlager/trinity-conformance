@@ -43,6 +43,8 @@ def main():
     provenance=dict(runs=runs,sources={name:dict(path=str(p),revision=git(p,'rev-parse','HEAD'),status=git(p,'status','--short')) for name,p in [('conformance',ROOT),('swi',a.swi_root),('trealla',a.trealla_root),('demonstrator',a.demonstrator_root)]},
         inputs={str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'cases/promise-yield-0.1.json',ROOT/'cases/promise-diagnostics-0.1.json',ROOT/'profiles/promise-yield-0.1.md',ROOT/'cases/interop-http-0.1.json',ROOT/'runner/baseline.py',ROOT/'runner/run.py',Path(__file__),*([a.local_manifest] if a.local_manifest else [])]},
         versions={},nodes=nodes)
+    if a.local_manifest and any(c.get('transport')=='admission' for c in json.loads(a.local_manifest.read_text())['cases']):
+        provenance['inputs']['runner/admission_probe.py']=sha(ROOT/'runner/admission_probe.py')
     for name,cmd in [('swi',[str(a.swipl),'--version']),('trealla',[str(a.tpl),'-g','current_prolog_flag(version_data,V),writeq(V),nl,halt'])]:
         r=subprocess.run(cmd,env=env,capture_output=True,text=True,timeout=10);provenance['versions'][name]=(r.stdout+r.stderr).strip()
     try:

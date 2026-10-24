@@ -448,3 +448,35 @@ the separate probes. Their admission errors/output-probe timeout are not require
 coverage passes. Remote supervision, concurrency, exhaustive child options,
 restart policies and shutdown timing remain outside this pack. Historical
 matrices and runner defaults are unchanged.
+
+## Admission-path diagnostic comparisons
+
+The separate [Admission paths scope](profiles/admission-paths-0.1.md) compares
+literal and runtime-supplied supervisor specifications and creation options.
+The [diagnostic matrix](reports/2026-10-24-admission-paths/DIAGNOSTICS.md) records
+**20 completed observations, no diagnostic errors**, not conformance passes.
+Four separate entry-marker controls also complete. Existing required failures
+and coverage matrices remain unchanged.
+
+The results locate SWI's rejection of opaque initial child lists before execution,
+Trealla's admission-time binding of a dynamic child receive variable, and SWI's
+literal-source preparation before an unknown-option error. Exact command/response
+objects and qualifications are retained in the reports. Runtime code, installed
+runtimes and n3/n5 remain unchanged.
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/admission-paths-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/admission-results
+python3 runner/validate_reports.py /fresh/path/admission-results
+python3 runner/admission_coverage.py /fresh/path/admission-results
+```
+
+Select `cases/admission-marker-controls-0.1.json` with another fresh output path
+to reproduce the ordinary exception/failure controls. The capture transport is
+restricted to diagnostic scope; observation of an error is never a required pass.
+No output markers or sleeps are used. Remote, browser/GNU, whitelist-policy and
+concurrency behavior are unmeasured; no runtime repair or engine report is implied.
