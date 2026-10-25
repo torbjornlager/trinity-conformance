@@ -307,3 +307,12 @@ snapshot. All 29 interoperability smoke checks, 10 extra text/service checks and
 both portal text checks pass. This deployment smoke does not increase shared pack
 totals or change baseline requirements. Installed engines and the pin are unchanged;
 the Trealla supplementary-character JSON-escape failure remains a separate diagnostic.
+
+### Commit-pinned local adoption
+
+The [committed adoption checkpoint](reports/2026-10-25-committed-adoption/COVERAGE.md)
+records selected SWI/Trealla/demonstrator commits, passing native/integration and
+full browser checks, 29 public interoperability controls, 10 extra text controls
+and actual UI checks. Local n3/n5 now use guarded commit-pinned startup with
+character-list reading. Rollback and separate diagnostics are retained. Shared
+pack totals and language baseline requirements are unchanged.

@@ -667,3 +667,8 @@ migration blockers. Regular n3's reader remains unchanged.
 The [character-list term-output repair](reports/2026-10-25-portable-term-output/COVERAGE.md)
 resolves the SWI write/writeln text-presentation mismatch on disposable nodes.
 Model/Jev service boundaries still precede adoption on regular n3.
+
+The [25 October committed local adoption checkpoint](reports/2026-10-25-committed-adoption/COVERAGE.md)
+links exact implementation revisions to post-restart evidence. It records local
+configuration adoption without changing shared pack totals or reclassifying
+unresolved diagnostics.
