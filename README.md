@@ -641,3 +641,29 @@ records mode-specific native SWI tests, explicit native-library conversion check
 and an unedited example audit. Both modes pass full T4 and the focused checks;
 model/Jev string guards remain application migration work. This test-only batch
 does not add to the shared conformance totals or change deployed runtimes.
+
+## Cyclic-term boundary diagnostics
+
+The [25 October assessment](reports/2026-10-25-cyclic-term-boundaries/REPORT.md)
+keeps local rational-tree behavior separate from message/answer portability.
+Its [diagnostic matrix](reports/2026-10-25-cyclic-term-boundaries/COVERAGE.md)
+records time-resource errors, lossy cycle copies and separate finite remote-actor
+control failures. These observations add no normative cyclic-term requirement or
+conformance pass totals; runtime code and deployed nodes are unchanged.
+
+The [computed-answer repair follow-up](reports/2026-10-25-cyclic-answer-rejection/REPORT.md)
+records 31/31 disposable-node repair selections passing with early cycle guards
+in the two native working-source candidates. Trealla's cyclic exception-copying
+limitation remains a separate diagnostic; actor-message findings are unchanged.
+
+The [actor write/1 follow-up](reports/2026-10-25-write-output/COVERAGE.md) records
+shared native output assertions, copied-helper delivery and retained Trealla
+stream denials. Character-list-reading migration remains separate.
+
+The [current character-list adoption checkpoint](reports/2026-10-25-portable-text-current-checkpoint/COVERAGE.md)
+keeps passing reader/round-trip checks separate from term-output and model/Jev
+migration blockers. Regular n3's reader remains unchanged.
+
+The [character-list term-output repair](reports/2026-10-25-portable-term-output/COVERAGE.md)
+resolves the SWI write/writeln text-presentation mismatch on disposable nodes.
+Model/Jev service boundaries still precede adoption on regular n3.

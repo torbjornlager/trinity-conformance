@@ -1,0 +1,146 @@
+[
+  {
+    "case": "nb_store",
+    "engine": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "X=f(X),nb_setval(cycle_probe,X),nb_getval(cycle_probe,Y),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "findall",
+    "engine": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "findall(X,X=f(X),[Y]),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "writer",
+    "engine": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "X=f(X),write_term(X,[quoted(true),max_depth(8)]),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "f(f(f(f(f(f(f(f(\u2026))))))))\n",
+    "stderr": ""
+  },
+  {
+    "case": "thread_message",
+    "engine": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "thread_self(Me),X=f(X),thread_send_message(Me,X),thread_get_message(Y),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "nb_store",
+    "engine": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "X=f(X),nb_setval(cycle_probe,X),nb_getval(cycle_probe,Y),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "acyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "findall",
+    "engine": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "findall(X,X=f(X),[Y]),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "   error(type_error(acyclic_term,f(f(f(f(f(f(f(f(_2))))))))),'$queue'/1).\n",
+    "stderr": ""
+  },
+  {
+    "case": "writer",
+    "engine": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "X=f(X),write_term(X,[quoted(true),max_depth(8)]),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "f(f(f(f(f(f(f(f(X))))))))\n",
+    "stderr": ""
+  },
+  {
+    "case": "thread_message",
+    "engine": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "thread_self(Me),X=f(X),thread_send_message(Me,X),thread_get_message(Y),(acyclic_term(Y)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "acyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "plain_remote_control",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53052'),src_text('probe :- receive({inspect(V,Parent) -> Parent ! observed(V)}).')]),Pid ! inspect(pair(a,b),Self),receive({observed(V)->Outcome=observed(V)},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(acyclic_term(E)->Outcome=exception(E);Outcome=cyclic_exception))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "observed(pair(a,b))"
+          ],
+          "more": false,
+          "pid": 6436007872,
+          "type": "success"
+        }
+      ]
+    }
+  },
+  {
+    "case": "plain_remote_control",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53068'),src_text('probe :- receive({inspect(V,Parent) -> Parent ! observed(V)}).')]),Pid ! inspect(pair(a,b),Self),receive({observed(V)->Outcome=observed(V)},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(acyclic_term(E)->Outcome=exception(E);Outcome=cyclic_exception))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2279175351,
+          "data": [
+            "observed(pair(a,b))"
+          ],
+          "more": false
+        }
+      ]
+    }
+  }
+]

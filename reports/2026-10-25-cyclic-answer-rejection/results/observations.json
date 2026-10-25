@@ -1,0 +1,748 @@
+[
+  {
+    "case": "http_shared",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "success([shared_ok],false).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_cycle",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "error(error(representation_error(cyclic_term),context(:(toplevel_actors,/(answer,5)),'cyclic answer'))).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_cyclic_exception",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "error(error(representation_error(cyclic_term),context(:(toplevel_actors,/(answer,5)),'answer or exception contains a cyclic term'))).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_finite_after_local_cycle",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "success([ok],false).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_plain_error",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "error(ordinary_error).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "ws_cycle",
+    "caller": "swi",
+    "peer": null,
+    "kind": "required_regression",
+    "goal": "X=f(X),Outcome=X",
+    "result": {
+      "events": [
+        {
+          "data": "toplevel_actors:answer/5: Cannot represent due to cyclic_term' (cyclic answer)",
+          "details": "error(representation_error(cyclic_term),_)",
+          "pid": 2016177309,
+          "type": "error"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "swi",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57337',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 6816407363,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "swi",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57352',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false,
+          "pid": 7974851767,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_shared",
+    "caller": "swi",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57367',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 6662305465,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "swi",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57382',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false,
+          "pid": 5892852771,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_retry",
+    "caller": "swi",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "promise('http://127.0.0.1:57397',(sleep(0.15),X=pair(Y,Y)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,yield(Ref,success([pair(A,B)],false),[timeout(2)]),var(A),A==B,Outcome=retry_ok",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "retry_ok"
+          ],
+          "more": false,
+          "pid": 7541778883,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "swi",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57413',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 9839455120,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "swi",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57429',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false,
+          "pid": 5137404162,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_shared",
+    "caller": "swi",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57445',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 4295646131,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "swi",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57461',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false,
+          "pid": 1600997857,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_retry",
+    "caller": "swi",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "promise('http://127.0.0.1:57477',(sleep(0.15),X=pair(Y,Y)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,yield(Ref,success([pair(A,B)],false),[timeout(2)]),var(A),A==B,Outcome=retry_ok",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "retry_ok"
+          ],
+          "more": false,
+          "pid": 6920359640,
+          "type": "success"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_shared",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "success([shared_ok],false).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_cycle",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "error(error(representation_error(cyclic_term),answer_terms)).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_cyclic_exception",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "engine_diagnostic",
+    "result": {
+      "exception": "RemoteDisconnected",
+      "message": "Remote end closed connection without response"
+    },
+    "passed": null,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_finite_after_local_cycle",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "success([ok],false).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "http_plain_error",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "required_regression",
+    "result": {
+      "status": 200,
+      "body": "error(ordinary_error).\n",
+      "truncated": false
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "ws_cycle",
+    "caller": "trealla",
+    "peer": null,
+    "kind": "required_regression",
+    "goal": "X=f(X),Outcome=X",
+    "result": {
+      "events": [
+        {
+          "type": "error",
+          "pid": 3144613430,
+          "data": "error(representation_error(cyclic_term),answer_terms)"
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "trealla",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57562',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1083543806,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "trealla",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57578',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1631468694,
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_shared",
+    "caller": "trealla",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57594',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1246338984,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "trealla",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57610',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2067088361,
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_retry",
+    "caller": "trealla",
+    "peer": "swi",
+    "kind": "required_regression",
+    "goal": "promise('http://127.0.0.1:57627',(sleep(0.15),X=pair(Y,Y)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,yield(Ref,success([pair(A,B)],false),[timeout(2)]),var(A),A==B,Outcome=retry_ok",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1096362203,
+          "data": [
+            "retry_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "trealla",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57643',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2050406696,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "trealla",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch(((rpc('http://127.0.0.1:57660',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2171698661,
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_shared",
+    "caller": "trealla",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57677',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2485243800,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "trealla",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "catch((promise('http://127.0.0.1:57694',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1018562889,
+          "data": [
+            "rejected(representation_error,cyclic_term)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  },
+  {
+    "case": "promise_retry",
+    "caller": "trealla",
+    "peer": "trealla",
+    "kind": "required_regression",
+    "goal": "promise('http://127.0.0.1:57711',(sleep(0.15),X=pair(Y,Y)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,yield(Ref,success([pair(A,B)],false),[timeout(2)]),var(A),A==B,Outcome=retry_ok",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1094050368,
+          "data": [
+            "retry_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "passed": true,
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "healthy": true
+  }
+]

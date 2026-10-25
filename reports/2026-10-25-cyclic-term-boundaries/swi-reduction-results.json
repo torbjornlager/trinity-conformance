@@ -1,0 +1,58 @@
+[
+  {
+    "case": "attvars",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "use_module(library(time)),use_module(library(sgml)),use_module(library(option)),consult('/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node/load.pl'),catch(call_with_time_limit(0.5,(X=f(X),term_attvars(X,V),write(V))),E,(functor(E,N,A),write(exception(N,A)))),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "[]\n",
+    "stderr": ""
+  },
+  {
+    "case": "findnsols",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "use_module(library(time)),use_module(library(sgml)),use_module(library(option)),consult('/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node/load.pl'),catch(call_with_time_limit(0.5,(findnsols(1,X,(X=f(X)),[Y]),(acyclic_term(Y)->write(acyclic);write(cyclic)))),E,(functor(E,N,A),write(exception(N,A)))),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "portable_answer",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "use_module(library(time)),use_module(library(sgml)),use_module(library(option)),consult('/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node/load.pl'),catch(call_with_time_limit(0.5,(X=f(X),toplevel_actors:portable_answer(success([X],false),A),(acyclic_term(A)->write(acyclic);write(cyclic)))),E,(functor(E,N,A),write(exception(N,A)))),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "answer",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "use_module(library(time)),use_module(library(sgml)),use_module(library(option)),consult('/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node/load.pl'),catch(call_with_time_limit(0.5,(toplevel_actors:answer((X=f(X)),X,0,1,A),(acyclic_term(A)->write(acyclic);write(cyclic)))),E,(functor(E,N,A),write(exception(N,A)))),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  }
+]

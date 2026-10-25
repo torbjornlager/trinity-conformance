@@ -1,0 +1,879 @@
+[
+  {
+    "case": "engine_occurs_new",
+    "caller": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "(unify_with_occurs_check(X,f(X))->write(accepted);write(rejected)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "rejected\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_create",
+    "caller": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "X=f(X),(acyclic_term(X)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_copy",
+    "caller": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "X=f(X),copy_term(X,Y),(acyclic_term(Y)->write(acyclic_copy);write(cyclic_copy)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic_copy\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_occurs_existing",
+    "caller": "swi",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "X=f(X),(unify_with_occurs_check(X,X)->write(accepted);write(rejected)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "accepted\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_occurs_new",
+    "caller": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "(unify_with_occurs_check(X,f(X))->write(accepted);write(rejected)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "rejected\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_create",
+    "caller": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "X=f(X),(acyclic_term(X)->write(acyclic);write(cyclic)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_copy",
+    "caller": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "X=f(X),copy_term(X,Y),(acyclic_term(Y)->write(acyclic_copy);write(cyclic_copy)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "cyclic_copy\n",
+    "stderr": ""
+  },
+  {
+    "case": "engine_occurs_existing",
+    "caller": "trealla",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "X=f(X),(unify_with_occurs_check(X,X)->write(accepted);write(rejected)),nl,halt"
+    ],
+    "exit_code": 0,
+    "stdout": "accepted\n",
+    "stderr": ""
+  },
+  {
+    "case": "http_shared",
+    "caller": "swi",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "success([shared_ok],false).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.28
+  },
+  {
+    "case": "http_cycle_summary",
+    "caller": "swi",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "success([cyclic],false).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.271
+  },
+  {
+    "case": "http_cycle",
+    "caller": "swi",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "error(error(resource_error(time),_20952)).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.299
+  },
+  {
+    "case": "http_cyclic_exception",
+    "caller": "swi",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "error(error(resource_error(time),_21056)).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.308
+  },
+  {
+    "case": "actor_shared",
+    "caller": "swi",
+    "peer": null,
+    "goal": "catch((self(Self),spawn(probe,Pid,[src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 1993106733,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.299
+  },
+  {
+    "case": "actor_cycle",
+    "caller": "swi",
+    "peer": null,
+    "goal": "catch((self(Self),spawn(probe,Pid,[src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(resource_error,term_depth)"
+          ],
+          "more": false,
+          "pid": 8422251423,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.295
+  },
+  {
+    "case": "remote_actor_shared",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53628'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 1141652782,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.589
+  },
+  {
+    "case": "remote_actor_cycle",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53644'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(resource_error,term_depth)"
+          ],
+          "more": false,
+          "pid": 6253470452,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.565
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch(((rpc('http://127.0.0.1:53659',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 4101394256,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.558
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch(((rpc('http://127.0.0.1:53674',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(resource_error,time)"
+          ],
+          "more": false,
+          "pid": 3563942434,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.585
+  },
+  {
+    "case": "promise_shared",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch((promise('http://127.0.0.1:53689',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 2258120278,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.553
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "swi",
+    "peer": "swi",
+    "goal": "catch((promise('http://127.0.0.1:53704',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(resource_error,time)"
+          ],
+          "more": false,
+          "pid": 5937687662,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.589
+  },
+  {
+    "case": "remote_actor_shared",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53719'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "delivery_timeout"
+          ],
+          "more": false,
+          "pid": 4401962724,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.629
+  },
+  {
+    "case": "remote_actor_cycle",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53737'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "rejected(resource_error,term_depth)"
+          ],
+          "more": false,
+          "pid": 4660411038,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.607
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch(((rpc('http://127.0.0.1:53753',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 5216977008,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.736
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch(((rpc('http://127.0.0.1:53769',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "received_acyclic(f,1)"
+          ],
+          "more": false,
+          "pid": 9314319967,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.726
+  },
+  {
+    "case": "promise_shared",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch((promise('http://127.0.0.1:53785',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "shared_ok"
+          ],
+          "more": false,
+          "pid": 2438895193,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.712
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "swi",
+    "peer": "trealla",
+    "goal": "catch((promise('http://127.0.0.1:53801',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "data": [
+            "received_acyclic(f,1)"
+          ],
+          "more": false,
+          "pid": 9656661396,
+          "type": "success"
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.734
+  },
+  {
+    "case": "http_shared",
+    "caller": "trealla",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "success([shared_ok],false).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.539
+  },
+  {
+    "case": "http_cycle_summary",
+    "caller": "trealla",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "success([cyclic],false).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.556
+  },
+  {
+    "case": "http_cycle",
+    "caller": "trealla",
+    "peer": null,
+    "result": {
+      "status": 200,
+      "body": "success([f(f(_3040))],false).\n",
+      "truncated": false
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.535
+  },
+  {
+    "case": "http_cyclic_exception",
+    "caller": "trealla",
+    "peer": null,
+    "result": {
+      "exception": "RemoteDisconnected",
+      "message": "Remote end closed connection without response"
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.66
+  },
+  {
+    "case": "actor_shared",
+    "caller": "trealla",
+    "peer": null,
+    "goal": "catch((self(Self),spawn(probe,Pid,[src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2792231831,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.452
+  },
+  {
+    "case": "actor_cycle",
+    "caller": "trealla",
+    "peer": null,
+    "goal": "catch((self(Self),spawn(probe,Pid,[src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1028640693,
+          "data": [
+            "received_acyclic(f,1)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.447
+  },
+  {
+    "case": "remote_actor_shared",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53873'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 3003837921,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.719
+  },
+  {
+    "case": "remote_actor_cycle",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53889'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "exception": "timeout",
+    "message": "timed out",
+    "seconds": 4.623
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch(((rpc('http://127.0.0.1:53904',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2447558644,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.722
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch(((rpc('http://127.0.0.1:53920',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2038283088,
+          "data": [
+            "rejected(resource_error,time)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.738
+  },
+  {
+    "case": "promise_shared",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch((promise('http://127.0.0.1:53936',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2790371184,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.718
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "trealla",
+    "peer": "swi",
+    "goal": "catch((promise('http://127.0.0.1:53952',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1907077716,
+          "data": [
+            "rejected(resource_error,time)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.73
+  },
+  {
+    "case": "remote_actor_shared",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53968'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=pair(A,A),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((Received=pair(U,W),var(U),U==W->Outcome=shared_ok;Outcome=sharing_lost))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2938060430,
+          "data": [
+            "delivery_timeout"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 1.794
+  },
+  {
+    "case": "remote_actor_cycle",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch((self(Self),spawn(probe,Pid,[node('http://127.0.0.1:53986'),src_text('probe :- receive({inspect(V,Parent) -> self(Me),Parent ! observed(Me,V)}).')]),V=f(V),Pid ! inspect(V,Self),receive({observed(Pid,Received)->((acyclic_term(Received)->functor(Received,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic))},[timeout(1),on_timeout(Outcome=delivery_timeout)])),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "exception": "timeout",
+    "message": "timed out",
+    "seconds": 4.585
+  },
+  {
+    "case": "rpc_shared",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch(((rpc('http://127.0.0.1:54001',(X=pair(A,A)),[limit(1),once(true)]) -> (X=pair(U,V),var(U),U==V,Outcome=shared_ok); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2312138334,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.843
+  },
+  {
+    "case": "rpc_cycle",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch(((rpc('http://127.0.0.1:54018',(X=f(X)),[limit(1),once(true)]) -> (acyclic_term(X)->functor(X,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic); Outcome=logical_failure)),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 3125419146,
+          "data": [
+            "received_acyclic(f,1)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.871
+  },
+  {
+    "case": "promise_shared",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch((promise('http://127.0.0.1:54035',(X=pair(A,A)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(Value=pair(U,V),var(U),U==V,Outcome=shared_ok);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 2372452303,
+          "data": [
+            "shared_ok"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.878
+  },
+  {
+    "case": "promise_cycle",
+    "caller": "trealla",
+    "peer": "trealla",
+    "goal": "catch((promise('http://127.0.0.1:54052',(X=f(X)),Ref,[template(X),limit(1),once(true)]),yield(Ref,Answer,[timeout(3)]),(Answer=success([Value],_)->(acyclic_term(Value)->functor(Value,N,A),Outcome=received_acyclic(N,A);Outcome=received_cyclic);Answer=error(E)->(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A));Answer=timeout->Outcome=yield_timeout;functor(Answer,N,A),Outcome=answer(N,A))),E,(E=error(type_error(K,_),_)->Outcome=rejected(type_error,K);E=error(resource_error(K),_)->Outcome=rejected(resource_error,K);E=error(representation_error(K),_)->Outcome=rejected(representation_error,K);E=error(F,_)->functor(F,N,A),Outcome=rejected(N,A);functor(E,N,A),Outcome=rejected(N,A)))",
+    "result": {
+      "events": [
+        {
+          "type": "success",
+          "pid": 1748170619,
+          "data": [
+            "received_acyclic(f,1)"
+          ],
+          "more": false
+        }
+      ]
+    },
+    "health_after": {
+      "status": 200,
+      "body": "success([healthy],false).\n",
+      "truncated": false
+    },
+    "seconds": 0.879
+  }
+]

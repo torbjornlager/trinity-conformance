@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "swi",
+    "pid": 88363,
+    "url": "http://127.0.0.1:53046",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-g",
+      "use_module(library(sgml)),use_module(library(option)),consult('/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53046),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53046),tcp_listen(S,128),node:node(53046,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+    ],
+    "log": "swi-to-trealla-caller.log",
+    "exit_before_stop": null,
+    "stopped": true
+  },
+  {
+    "kind": "trealla",
+    "pid": 88364,
+    "url": "http://127.0.0.1:53052",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53052,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53052'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+    ],
+    "log": "swi-to-trealla-peer.log",
+    "exit_before_stop": null,
+    "stopped": true
+  },
+  {
+    "kind": "trealla",
+    "pid": 88366,
+    "url": "http://127.0.0.1:53061",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53061,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53061'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+    ],
+    "log": "trealla-to-trealla-caller.log",
+    "exit_before_stop": null,
+    "stopped": true
+  },
+  {
+    "kind": "trealla",
+    "pid": 88367,
+    "url": "http://127.0.0.1:53068",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-g",
+      "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53068,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53068'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+    ],
+    "log": "trealla-to-trealla-peer.log",
+    "exit_before_stop": null,
+    "stopped": true
+  }
+]

@@ -1,0 +1,896 @@
+{
+  "sources": {
+    "swi": {
+      "path": "/Users/torbjorn.lager/Documents/GitHub/swi-prolog-node",
+      "commit": "b61270d11c55b4a98166365c793e97e4a721acbb",
+      "status": "M README.md\n?? docs/verification/iso-four-way-2026-10-25/"
+    },
+    "trealla": {
+      "path": "/Users/torbjorn.lager/Documents/GitHub/trealla-port",
+      "commit": "9b7c9402b8653d79d34f86f2482c758cdaee71d7",
+      "status": ""
+    },
+    "conformance": {
+      "path": "/Users/torbjorn.lager/Documents/GitHub/trinity-conformance",
+      "commit": "8d687c26ba8fbe9adbb5a383a3f542cb8da6c83f",
+      "status": "?? adapters/cyclic_boundaries.py\n?? reports/2026-10-24-trealla-v3.14.10-acceptance/\n?? reports/2026-10-25-cyclic-term-boundaries/"
+    }
+  },
+  "adapter_sha256": "2f6316d3305b5053ded58a6208d8cee2f0a43ef4ad7763ace5c9db77021b385d",
+  "engines": {
+    "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl": "915c4758b6aba3d01ade4fe4f46332b6f526ad6c70a8e2574dd05278c2b0ce9c",
+    "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl": "71f5ab7df3bde1a0a73cffccb2a762815895f6d2c2ef3f63ee52ef10baaeba1c"
+  },
+  "nodes": [
+    {
+      "kind": "swi",
+      "pid": 88636,
+      "url": "http://127.0.0.1:53574",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53574),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53574),tcp_listen(S,128),node:node(53574,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "00-swi-http_shared-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88637,
+      "url": "http://127.0.0.1:53582",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53582),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53582),tcp_listen(S,128),node:node(53582,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "01-swi-http_cycle_summary-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88640,
+      "url": "http://127.0.0.1:53590",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53590),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53590),tcp_listen(S,128),node:node(53590,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "02-swi-http_cycle-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88642,
+      "url": "http://127.0.0.1:53598",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53598),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53598),tcp_listen(S,128),node:node(53598,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "03-swi-http_cyclic_exception-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88647,
+      "url": "http://127.0.0.1:53606",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53606),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53606),tcp_listen(S,128),node:node(53606,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "04-swi-actor_shared-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88648,
+      "url": "http://127.0.0.1:53614",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53614),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53614),tcp_listen(S,128),node:node(53614,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "05-swi-actor_cycle-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88649,
+      "url": "http://127.0.0.1:53622",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53622),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53622),tcp_listen(S,128),node:node(53622,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "06-swi-remote_actor_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88650,
+      "url": "http://127.0.0.1:53628",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53628),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53628),tcp_listen(S,128),node:node(53628,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "06-swi-remote_actor_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88652,
+      "url": "http://127.0.0.1:53638",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53638),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53638),tcp_listen(S,128),node:node(53638,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "07-swi-remote_actor_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88653,
+      "url": "http://127.0.0.1:53644",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53644),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53644),tcp_listen(S,128),node:node(53644,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "07-swi-remote_actor_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88654,
+      "url": "http://127.0.0.1:53653",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53653),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53653),tcp_listen(S,128),node:node(53653,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "08-swi-rpc_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88655,
+      "url": "http://127.0.0.1:53659",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53659),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53659),tcp_listen(S,128),node:node(53659,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "08-swi-rpc_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88657,
+      "url": "http://127.0.0.1:53668",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53668),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53668),tcp_listen(S,128),node:node(53668,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "09-swi-rpc_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88660,
+      "url": "http://127.0.0.1:53674",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53674),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53674),tcp_listen(S,128),node:node(53674,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "09-swi-rpc_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88663,
+      "url": "http://127.0.0.1:53683",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53683),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53683),tcp_listen(S,128),node:node(53683,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "10-swi-promise_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88664,
+      "url": "http://127.0.0.1:53689",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53689),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53689),tcp_listen(S,128),node:node(53689,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "10-swi-promise_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88666,
+      "url": "http://127.0.0.1:53698",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53698),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53698),tcp_listen(S,128),node:node(53698,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "11-swi-promise_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88668,
+      "url": "http://127.0.0.1:53704",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53704),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53704),tcp_listen(S,128),node:node(53704,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "11-swi-promise_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88671,
+      "url": "http://127.0.0.1:53713",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53713),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53713),tcp_listen(S,128),node:node(53713,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "12-swi-remote_actor_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88672,
+      "url": "http://127.0.0.1:53719",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53719,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53719'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "12-swi-remote_actor_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88675,
+      "url": "http://127.0.0.1:53731",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53731),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53731),tcp_listen(S,128),node:node(53731,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "13-swi-remote_actor_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88678,
+      "url": "http://127.0.0.1:53737",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53737,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53737'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "13-swi-remote_actor_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88679,
+      "url": "http://127.0.0.1:53747",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53747),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53747),tcp_listen(S,128),node:node(53747,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "14-swi-rpc_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88680,
+      "url": "http://127.0.0.1:53753",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53753,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53753'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "14-swi-rpc_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88682,
+      "url": "http://127.0.0.1:53763",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53763),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53763),tcp_listen(S,128),node:node(53763,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "15-swi-rpc_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88683,
+      "url": "http://127.0.0.1:53769",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53769,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53769'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "15-swi-rpc_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88684,
+      "url": "http://127.0.0.1:53779",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53779),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53779),tcp_listen(S,128),node:node(53779,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "16-swi-promise_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88688,
+      "url": "http://127.0.0.1:53785",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53785,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53785'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "16-swi-promise_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88689,
+      "url": "http://127.0.0.1:53795",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53795),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53795),tcp_listen(S,128),node:node(53795,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "17-swi-promise_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88692,
+      "url": "http://127.0.0.1:53801",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53801,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53801'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "17-swi-promise_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88694,
+      "url": "http://127.0.0.1:53811",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53811,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53811'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "18-trealla-http_shared-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88695,
+      "url": "http://127.0.0.1:53820",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53820,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53820'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "19-trealla-http_cycle_summary-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88697,
+      "url": "http://127.0.0.1:53829",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53829,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53829'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "20-trealla-http_cycle-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88698,
+      "url": "http://127.0.0.1:53838",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53838,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53838'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "21-trealla-http_cyclic_exception-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88700,
+      "url": "http://127.0.0.1:53847",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53847,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53847'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "22-trealla-actor_shared-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88701,
+      "url": "http://127.0.0.1:53857",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53857,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53857'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "23-trealla-actor_cycle-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88705,
+      "url": "http://127.0.0.1:53866",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53866,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53866'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "24-trealla-remote_actor_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88709,
+      "url": "http://127.0.0.1:53873",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53873),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53873),tcp_listen(S,128),node:node(53873,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "24-trealla-remote_actor_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88711,
+      "url": "http://127.0.0.1:53882",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53882,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53882'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "25-trealla-remote_actor_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88713,
+      "url": "http://127.0.0.1:53889",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53889),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53889),tcp_listen(S,128),node:node(53889,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "25-trealla-remote_actor_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88723,
+      "url": "http://127.0.0.1:53897",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53897,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53897'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "26-trealla-rpc_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88726,
+      "url": "http://127.0.0.1:53904",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53904),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53904),tcp_listen(S,128),node:node(53904,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "26-trealla-rpc_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88727,
+      "url": "http://127.0.0.1:53913",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53913,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53913'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "27-trealla-rpc_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88729,
+      "url": "http://127.0.0.1:53920",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53920),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53920),tcp_listen(S,128),node:node(53920,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "27-trealla-rpc_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88731,
+      "url": "http://127.0.0.1:53929",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53929,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53929'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "28-trealla-promise_shared-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88732,
+      "url": "http://127.0.0.1:53936",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53936),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53936),tcp_listen(S,128),node:node(53936,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "28-trealla-promise_shared-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88734,
+      "url": "http://127.0.0.1:53945",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53945,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53945'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "29-trealla-promise_cycle-swi-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "swi",
+      "pid": 88735,
+      "url": "http://127.0.0.1:53952",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-cycles-tjhw_taq/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,53952),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):53952),tcp_listen(S,128),node:node(53952,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "log": "29-trealla-promise_cycle-swi-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88738,
+      "url": "http://127.0.0.1:53961",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53961,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53961'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "30-trealla-remote_actor_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88739,
+      "url": "http://127.0.0.1:53968",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53968,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53968'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "30-trealla-remote_actor_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88746,
+      "url": "http://127.0.0.1:53979",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53979,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53979'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "31-trealla-remote_actor_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88749,
+      "url": "http://127.0.0.1:53986",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53986,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53986'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "31-trealla-remote_actor_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88757,
+      "url": "http://127.0.0.1:53994",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(53994,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:53994'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "32-trealla-rpc_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88758,
+      "url": "http://127.0.0.1:54001",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54001,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54001'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "32-trealla-rpc_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88760,
+      "url": "http://127.0.0.1:54011",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54011,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54011'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "33-trealla-rpc_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88763,
+      "url": "http://127.0.0.1:54018",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54018,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54018'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "33-trealla-rpc_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88765,
+      "url": "http://127.0.0.1:54028",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54028,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54028'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "34-trealla-promise_shared-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88766,
+      "url": "http://127.0.0.1:54035",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54035,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54035'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "34-trealla-promise_shared-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88768,
+      "url": "http://127.0.0.1:54045",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54045,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54045'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "35-trealla-promise_cycle-trealla-caller.log",
+      "exit_before_stop": null,
+      "stopped": true
+    },
+    {
+      "kind": "trealla",
+      "pid": 88769,
+      "url": "http://127.0.0.1:54052",
+      "command": [
+        "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(54052,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:54052'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ],
+      "log": "35-trealla-promise_cycle-trealla-peer.log",
+      "exit_before_stop": null,
+      "stopped": true
+    }
+  ]
+}

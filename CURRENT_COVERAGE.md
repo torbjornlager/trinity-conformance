@@ -236,3 +236,74 @@ counterparts. Full T4 passes 1529 parameter selections per mode; TEXT passes
 native tests do not add to shared cross-runtime totals. Model/Jev native-string
 service guards remain migration work; T3 diagnostics, GNU/browser adoption,
 invalid encodings and performance remain outside this checkpoint.
+
+## Separate cyclic-term boundary diagnostics (25 October)
+
+The [diagnostic matrix](reports/2026-10-25-cyclic-term-boundaries/COVERAGE.md)
+records 36 public observations, eight local engine observations and 14 supporting
+reductions on committed native SWI/Trealla sources and separate builds. Cyclic
+terms remain outside baseline 0.1 fixture coverage, so these are not added to
+required conformance totals. Fourteen of sixteen finite shared-variable controls
+succeed; two non-ground remote actor echoes to Trealla time out and remain a
+separate diagnostic. Computed cyclic answers expose SWI time-resource outcomes
+and Trealla acyclic approximations; early boundary rejection is proposed, not
+implemented. GNU/browser coverage and broad-suite reruns are not claimed.
+
+### Computed-answer repair follow-up
+
+The [native candidate matrix](reports/2026-10-25-cyclic-answer-rejection/COVERAGE.md)
+records **31/31 repair regressions** passing over disposable SWI/Trealla nodes,
+including all four RPC/promise peer pairings and callback/retry controls. These
+are working-source candidate checks outside the existing baseline pack totals.
+Computed cyclic answers now receive finite representation errors; SWI escaping
+cyclic exceptions do too. Trealla exception copying remains a separate engine
+diagnostic. Actor-message findings, GNU/browser coverage and deployed nodes
+are unchanged. Native T2/T4 and five selected Trealla regression groups also pass.
+
+### Actor write/1 follow-up
+
+The [focused output matrix](reports/2026-10-25-write-output/COVERAGE.md) records
+18/18 identical native SWI/Trealla output selections and two Trealla explicit-stream
+denials passing. Private-source and copied-child helpers use inherited actor
+terminal output. These are repair checks, not additions to baseline pack totals.
+The updated n5 backend also passes its public checks and actual UI examples;
+n3 and the installed engines are unchanged. Character-list SWI mode, GNU and WASM
+were not rerun for this batch.
+
+### Current character-list adoption checkpoint
+
+The [focused current-code matrix](reports/2026-10-25-portable-text-current-checkpoint/COVERAGE.md)
+confirms reader/source/shared-DB and round-trip controls on a temporary character-list
+SWI node: 13/13 required controls pass, alongside 16/16 default controls. Three
+term-output alignment diagnostics and the known model/Jev character-list input
+rejections remain adoption blockers. TEXT passes 40 selections per mode and the
+read-only example checks pass 10 per mode, including intentional guard-rejection
+assertions. Regular n3 is not switched; no new full-profile or deployment claim
+is made.
+
+### Character-list term-output repair
+
+The [term-output follow-up](reports/2026-10-25-portable-term-output/COVERAGE.md)
+resolves the three preceding output diagnostics in the native SWI candidate.
+All 32 focused public selections pass across the two reading configurations;
+TEXT/T1/T2/full native T4 checks also pass per mode. Prompt/format text handling
+and other payload types are retained. Model/Jev native-string boundaries remain
+pending; regular n3 is not switched. These are candidate repair checks outside
+the cumulative baseline pack totals.
+
+### Model/Jev application text follow-up
+
+The [demonstrator verification](../trinity-demonstrator/docs/verification/model-jev-text-2026-10-25/REPORT.md)
+resolves the preceding model/Jev character-list guards in the candidate.
+Mocked request/reply, JSON-type and limit checks pass in both reading modes,
+including public actor and statechart calls. Existing default model/Jev suites
+also pass unchanged. These application checks do not add to shared conformance
+totals or establish browser/Trealla service support. Raw JSON provenance remains
+native JSON; regular n3/n5, engines and the dependency pin are unchanged.
+
+The authorised [local deployment follow-up](../trinity-demonstrator/docs/verification/portable-text-live-restart-2026-10-25/REPORT.md)
+now enables character-list reading on regular n3 and refreshes n5's tested source
+snapshot. All 29 interoperability smoke checks, 10 extra text/service checks and
+both portal text checks pass. This deployment smoke does not increase shared pack
+totals or change baseline requirements. Installed engines and the pin are unchanged;
+the Trealla supplementary-character JSON-escape failure remains a separate diagnostic.
