@@ -565,6 +565,25 @@ native, browser and GNU Boolean regressions and keeps the intermittent native
 ownership finding separate. The [current matrix](CURRENT_COVERAGE.md) records
 the candidate scope; the dependency pin and installed/live runtimes are unchanged.
 
+The [Boolean-only close-out](reports/2026-10-25-boolean-closeout/REPORT.md)
+reruns the focused native/browser/GNU checks and the same 12 shared assertions
+over the current source bases, preserving the separate URI work.
+
+## URI representation compatibility checkpoint
+
+The [URI candidate matrix](reports/2026-10-24-uri-promise-http/COVERAGE.md) retains
+24/24 promise/yield and 8/8 HTTP interoperability selections across native SWI
+and Trealla. Those historical candidates also include the then-pending Boolean repair. Separate
+implementation regressions exercise canonical atom output, supported text forms,
+checked Host:Port shorthand, early errors, no-fetch guarantees and sharing.
+The [report](reports/2026-10-24-uri-promise-http/REPORT.md) records scope and
+preservation. GNU shared baseline and browser real-network coverage are not
+inferred from those implementation tests. Historical reports remain unchanged.
+
+The [URI close-out](reports/2026-10-25-uri-closeout/REPORT.md) repeats the focused
+checks and 24+8 shared assertions over separately committed Boolean sources,
+reconciles Appendix B and the web manual, and preserves deployed runtimes.
+
 ## Portable-text experimental expansion
 
 [Draft 0.2](profiles/portable-text-0.2.md) defines characters as Unicode scalar

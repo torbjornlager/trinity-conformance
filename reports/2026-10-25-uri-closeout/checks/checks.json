@@ -1,0 +1,178 @@
+[
+  {
+    "label": "native",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-s",
+      "tests/tiers/t4_node.pl",
+      "-g",
+      "(run_tests([uri_options,boolean_options,toplevel_synch])->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/swi-prolog-node",
+    "exit_code": 0,
+    "seconds": 3.696,
+    "log": "native.log"
+  },
+  {
+    "label": "legacy",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/swi-default-startup-2026-10-24/runtime/bin/swipl",
+      "-f",
+      "none",
+      "-q",
+      "-s",
+      "tests/tiers/t4_node.pl",
+      "-g",
+      "(run_tests([uri_options,boolean_options,toplevel_synch])->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trinity-demonstrator",
+    "exit_code": 0,
+    "seconds": 3.634,
+    "log": "legacy.log"
+  },
+  {
+    "label": "trealla-uri",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-q",
+      "-g",
+      "(catch((use_module(uri_option_tests),uri_option_tests:run),E,(writeq(E),nl,fail))->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trealla-port",
+    "exit_code": 0,
+    "seconds": 0.293,
+    "log": "trealla-uri.log"
+  },
+  {
+    "label": "trealla-rpc-options",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-q",
+      "-g",
+      "(catch((consult('rpc_option_tests.pl'),rpc_option_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trealla-port",
+    "exit_code": 0,
+    "seconds": 0.077,
+    "log": "trealla-rpc-options.log"
+  },
+  {
+    "label": "trealla-source-policy",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-q",
+      "-g",
+      "(catch((consult('tests.pl'),run_test_group(source_policy)),E,(writeq(E),nl,fail))->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trealla-port",
+    "exit_code": 0,
+    "seconds": 0.186,
+    "log": "trealla-source-policy.log"
+  },
+  {
+    "label": "wasm-uri_input_contract",
+    "command": [
+      "/Users/torbjorn.lager/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "tests/wasm/swi_wasm_contracts.js",
+      "uri_input_contract"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trinity-demonstrator",
+    "exit_code": 0,
+    "seconds": 0.618,
+    "log": "wasm-uri_input_contract.log"
+  },
+  {
+    "label": "wasm-compatibility_uri_input_contract",
+    "command": [
+      "/Users/torbjorn.lager/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "tests/wasm/swi_wasm_contracts.js",
+      "compatibility_uri_input_contract"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trinity-demonstrator",
+    "exit_code": 0,
+    "seconds": 0.246,
+    "log": "wasm-compatibility_uri_input_contract.log"
+  },
+  {
+    "label": "gnu-build",
+    "command": [
+      "/Users/torbjorn.lager/Documents/GitHub/gprolog-port/install/bin/gplc",
+      "--no-top-level",
+      "query.pl",
+      "source.pl",
+      "policy.pl",
+      "prologue.pl",
+      "text.pl",
+      "rpc.pl",
+      "shared_empty.pl",
+      "terms.c",
+      "transport.c",
+      "worker.c",
+      "-L",
+      "-lcurl",
+      "-L",
+      "-lpthread",
+      "-o",
+      "query-worker"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase",
+    "exit_code": 0,
+    "seconds": 1.0,
+    "log": "gnu-build.log"
+  },
+  {
+    "label": "gnu-uri_option_tests",
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "uri_option_tests.py",
+      "--worker",
+      "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase/query-worker"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase",
+    "exit_code": 0,
+    "seconds": 1.171,
+    "log": "gnu-uri_option_tests.log"
+  },
+  {
+    "label": "gnu-boolean_option_tests",
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "boolean_option_tests.py",
+      "--worker",
+      "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase/query-worker"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase",
+    "exit_code": 0,
+    "seconds": 0.939,
+    "log": "gnu-boolean_option_tests.log"
+  },
+  {
+    "label": "gnu-rpc_framing_tests",
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "rpc_framing_tests.py",
+      "--worker",
+      "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase/query-worker"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/gprolog-port/isobase",
+    "exit_code": 0,
+    "seconds": 0.673,
+    "log": "gnu-rpc_framing_tests.log"
+  },
+  {
+    "label": "trealla-live-uri",
+    "command": [
+      "/Users/torbjorn.lager/.local/share/trinity-runtime-tests/trealla-v3.14.10-acceptance-2026-10-24/engine/tpl",
+      "-q",
+      "-g",
+      "use_module(uri_option_tests),(catch(uri_option_tests:live('http://127.0.0.1:51573'),E,(writeq(E),nl,fail))->halt;halt(1))"
+    ],
+    "cwd": "/var/folders/8p/_fp_26cs6zz3_d8pdwtnh_ym0000gp/T/trinity-boolean-uri-closeout-2026-10-25-cvmdj_73/fixtures/uri/trealla-port",
+    "exit_code": 0,
+    "seconds": 0.347,
+    "log": "trealla-live-uri.log"
+  }
+]
