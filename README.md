@@ -635,3 +635,9 @@ adds existing actor/interoperability packs; `--trusted-loopback-transport`
 configures the disposable Trealla peer's explicit loopback trust boundary.
 Source hashes, commands and preservation are recorded. These flags never update
 installed engines, n3/n5 or the demonstrator's dependency pin.
+
+The separate [portable-text migration checkpoint](reports/2026-10-25-portable-text-migration/COVERAGE.md)
+records mode-specific native SWI tests, explicit native-library conversion checks
+and an unedited example audit. Both modes pass full T4 and the focused checks;
+model/Jev string guards remain application migration work. This test-only batch
+does not add to the shared conformance totals or change deployed runtimes.

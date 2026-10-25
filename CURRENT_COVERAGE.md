@@ -226,3 +226,13 @@ The native report keeps four old string/code-list expectations and separate
 T3 diagnostics explicit. GNU/browser migration, native-string extension fidelity,
 invalid encodings and performance remain unmeasured. Earlier E25 observations
 and all historical reports above are preserved rather than replaced.
+
+### Experimental migration-test follow-up
+
+The [native SWI migration checkpoint](reports/2026-10-25-portable-text-migration/COVERAGE.md)
+preserves four exact default contracts and adds four separate character-list
+counterparts. Full T4 passes 1529 parameter selections per mode; TEXT passes
+40 per mode and the read-only example checks pass 10 per mode. These overlapping
+native tests do not add to shared cross-runtime totals. Model/Jev native-string
+service guards remain migration work; T3 diagnostics, GNU/browser adoption,
+invalid encodings and performance remain outside this checkpoint.
