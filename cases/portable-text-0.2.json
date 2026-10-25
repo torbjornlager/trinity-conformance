@@ -1,0 +1,204 @@
+{
+  "suite": "portable-text-0.2",
+  "schema_version": 1,
+  "status": "experimental",
+  "required_advertised_profile": "actor",
+  "protocol_version": 1,
+  "draft_feature": "double_quotes_chars",
+  "predecessor": "portable-text-0.1",
+  "cases": [
+    {
+      "id": "TXT-001",
+      "title": "A double-quoted literal is a list of one-character atoms",
+      "requirement": "literal_semantics",
+      "goal": "member(\"abc\",[[a,b,c]])",
+      "execution": "goal"
+    },
+    {
+      "id": "TXT-002",
+      "title": "The empty double-quoted literal is the empty list",
+      "requirement": "empty_literal",
+      "goal": "member(\"\",[[]])",
+      "execution": "goal"
+    },
+    {
+      "id": "TXT-003",
+      "title": "A non-ASCII literal contains one Unicode character atom rather than UTF-8 bytes",
+      "requirement": "unicode_characters",
+      "goal": "member(\"å\",[['å']])",
+      "execution": "goal"
+    },
+    {
+      "id": "TXT-004",
+      "title": "Double-quoted terminals retain DCG list semantics",
+      "requirement": "dcg_terminals",
+      "goal": "phrase((\"ab\",\"cd\"),\"abcd\")",
+      "execution": "goal"
+    },
+    {
+      "id": "TXT-005",
+      "title": "Source loaded into a session uses character-list semantics",
+      "requirement": "loaded_source",
+      "source": "portable_literal :- append(\"ab\",[],[a,b]).",
+      "execution": "source_text",
+      "goal": "portable_literal"
+    },
+    {
+      "id": "TXT-006",
+      "title": "A serialized text binding can be resubmitted with the same list meaning",
+      "requirement": "term_round_trip",
+      "goal": "member(Text,[\"ab\"])",
+      "execution": "round_trip",
+      "expected": "[a,b]"
+    },
+    {
+      "id": "TXT-007",
+      "title": "Double-quoted text supports ordinary relational list operations",
+      "requirement": "list_operations",
+      "goal": "append(\"ab\",[c,d],\"abcd\")",
+      "execution": "goal"
+    },
+    {
+      "id": "TXT-008",
+      "title": "A supplementary Unicode scalar is one character atom",
+      "execution": "goal",
+      "requirement": "unicode_scalar",
+      "goal": "\"😀\"==['😀']"
+    },
+    {
+      "id": "TXT-009",
+      "title": "Combining marks are separate character atoms",
+      "execution": "goal",
+      "requirement": "combining_sequence",
+      "goal": "\"é\"==[e,'́']"
+    },
+    {
+      "id": "TXT-010",
+      "title": "Reading preserves normalization distinctions",
+      "execution": "goal",
+      "requirement": "no_normalization",
+      "goal": "\"é\"==['é'],\"é\"==[e,'́'],\"é\"\\==\"é\""
+    },
+    {
+      "id": "TXT-011",
+      "title": "Single-quoted text remains an atom",
+      "execution": "goal",
+      "requirement": "atom_distinction",
+      "goal": "atom('abc'),'abc'\\==[a,b,c]"
+    },
+    {
+      "id": "TXT-012",
+      "title": "Quoted text escapes preserve quotes and backslashes",
+      "execution": "goal",
+      "requirement": "escaped_characters",
+      "goal": "\"a\\\"\\\\b\"==['a','\"','\\\\','b']"
+    },
+    {
+      "id": "TXT-013",
+      "title": "Quoted clauses in spawn options use the option reader semantics",
+      "execution": "source_list",
+      "requirement": "option_reader",
+      "clauses": "[pt_option(\"ab\")]",
+      "goal": "pt_option(T),T==[a,b]"
+    },
+    {
+      "id": "TXT-014",
+      "title": "Constructed src_list terms preserve numeric lists and variable sharing",
+      "execution": "goal",
+      "requirement": "constructed_terms",
+      "goal": "N1 is 96+1,N2 is 97+1,Clauses=[pt_codes([N1,N2]),pt_chars([a,b]),pt_pair(S,S)],self(Parent),spawn((A is 96+1,B is 97+1,pt_codes(C),C==[A,B],pt_chars(T),T==[a,b],pt_pair(X,Y),var(X),X==Y,Parent!pt_terms_ok),P,[src_list(Clauses),monitor(true)]),var(S),receive({pt_terms_ok->true},[timeout(2),on_timeout(throw(missing_term_preservation))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_term_child_down))])"
+    },
+    {
+      "id": "TXT-015",
+      "title": "Supplied DCG source compiles character terminals",
+      "execution": "source_text",
+      "requirement": "dcg_source",
+      "source": "pt_dcg --> \"ab\".",
+      "goal": "phrase(pt_dcg,[a,b])"
+    },
+    {
+      "id": "TXT-016",
+      "title": "A private actor source module reads double quotes consistently",
+      "execution": "goal",
+      "requirement": "private_source",
+      "goal": "self(S),spawn((pt_private(T),T==[a,b],S!pt_private_ok),P,[src_text('pt_private(\"ab\").'),monitor(true)]),receive({pt_private_ok->true},[timeout(2),on_timeout(throw(missing_private_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_private_down))])"
+    },
+    {
+      "id": "TXT-017",
+      "title": "Copied predicates preserve text through generated source",
+      "execution": "source_text",
+      "requirement": "copied_source",
+      "source": "pt_copied(\"ab\").",
+      "goal": "self(S),spawn((pt_copied(T),T==[a,b],S!pt_copy_ok),P,[src_predicates([pt_copied/1]),monitor(true)]),receive({pt_copy_ok->true},[timeout(2),on_timeout(throw(missing_copied_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_down))])"
+    },
+    {
+      "id": "TXT-018",
+      "title": "URI-supplied source uses the same literal semantics",
+      "execution": "source_uri",
+      "requirement": "uri_source",
+      "fixture": "portable-text.pl",
+      "goal": "pt_uri(T),T==[a,b]"
+    },
+    {
+      "id": "TXT-019",
+      "title": "Toplevel input replies use character-list literal semantics",
+      "execution": "input",
+      "requirement": "input_reader",
+      "reply": "\"ab\"",
+      "expected": "[a,b]"
+    },
+    {
+      "id": "TXT-020",
+      "title": "Unicode text survives serialized answer resubmission",
+      "execution": "round_trip",
+      "requirement": "unicode_round_trip",
+      "goal": "Text=\"é😀\"",
+      "expected": "['é','😀']"
+    },
+    {
+      "id": "TXT-021",
+      "title": "Empty text survives serialized answer resubmission",
+      "execution": "round_trip",
+      "requirement": "empty_round_trip",
+      "goal": "Text=\"\"",
+      "expected": "[]"
+    },
+    {
+      "id": "TXT-022",
+      "title": "Quotes and backslashes survive serialized answer resubmission",
+      "execution": "round_trip",
+      "requirement": "escape_round_trip",
+      "goal": "Text=\"a\\\"\\\\b\"",
+      "expected": "['a','\"','\\\\','b']"
+    },
+    {
+      "id": "TXT-023",
+      "title": "A remote HTTP peer reads its supplied source consistently",
+      "execution": "peer_goal",
+      "requirement": "remote_source",
+      "goal": "rpc(__PEER__,(pt_remote(T),T==[a,b]),[src_text('pt_remote(\"ab\").')]),T==[a,b]"
+    },
+    {
+      "id": "TXT-024",
+      "title": "Remote answers preserve text code lists and variable sharing",
+      "execution": "peer_goal",
+      "requirement": "remote_terms",
+      "goal": "N1 is 96+1,N2 is 97+1,Codes=[N1,N2],rpc(__PEER__,(T=[a,b],C=Codes,A is 96+1,B is 97+1,C==[A,B],Pair=pair(V,V))),T==[a,b],C==[N1,N2],Pair=pair(X,Y),var(X),X==Y,var(V)"
+    },
+    {
+      "id": "TXT-025",
+      "title": "A joined emoji consists of scalar values rather than one grapheme",
+      "execution": "goal",
+      "requirement": "grapheme_distinction",
+      "goal": "\"👩‍💻\"==['👩','‍','💻']"
+    },
+    {
+      "id": "TXT-026",
+      "title": "Unicode input replies retain supplementary scalar characters",
+      "execution": "input",
+      "requirement": "unicode_input",
+      "reply": "\"é😀\"",
+      "expected": "['é','😀']"
+    }
+  ]
+}

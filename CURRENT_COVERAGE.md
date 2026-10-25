@@ -1,17 +1,19 @@
 # Current Web Prolog conformance coverage
 
-Consolidated on **24 October 2026**, from committed evidence through
-`a51e269` in trinity-conformance. This is the latest recorded result for each
+Consolidated on **25 October 2026**, from committed evidence through
+`cbbd2eb` in trinity-conformance plus the E25 experimental-text follow-up. This is the latest recorded result for each
 selected area, **not a single rerun of today's runtime heads or deployed nodes**.
 All selected required and supporting assertions below pass in their cited runs.
 Diagnostic failures, incomplete observations and experimental differences remain
 separate. Passing a finite pack does not certify the whole Web Prolog language.
 
-The matrix uses committed reports only. Uncommitted acceptance staging material
-is excluded; the most recent committed broad native checkpoint is 23 October.
-Later narrow 24 October results supersede only their corresponding selections.
-This documentation consolidation executes no runtime tests and changes no
-runtime, dependency pin, installed engine or live n3/n5 process.
+The matrix uses committed reports and the E25 experimental-text follow-up.
+Unrelated uncommitted acceptance staging material is excluded; the most recent
+committed broad native checkpoint is 23 October. Later narrow results supersede
+only their corresponding selections. E25 runs the new experimental pack on
+disposable archived sources with unchanged readers; it supersedes no
+required-profile result. This consolidation changes no runtime, dependency pin,
+installed engine or live n3/n5 process.
 
 ## Reading the evidence
 
@@ -30,6 +32,7 @@ packs have overlapping subject matter and different tested configurations.
 | P24: promise callback follow-up, 24 Oct | SWI native source pin f316e65; Trealla 3.14.10 with callback-context candidate over fe94735. Separate SWI 10.1.18 core plus HTTP shutdown candidate. | [Provenance](reports/2026-10-24-promise-callback-context/provenance.json), [report](reports/2026-10-24-promise-callback-context/REPORT.md) |
 | L24: six local packs, 24 Oct | SWI pin f316e65; Trealla source d4e96a3 with unmodified 3.14.10 and matching library. Separate verified SWI 10.1.18 core plus HTTP shutdown candidate. | Each linked pack has its own provenance.json and REPORT.md. |
 | S24: spawn/admission follow-up, 24 Oct | SWI working-tree repair over 8c90a4d, subsequently committed as 786737f; Trealla source 7220bb5 with unmodified 3.14.10. Pin f316e65 was not promoted. | [Provenance](reports/2026-10-24-swi-spawn-source-admission-probes/provenance.json), [report](reports/2026-10-24-swi-spawn-source-admission-probes/REPORT.md) |
+| E25: experimental portable-text 0.2, 25 Oct | Archived committed SWI 786737f and Trealla 7220bb5; pending runtime changes excluded. Same separate engines, unchanged reader defaults, opposite implementation as HTTP peer. Not a deployed or portable-text-configured rerun. | [Provenance](reports/2026-10-25-portable-text-0.2/provenance.json), [matrix](reports/2026-10-25-portable-text-0.2/COVERAGE.md) |
 
 Source revisions, working-tree patches, binary/library hashes and fixture policy
 are part of the identity; version strings alone are insufficient. L24 denotes
@@ -138,11 +141,18 @@ older diagnostic into a passing result.
 | isobase-diagnostics | [6 observed](reports/2026-10-23-receive-handoff-acceptance/swi-isobase-diagnostics.json) | [5 observed, 1 diagnostic_error](reports/2026-10-23-receive-handoff-acceptance/trealla-isobase-diagnostics.json) | [6 observed](reports/2026-10-21-gnu-request-framing/gnu-isobase-diagnostics.json) | B23 / G21 |
 | supervisor-diagnostics | [4 pass, 1 fail](reports/2026-10-23-receive-handoff-acceptance/swi-supervisor-diagnostics.json) | [5 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-supervisor-diagnostics.json) | outside selected scope | B23 |
 | worker-diagnostics | [1 pass](reports/2026-10-23-receive-handoff-acceptance/swi-worker-diagnostics.json) | [1 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-worker-diagnostics.json) | outside selected scope | B23 |
-| portable-text | [7 fail](reports/2026-10-23-receive-handoff-acceptance/swi-portable-text.json) | [7 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-portable-text.json) | outside selected scope | B23 |
+| portable-text 0.1 (retained history) | [7 fail](reports/2026-10-23-receive-handoff-acceptance/swi-portable-text.json) | [7 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-portable-text.json) | outside selected scope | B23 |
+| portable-text 0.2 (experimental caller/peer pairs) | [4 pass, 22 fail](reports/2026-10-25-portable-text-0.2/swi-portable-text.json), Trealla peer | [20 pass, 6 fail](reports/2026-10-25-portable-text-0.2/trealla-portable-text.json), SWI peer | unmeasured | E25 |
 | admission-paths | [10 observed](reports/2026-10-24-swi-spawn-source-admission-probes/swi-admission-paths.json) | [10 observed](reports/2026-10-24-swi-spawn-source-admission-probes/trealla-admission-paths.json) | outside selected scope | S24 |
 
-Portable Text is an experimental character-list contract. SWI's seven failures
-remain failures against that experiment, not required ACTOR failures. Six
+Portable Text is an experimental character-list contract. Draft 0.2 clarifies
+Unicode scalar values and constructed `src_list/1` terms. Its new observations
+include separate Unicode-reader, admission and DCG-sandbox blocks; the
+[report](reports/2026-10-25-portable-text-0.2/REPORT.md) explains why peer failures
+and blocked boundaries do not establish a local text defect. Neither native
+configuration passes the full experiment. GNU and both browser engines are
+unmeasured for 0.2. Historical 0.1 results remain available and are not added to
+0.2 totals. Experimental failures are not required ACTOR failures. Six
 ISOBASE observations likewise do not mean six normative passes: they record
 zero-limit, numeric, text, malformed-input and framing boundaries.
 

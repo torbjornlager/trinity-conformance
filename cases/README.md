@@ -12,6 +12,15 @@ and serialized-term round trips. The initial runner reaches those semantics
 through an ACTOR session; this does not make the draft an implicit requirement
 of every node already advertising `actor`.
 
+[`portable-text-0.2.json`](portable-text-0.2.json) expands that experiment to 26
+cases. It specifies Unicode scalar values without normalization and distinguishes
+textual source reading from preservation of constructed `src_list/1` terms.
+Additional boundaries include option and input readers, URI/private/copied/DCG
+source, serialization and HTTP peers. See [draft 0.2](../profiles/portable-text-0.2.md)
+for coverage limits and [the runner](../runner/portable_text.py) for the public
+protocol procedures. A full run requires explicit `--peer` and `--source-base`
+fixtures; a selected local subset does not. Version 0.1 remains unchanged.
+
 The remaining extraction backlog is grouped by the minimum advertised
 profile.
 

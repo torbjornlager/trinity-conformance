@@ -1091,6 +1091,8 @@ def main() -> int:
     parser.add_argument("--classifications", type=Path)
     parser.add_argument("--report", type=Path, help="write a JSON result report")
     parser.add_argument("--candidate", default="external")
+    parser.add_argument("--peer", help="HTTP peer for selected portable-text 0.2 remote cases")
+    parser.add_argument("--source-base", help="HTTP fixture base for selected portable-text 0.2 URI cases")
     args = parser.parse_args()
 
     token = args.token
@@ -1107,6 +1109,11 @@ def main() -> int:
     unknown = selected - known
     if unknown:
         parser.error("unknown case ID(s): " + ", ".join(sorted(unknown)))
+
+    if manifest.get("suite") == "portable-text-0.2":
+        import portable_text
+        try:portable_text.validate(manifest, selected, args.peer, args.source_base)
+        except ValueError as error:parser.error(str(error))
 
     for header in args.header:
         if ":" not in header or "\r" in header or "\n" in header:
@@ -1129,8 +1136,11 @@ def main() -> int:
                           detail=f"requires advertised profile {required_profile}")
         else:
             try:
-                function = CASE_FUNCTIONS[case_id]
-                function(candidate)
+                if manifest.get("suite") == "portable-text-0.2":
+                    portable_text.execute(candidate, metadata, args.peer, args.source_base)
+                else:
+                    function = CASE_FUNCTIONS[case_id]
+                    function(candidate)
                 result.update(status="pass",
                               duration_ms=round((time.monotonic() - before) * 1000))
             except Exception as error:  # each case must produce a report row

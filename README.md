@@ -555,3 +555,37 @@ pin. A full immutable 40-character SHA is required. Omitting this option keeps
 the previous pinned-base candidate rule; omitting candidate mode keeps the strict
 clean-pin checker. Working-tree hashes, selected base, unchanged pin and fixture
 preservation checks are recorded. This is test-only selection, not a pin update.
+
+## Portable-text experimental expansion
+
+[Draft 0.2](profiles/portable-text-0.2.md) defines characters as Unicode scalar
+values, preserves normalization distinctions, and clarifies that `src_list/1`
+preserves constructed terms rather than rereading or converting their data.
+Its [26 cases](cases/portable-text-0.2.json) extend 0.1 to option/input readers,
+private/copied/DCG/URI source, Unicode round trips and HTTP peer assertions.
+The draft remains opt-in; it adds no requirement to existing node profiles.
+Version 0.1 and all historical reports are retained.
+
+Run against explicitly selected test fixtures, with unchanged reader defaults:
+
+```sh
+python3 runner/run.py --manifest cases/portable-text-0.2.json \
+  --candidate candidate --ws-url ws://127.0.0.1:PORT/ws \
+  --advertised-profile actor --peer http://127.0.0.1:PEER_PORT \
+  --source-base http://127.0.0.1:SOURCE_PORT --report /fresh/path/text.json
+```
+
+The source server must serve `fixtures/portable-text/portable-text.pl` at
+`SOURCE_BASE/portable-text.pl`, and its origin/address must be allowed by the
+disposable nodes' source policy. These permissions are fixture configuration,
+not production changes. `adapters/local_portable_text.py` automates disposable
+native fixtures from each source repository's committed HEAD using the same
+`--swipl`, `--tpl`, `--swi-root`, `--trealla-root`, `--demonstrator-root` and
+`--output` arguments as the promise adapter. It excludes pending runtime edits,
+records exact archived sources and preservation checks, and stops its fixtures.
+It changes no reader flags. Use `--case TXT-001` (repeatable) with `runner/run.py`
+for a local selection that does not need URI or peer fixtures.
+
+Runner regressions run with `python3 -m unittest discover -s runner -p 'test_*.py'`.
+Native observations and remaining untested surfaces are recorded in the
+[0.2 coverage matrix](reports/2026-10-25-portable-text-0.2/COVERAGE.md).
