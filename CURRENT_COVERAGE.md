@@ -1,19 +1,20 @@
 # Current Web Prolog conformance coverage
 
 Consolidated on **25 October 2026**, from committed evidence through
-`cbbd2eb` in trinity-conformance plus the E25 experimental-text follow-up. This is the latest recorded result for each
+`cbbd2eb` in trinity-conformance plus the explicit Boolean and experimental-text follow-ups
+below. This is the latest recorded result for each
 selected area, **not a single rerun of today's runtime heads or deployed nodes**.
 All selected required and supporting assertions below pass in their cited runs.
 Diagnostic failures, incomplete observations and experimental differences remain
 separate. Passing a finite pack does not certify the whole Web Prolog language.
 
-The matrix uses committed reports and the E25 experimental-text follow-up.
-Unrelated uncommitted acceptance staging material is excluded; the most recent
-committed broad native checkpoint is 23 October. Later narrow results supersede
-only their corresponding selections. E25 runs the new experimental pack on
-disposable archived sources with unchanged readers; it supersedes no
-required-profile result. This consolidation changes no runtime, dependency pin,
-installed engine or live n3/n5 process.
+The matrix uses committed reports plus the explicitly labelled B24 Boolean
+and E25 experimental-text follow-ups. Unrelated uncommitted acceptance staging material is
+excluded; the most recent committed broad native checkpoint is 23 October.
+Later narrow results supersede only their corresponding selections. E25 runs
+the new experimental pack on disposable archived sources with unchanged readers;
+it supersedes no required-profile result. This consolidation changes no runtime,
+dependency pin, installed engine or live n3/n5 process.
 
 ## Reading the evidence
 
@@ -32,12 +33,14 @@ packs have overlapping subject matter and different tested configurations.
 | P24: promise callback follow-up, 24 Oct | SWI native source pin f316e65; Trealla 3.14.10 with callback-context candidate over fe94735. Separate SWI 10.1.18 core plus HTTP shutdown candidate. | [Provenance](reports/2026-10-24-promise-callback-context/provenance.json), [report](reports/2026-10-24-promise-callback-context/REPORT.md) |
 | L24: six local packs, 24 Oct | SWI pin f316e65; Trealla source d4e96a3 with unmodified 3.14.10 and matching library. Separate verified SWI 10.1.18 core plus HTTP shutdown candidate. | Each linked pack has its own provenance.json and REPORT.md. |
 | S24: spawn/admission follow-up, 24 Oct | SWI working-tree repair over 8c90a4d, subsequently committed as 786737f; Trealla source 7220bb5 with unmodified 3.14.10. Pin f316e65 was not promoted. | [Provenance](reports/2026-10-24-swi-spawn-source-admission-probes/provenance.json), [report](reports/2026-10-24-swi-spawn-source-admission-probes/REPORT.md) |
+| B24: Boolean compatibility follow-up, 24 Oct | SWI Boolean working-tree repair over 786737f; Trealla Boolean working-tree repair over 7220bb5. Separate verified SWI 10.1.18 and unmodified Trealla 3.14.10; pin unchanged. Shared pack is unchanged. | [Provenance](reports/2026-10-24-boolean-toplevel-waits/provenance.json), [report](reports/2026-10-24-boolean-toplevel-waits/REPORT.md) |
 | E25: experimental portable-text 0.2, 25 Oct | Archived committed SWI 786737f and Trealla 7220bb5; pending runtime changes excluded. Same separate engines, unchanged reader defaults, opposite implementation as HTTP peer. Not a deployed or portable-text-configured rerun. | [Provenance](reports/2026-10-25-portable-text-0.2/provenance.json), [matrix](reports/2026-10-25-portable-text-0.2/COVERAGE.md) |
 
 Source revisions, working-tree patches, binary/library hashes and fixture policy
 are part of the identity; version strings alone are insufficient. L24 denotes
 links/monitors, server waits, selective receive, toplevel waits, local naming and
-copying/isolation. Creation and child-spec validation use the later S24 runs.
+copying/isolation. Toplevel waits now use the later B24 follow-up; creation and
+child-spec validation use S24.
 
 L24 per-run provenance: [links/monitors](reports/2026-10-24-links-monitors/provenance.json),
 [server waits](reports/2026-10-24-server-waits/provenance.json),
@@ -101,7 +104,7 @@ outside profile; neither WASM mode has a shared-pack result for these rows.
 | links-monitors 0.1 | [6/6 pass](reports/2026-10-24-links-monitors/swi-links-monitors.json) | [6/6 pass](reports/2026-10-24-links-monitors/trealla-links-monitors.json) | L24 |
 | server-waits 0.1 | [6/6 pass](reports/2026-10-24-server-waits/swi-server-waits.json) | [6/6 pass](reports/2026-10-24-server-waits/trealla-server-waits.json) | L24 |
 | selective-receive 0.1 | [6/6 pass](reports/2026-10-24-selective-receive/swi-selective-receive.json) | [6/6 pass](reports/2026-10-24-selective-receive/trealla-selective-receive.json) | L24 |
-| toplevel-waits 0.1 | [6/6 pass](reports/2026-10-24-toplevel-waits/swi-toplevel-waits.json) | [6/6 pass](reports/2026-10-24-toplevel-waits/trealla-toplevel-waits.json) | L24 |
+| toplevel-waits 0.1 | [6/6 pass](reports/2026-10-24-boolean-toplevel-waits/swi-toplevel-waits.json) | [6/6 pass](reports/2026-10-24-boolean-toplevel-waits/trealla-toplevel-waits.json) | B24 |
 | local-naming 0.1 | [6/6 pass](reports/2026-10-24-local-naming/swi-local-naming.json) | [6/6 pass](reports/2026-10-24-local-naming/trealla-local-naming.json) | L24 |
 | copying-isolation 0.1 | [6/6 pass](reports/2026-10-24-copying-isolation/swi-copying-isolation.json) | [6/6 pass](reports/2026-10-24-copying-isolation/trealla-copying-isolation.json) | L24 |
 | creation-validation 0.1 | [6/6 pass](reports/2026-10-24-swi-spawn-source-creation-validation/swi-creation-validation.json) | [6/6 pass](reports/2026-10-24-swi-spawn-source-creation-validation/trealla-creation-validation.json) | S24 |
@@ -159,6 +162,7 @@ zero-limit, numeric, text, malformed-input and framing boundaries.
 | Finding | Latest evidence and current qualification |
 |---|---|
 | Literal versus runtime validation | [S24 admission matrix](reports/2026-10-24-swi-spawn-source-admission-probes/DIAGNOSTICS.md): SWI AP-003/AP-009 fail before entry; Trealla enters and catches the validation errors. Both catch corresponding runtime errors. This observable difference remains explicit. |
+| Boolean types | [B24 compatibility](reports/2026-10-24-boolean-toplevel-waits/REPORT.md) remains 12/12; it adds no shared cases. Separate native/browser regressions reject numeric/string once values before dispatch; isolated GNU regressions also reject pending values and invalid later duplicates. Necessary HTTP/JSON decoding remains transport-only. The native development ownership failure remains separate. |
 | URI fetch before invalid options | The source-fetch ordering part is repaired: AP-009 now reports spawn_option rather than a source socket error. SWI's [34 focused checks and full T4](../swi-prolog-node/docs/verification/spawn-source-validation-2026-10-24/REPORT.md) also check zero source requests, sharing and sandbox preservation. These are implementation regressions, not extra shared passes or a pin update. |
 | Runtime child-spec admission and binding | SV-001–006 now pass on both runtimes; AP-002/AP-004/AP-006/AP-008 enter as expected. These supersede the corresponding failed child-spec and admission selections. The exact older nested-supervisor SCD-001 probe was not rerun in S24: its B23 SWI failure remains recorded, with current-head status unverified. |
 | Earlier literal creation probes | [Initial CV diagnostics](reports/2026-10-24-creation-validation-initial/REPORT.md) retain outer-list/value errors and Trealla logical failure. AP-009 and native regressions address the source-order subfinding; the complete original literal manifest has not been rerun unchanged. Runtime CV passes are not a waiver. |

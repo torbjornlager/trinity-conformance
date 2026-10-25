@@ -556,6 +556,15 @@ the previous pinned-base candidate rule; omitting candidate mode keeps the stric
 clean-pin checker. Working-tree hashes, selected base, unchanged pin and fixture
 preservation checks are recorded. This is test-only selection, not a pin update.
 
+## Boolean option compatibility checkpoint
+
+The [Boolean candidate follow-up](reports/2026-10-24-boolean-toplevel-waits/COVERAGE.md)
+retains 12/12 unchanged toplevel-wait assertions on disposable SWI/Trealla nodes.
+Its [report](reports/2026-10-24-boolean-toplevel-waits/REPORT.md) links the separate
+native, browser and GNU Boolean regressions and keeps the intermittent native
+ownership finding separate. The [current matrix](CURRENT_COVERAGE.md) records
+the candidate scope; the dependency pin and installed/live runtimes are unchanged.
+
 ## Portable-text experimental expansion
 
 [Draft 0.2](profiles/portable-text-0.2.md) defines characters as Unicode scalar
