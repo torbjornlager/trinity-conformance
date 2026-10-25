@@ -617,3 +617,21 @@ for a local selection that does not need URI or peer fixtures.
 Runner regressions run with `python3 -m unittest discover -s runner -p 'test_*.py'`.
 Native observations and remaining untested surfaces are recorded in the
 [0.2 coverage matrix](reports/2026-10-25-portable-text-0.2/COVERAGE.md).
+
+## Isolated SWI portable-text candidate
+
+The [configured experiment](reports/2026-10-25-swi-portable-text-final-r2/COVERAGE.md)
+passes all 26 text cases in each direction with the separate Trealla Unicode
+candidate, plus 90 shared actor/interoperability selections. Ordinary-reader
+and unmodified-Trealla controls remain separate. The broader experimental SWI
+native suites retain explicit native-string/code-list expectations and separate
+T3 diagnostics; this is not a deployment or language-profile adoption claim.
+
+`adapters/local_portable_text.py` defaults to archived committed sources and
+unchanged readers. Explicit `--swi-working-tree-candidate --swi-portable-text`
+flags overlay only SWI `prolog/` working files in the disposable archive and
+select the configuration only in that owned SWI process. `--shared-checks`
+adds existing actor/interoperability packs; `--trusted-loopback-transport`
+configures the disposable Trealla peer's explicit loopback trust boundary.
+Source hashes, commands and preservation are recorded. These flags never update
+installed engines, n3/n5 or the demonstrator's dependency pin.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Observe experimental text semantics on disposable, committed native sources.
 
-Reader defaults are deliberately unchanged. Experimental failures are results,
-not reasons to modify runtime sources or deployed configurations.
+Defaults observe unchanged readers. Explicit candidate flags select an isolated
+SWI working-tree configuration; they never modify installed or live nodes.
 """
 import argparse
 from functools import partial
@@ -25,6 +25,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['swipl', 'tpl', 'swi-root', 'trealla-root', 'demonstrator-root', 'output']:
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--swi-working-tree-candidate', action='store_true',
+                        help='overlay SWI prolog/ working files in the disposable archive')
+    parser.add_argument('--swi-portable-text', action='store_true',
+                        help='select experimental character-list readers in the disposable SWI process')
+    parser.add_argument('--shared-checks', action='store_true',
+                        help='also run existing ACTOR, copying, worker, promise and transport packs')
+    parser.add_argument('--trusted-loopback-transport', action='store_true',
+                        help='explicitly trust only loopback proxy headers in the disposable Trealla peer')
     args = parser.parse_args()
     for key in ['swipl', 'tpl', 'swi_root', 'trealla_root', 'demonstrator_root']:
         # Retain launcher paths: resolving the SWI symlink can change home lookup.
@@ -43,9 +51,14 @@ def main():
               ROOT/'runner/run.py', ROOT/'runner/portable_text.py',
               ROOT/'fixtures/portable-text/portable-text.pl', Path(__file__),
               ROOT/'adapters/local_promises.py']
+    if args.shared_checks:
+        inputs += [ROOT/'runner/baseline.py'] + [ROOT/'cases'/(name+'.json') for name in
+            ['actor-core-0.1','language-actor-0.1','copying-isolation-0.1','actor-workers-0.1',
+             'promise-yield-0.1','toplevel-waits-0.1','interop-actor-0.1','interop-http-0.1']]
     provenance = {'runs': [], 'sources': {}, 'nodes': {},
                   'inputs': {str(p.relative_to(ROOT)): sha(p) for p in inputs},
-                  'configuration': 'ACTOR/blacklist, unchanged reader defaults; experimental observation',
+                  'configuration': ('ACTOR/blacklist; explicit isolated SWI portable-text-0.2 readers'
+                      if args.swi_portable_text else 'ACTOR/blacklist; unchanged reader defaults'),
                   'engine_hashes': before['engines']}
     requests = []
     class Handler(SimpleHTTPRequestHandler):
@@ -60,7 +73,7 @@ def main():
     logs = []
     env = dict(os.environ, TPL_LIBRARY_PATH=str(args.tpl.parent/'library'))
     for key in ['SWI_HOME_DIR', 'SWIPL_HOME_DIR', 'WP_CONFIG_FILE', 'WP_ASSET_ROOT',
-                'WP_WASM_SOURCE_DIR', 'WP_NATIVE_STATE', 'WP_NATIVE_MODE']:
+                'WP_WASM_SOURCE_DIR', 'WP_NATIVE_STATE', 'WP_NATIVE_MODE', 'WP_EXPERIMENTAL_TEXT']:
         env.pop(key, None)
     try:
         with tempfile.TemporaryDirectory(prefix='portable-text-') as temporary:
@@ -75,6 +88,13 @@ def main():
                 provenance['sources'][name] = dict(revision=revision,
                     archive_sha256=sha(archive), checkout=str(checkout),
                     excluded_working_tree_status=git(root, 'status', '--short'))
+                if name == 'swi' and args.swi_working_tree_candidate:
+                    import shutil
+                    shutil.copytree(root/'prolog', checkout/'prolog', dirs_exist_ok=True)
+                    provenance['sources'][name]['overlay'] = {
+                        str(p.relative_to(root)): sha(p) for p in sorted((root/'prolog').rglob('*.pl'))}
+                if name == 'swi' and args.swi_portable_text and not (checkout/'prolog/web_prolog/text_config.pl').is_file():
+                    raise RuntimeError('selected SWI archive lacks experimental text configuration; use the explicit candidate overlay')
                 port = free_port()
                 url = 'http://127.0.0.1:'+str(port)
                 policy = 'load_uri_allowed_origins(['+quote(source_base)+'])'
@@ -87,14 +107,18 @@ def main():
                         'thread_get_message(stop)')
                     command = [str(args.swipl), '-f', 'none', '-q', '-g', goal]
                 else:
+                    trust = "trusted_proxy_ranges(['127.0.0.1'])," if args.trusted_loopback_transport else ''
                     goal = ("use_module(web_prolog),use_module(distribution),"
                         f"web_prolog:web_prolog_node({port},[bind_address('127.0.0.1'),node_url({quote(url)}),"
-                        f"profile(actor),sandbox(blacklist),auth(open),{policy},"
+                        f"profile(actor),sandbox(blacklist),auth(open),{trust}{policy},"
                         "load_uri_allowed_ip_ranges(['127.0.0.1'])]),thread_get_message(stop)")
                     command = [str(args.tpl), '-g', goal]
                 log = (output/(name+'-node.log')).open('w')
                 logs.append(log)
-                proc = subprocess.Popen(command, cwd=checkout, env=env,
+                node_env = dict(env)
+                if name == 'swi' and args.swi_portable_text:
+                    node_env['WP_EXPERIMENTAL_TEXT'] = 'portable-text-0.2'
+                proc = subprocess.Popen(command, cwd=checkout, env=node_env,
                     stdout=log, stderr=log, start_new_session=True)
                 processes.append(proc)
                 provenance['nodes'][name] = dict(url=url, pid=proc.pid, command=command)
@@ -104,6 +128,8 @@ def main():
                         with socket.create_connection(('127.0.0.1', port), timeout=.1): break
                     except OSError: time.sleep(.05)
                 else: raise TimeoutError(name+' startup')
+            provenance['experimental_swi_configuration'] = args.swi_portable_text
+            provenance['trusted_loopback_transport'] = args.trusted_loopback_transport
             for caller, peer in [('swi', 'trealla'), ('trealla', 'swi')]:
                 label = caller+'-portable-text'
                 command = [sys.executable, 'runner/run.py', '--manifest', 'cases/portable-text-0.2.json',
@@ -117,6 +143,29 @@ def main():
                 provenance['runs'].append(dict(label=label, report=label+'.json',
                     exit_code=result.returncode, command=command, peer=peer))
                 print(label, result.returncode, flush=True)
+                if args.shared_checks:
+                    for pack in ['actor-core-0.1', 'language-actor-0.1', 'copying-isolation-0.1',
+                                 'actor-workers-0.1', 'promise-yield-0.1', 'toplevel-waits-0.1',
+                                 'interop-actor-0.1', 'interop-http-0.1']:
+                        manifest = ROOT/'cases'/(pack+'.json')
+                        if not manifest.exists(): raise FileNotFoundError(manifest)
+                        extra = caller+'-'+pack
+                        cmd = [sys.executable, 'runner/run.py', '--manifest', str(manifest),
+                            '--candidate', caller, '--ws-url', provenance['nodes'][caller]['url'].replace('http:', 'ws:')+'/ws',
+                            '--advertised-profile', 'actor', '--timeout', '5',
+                            '--peer', provenance['nodes'][peer]['url'], '--report', str(output/(extra+'.json'))]
+                        if 'required_advertised_profile' not in json.loads(manifest.read_text()):
+                            endpoint = provenance['nodes'][caller]['url']
+                            if pack != 'interop-http-0.1': endpoint = endpoint.replace('http:', 'ws:')+'/ws'
+                            cmd = [sys.executable, 'runner/baseline.py', '--manifest', str(manifest),
+                                '--candidate', caller, '--url', endpoint, '--profile', 'actor', '--timeout', '5',
+                                '--peer', provenance['nodes'][peer]['url'], '--report', str(output/(extra+'.json'))]
+                        with (output/(extra+'.log')).open('w') as log:
+                            run = subprocess.run(cmd, cwd=ROOT, env=env, stdout=log,
+                                stderr=subprocess.STDOUT, timeout=240)
+                        provenance['runs'].append(dict(label=extra, report=extra+'.json',
+                            exit_code=run.returncode, command=cmd, peer=peer))
+                        print(extra, run.returncode, flush=True)
     finally:
         for proc in reversed(processes):
             if proc.poll() is None:

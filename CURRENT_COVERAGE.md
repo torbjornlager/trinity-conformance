@@ -213,3 +213,16 @@ cells. A newer date on an unrelated run is insufficient. Keep an explicit
 A release-wide statement requires a fresh full run of the intended exact sources
 and engines. [Runner instructions](docs/BASELINE_RUNNER.md) and the
 [baseline difference register](docs/BASELINE_DIFFERENCES.md) retain their scopes.
+
+## Experimental SWI portable-text configuration follow-up (25 October)
+
+The [isolated configuration matrix](reports/2026-10-25-swi-portable-text-final-r2/COVERAGE.md)
+adds **26/26 text cases per direction** with a separate Trealla JSON candidate,
+and **90/90 shared ACTOR/interoperability selections**. The ordinary-reader
+control remains 4/26 (SWI) and 25/26 (Trealla with that SWI peer); an unmodified
+Trealla v3.14.10 control retains four supplementary-Unicode failures. All are
+explicit disposable working-source configurations, not new deployed-head claims.
+The native report keeps four old string/code-list expectations and separate
+T3 diagnostics explicit. GNU/browser migration, native-string extension fidelity,
+invalid encodings and performance remain unmeasured. Earlier E25 observations
+and all historical reports above are preserved rather than replaced.
