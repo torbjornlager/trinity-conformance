@@ -13,6 +13,11 @@ language modes. It records tested revisions/dates, unresolved diagnostics and
 unmeasured surfaces. This is an evidence roll-up, not a fresh combined runtime
 run. The dated sections below retain the historical sequence of repairs.
 
+The separate [26 October text checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
+compares the selected character-list configurations in native SWI, Trealla and
+both browser UI modes. It retains JSON, URI-policy, CORS and public term-reader
+diagnostics separately; it does not promote the experimental text profile.
+
 ## Scoped interoperability baseline
 
 [Baseline 0.1](baselines/0.1.md) consolidates the existing nodes' selected

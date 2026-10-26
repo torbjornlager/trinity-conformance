@@ -1,0 +1,540 @@
+[
+  {
+    "mode": "worker",
+    "id": "TXT-001",
+    "execution": "goal",
+    "goal": "member(\"abc\",[[a,b,c]])",
+    "passed": true,
+    "state_sha256": "4a70e3c68ca12ec31bbebcd1b27c537d743133343e438953641a9f500d9bc60f"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-002",
+    "execution": "goal",
+    "goal": "member(\"\",[[]])",
+    "passed": true,
+    "state_sha256": "cfd98d5923a46803b5191f55fa9a4707d3483d8e57ee26a7dc78e2fb10a71408"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-003",
+    "execution": "goal",
+    "goal": "member(\"å\",[['å']])",
+    "passed": true,
+    "state_sha256": "6c431a2184b7314515905ed6a55d931288d615f5c05b2e1e602fae66757068c6"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-004",
+    "execution": "goal",
+    "goal": "phrase((\"ab\",\"cd\"),\"abcd\")",
+    "passed": true,
+    "state_sha256": "45e829e2be17348835690477c8a288633bdd5841d1ec60e5536d9b1f216177e9"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-005",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((portable_literal),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('portable_literal :- append(\"ab\",[],[a,b]).'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "3b9efbe35f96ead4e5675fddb875967a8967235e405682a55a3cf0d0bcebc153"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-006",
+    "execution": "round_trip",
+    "goal": "(member(Text,[\"ab\"])),Text==([a,b])",
+    "passed": true,
+    "state_sha256": "cb5fcf325476acbc37f6b5c7e1c9a5476a67c1816439cde4680f6d05d464db15"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-007",
+    "execution": "goal",
+    "goal": "append(\"ab\",[c,d],\"abcd\")",
+    "passed": true,
+    "state_sha256": "986a10c774ba1ee9e25fe4e510f366c3a9f718c0c6839649e38a4b68e46f3a25"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-008",
+    "execution": "goal",
+    "goal": "\"😀\"==['😀']",
+    "passed": true,
+    "state_sha256": "37daf79a7ad3423dcf703284d8d070818a3f04577c7be921a0c37a45a38b4eb3"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-009",
+    "execution": "goal",
+    "goal": "\"é\"==[e,'́']",
+    "passed": true,
+    "state_sha256": "d36262f3c2f00ea420b77259ef82e2d5ac805e8b15c44cb649a8dc05630ce0a2"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-010",
+    "execution": "goal",
+    "goal": "\"é\"==['é'],\"é\"==[e,'́'],\"é\"\\==\"é\"",
+    "passed": true,
+    "state_sha256": "7591abfc6da824fb72b5ed20b65807a9aa425e54ef7cbf677eac12f86d43c0ce"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-011",
+    "execution": "goal",
+    "goal": "atom('abc'),'abc'\\==[a,b,c]",
+    "passed": true,
+    "state_sha256": "997751596e3280f98d68504622f9566f44222dc3e01ffa1b5891bcb0d5f713b7"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-012",
+    "execution": "goal",
+    "goal": "\"a\\\"\\\\b\"==['a','\"','\\\\','b']",
+    "passed": true,
+    "state_sha256": "b1e5643b626af7e53bbb54fa44668c76151872048997bf1fd43d687df6139fa3"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-013",
+    "execution": "source_list",
+    "goal": "self(CheckpointParent),spawn(((pt_option(T),T==[a,b]),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_list([pt_option(\"ab\")]),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "298faeb039a4cbabcea3aa9272550c526482767aa063ec7ce05b33c4f62d139c"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-014",
+    "execution": "goal",
+    "goal": "N1 is 96+1,N2 is 97+1,Clauses=[pt_codes([N1,N2]),pt_chars([a,b]),pt_pair(S,S)],self(Parent),spawn((A is 96+1,B is 97+1,pt_codes(C),C==[A,B],pt_chars(T),T==[a,b],pt_pair(X,Y),var(X),X==Y,Parent!pt_terms_ok),P,[src_list(Clauses),monitor(true)]),var(S),receive({pt_terms_ok->true},[timeout(2),on_timeout(throw(missing_term_preservation))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_term_child_down))])",
+    "passed": true,
+    "state_sha256": "8c9a2c75202420a5e0fc5e639fd66ad7e64cb21ada57af94e6cdb44cf0fba324"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-015",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((phrase(pt_dcg,[a,b])),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('pt_dcg --> \"ab\".'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "d24f87d73d3310104d21e6c72f55f4fbbb6974892fe9cb910f0a9a53b1c811c6"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-016",
+    "execution": "goal",
+    "goal": "self(S),spawn((pt_private(T),T==[a,b],S!pt_private_ok),P,[src_text('pt_private(\"ab\").'),monitor(true)]),receive({pt_private_ok->true},[timeout(2),on_timeout(throw(missing_private_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_private_down))])",
+    "passed": true,
+    "state_sha256": "bf1772ce8a57aad6517799bac5cc6ab98a020219e77648aa4e4c8fe6680f0cda"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-017",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((self(S),spawn((pt_copied(T),T==[a,b],S!pt_copy_ok),P,[src_predicates([pt_copied/1]),monitor(true)]),receive({pt_copy_ok->true},[timeout(2),on_timeout(throw(missing_copied_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_down))])),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('pt_copied(\"ab\").'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "06103d861d9db75acd888536eecfb9716449c03e5402129d75ea438ae9b2ced1"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-018",
+    "execution": "source_uri",
+    "goal": "self(CheckpointParent),spawn(((pt_uri(T),T==[a,b]),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_uri('http://127.0.0.1:59044/examples/portable-text.pl'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": false,
+    "state_sha256": "e5f0bd892b2d4f1022dff566d046864caadd1dec66ea27049a4faca8f00c34a8"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-020",
+    "execution": "round_trip",
+    "goal": "(Text=\"é😀\"),Text==(['é','😀'])",
+    "passed": true,
+    "state_sha256": "93f65091fcd79ecbbd2f692837cc45c5e77daba6e638183770fa9a1cddf2a31a"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-021",
+    "execution": "round_trip",
+    "goal": "(Text=\"\"),Text==([])",
+    "passed": true,
+    "state_sha256": "6e5b305f86848470a300049665ce5b696ea0d9c78b958c0cebaf3a23f0cfd443"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-022",
+    "execution": "round_trip",
+    "goal": "(Text=\"a\\\"\\\\b\"),Text==(['a','\"','\\\\','b'])",
+    "passed": true,
+    "state_sha256": "84d3034a0e879ba398fefccc4fbcd7c0c2f7c7ad82ce328c44d8f83afc063774"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-023",
+    "execution": "peer_goal",
+    "goal": "rpc('http://127.0.0.1:59045',(pt_remote(T),T==[a,b]),[src_text('pt_remote(\"ab\").')]),T==[a,b]",
+    "passed": false,
+    "state_sha256": "4b969dab8a48d633cbe7a5bfa0e98e939da28e1ceee75bcc20f76ccb925b87d1"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-024",
+    "execution": "peer_goal",
+    "goal": "N1 is 96+1,N2 is 97+1,Codes=[N1,N2],rpc('http://127.0.0.1:59045',(T=[a,b],C=Codes,A is 96+1,B is 97+1,C==[A,B],Pair=pair(V,V))),T==[a,b],C==[N1,N2],Pair=pair(X,Y),var(X),X==Y,var(V)",
+    "passed": false,
+    "state_sha256": "2d771bbf5048ed40bd74c0be9c4adae15fbd6bbc6b0fe8bf2e05f06001258e9d"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-025",
+    "execution": "goal",
+    "goal": "\"👩‍💻\"==['👩','‍','💻']",
+    "passed": true,
+    "state_sha256": "4596bf601dacd1addedc5edb0279cca418bc4dbbcb7b4afea3dfe4bdc2d54e3d"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-019",
+    "goal": "input ASCII",
+    "passed": true,
+    "state_sha256": "c64d9cdc756a81fb3f487b32d508774035f577a9ec86805928a42b2e3dc2ca75"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-026",
+    "goal": "input Unicode",
+    "passed": true,
+    "state_sha256": "8868b1b3e76618452b01edbdb00b37324a29e78030b0a89e8a1a784c79cf88ad"
+  },
+  {
+    "mode": "worker",
+    "id": "OUT-001",
+    "goal": "write(\"abc\")",
+    "passed": true,
+    "state_sha256": "d8e195cc0de430ea17529c9f17a6f0fe7dd52d91f363b2a1fb2fb04370800621"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-001",
+    "execution": "goal",
+    "goal": "member(\"abc\",[[a,b,c]])",
+    "passed": true,
+    "state_sha256": "210db095a674b53dc5d356fd69eb045ce9264d06a865a95a317a6bdc60655beb"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-002",
+    "execution": "goal",
+    "goal": "member(\"\",[[]])",
+    "passed": true,
+    "state_sha256": "afa1c20a0ada8a37a814b441da11fdbc02508338b999ae72538b9742438b59ed"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-003",
+    "execution": "goal",
+    "goal": "member(\"å\",[['å']])",
+    "passed": true,
+    "state_sha256": "85ff31cc3aaaada9160f1d4b57aa15a7329c59e1edac7960ceba0f584d3b2de1"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-004",
+    "execution": "goal",
+    "goal": "phrase((\"ab\",\"cd\"),\"abcd\")",
+    "passed": true,
+    "state_sha256": "8158c9a95cd4f96f24a39070f466e67101f2453011210471da4879245f8f6c5e"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-005",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((portable_literal),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('portable_literal :- append(\"ab\",[],[a,b]).'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "dac5ad70229b0c0aa9b3c39792bddc7ceed59f7bd5f007e0c34ea958cef8b0dd"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-006",
+    "execution": "round_trip",
+    "goal": "(member(Text,[\"ab\"])),Text==([a,b])",
+    "passed": true,
+    "state_sha256": "3340e121b9a812244f8c73f102a03262c1852267218d36d1a3ea52b1218f7484"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-007",
+    "execution": "goal",
+    "goal": "append(\"ab\",[c,d],\"abcd\")",
+    "passed": true,
+    "state_sha256": "a8cd7fb2f761266bf6d7394442f46b6d09a735db8dddb614e4ec97eb0f14e126"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-008",
+    "execution": "goal",
+    "goal": "\"😀\"==['😀']",
+    "passed": true,
+    "state_sha256": "9c929d4fe19a1586325119ac08cf6fb9ab26f68fcf53595bc030a137d1b68bbd"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-009",
+    "execution": "goal",
+    "goal": "\"é\"==[e,'́']",
+    "passed": true,
+    "state_sha256": "f5442b46190891c6a6988acdbeb35469a9c17e40dbae8aeb004e3ad223da8b42"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-010",
+    "execution": "goal",
+    "goal": "\"é\"==['é'],\"é\"==[e,'́'],\"é\"\\==\"é\"",
+    "passed": true,
+    "state_sha256": "5b592a14878dfbe8104ac98b6a56f4a12ec84aabe1b66778405ed1aa6ec26310"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-011",
+    "execution": "goal",
+    "goal": "atom('abc'),'abc'\\==[a,b,c]",
+    "passed": true,
+    "state_sha256": "6721a4cbcb26161101982547f1d1f3d20a241a8e4f87b6f7da1793dc9d94a29e"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-012",
+    "execution": "goal",
+    "goal": "\"a\\\"\\\\b\"==['a','\"','\\\\','b']",
+    "passed": true,
+    "state_sha256": "278ec5b810f339eb38e3d0ed345bf62f2f09a22596c56ccb7226eac2936df1ab"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-013",
+    "execution": "source_list",
+    "goal": "self(CheckpointParent),spawn(((pt_option(T),T==[a,b]),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_list([pt_option(\"ab\")]),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "57c9097f704debc1a3769961ecd291785e1fd78a33313cfcc49bea2530efd6d2"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-014",
+    "execution": "goal",
+    "goal": "N1 is 96+1,N2 is 97+1,Clauses=[pt_codes([N1,N2]),pt_chars([a,b]),pt_pair(S,S)],self(Parent),spawn((A is 96+1,B is 97+1,pt_codes(C),C==[A,B],pt_chars(T),T==[a,b],pt_pair(X,Y),var(X),X==Y,Parent!pt_terms_ok),P,[src_list(Clauses),monitor(true)]),var(S),receive({pt_terms_ok->true},[timeout(2),on_timeout(throw(missing_term_preservation))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_term_child_down))])",
+    "passed": true,
+    "state_sha256": "10793bf44bd2ac21e8876cc9dd98ecd6e79a84633e03a1db2b7d6109a3e3ac9b"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-015",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((phrase(pt_dcg,[a,b])),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('pt_dcg --> \"ab\".'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "12b0ffc32bbdd2007a0abc4d1211cf70fc68e38f3fc8894abaa20f6c6fba3f70"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-016",
+    "execution": "goal",
+    "goal": "self(S),spawn((pt_private(T),T==[a,b],S!pt_private_ok),P,[src_text('pt_private(\"ab\").'),monitor(true)]),receive({pt_private_ok->true},[timeout(2),on_timeout(throw(missing_private_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_private_down))])",
+    "passed": true,
+    "state_sha256": "ebf7db7f9071dce77d11487ab6479182f7954235b80b3d6380d8a01ef63018e0"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-017",
+    "execution": "source_text",
+    "goal": "self(CheckpointParent),spawn(((self(S),spawn((pt_copied(T),T==[a,b],S!pt_copy_ok),P,[src_predicates([pt_copied/1]),monitor(true)]),receive({pt_copy_ok->true},[timeout(2),on_timeout(throw(missing_copied_text))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_copy_down))])),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_text('pt_copied(\"ab\").'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": true,
+    "state_sha256": "2824fc0a60e809f67fc60b88e96897fd31674706fc98d2e726ed0c4887295b59"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-018",
+    "execution": "source_uri",
+    "goal": "self(CheckpointParent),spawn(((pt_uri(T),T==[a,b]),CheckpointParent!checkpoint_source_ok),CheckpointChild,[src_uri('http://127.0.0.1:59044/examples/portable-text.pl'),monitor(true)]),receive({checkpoint_source_ok->true},[timeout(2),on_timeout(throw(missing_source_result))]),receive({down(CheckpointChild,CheckpointChild,true)->true},[timeout(2),on_timeout(throw(missing_source_down))])",
+    "passed": false,
+    "state_sha256": "fd380576682bbee60ef338621b6d51e106da397524af8c2c9b9252f6f197c2b9"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-020",
+    "execution": "round_trip",
+    "goal": "(Text=\"é😀\"),Text==(['é','😀'])",
+    "passed": true,
+    "state_sha256": "74facefcb77620a90ae416ba36998a929932c9c2598137415bf5526f0958059e"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-021",
+    "execution": "round_trip",
+    "goal": "(Text=\"\"),Text==([])",
+    "passed": true,
+    "state_sha256": "c9bc41d5373fa2d33875c3e965b3ed8a83a0d0edc85c35b9f365ad111fcffb9d"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-022",
+    "execution": "round_trip",
+    "goal": "(Text=\"a\\\"\\\\b\"),Text==(['a','\"','\\\\','b'])",
+    "passed": true,
+    "state_sha256": "d94b1340549f87509b3094844652fbc4dc9da99dad738fea59342207e5dc2d98"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-023",
+    "execution": "peer_goal",
+    "goal": "rpc('http://127.0.0.1:59045',(pt_remote(T),T==[a,b]),[src_text('pt_remote(\"ab\").')]),T==[a,b]",
+    "passed": false,
+    "state_sha256": "8c6ff10c605d76898aa5d907de0344b63c71bba62c02ed01dcb03a9127d03c6f"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-024",
+    "execution": "peer_goal",
+    "goal": "N1 is 96+1,N2 is 97+1,Codes=[N1,N2],rpc('http://127.0.0.1:59045',(T=[a,b],C=Codes,A is 96+1,B is 97+1,C==[A,B],Pair=pair(V,V))),T==[a,b],C==[N1,N2],Pair=pair(X,Y),var(X),X==Y,var(V)",
+    "passed": false,
+    "state_sha256": "32f3fa12dba5b108b52c82efc90cc850d61f595ca155a8d85f4d00366275b95a"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-025",
+    "execution": "goal",
+    "goal": "\"👩‍💻\"==['👩','‍','💻']",
+    "passed": true,
+    "state_sha256": "ca230b767f71a51d87cd499d383b7f5f8bcab7d43f017282342de4d3466c2f7a"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-019",
+    "goal": "input ASCII",
+    "passed": true,
+    "state_sha256": "da625aa3b2261e3946e880b83b2f42a485fc4cece153363bb6106590114b22d0"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-026",
+    "goal": "input Unicode",
+    "passed": true,
+    "state_sha256": "9e6d6b85ccbf00ae98393c19ae7525ad508f1045d271f7c61c1e9b7e276c8c4a"
+  },
+  {
+    "mode": "main",
+    "id": "OUT-001",
+    "goal": "write(\"abc\")",
+    "passed": true,
+    "state_sha256": "1210fbe3cd70937f3242a9e482953e9c0ad6b88ae407fc58040ed3014407b5b1"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-023-SWI",
+    "goal": "rpc('http://127.0.0.1:59044',(pt_remote(T),T==[a,b]),[src_text('pt_remote(\"ab\").')]),T==[a,b]",
+    "passed": true,
+    "state_sha256": "7797ef622f71f1048700a1a7f893b45ac754fe5a65669e0180b0cec31039883a"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-024-SWI",
+    "goal": "N1 is 96+1,N2 is 97+1,Codes=[N1,N2],rpc('http://127.0.0.1:59044',(T=[a,b],C=Codes,A is 96+1,B is 97+1,C==[A,B],Pair=pair(V,V))),T==[a,b],C==[N1,N2],Pair=pair(X,Y),var(X),X==Y,var(V)",
+    "passed": true,
+    "state_sha256": "fccf18faa23d5861b905b20b194abceeaa286fa11dc0e253fb049ccc3352a944"
+  },
+  {
+    "mode": "main",
+    "id": "PROMISE-001",
+    "goal": "promise('http://127.0.0.1:59044',X=\"ab\",R,[template(X-X)]),yield(R,A),A==success([[a,b]-[a,b]],false),var(X)",
+    "passed": true,
+    "state_sha256": "108f815bd8348694c9caf3d72d7fdb3632339aa11e16e8a90fe94127f1af3dd4"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-006-ROUNDTRIP",
+    "goal": "([a,b])==([a,b])",
+    "passed": true,
+    "state_sha256": "fcefd86d9fb59e07e7279e9fb7b8e81fec06983c094243a6107fb71e3531895f"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-020-ROUNDTRIP",
+    "goal": "(['é','😀'])==(['é','😀'])",
+    "passed": true,
+    "state_sha256": "774ef7835df3d2f58eabae8656ae33880b026b4918749c88cafdb54f66c2ba20"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-021-ROUNDTRIP",
+    "goal": "([])==([])",
+    "passed": true,
+    "state_sha256": "681d952eef49bcc78fbbb17f549c68f5b29e85aba1776dde8f9e377542534f66"
+  },
+  {
+    "mode": "main",
+    "id": "TXT-022-ROUNDTRIP",
+    "goal": "([a,'\"','\\\\',b])==(['a','\"','\\\\','b'])",
+    "passed": true,
+    "state_sha256": "eacc2f6b795323c50ea09200f00ed518a2a8d24b6fdeab1c2f0ae38c4b29baae"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-023-SWI",
+    "goal": "rpc('http://127.0.0.1:59044',(pt_remote(T),T==[a,b]),[src_text('pt_remote(\"ab\").')]),T==[a,b]",
+    "passed": true,
+    "state_sha256": "c946dc61be98c294532816f9c7bae2c51df1b91227832645732b7945ab51f6d0"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-024-SWI",
+    "goal": "N1 is 96+1,N2 is 97+1,Codes=[N1,N2],rpc('http://127.0.0.1:59044',(T=[a,b],C=Codes,A is 96+1,B is 97+1,C==[A,B],Pair=pair(V,V))),T==[a,b],C==[N1,N2],Pair=pair(X,Y),var(X),X==Y,var(V)",
+    "passed": true,
+    "state_sha256": "0760105aaec1431178954651795a8ed4fbe78bb0c69e3ad2b1946585601cca37"
+  },
+  {
+    "mode": "worker",
+    "id": "PROMISE-001",
+    "goal": "promise('http://127.0.0.1:59044',X=\"ab\",R,[template(X-X)]),yield(R,A),A==success([[a,b]-[a,b]],false),var(X)",
+    "passed": true,
+    "state_sha256": "9f02d0d350fc0672f98a43df9ca01614381539748fccb6136d3dc71580eacbc5"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-006-ROUNDTRIP",
+    "goal": "([a,b])==([a,b])",
+    "passed": true,
+    "state_sha256": "968f7ad4c99171508a9f8c05e2554837eedaf8edb10ab835c9ac72f62df1d6a3"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-020-ROUNDTRIP",
+    "goal": "(['é','😀'])==(['é','😀'])",
+    "passed": true,
+    "state_sha256": "597067ba6f0823cee9b39a4aa8eeb004551024f2cdd4113c2dc1c1983ce3ab84"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-021-ROUNDTRIP",
+    "goal": "([])==([])",
+    "passed": true,
+    "state_sha256": "7da8e3c36adbea31a28d6cd426c6827876290dcb5a6619d79265b0a8c18bc3e9"
+  },
+  {
+    "mode": "worker",
+    "id": "TXT-022-ROUNDTRIP",
+    "goal": "([a,'\"','\\\\',b])==(['a','\"','\\\\','b'])",
+    "passed": true,
+    "state_sha256": "d615e27066e0e14e98fe89ad556402201accd2e2816801c3b5282972879c9d9d"
+  },
+  {
+    "mode": "worker",
+    "id": "CONTROL-ROUNDTRIP",
+    "goal": "atom_to_term",
+    "passed": true,
+    "state_sha256": "cac77bd37c0e0cf612bb2d0e6ca2ed5bec8873150fe6c7fda8d96432b65425b4"
+  },
+  {
+    "mode": "main",
+    "id": "CONTROL-ROUNDTRIP",
+    "goal": "atom_to_term",
+    "passed": true,
+    "state_sha256": "c9e7fa82b2b0f56d7eb7836aede827d5ae011fa3484fcdb163dd9a8b8a7e7ea0"
+  }
+]

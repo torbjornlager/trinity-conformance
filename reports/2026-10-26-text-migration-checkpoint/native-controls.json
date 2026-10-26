@@ -1,0 +1,256 @@
+[
+  {
+    "candidate": "swi",
+    "id": "OUT-001",
+    "goal": "write(\"abc\")",
+    "passed": true,
+    "outputs": [
+      "[a,b,c]"
+    ],
+    "events": [
+      {
+        "event": {
+          "data": "[a,b,c]",
+          "pid": 6614298416,
+          "type": "output"
+        },
+        "request_id": "63bfaac2547721b1a670fe65f30028969977dce2fe112284efa30dbd927675ea",
+        "type": "io_request"
+      },
+      {
+        "data": [
+          "pass"
+        ],
+        "more": false,
+        "pid": 6614298416,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "id": "CONTROL-SCALAR",
+    "goal": "char_code(C,128512),atom_chars(A,[C]),atom_length(A,1)",
+    "passed": true,
+    "outputs": [],
+    "events": [
+      {
+        "data": [
+          "pass"
+        ],
+        "more": false,
+        "pid": 8824648838,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "id": "CONTROL-ROUNDTRIP",
+    "goal": "atom_to_term('\"ab\"',T,[]),T==[a,b]",
+    "passed": false,
+    "outputs": [],
+    "events": [
+      {
+        "pid": 5694381387,
+        "type": "failure"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "id": "PROMISE-001",
+    "goal": "promise('http://127.0.0.1:59044',X=\"ab\",R,[template(X-X)]),yield(R,A),A==success([[a,b]-[a,b]],false),var(X)",
+    "passed": true,
+    "outputs": [],
+    "events": [
+      {
+        "data": [
+          "pass"
+        ],
+        "more": false,
+        "pid": 3870665251,
+        "type": "success"
+      }
+    ]
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-008",
+    "encoding": "escaped_surrogates",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-020",
+    "encoding": "escaped_surrogates",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-025",
+    "encoding": "escaped_surrogates",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-026",
+    "encoding": "escaped_surrogates",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-008",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-020",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-025",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "swi",
+    "id": "TXT-026",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "trealla",
+    "id": "OUT-001",
+    "goal": "write(\"abc\")",
+    "passed": true,
+    "outputs": [
+      "[a,b,c]"
+    ],
+    "events": [
+      {
+        "type": "io_request",
+        "request_id": "browser-1000000040",
+        "event": {
+          "type": "output",
+          "pid": 2411139660,
+          "data": "[a,b,c]"
+        }
+      },
+      {
+        "type": "success",
+        "pid": 2411139660,
+        "data": [
+          "pass"
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "id": "CONTROL-SCALAR",
+    "goal": "char_code(C,128512),atom_chars(A,[C]),atom_length(A,1)",
+    "passed": true,
+    "outputs": [],
+    "events": [
+      {
+        "type": "success",
+        "pid": 1290761996,
+        "data": [
+          "pass"
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "id": "CONTROL-ROUNDTRIP",
+    "goal": "atom_to_term('\"ab\"',T,[]),T==[a,b]",
+    "passed": true,
+    "outputs": [],
+    "events": [
+      {
+        "type": "success",
+        "pid": 2222344461,
+        "data": [
+          "pass"
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "id": "PROMISE-001",
+    "goal": "promise('http://127.0.0.1:59044',X=\"ab\",R,[template(X-X)]),yield(R,A),A==success([[a,b]-[a,b]],false),var(X)",
+    "passed": true,
+    "outputs": [],
+    "events": [
+      {
+        "type": "success",
+        "pid": 2863642323,
+        "data": [
+          "pass"
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-008",
+    "encoding": "escaped_surrogates",
+    "passed": false,
+    "error": "ConformanceFailure(\"expected success, got {'type': 'error', 'data': 'error(representation_error(character),read_term_from_atom/3)'}; preceding events were []\")"
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-020",
+    "encoding": "escaped_surrogates",
+    "passed": false,
+    "error": "ConformanceFailure(\"expected success, got {'type': 'error', 'data': 'error(representation_error(character),read_term_from_atom/3)'}; preceding events were []\")"
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-025",
+    "encoding": "escaped_surrogates",
+    "passed": false,
+    "error": "ConformanceFailure(\"expected success, got {'type': 'error', 'data': 'error(representation_error(character),read_term_from_atom/3)'}; preceding events were []\")"
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-026",
+    "encoding": "escaped_surrogates",
+    "passed": false,
+    "error": "ConformanceFailure(\"expected prompt, got {'type': 'error', 'data': 'error(representation_error(character),read_term_from_atom/3)'}\")"
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-008",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-020",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-025",
+    "encoding": "literal_utf8",
+    "passed": true
+  },
+  {
+    "candidate": "trealla",
+    "id": "TXT-026",
+    "encoding": "literal_utf8",
+    "passed": true
+  }
+]

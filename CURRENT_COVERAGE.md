@@ -1,5 +1,15 @@
 # Current Web Prolog conformance coverage
 
+**Separate 26 October follow-up:** the
+[four-mode character-list checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
+tests the selected adoption sources (native SWI abbc56f, Trealla e7c51dc,
+browser b9ea7c5) on disposable nodes. SWI passes 26/26 original text cases;
+Trealla passes 22/26 with normal escaped JSON and 26/26 with literal UTF-8 JSON.
+Each browser mode has 32 passing assertions/controls and three URI/CORS
+diagnostics. A separate native SWI `atom_to_term/3` control returns a native
+string. This narrow follow-up supersedes no required-profile result below;
+see its [scope and diagnostics](reports/2026-10-26-text-migration-checkpoint/REPORT.md).
+
 Consolidated on **25 October 2026**, from committed evidence through
 `826d694` in trinity-conformance plus the explicit URI close-out and experimental-text follow-ups
 below. This is the latest recorded result for each
