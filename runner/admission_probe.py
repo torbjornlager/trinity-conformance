@@ -21,6 +21,7 @@ def terminal(harness):
         event=harness.recv()
         if event.get('type') in {'success','failure','error'}:
             return event
+        harness.acknowledge_output(event)
     raise actor.ConformanceFailure('no terminal response within 64 events')
 
 def observe(case,url,timeout,token):
@@ -33,6 +34,9 @@ def observe(case,url,timeout,token):
             goal='(self(ProbeSelf),ProbeSelf!admission_probe_entered,('+case['goal']+')),ProbeComplete=completed'
             harness.call(goal,'[limit(1)]')
             result['terminal']=terminal(harness)
+            if result['terminal'].get('more') is True:
+                harness.send({'command':'toplevel_stop','pid':harness.shell})
+                harness.recv_type('stop',limit=64)
             # Same shell, no output marker. A persistent admission error must
             # leave no marker; execution queues it before the selected goal.
             harness.call('receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])','[limit(1)]')

@@ -249,6 +249,17 @@ class Harness:
                     f"expected {expected_type}, got {event!r}")
         return event
 
+    def acknowledge_output(self, event: dict[str, Any]) -> None:
+        if event.get("type") != "io_request":
+            return
+        nested = event.get("event")
+        require(isinstance(nested, dict) and nested.get("type") == "output",
+                f"cannot automatically acknowledge non-output I/O: {event!r}")
+        request_id = event.get("request_id")
+        require(isinstance(request_id, str), "io_request omitted request_id")
+        self.send({"command": "browser_io_reply", "request_id": request_id,
+                   "status": "ok"})
+
     def recv_type(self, expected_type: str, limit: int = 4) -> dict[str, Any]:
         seen: list[dict[str, Any]] = []
         for _ in range(limit):
@@ -259,6 +270,7 @@ class Harness:
                 raise ConformanceFailure(
                     f"expected success, got {event!r}; preceding events were {seen!r}"
                 )
+            self.acknowledge_output(event)
             seen.append(event)
         raise ConformanceFailure(
             f"expected {expected_type}; preceding events were {seen!r}"

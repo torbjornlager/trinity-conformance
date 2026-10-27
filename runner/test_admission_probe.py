@@ -46,5 +46,38 @@ class DiagnosticScope(unittest.TestCase):
             self.assertEqual(row['status'],'fail')
             self.assertIn('diagnostic scope',row['detail'])
 
+
+class OutputSocket(FakeSocket):
+    def __init__(self,*args):
+        super().__init__(*args)
+        self.events=iter([
+            {'type':'transport_welcome'}, {'type':'spawned','pid':1234567890},
+            {'type':'io_request','request_id':'out-1','event':{'type':'output','data':'entered'}},
+            {'type':'success','data':[{'ProbeComplete':'completed'}],'more':True},
+            {'type':'stop'},
+            {'type':'success','data':[{'ProbeEntry':'yes'}],'more':False},
+            {'type':'halted'}])
+
+class OutputAndContinuation(unittest.TestCase):
+    @patch.object(admission_probe.actor,'WebSocket',OutputSocket)
+    def test_output_ack_and_stop_precede_followup(self):
+        result=admission_probe.observe({'goal':'writeln(entered),member(X,[1,2])'},'ws://fixture/ws',1,None)
+        self.assertTrue(result['complete'],result)
+        self.assertTrue(result['execution_entered'])
+        self.assertTrue(result['terminal']['more'])
+        sends=[x['message'] for x in result['transcript'] if x['direction']=='send']
+        commands=[x['command'] for x in sends]
+        self.assertEqual(commands,['transport_hello','toplevel_spawn','toplevel_call','browser_io_reply','toplevel_stop','toplevel_call','toplevel_halt'])
+        self.assertEqual(sends[3],{'command':'browser_io_reply','request_id':'out-1','status':'ok'})
+
+    @patch.object(admission_probe.actor,'WebSocket',OutputSocket)
+    def test_recv_type_acknowledges_output(self):
+        candidate=admission_probe.actor.Candidate('ws://fixture/ws','actor',1,None,None,False,())
+        with admission_probe.RecordingHarness(candidate) as harness:
+            harness.spawn_shell()
+            harness.call('writeln(entered)')
+            self.assertEqual(harness.recv_type('success')['type'],'success')
+            self.assertEqual(harness.transcript[-2]['message']['command'],'browser_io_reply')
+
 if __name__=='__main__':unittest.main()
 

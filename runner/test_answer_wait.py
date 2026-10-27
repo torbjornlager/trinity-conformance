@@ -24,6 +24,12 @@ class AnswerWaitTests(unittest.TestCase):
         with self.assertRaisesRegex(ConformanceFailure, 'failure'):
             harness.recv_type('success')
 
+    def test_input_request_is_not_acknowledged_as_output(self):
+        harness = self.harness([{'type': 'io_request', 'request_id': 'input-1',
+                                 'event': {'type': 'prompt', 'data': 'Name?'}}])
+        with self.assertRaisesRegex(ConformanceFailure, 'non-output I/O'):
+            harness.recv_type('success')
+
     def test_halt_wait_can_skip_previous_error(self):
         # Other wait types retain their original selective behaviour.
         harness = self.harness([{'type': 'error'}, {'type': 'halted'}])
