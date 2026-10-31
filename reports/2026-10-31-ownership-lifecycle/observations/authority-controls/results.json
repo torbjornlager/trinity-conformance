@@ -1,0 +1,1320 @@
+{
+  "provenance": {
+    "date": "2026-10-31",
+    "platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.41",
+    "harness_sha256": "56710daf024aac06ebe583964892548e282e9584e7c3c26a063391ab418de79f",
+    "cases_sha256": "474fb2cfb55097b07be4da838efbf9df02d2f51bcf2caf1dfb01e36497f193a4",
+    "engines": {
+      "swi": {
+        "version": "SWI-Prolog version 10.1.19 for aarch64-linux",
+        "executable": "/usr/bin/swipl",
+        "executable_sha256": "62578c107943284decde41ecca3180614623378ccd9d497bc14144427c244207",
+        "fixture": "generated disposable fixture; bearer secrets excluded"
+      },
+      "trealla": {
+        "version": "trealla(3,14,20,[])",
+        "executable": "/opt/trealla/tpl",
+        "executable_sha256": "9da57212f6687f902445cf7a97e1c12851ce601c862d08511bd4da4892ff61e4",
+        "fixture": "generated disposable fixture; bearer secrets excluded"
+      }
+    },
+    "repetitions": 1,
+    "method": "New ownership/lifecycle conformance cases on disposable loopback nodes; explicit owner-exit controls and no runtime introspection.",
+    "selected_cases": "all"
+  },
+  "results": [
+    {
+      "engine": "swi",
+      "id": "D1",
+      "title": "Same principal across separate connections remains isolated",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "data": [
+            {
+              "Denial": "yes",
+              "E": "error(permission_error(exit,actor,6213780343@'http://127.0.0.1:41413'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Outcome": "thrown",
+              "Ref": "5396023281"
+            }
+          ],
+          "more": false,
+          "pid": 7633712761,
+          "type": "success"
+        },
+        "survival": {
+          "data": [
+            {
+              "S": "4943143510@'http://127.0.0.1:41413'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 4943143510,
+          "type": "success"
+        }
+      },
+      "seconds": 0.132551,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 4943143510,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7633712761,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 4943143510,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "4943143510@'http://127.0.0.1:41413'",
+                "Target": "6213780343@'http://127.0.0.1:41413'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 4943143510,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7633712761,
+            "goal": "monitor(6213780343@'http://127.0.0.1:41413',Ref),catch((exit(6213780343@'http://127.0.0.1:41413',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Denial": "yes",
+                "E": "error(permission_error(exit,actor,6213780343@'http://127.0.0.1:41413'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Outcome": "thrown",
+                "Ref": "5396023281"
+              }
+            ],
+            "more": false,
+            "pid": 7633712761,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 4943143510,
+            "goal": "self(S),send(6213780343@'http://127.0.0.1:41413',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "S": "4943143510@'http://127.0.0.1:41413'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 4943143510,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 4943143510,
+            "goal": "exit(6213780343@'http://127.0.0.1:41413',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 4943143510,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7633712761,
+            "goal": "receive({down(6213780343@'http://127.0.0.1:41413',5396023281,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(6213780343@'http://127.0.0.1:41413',Again),receive({down(6213780343@'http://127.0.0.1:41413',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "8370232162",
+                "Reason": "owner_stop"
+              }
+            ],
+            "more": false,
+            "pid": 7633712761,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7633712761,
+            "goal": "receive({down(6213780343@'http://127.0.0.1:41413',5396023281,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 7633712761,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 4943143510
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 6213780343,
+            "reason": "owner_stop",
+            "ref": "6213780343@'http://127.0.0.1:41413'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 4943143510,
+            "reason": "true",
+            "ref": "4943143510@'http://127.0.0.1:41413'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 4943143510,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 7633712761
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7633712761,
+            "reason": "true",
+            "ref": "7633712761@'http://127.0.0.1:41413'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7633712761,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "D2",
+      "title": "Sibling actors inherit owner termination authority",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "K": "7699527200@'http://127.0.0.1:41413'",
+            "PaperResult": "passed",
+            "S": "9353252621@'http://127.0.0.1:41413'",
+            "V": "9912272847@'http://127.0.0.1:41413'"
+          }
+        ],
+        "more": false,
+        "pid": 9353252621,
+        "type": "success"
+      },
+      "seconds": 0.154737,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9353252621,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9353252621,
+            "goal": "(self(S),spawn(receive({never->true}),V,[monitor(true)]),spawn(exit(V,sibling_done),K,[monitor(true)]),receive({down(V,V,sibling_done)->true},[timeout(2),on_timeout(throw(no_sibling_exit))]),receive({down(K,K,true)->true},[timeout(2),on_timeout(throw(no_killer_finish))])),PaperResult=passed",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9912272847,
+            "reason": "sibling_done",
+            "ref": "9912272847@'http://127.0.0.1:41413'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "K": "7699527200@'http://127.0.0.1:41413'",
+                "PaperResult": "passed",
+                "S": "9353252621@'http://127.0.0.1:41413'",
+                "V": "9912272847@'http://127.0.0.1:41413'"
+              }
+            ],
+            "more": false,
+            "pid": 9353252621,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9353252621
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9353252621,
+            "reason": "true",
+            "ref": "9353252621@'http://127.0.0.1:41413'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9353252621,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "D3",
+      "title": "Node-owner submitted goal retains cross-client termination authority",
+      "repetition": 1,
+      "status": "fail",
+      "error": "ConformanceFailure: expected success, got {'data': \"actors:exit/2: No permission to exit actor 6588795897@'http://127.0.0.1:41413'' (target is outside the caller ownership tree)\", 'details': \"error(permission_error(exit,actor,6588795897@'http://127.0.0.1:41413'),_)\", 'pid': 8138163521, 'type': 'error'}; preceding events were []",
+      "seconds": 0.035763,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 4750546360,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8138163521,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 4750546360,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "4750546360@'http://127.0.0.1:41413'",
+                "Target": "6588795897@'http://127.0.0.1:41413'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 4750546360,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8138163521,
+            "goal": "exit(6588795897@'http://127.0.0.1:41413',admin_stop),AdminResult=passed",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": "actors:exit/2: No permission to exit actor 6588795897@'http://127.0.0.1:41413'' (target is outside the caller ownership tree)",
+            "details": "error(permission_error(exit,actor,6588795897@'http://127.0.0.1:41413'),_)",
+            "pid": 8138163521,
+            "type": "error"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "D4",
+      "title": "HTTP submitted goals enforce client authority and retain node-owner authority",
+      "repetition": 1,
+      "status": "fail",
+      "error": "AttributeError: 'str' object has no attribute 'get'",
+      "seconds": 0.024797,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7145407832,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7145407832,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "7145407832@'http://127.0.0.1:41413'",
+                "Target": "4122834421@'http://127.0.0.1:41413'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 7145407832,
+            "type": "success"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "D1",
+      "title": "Same principal across separate connections remains isolated",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "type": "success",
+          "pid": 1467399280,
+          "data": [
+            {
+              "Ref": "1000000017",
+              "Outcome": "thrown",
+              "E": "error(permission_error(exit,actor,2731171402@'http://127.0.0.1:57599'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Denial": "yes"
+            }
+          ],
+          "more": false
+        },
+        "survival": {
+          "type": "success",
+          "pid": 1614282554,
+          "data": [
+            {
+              "S": "1614282554@'http://127.0.0.1:57599'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false
+        }
+      },
+      "seconds": 0.343753,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1614282554
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1467399280
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614282554,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614282554,
+            "data": [
+              {
+                "S": "1614282554@'http://127.0.0.1:57599'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "2731171402@'http://127.0.0.1:57599'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1467399280,
+            "goal": "monitor(2731171402@'http://127.0.0.1:57599',Ref),catch((exit(2731171402@'http://127.0.0.1:57599',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1467399280,
+            "data": [
+              {
+                "Ref": "1000000017",
+                "Outcome": "thrown",
+                "E": "error(permission_error(exit,actor,2731171402@'http://127.0.0.1:57599'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Denial": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614282554,
+            "goal": "self(S),send(2731171402@'http://127.0.0.1:57599',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614282554,
+            "data": [
+              {
+                "S": "1614282554@'http://127.0.0.1:57599'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614282554,
+            "goal": "exit(2731171402@'http://127.0.0.1:57599',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614282554,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1467399280,
+            "goal": "receive({down(2731171402@'http://127.0.0.1:57599',1000000017,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(2731171402@'http://127.0.0.1:57599',Again),receive({down(2731171402@'http://127.0.0.1:57599',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1467399280,
+            "data": [
+              {
+                "Reason": "owner_stop",
+                "Again": "1000000018"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1467399280,
+            "goal": "receive({down(2731171402@'http://127.0.0.1:57599',1000000017,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1467399280,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1614282554
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1614282554,
+            "ref": 1614282554,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1614282554,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1467399280
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1467399280,
+            "ref": 1467399280,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1467399280,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "D2",
+      "title": "Sibling actors inherit owner termination authority",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1935176471,
+        "data": [
+          {
+            "S": "1935176471@'http://127.0.0.1:57599'",
+            "V": "1100488983",
+            "K": "2086923243",
+            "PaperResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "seconds": 0.232316,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1935176471
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1935176471,
+            "goal": "(self(S),spawn(receive({never->true}),V,[monitor(true)]),spawn(exit(V,sibling_done),K,[monitor(true)]),receive({down(V,V,sibling_done)->true},[timeout(2),on_timeout(throw(no_sibling_exit))]),receive({down(K,K,true)->true},[timeout(2),on_timeout(throw(no_killer_finish))])),PaperResult=passed",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1935176471,
+            "data": [
+              {
+                "S": "1935176471@'http://127.0.0.1:57599'",
+                "V": "1100488983",
+                "K": "2086923243",
+                "PaperResult": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1935176471
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1935176471,
+            "ref": 1935176471,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1935176471,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "D3",
+      "title": "Node-owner submitted goal retains cross-client termination authority",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "result": {
+          "type": "success",
+          "pid": 2386662315,
+          "data": [
+            {
+              "AdminResult": "passed"
+            }
+          ],
+          "more": false
+        },
+        "observed": {
+          "type": "success",
+          "pid": 1253443459,
+          "data": [
+            {}
+          ],
+          "more": false
+        }
+      },
+      "seconds": 0.345551,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1253443459
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2386662315
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1253443459,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1253443459,
+            "data": [
+              {
+                "S": "1253443459@'http://127.0.0.1:57599'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "1674551475@'http://127.0.0.1:57599'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2386662315,
+            "goal": "exit(1674551475@'http://127.0.0.1:57599',admin_stop),AdminResult=passed",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2386662315,
+            "data": [
+              {
+                "AdminResult": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1253443459,
+            "goal": "receive({down(1674551475@'http://127.0.0.1:57599',1674551475@'http://127.0.0.1:57599',admin_stop)->true},[timeout(2),on_timeout(throw(no_admin_exit))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1253443459,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1253443459
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1253443459,
+            "ref": 1253443459,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1253443459,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2386662315
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2386662315,
+            "ref": 2386662315,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2386662315,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "D4",
+      "title": "HTTP submitted goals enforce client authority and retain node-owner authority",
+      "repetition": 1,
+      "status": "fail",
+      "error": "AttributeError: 'str' object has no attribute 'get'",
+      "seconds": 0.018485,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2023389505
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2023389505,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2023389505,
+            "data": [
+              {
+                "S": "2023389505@'http://127.0.0.1:57599'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "2156476214@'http://127.0.0.1:57599'"
+              }
+            ],
+            "more": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6825 @@
+{
+  "provenance": {
+    "date": "2026-10-31",
+    "platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.41",
+    "harness_sha256": "71c798dfaa740eef818745bcad69186ad702d9edf8da057e1dc0f5047884ea4e",
+    "cases_sha256": "474fb2cfb55097b07be4da838efbf9df02d2f51bcf2caf1dfb01e36497f193a4",
+    "engines": {
+      "swi": {
+        "version": "SWI-Prolog version 10.1.19 for aarch64-linux",
+        "executable": "/usr/bin/swipl",
+        "executable_sha256": "62578c107943284decde41ecca3180614623378ccd9d497bc14144427c244207",
+        "fixture": "generated disposable fixture; bearer secrets excluded"
+      },
+      "trealla": {
+        "version": "trealla(3,14,20,[])",
+        "executable": "/opt/trealla/tpl",
+        "executable_sha256": "9da57212f6687f902445cf7a97e1c12851ce601c862d08511bd4da4892ff61e4",
+        "fixture": "generated disposable fixture; bearer secrets excluded"
+      }
+    },
+    "repetitions": 3,
+    "method": "New ownership/lifecycle conformance cases on disposable loopback nodes; explicit owner-exit controls and no runtime introspection.",
+    "selected_cases": "all"
+  },
+  "results": [
+    {
+      "engine": "swi",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "data": [
+            {
+              "Denial": "yes",
+              "E": "error(permission_error(exit,actor,9568387712@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Outcome": "thrown",
+              "Ref": "1216204815"
+            }
+          ],
+          "more": false,
+          "pid": 8331843178,
+          "type": "success"
+        },
+        "survival": {
+          "data": [
+            {
+              "S": "9144381743@'http://127.0.0.1:48267'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9144381743,
+          "type": "success"
+        }
+      },
+      "seconds": 0.134978,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9144381743,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8331843178,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9144381743,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "9144381743@'http://127.0.0.1:48267'",
+                "Target": "9568387712@'http://127.0.0.1:48267'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 9144381743,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8331843178,
+            "goal": "monitor(9568387712@'http://127.0.0.1:48267',Ref),catch((exit(9568387712@'http://127.0.0.1:48267',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Denial": "yes",
+                "E": "error(permission_error(exit,actor,9568387712@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Outcome": "thrown",
+                "Ref": "1216204815"
+              }
+            ],
+            "more": false,
+            "pid": 8331843178,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9144381743,
+            "goal": "self(S),send(9568387712@'http://127.0.0.1:48267',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "S": "9144381743@'http://127.0.0.1:48267'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 9144381743,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9144381743,
+            "goal": "exit(9568387712@'http://127.0.0.1:48267',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9144381743,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8331843178,
+            "goal": "receive({down(9568387712@'http://127.0.0.1:48267',1216204815,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(9568387712@'http://127.0.0.1:48267',Again),receive({down(9568387712@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "9746861995",
+                "Reason": "owner_stop"
+              }
+            ],
+            "more": false,
+            "pid": 8331843178,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8331843178,
+            "goal": "receive({down(9568387712@'http://127.0.0.1:48267',1216204815,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8331843178,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9144381743
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9568387712,
+            "reason": "owner_stop",
+            "ref": "9568387712@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9144381743,
+            "reason": "true",
+            "ref": "9144381743@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9144381743,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8331843178
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8331843178,
+            "reason": "true",
+            "ref": "8331843178@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8331843178,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "9930422645@'http://127.0.0.1:48267'",
+            "8247747739"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "9573704044",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2387615756,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.092287,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8193277682,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2387615756,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8193277682,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "8193277682@'http://127.0.0.1:48267'",
+                "Target": "9930422645@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 8193277682,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2387615756,
+            "goal": "monitor(9930422645@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "8247747739"
+              }
+            ],
+            "more": false,
+            "pid": 2387615756,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8193277682,
+            "goal": "exit(9930422645@'http://127.0.0.1:48267',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8193277682,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2387615756,
+            "goal": "receive({down(9930422645@'http://127.0.0.1:48267',8247747739,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(9930422645@'http://127.0.0.1:48267',Again),receive({down(9930422645@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "9573704044",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2387615756,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2387615756,
+            "goal": "receive({down(9930422645@'http://127.0.0.1:48267',8247747739,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 2387615756,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2387615756,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 2387615756,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8193277682
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9930422645,
+            "reason": "kill",
+            "ref": "9930422645@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8193277682,
+            "reason": "true",
+            "ref": "8193277682@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8193277682,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2387615756
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2387615756,
+            "reason": "true",
+            "ref": "2387615756@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2387615756,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "5628427681@'http://127.0.0.1:48267'",
+            "4418170004"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "1525714901",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2629143415,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.070101,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8209822797,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2629143415,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8209822797,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "8209822797@'http://127.0.0.1:48267'",
+                "Target": "5628427681@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 8209822797,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2629143415,
+            "goal": "monitor(5628427681@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "4418170004"
+              }
+            ],
+            "more": false,
+            "pid": 2629143415,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2629143415,
+            "goal": "receive({down(5628427681@'http://127.0.0.1:48267',4418170004,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(5628427681@'http://127.0.0.1:48267',Again),receive({down(5628427681@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "1525714901",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2629143415,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2629143415,
+            "goal": "receive({down(5628427681@'http://127.0.0.1:48267',4418170004,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 2629143415,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2629143415,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 2629143415,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2629143415
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2629143415,
+            "reason": "true",
+            "ref": "2629143415@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2629143415,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "2021582875@'http://127.0.0.1:48267'",
+            "4271881995"
+          ],
+          [
+            "4354907055@'http://127.0.0.1:48267'",
+            "3253923617"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "2618678454",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          },
+          {
+            "data": [
+              {
+                "Again": "2676760534",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.079282,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 1914290514,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9738528978,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1914290514,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "G": "G",
+                "Grand": "4354907055@'http://127.0.0.1:48267'",
+                "Me": "Me",
+                "S": "1914290514@'http://127.0.0.1:48267'",
+                "Target": "2021582875@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 1914290514,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "monitor(2021582875@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "4271881995"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "monitor(4354907055@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "3253923617"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "receive({down(2021582875@'http://127.0.0.1:48267',4271881995,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2021582875@'http://127.0.0.1:48267',Again),receive({down(2021582875@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "2618678454",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "receive({down(2021582875@'http://127.0.0.1:48267',4271881995,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "receive({down(4354907055@'http://127.0.0.1:48267',3253923617,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(4354907055@'http://127.0.0.1:48267',Again),receive({down(4354907055@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "2676760534",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "receive({down(4354907055@'http://127.0.0.1:48267',3253923617,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9738528978,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 9738528978,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9738528978
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9738528978,
+            "reason": "true",
+            "ref": "9738528978@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9738528978,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "data": [
+            {
+              "Denial": "yes",
+              "E": "error(permission_error(exit,actor,2637251105@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Outcome": "thrown",
+              "Ref": "2700854107"
+            }
+          ],
+          "more": false,
+          "pid": 8868494908,
+          "type": "success"
+        },
+        "survival": {
+          "data": [
+            {
+              "S": "9936792992@'http://127.0.0.1:48267'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9936792992,
+          "type": "success"
+        }
+      },
+      "seconds": 0.120914,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9936792992,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8868494908,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9936792992,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "9936792992@'http://127.0.0.1:48267'",
+                "Target": "2637251105@'http://127.0.0.1:48267'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 9936792992,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8868494908,
+            "goal": "monitor(2637251105@'http://127.0.0.1:48267',Ref),catch((exit(2637251105@'http://127.0.0.1:48267',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Denial": "yes",
+                "E": "error(permission_error(exit,actor,2637251105@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Outcome": "thrown",
+                "Ref": "2700854107"
+              }
+            ],
+            "more": false,
+            "pid": 8868494908,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9936792992,
+            "goal": "self(S),send(2637251105@'http://127.0.0.1:48267',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "S": "9936792992@'http://127.0.0.1:48267'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 9936792992,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9936792992,
+            "goal": "exit(2637251105@'http://127.0.0.1:48267',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9936792992,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8868494908,
+            "goal": "receive({down(2637251105@'http://127.0.0.1:48267',2700854107,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(2637251105@'http://127.0.0.1:48267',Again),receive({down(2637251105@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "8954792393",
+                "Reason": "owner_stop"
+              }
+            ],
+            "more": false,
+            "pid": 8868494908,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8868494908,
+            "goal": "receive({down(2637251105@'http://127.0.0.1:48267',2700854107,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8868494908,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9936792992
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2637251105,
+            "reason": "owner_stop",
+            "ref": "2637251105@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9936792992,
+            "reason": "true",
+            "ref": "9936792992@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9936792992,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8868494908
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8868494908,
+            "reason": "true",
+            "ref": "8868494908@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8868494908,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "2726378743@'http://127.0.0.1:48267'",
+            "7138482688"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "6055626403",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 7013463401,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.071329,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8047023712,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7013463401,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8047023712,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "8047023712@'http://127.0.0.1:48267'",
+                "Target": "2726378743@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 8047023712,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7013463401,
+            "goal": "monitor(2726378743@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "7138482688"
+              }
+            ],
+            "more": false,
+            "pid": 7013463401,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8047023712,
+            "goal": "exit(2726378743@'http://127.0.0.1:48267',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8047023712,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7013463401,
+            "goal": "receive({down(2726378743@'http://127.0.0.1:48267',7138482688,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2726378743@'http://127.0.0.1:48267',Again),receive({down(2726378743@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "6055626403",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 7013463401,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7013463401,
+            "goal": "receive({down(2726378743@'http://127.0.0.1:48267',7138482688,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 7013463401,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7013463401,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 7013463401,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8047023712
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2726378743,
+            "reason": "kill",
+            "ref": "2726378743@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8047023712,
+            "reason": "true",
+            "ref": "8047023712@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8047023712,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 7013463401
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7013463401,
+            "reason": "true",
+            "ref": "7013463401@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7013463401,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1654671450@'http://127.0.0.1:48267'",
+            "9406495945"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "6999886551",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9826497299,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.069656,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2007659325,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9826497299,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2007659325,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "2007659325@'http://127.0.0.1:48267'",
+                "Target": "1654671450@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 2007659325,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9826497299,
+            "goal": "monitor(1654671450@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "9406495945"
+              }
+            ],
+            "more": false,
+            "pid": 9826497299,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9826497299,
+            "goal": "receive({down(1654671450@'http://127.0.0.1:48267',9406495945,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1654671450@'http://127.0.0.1:48267',Again),receive({down(1654671450@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "6999886551",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9826497299,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9826497299,
+            "goal": "receive({down(1654671450@'http://127.0.0.1:48267',9406495945,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9826497299,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9826497299,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 9826497299,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9826497299
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9826497299,
+            "reason": "true",
+            "ref": "9826497299@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9826497299,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "9168751039@'http://127.0.0.1:48267'",
+            "9351141656"
+          ],
+          [
+            "7652199852@'http://127.0.0.1:48267'",
+            "8267948354"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "3114778652",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          },
+          {
+            "data": [
+              {
+                "Again": "4548746144",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.079514,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9725429860,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2102806715,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9725429860,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "G": "G",
+                "Grand": "7652199852@'http://127.0.0.1:48267'",
+                "Me": "Me",
+                "S": "9725429860@'http://127.0.0.1:48267'",
+                "Target": "9168751039@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 9725429860,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "monitor(9168751039@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "9351141656"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "monitor(7652199852@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "8267948354"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "receive({down(9168751039@'http://127.0.0.1:48267',9351141656,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(9168751039@'http://127.0.0.1:48267',Again),receive({down(9168751039@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "3114778652",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "receive({down(9168751039@'http://127.0.0.1:48267',9351141656,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "receive({down(7652199852@'http://127.0.0.1:48267',8267948354,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(7652199852@'http://127.0.0.1:48267',Again),receive({down(7652199852@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "4548746144",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "receive({down(7652199852@'http://127.0.0.1:48267',8267948354,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2102806715,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 2102806715,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2102806715
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2102806715,
+            "reason": "true",
+            "ref": "2102806715@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2102806715,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "data": [
+            {
+              "Denial": "yes",
+              "E": "error(permission_error(exit,actor,9000344461@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Outcome": "thrown",
+              "Ref": "5943842852"
+            }
+          ],
+          "more": false,
+          "pid": 3863631032,
+          "type": "success"
+        },
+        "survival": {
+          "data": [
+            {
+              "S": "5562936702@'http://127.0.0.1:48267'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5562936702,
+          "type": "success"
+        }
+      },
+      "seconds": 0.121569,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 5562936702,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 3863631032,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 5562936702,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "5562936702@'http://127.0.0.1:48267'",
+                "Target": "9000344461@'http://127.0.0.1:48267'",
+                "Who": "Who"
+              }
+            ],
+            "more": false,
+            "pid": 5562936702,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 3863631032,
+            "goal": "monitor(9000344461@'http://127.0.0.1:48267',Ref),catch((exit(9000344461@'http://127.0.0.1:48267',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Denial": "yes",
+                "E": "error(permission_error(exit,actor,9000344461@'http://127.0.0.1:48267'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Outcome": "thrown",
+                "Ref": "5943842852"
+              }
+            ],
+            "more": false,
+            "pid": 3863631032,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 5562936702,
+            "goal": "self(S),send(9000344461@'http://127.0.0.1:48267',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "S": "5562936702@'http://127.0.0.1:48267'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 5562936702,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 5562936702,
+            "goal": "exit(9000344461@'http://127.0.0.1:48267',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 5562936702,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 3863631032,
+            "goal": "receive({down(9000344461@'http://127.0.0.1:48267',5943842852,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(9000344461@'http://127.0.0.1:48267',Again),receive({down(9000344461@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "8816724183",
+                "Reason": "owner_stop"
+              }
+            ],
+            "more": false,
+            "pid": 3863631032,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 3863631032,
+            "goal": "receive({down(9000344461@'http://127.0.0.1:48267',5943842852,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 3863631032,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 5562936702
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9000344461,
+            "reason": "owner_stop",
+            "ref": "9000344461@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 5562936702,
+            "reason": "true",
+            "ref": "5562936702@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 5562936702,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 3863631032
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 3863631032,
+            "reason": "true",
+            "ref": "3863631032@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 3863631032,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "5918846613@'http://127.0.0.1:48267'",
+            "2111026735"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "9911240089",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9814825222,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.112042,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2529816891,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9814825222,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2529816891,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "2529816891@'http://127.0.0.1:48267'",
+                "Target": "5918846613@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 2529816891,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9814825222,
+            "goal": "monitor(5918846613@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "2111026735"
+              }
+            ],
+            "more": false,
+            "pid": 9814825222,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2529816891,
+            "goal": "exit(5918846613@'http://127.0.0.1:48267',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 2529816891,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9814825222,
+            "goal": "receive({down(5918846613@'http://127.0.0.1:48267',2111026735,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(5918846613@'http://127.0.0.1:48267',Again),receive({down(5918846613@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "9911240089",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 9814825222,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9814825222,
+            "goal": "receive({down(5918846613@'http://127.0.0.1:48267',2111026735,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 9814825222,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 9814825222,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 9814825222,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2529816891
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 5918846613,
+            "reason": "kill",
+            "ref": "5918846613@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2529816891,
+            "reason": "true",
+            "ref": "2529816891@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 2529816891,
+            "reply": "true",
+            "type": "halted"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 9814825222
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9814825222,
+            "reason": "true",
+            "ref": "9814825222@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 9814825222,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "8323621645@'http://127.0.0.1:48267'",
+            "8869669269"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "1355413956",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8337253935,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.070782,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7841671673,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8337253935,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7841671673,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Me": "Me",
+                "S": "7841671673@'http://127.0.0.1:48267'",
+                "Target": "8323621645@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 7841671673,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8337253935,
+            "goal": "monitor(8323621645@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "8869669269"
+              }
+            ],
+            "more": false,
+            "pid": 8337253935,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8337253935,
+            "goal": "receive({down(8323621645@'http://127.0.0.1:48267',8869669269,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(8323621645@'http://127.0.0.1:48267',Again),receive({down(8323621645@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "1355413956",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8337253935,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8337253935,
+            "goal": "receive({down(8323621645@'http://127.0.0.1:48267',8869669269,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8337253935,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8337253935,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 8337253935,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8337253935
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8337253935,
+            "reason": "true",
+            "ref": "8337253935@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8337253935,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "swi",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "8457187684@'http://127.0.0.1:48267'",
+            "5461785097"
+          ],
+          [
+            "2231755554@'http://127.0.0.1:48267'",
+            "2060100218"
+          ]
+        ],
+        "observations": [
+          {
+            "data": [
+              {
+                "Again": "1369596947",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          },
+          {
+            "data": [
+              {
+                "Again": "3313438655",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        ]
+      },
+      "seconds": 0.080642,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "answer_terms": false,
+            "browser_pids": true,
+            "io_ack": true,
+            "protocol": "web_prolog_browser_actor",
+            "type": "transport_welcome",
+            "version": 1
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 7603080040,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8887767259,
+            "type": "spawned"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 7603080040,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "G": "G",
+                "Grand": "2231755554@'http://127.0.0.1:48267'",
+                "Me": "Me",
+                "S": "7603080040@'http://127.0.0.1:48267'",
+                "Target": "8457187684@'http://127.0.0.1:48267'"
+              }
+            ],
+            "more": false,
+            "pid": 7603080040,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "monitor(8457187684@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "5461785097"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "monitor(2231755554@'http://127.0.0.1:48267',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Ref": "2060100218"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "receive({down(8457187684@'http://127.0.0.1:48267',5461785097,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(8457187684@'http://127.0.0.1:48267',Again),receive({down(8457187684@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "1369596947",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "receive({down(8457187684@'http://127.0.0.1:48267',5461785097,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "receive({down(2231755554@'http://127.0.0.1:48267',2060100218,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2231755554@'http://127.0.0.1:48267',Again),receive({down(2231755554@'http://127.0.0.1:48267',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "Again": "3313438655",
+                "Reason": "kill"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "receive({down(2231755554@'http://127.0.0.1:48267',2060100218,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {}
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 8887767259,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false,
+            "pid": 8887767259,
+            "type": "success"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 8887767259
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8887767259,
+            "reason": "true",
+            "ref": "8887767259@'http://127.0.0.1:48267'",
+            "type": "down"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "pid": 8887767259,
+            "reply": "true",
+            "type": "halted"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "type": "success",
+          "pid": 1007934230,
+          "data": [
+            {
+              "Ref": "1000000017",
+              "Outcome": "thrown",
+              "E": "error(permission_error(exit,actor,2563182248@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Denial": "yes"
+            }
+          ],
+          "more": false
+        },
+        "survival": {
+          "type": "success",
+          "pid": 1656584403,
+          "data": [
+            {
+              "S": "1656584403@'http://127.0.0.1:51845'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false
+        }
+      },
+      "seconds": 0.241386,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1656584403
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1007934230
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1656584403,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1656584403,
+            "data": [
+              {
+                "S": "1656584403@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "2563182248@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1007934230,
+            "goal": "monitor(2563182248@'http://127.0.0.1:51845',Ref),catch((exit(2563182248@'http://127.0.0.1:51845',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1007934230,
+            "data": [
+              {
+                "Ref": "1000000017",
+                "Outcome": "thrown",
+                "E": "error(permission_error(exit,actor,2563182248@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Denial": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1656584403,
+            "goal": "self(S),send(2563182248@'http://127.0.0.1:51845',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1656584403,
+            "data": [
+              {
+                "S": "1656584403@'http://127.0.0.1:51845'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1656584403,
+            "goal": "exit(2563182248@'http://127.0.0.1:51845',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1656584403,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1007934230,
+            "goal": "receive({down(2563182248@'http://127.0.0.1:51845',1000000017,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(2563182248@'http://127.0.0.1:51845',Again),receive({down(2563182248@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1007934230,
+            "data": [
+              {
+                "Reason": "owner_stop",
+                "Again": "1000000018"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1007934230,
+            "goal": "receive({down(2563182248@'http://127.0.0.1:51845',1000000017,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1007934230,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1656584403
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1656584403,
+            "ref": 1656584403,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1656584403,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1007934230
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1007934230,
+            "ref": 1007934230,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1007934230,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1576385154@'http://127.0.0.1:51845'",
+            "1000000035"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 2286956982,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000036"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.135445,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1481596980
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2286956982
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1481596980,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1481596980,
+            "data": [
+              {
+                "S": "1481596980@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "1576385154@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2286956982,
+            "goal": "monitor(1576385154@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2286956982,
+            "data": [
+              {
+                "Ref": "1000000035"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1481596980,
+            "goal": "exit(1576385154@'http://127.0.0.1:51845',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1481596980,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2286956982,
+            "goal": "receive({down(1576385154@'http://127.0.0.1:51845',1000000035,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1576385154@'http://127.0.0.1:51845',Again),receive({down(1576385154@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2286956982,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000036"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2286956982,
+            "goal": "receive({down(1576385154@'http://127.0.0.1:51845',1000000035,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2286956982,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2286956982,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2286956982,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1481596980
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1481596980,
+            "ref": 1481596980,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1481596980,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2286956982
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2286956982,
+            "ref": 2286956982,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2286956982,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "2596141941@'http://127.0.0.1:51845'",
+            "1000000053"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 2022974946,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000054"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.227555,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1744525211
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2022974946
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1744525211,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1744525211,
+            "data": [
+              {
+                "S": "1744525211@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "2596141941@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2022974946,
+            "goal": "monitor(2596141941@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2022974946,
+            "data": [
+              {
+                "Ref": "1000000053"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2022974946,
+            "goal": "receive({down(2596141941@'http://127.0.0.1:51845',1000000053,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2596141941@'http://127.0.0.1:51845',Again),receive({down(2596141941@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2022974946,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000054"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2022974946,
+            "goal": "receive({down(2596141941@'http://127.0.0.1:51845',1000000053,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2022974946,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2022974946,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2022974946,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2022974946
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2022974946,
+            "ref": 2022974946,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2022974946,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 1,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1777448477@'http://127.0.0.1:51845'",
+            "1000000073"
+          ],
+          [
+            "2723114042@'http://127.0.0.1:51845'",
+            "1000000074"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000075"
+              }
+            ],
+            "more": false
+          },
+          {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000076"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.237921,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2942236631
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1614401158
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2942236631,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2942236631,
+            "data": [
+              {
+                "S": "2942236631@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "G": "G",
+                "Grand": "2723114042@'http://127.0.0.1:51845'",
+                "Target": "1777448477@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "monitor(1777448477@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Ref": "1000000073"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "monitor(2723114042@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Ref": "1000000074"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "receive({down(1777448477@'http://127.0.0.1:51845',1000000073,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1777448477@'http://127.0.0.1:51845',Again),receive({down(1777448477@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000075"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "receive({down(1777448477@'http://127.0.0.1:51845',1000000073,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "receive({down(2723114042@'http://127.0.0.1:51845',1000000074,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2723114042@'http://127.0.0.1:51845',Again),receive({down(2723114042@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000076"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "receive({down(2723114042@'http://127.0.0.1:51845',1000000074,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1614401158,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1614401158,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1614401158
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1614401158,
+            "ref": 1614401158,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1614401158,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "type": "success",
+          "pid": 2807030210,
+          "data": [
+            {
+              "Ref": "1000000093",
+              "Outcome": "thrown",
+              "E": "error(permission_error(exit,actor,1784482014@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Denial": "yes"
+            }
+          ],
+          "more": false
+        },
+        "survival": {
+          "type": "success",
+          "pid": 1933289226,
+          "data": [
+            {
+              "S": "1933289226@'http://127.0.0.1:51845'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false
+        }
+      },
+      "seconds": 0.233966,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1933289226
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2807030210
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1933289226,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1933289226,
+            "data": [
+              {
+                "S": "1933289226@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "1784482014@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2807030210,
+            "goal": "monitor(1784482014@'http://127.0.0.1:51845',Ref),catch((exit(1784482014@'http://127.0.0.1:51845',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2807030210,
+            "data": [
+              {
+                "Ref": "1000000093",
+                "Outcome": "thrown",
+                "E": "error(permission_error(exit,actor,1784482014@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Denial": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1933289226,
+            "goal": "self(S),send(1784482014@'http://127.0.0.1:51845',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1933289226,
+            "data": [
+              {
+                "S": "1933289226@'http://127.0.0.1:51845'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1933289226,
+            "goal": "exit(1784482014@'http://127.0.0.1:51845',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1933289226,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2807030210,
+            "goal": "receive({down(1784482014@'http://127.0.0.1:51845',1000000093,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(1784482014@'http://127.0.0.1:51845',Again),receive({down(1784482014@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2807030210,
+            "data": [
+              {
+                "Reason": "owner_stop",
+                "Again": "1000000094"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2807030210,
+            "goal": "receive({down(1784482014@'http://127.0.0.1:51845',1000000093,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2807030210,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1933289226
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1933289226,
+            "ref": 1933289226,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1933289226,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2807030210
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2807030210,
+            "ref": 2807030210,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2807030210,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "2131729442@'http://127.0.0.1:51845'",
+            "1000000111"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 2289531622,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000112"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.135025,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2988473732
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2289531622
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2988473732,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2988473732,
+            "data": [
+              {
+                "S": "2988473732@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "2131729442@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2289531622,
+            "goal": "monitor(2131729442@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2289531622,
+            "data": [
+              {
+                "Ref": "1000000111"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2988473732,
+            "goal": "exit(2131729442@'http://127.0.0.1:51845',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2988473732,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2289531622,
+            "goal": "receive({down(2131729442@'http://127.0.0.1:51845',1000000111,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2131729442@'http://127.0.0.1:51845',Again),receive({down(2131729442@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2289531622,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000112"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2289531622,
+            "goal": "receive({down(2131729442@'http://127.0.0.1:51845',1000000111,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2289531622,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2289531622,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2289531622,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2988473732
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2988473732,
+            "ref": 2988473732,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2988473732,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2289531622
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2289531622,
+            "ref": 2289531622,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2289531622,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "3127850463@'http://127.0.0.1:51845'",
+            "1000000129"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 1909725068,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000130"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.227027,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1193835877
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1909725068
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1193835877,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1193835877,
+            "data": [
+              {
+                "S": "1193835877@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "3127850463@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1909725068,
+            "goal": "monitor(3127850463@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1909725068,
+            "data": [
+              {
+                "Ref": "1000000129"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1909725068,
+            "goal": "receive({down(3127850463@'http://127.0.0.1:51845',1000000129,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(3127850463@'http://127.0.0.1:51845',Again),receive({down(3127850463@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1909725068,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000130"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1909725068,
+            "goal": "receive({down(3127850463@'http://127.0.0.1:51845',1000000129,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1909725068,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1909725068,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1909725068,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1909725068
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1909725068,
+            "ref": 1909725068,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1909725068,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 2,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1565204873@'http://127.0.0.1:51845'",
+            "1000000149"
+          ],
+          [
+            "2973735301@'http://127.0.0.1:51845'",
+            "1000000150"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000151"
+              }
+            ],
+            "more": false
+          },
+          {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000152"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.237457,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1866867050
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1154385026
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1866867050,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1866867050,
+            "data": [
+              {
+                "S": "1866867050@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "G": "G",
+                "Grand": "2973735301@'http://127.0.0.1:51845'",
+                "Target": "1565204873@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "monitor(1565204873@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Ref": "1000000149"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "monitor(2973735301@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Ref": "1000000150"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "receive({down(1565204873@'http://127.0.0.1:51845',1000000149,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1565204873@'http://127.0.0.1:51845',Again),receive({down(1565204873@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000151"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "receive({down(1565204873@'http://127.0.0.1:51845',1000000149,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "receive({down(2973735301@'http://127.0.0.1:51845',1000000150,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2973735301@'http://127.0.0.1:51845',Again),receive({down(2973735301@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000152"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "receive({down(2973735301@'http://127.0.0.1:51845',1000000150,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1154385026,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1154385026,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1154385026
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1154385026,
+            "ref": 1154385026,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1154385026,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-001",
+      "title": "Submitted exit across client ownership is denied and leaves the target responsive",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "exit": {
+          "type": "success",
+          "pid": 2006444787,
+          "data": [
+            {
+              "Ref": "1000000169",
+              "Outcome": "thrown",
+              "E": "error(permission_error(exit,actor,1133147337@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+              "Denial": "yes"
+            }
+          ],
+          "more": false
+        },
+        "survival": {
+          "type": "success",
+          "pid": 2625158178,
+          "data": [
+            {
+              "S": "2625158178@'http://127.0.0.1:51845'",
+              "Survived": "yes"
+            }
+          ],
+          "more": false
+        }
+      },
+      "seconds": 0.234194,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2625158178
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2006444787
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2625158178,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,receive({probe(Who)->send(Who,alive),fail;stop->true}),!),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2625158178,
+            "data": [
+              {
+                "S": "2625158178@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Who": "Who",
+                "Target": "1133147337@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2006444787,
+            "goal": "monitor(1133147337@'http://127.0.0.1:51845',Ref),catch((exit(1133147337@'http://127.0.0.1:51845',forbidden),Outcome=returned),E,Outcome=thrown),(nonvar(E),E=error(permission_error(exit,actor,_),_)->Denial=yes;Denial=no)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2006444787,
+            "data": [
+              {
+                "Ref": "1000000169",
+                "Outcome": "thrown",
+                "E": "error(permission_error(exit,actor,1133147337@'http://127.0.0.1:51845'),context(actors:exit/2,'target is outside the caller ownership tree'))",
+                "Denial": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2625158178,
+            "goal": "self(S),send(1133147337@'http://127.0.0.1:51845',probe(S)),receive({alive->Survived=yes},[timeout(2),on_timeout(Survived=no)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2625158178,
+            "data": [
+              {
+                "S": "2625158178@'http://127.0.0.1:51845'",
+                "Survived": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2625158178,
+            "goal": "exit(1133147337@'http://127.0.0.1:51845',owner_stop)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2625158178,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2006444787,
+            "goal": "receive({down(1133147337@'http://127.0.0.1:51845',1000000169,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==owner_stop,monitor(1133147337@'http://127.0.0.1:51845',Again),receive({down(1133147337@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2006444787,
+            "data": [
+              {
+                "Reason": "owner_stop",
+                "Again": "1000000170"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2006444787,
+            "goal": "receive({down(1133147337@'http://127.0.0.1:51845',1000000169,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2006444787,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2625158178
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2625158178,
+            "ref": 2625158178,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2625158178,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2006444787
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2006444787,
+            "ref": 2006444787,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2006444787,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-002",
+      "title": "Explicit owner termination delivers the independent observer monitor exactly once",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1172588956@'http://127.0.0.1:51845'",
+            "1000000187"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 2617052738,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000188"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.13549,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1129215274
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2617052738
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1129215274,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1129215274,
+            "data": [
+              {
+                "S": "1129215274@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "1172588956@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2617052738,
+            "goal": "monitor(1172588956@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2617052738,
+            "data": [
+              {
+                "Ref": "1000000187"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1129215274,
+            "goal": "exit(1172588956@'http://127.0.0.1:51845',kill)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1129215274,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2617052738,
+            "goal": "receive({down(1172588956@'http://127.0.0.1:51845',1000000187,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1172588956@'http://127.0.0.1:51845',Again),receive({down(1172588956@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2617052738,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000188"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2617052738,
+            "goal": "receive({down(1172588956@'http://127.0.0.1:51845',1000000187,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2617052738,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2617052738,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2617052738,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1129215274
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1129215274,
+            "ref": 1129215274,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1129215274,
+            "reply": "true"
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 2617052738
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 2617052738,
+            "ref": 2617052738,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 2617052738,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-003",
+      "title": "Owning socket EOF preserves the independent observer monitor for a computing child",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "2459275719@'http://127.0.0.1:51845'",
+            "1000000205"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 1242993849,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000206"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.225842,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 2090446553
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1242993849
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 2090446553,
+            "goal": "self(S),spawn((self(Me),send(S,ready(Me)),repeat,fail),Target,[monitor(true)]),receive({ready(Target)->true},[timeout(2),on_timeout(throw(no_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 2090446553,
+            "data": [
+              {
+                "S": "2090446553@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "Target": "2459275719@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1242993849,
+            "goal": "monitor(2459275719@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1242993849,
+            "data": [
+              {
+                "Ref": "1000000205"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1242993849,
+            "goal": "receive({down(2459275719@'http://127.0.0.1:51845',1000000205,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(2459275719@'http://127.0.0.1:51845',Again),receive({down(2459275719@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1242993849,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000206"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1242993849,
+            "goal": "receive({down(2459275719@'http://127.0.0.1:51845',1000000205,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1242993849,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1242993849,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1242993849,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1242993849
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1242993849,
+            "ref": 1242993849,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1242993849,
+            "reply": "true"
+          }
+        }
+      ]
+    },
+    {
+      "engine": "trealla",
+      "id": "OL-004",
+      "title": "Owning socket EOF cascades through computing child and grandchild with independent monitors",
+      "repetition": 3,
+      "status": "pass",
+      "observation": {
+        "targets": [
+          [
+            "1423780799@'http://127.0.0.1:51845'",
+            "1000000225"
+          ],
+          [
+            "1463894743@'http://127.0.0.1:51845'",
+            "1000000226"
+          ]
+        ],
+        "observations": [
+          {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000227"
+              }
+            ],
+            "more": false
+          },
+          {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000228"
+              }
+            ],
+            "more": false
+          }
+        ]
+      },
+      "seconds": 0.237821,
+      "events": [
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "transport_hello",
+            "version": 1,
+            "browser_pids": true,
+            "io_ack": true
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "transport_welcome",
+            "protocol": "web_prolog_browser_actor",
+            "io_ack": true,
+            "browser_pids": true,
+            "profile": "actor",
+            "sandbox": "blacklist",
+            "version": 1,
+            "answer_terms": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1239335172
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_spawn",
+            "options": "[session(true)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "spawned",
+            "pid": 1385928362
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1239335172,
+            "goal": "self(S),spawn((self(Me),spawn((self(G),send(S,grand_ready(G)),repeat,fail),Grand),send(S,ready(Me,Grand)),repeat,fail),Target,[monitor(true)]),receive({ready(Target,Grand)->true},[timeout(2),on_timeout(throw(no_child_readiness))]),receive({grand_ready(Grand)->true},[timeout(2),on_timeout(throw(no_grand_readiness))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1239335172,
+            "data": [
+              {
+                "S": "1239335172@'http://127.0.0.1:51845'",
+                "Me": "Me",
+                "G": "G",
+                "Grand": "1463894743@'http://127.0.0.1:51845'",
+                "Target": "1423780799@'http://127.0.0.1:51845'"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "monitor(1423780799@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Ref": "1000000225"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "monitor(1463894743@'http://127.0.0.1:51845',Ref)",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Ref": "1000000226"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "receive({down(1423780799@'http://127.0.0.1:51845',1000000225,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1423780799@'http://127.0.0.1:51845',Again),receive({down(1423780799@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000227"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "receive({down(1423780799@'http://127.0.0.1:51845',1000000225,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "receive({down(1463894743@'http://127.0.0.1:51845',1000000226,Reason)->true},[timeout(3),on_timeout(throw(no_original_notification))]),Reason==kill,monitor(1463894743@'http://127.0.0.1:51845',Again),receive({down(1463894743@'http://127.0.0.1:51845',Again,no_process)->true},[timeout(2),on_timeout(throw(no_missing_notification))])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "Reason": "kill",
+                "Again": "1000000228"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "receive({down(1463894743@'http://127.0.0.1:51845',1000000226,_)->throw(duplicate_notification)},[timeout(0)])",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {}
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_call",
+            "pid": 1385928362,
+            "goal": "ObserverStillUsable=yes",
+            "options": "[limit(1)]"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "success",
+            "pid": 1385928362,
+            "data": [
+              {
+                "ObserverStillUsable": "yes"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "direction": "send",
+          "command": {
+            "command": "toplevel_halt",
+            "pid": 1385928362
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "down",
+            "pid": 1385928362,
+            "ref": 1385928362,
+            "reason": "kill"
+          }
+        },
+        {
+          "direction": "receive",
+          "event": {
+            "type": "halted",
+            "pid": 1385928362,
+            "reply": "true"
+          }
+        }
+      ]
+    }
+  ]
+}

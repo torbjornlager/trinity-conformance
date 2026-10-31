@@ -1,0 +1,108 @@
+commit 91d5c5257e4ef4e06e56764e6023fe58eddd93c7
+Author:     Torbjörn Lager <torbjorn.lager@gmail.com>
+AuthorDate: Sat Oct 31 13:55:19 2026 +0100
+Commit:     Torbjörn Lager <torbjorn.lager@gmail.com>
+CommitDate: Sat Oct 31 13:55:19 2026 +0100
+
+    Preserve independent monitors on disconnect and resolve owner context before matching
+
+diff --git a/docs/OWNERSHIP_LIFECYCLE_REPAIR.md b/docs/OWNERSHIP_LIFECYCLE_REPAIR.md
+new file mode 100644
+index 0000000..305f1e6
+--- /dev/null
++++ b/docs/OWNERSHIP_LIFECYCLE_REPAIR.md
+@@ -0,0 +1,23 @@
++# Ownership and independent monitor follow-up — 31 October 2026
++
++WebSocket teardown used to retract every monitor targeting an owned actor
++before requesting its termination. This also erased independent observers'
++monitors. `ws_kill_actor/1` now leaves those records to normal actor retirement,
++which generates their down/3 notifications. Initial unpublished-spawn failure
++cleanup remains separate. The shared conformance controls compare explicit
++owner termination with EOF, and include a computing grandchild.
++
++A legitimate-administrator control exposed a related context lookup defect.
++`current_owner_context/1` now selects and commits to the authoritative frame
++before unifying it with the caller's pattern; a bound false-owner query can
++no longer skip an administrator frame and select an outer/public context.
++The lifetime_authority native group tests nested and stored actor contexts.
++Its foreign-exit assertion now requires an actual throw, rather than allowing
++an unbound variable to unify with an expected exception after a normal return.
++
++The original paper assertions, new shared ownership/lifecycle cases and
++positive authority controls are rerun separately on pinned sources. No installed
++engine or deployed node was changed. Full native results and original-source
++controls are preserved in trinity-conformance's dated 31 October report;
++pre-existing supervisor assertions that fail in that environment are retained
++separately rather than reported as passing.
+diff --git a/prolog/web_prolog/node_lifetime.pl b/prolog/web_prolog/node_lifetime.pl
+index ead0d4c..dbd187b 100644
+--- a/prolog/web_prolog/node_lifetime.pl
++++ b/prolog/web_prolog/node_lifetime.pl
+@@ -46,9 +46,10 @@ on authenticated node transports; browser-supplied lineage is rejected.
+ 
+ scope(Scope) :- (current_node_port(P) -> Scope = node_port(P); Scope = global).
+ 
+-current_owner_context(Context) :- owner_context(Context), !.
++current_owner_context(Context) :- owner_context(Current), !, Context = Current.
+ current_owner_context(Context) :-
+-    actors:self(Self), actor_key(Self, Key), actor_owner(Key, Context), !.
++    actors:self(Self), actor_key(Self, Key), actor_owner(Key, Current), !,
++    Context = Current.
+ current_owner_context(ctx(Scope, public(NS), NS, false, none)) :-
+     current_public_execution_profile(_), scope(Scope),
+     (current_public_execution_namespace(NS) -> true; NS = anonymous).
+diff --git a/prolog/web_prolog/node_ws.pl b/prolog/web_prolog/node_ws.pl
+index 9323189..04abf9b 100644
+--- a/prolog/web_prolog/node_ws.pl
++++ b/prolog/web_prolog/node_ws.pl
+@@ -1335,7 +1335,8 @@ ws_owned_actor(Queue, Pid) :-
+ 
+ ws_kill_actor(Pid) :-
+     (node_lifetime:current_owner_context(_) -> node_lifetime:check_exit(Pid); true),
+-    retractall(actors:monitor(_, Pid, _)),
++    % Other client connections may monitor this actor. Let actor retirement
++    % deliver those notifications; connection teardown must not erase them.
+     ignore(catch(finish_activity(ws_actor, Pid, connection_closed), _, true)),
+     forget_ws_actor_metadata(Pid),
+     forget_ws_actor_owner(Pid),
+diff --git a/tests/tiers/node/lifetime_authority_tests.plt b/tests/tiers/node/lifetime_authority_tests.plt
+index a4e71ca..a7f67dd 100644
+--- a/tests/tiers/node/lifetime_authority_tests.plt
++++ b/tests/tiers/node/lifetime_authority_tests.plt
+@@ -39,7 +39,9 @@ test(non_owner_cannot_detach,
+ test(exit_cannot_cross_principal_tree) :-
+     setup_call_cleanup(owned_spawn("alice", a, sleep(5), Pid),
+         ( principal("bob", Bob),
+-          catch(with_owner_context(Bob, b, local, actors:exit(Pid, kill)), E, true),
++          catch((with_owner_context(Bob, b, local, actors:exit(Pid, kill)),
++                 Outcome = returned), E, Outcome = thrown),
++          assertion(Outcome == thrown), assertion(nonvar(E)),
+           assertion(E = error(permission_error(exit, actor, Pid), _)),
+           assertion(actors:resolve_actor_thread(Pid, _)) ),
+         kill_wait(Pid)).
+@@ -49,6 +51,24 @@ test(unknown_remote_pid_does_not_grant_exit_authority,
+     principal("alice", P),
+     with_owner_context(P, a, local, actors:exit(1234567890@'https://other.example', kill)).
+ 
++test(bound_context_does_not_select_outer_or_public_fallback) :-
++    principal("outer", Outer),
++    Admin = principal{id:"inner-owner",capabilities:[execute,admin],unknown:false},
++    with_public_execution_profile(actor,
++        with_owner_context(Outer, outer, local,
++            with_owner_context(Admin, inner, local,
++                ( assertion(current_owner_context(ctx(_,_,_,true,_))),
++                  assertion(\+ current_owner_context(ctx(_,_,_,false,_))) )))).
++
++test(bound_actor_context_does_not_select_public_fallback) :-
++    self(Self), node_lifetime:actor_key(Self,Key),
++    setup_call_cleanup(
++        assertz(node_lifetime:actor_owner(Key,ctx(test_scope,test_id,test_lineage,true,none)),Ref),
++        with_public_execution_profile(actor,
++            (assertion(current_owner_context(ctx(_,_,_,true,_))),
++             assertion(\+ current_owner_context(ctx(_,_,_,false,_))))),
++        erase(Ref)).
++
+ test(send_and_monitor_remain_open) :-
+     self(Self),
+     setup_call_cleanup(owned_spawn("alice", a, receive({hello -> Self ! seen}), Pid),

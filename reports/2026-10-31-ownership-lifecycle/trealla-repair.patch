@@ -1,0 +1,293 @@
+commit 37848901cec63ddec3631b9c8b3273a951fd9cee
+Author:     Torbjörn Lager <torbjorn.lager@gmail.com>
+AuthorDate: Sat Oct 31 13:55:21 2026 +0100
+Commit:     Torbjörn Lager <torbjorn.lager@gmail.com>
+CommitDate: Sat Oct 31 13:55:21 2026 +0100
+
+    Enforce client ownership for submitted actor exit calls
+
+diff --git a/README.md b/README.md
+index cab11c2..c73c76d 100644
+--- a/README.md
++++ b/README.md
+@@ -2650,3 +2650,12 @@ records the full unit suite and n5 adoption at
+ `e7c51dc101cd8002dea9548f8154fc4d2bf6707d`. Local startup checks that exact HEAD
+ and clean inputs; the engine remains v3.14.10. Rollback remains available and
+ the cyclic-exception and supplementary JSON-escape diagnostics remain separate.
++
++## Submitted termination authority
++
++Public `exit/2` calls now check inherited client ownership before local or
++remote dispatch, including calls from submitted goals. Legitimate same-scope
++and node-owner operations remain available; standalone local library use is
++unrestricted. See [the policy and regression scope](docs/ACTOR_EXIT_AUTHORITY.md).
++The new shared ownership/lifecycle pack covers independent observers and
++connection teardown; earlier wire-command checks did not cover this path.
+diff --git a/actor_authority.pl b/actor_authority.pl
+new file mode 100644
+index 0000000..cc9365e
+--- /dev/null
++++ b/actor_authority.pl
+@@ -0,0 +1,60 @@
++% SPDX-License-Identifier: MIT
++:- module(actor_authority, [check_exit/1, open_namespace/2, close_namespace/1]).
++
++% Ownership policy for public hosted actors. The core calls a policy hook
++% before either local termination or distribution routing. Trusted unscoped
++% callers retain the standalone library API. A connection/account identifier
++% is not an exit capability for actors in another client namespace.
++:- use_module(actors, []).
++:- use_module(auth_policy, [principal_has_capability/2]).
++:- multifile actors:hook_check_exit/1.
++actors:hook_check_exit(Pid) :- actor_authority:check_exit(Pid).
++:- dynamic owner_namespace/1, closed_owner_namespace/1.
++:- op(200, xfx, @).
++
++open_namespace(Namespace, Principal) :-
++    (principal_has_capability(Principal, admin) ->
++        with_mutex('$actor_registry', assertz(owner_namespace(Namespace)))
++    ; true).
++
++close_namespace(Namespace) :-
++    with_mutex('$actor_registry',
++        (owner_namespace(Namespace) ->
++            assertz(closed_owner_namespace(Namespace)), prune_closed_owners
++        ; true)).
++
++% Cached HTTP producers may outlive their request; preserve their authority
++% until their final actor retires. The authority table never authorizes an
++% ordinary namespace, even when it has the same principal/account name.
++prune_closed_owners :-
++    forall((closed_owner_namespace(Namespace),
++            \+ actors:actor_namespace(_,Namespace)),
++           (retractall(owner_namespace(Namespace)),
++            retractall(closed_owner_namespace(Namespace)))).
++
++:- multifile actors:hook_stop/1.
++actors:hook_stop(_) :-
++    with_mutex('$actor_registry', actor_authority:prune_closed_owners).
++
++check_exit(Pid) :-
++    actors:current_actor_namespace(Namespace),
++    (Namespace == none -> true
++    ; namespace_owner(Namespace) -> true
++    ; owned_target(Namespace, Pid) -> true
++    ; actors:logical_pid(Pid), \+ actors:actor_thread(Pid,_),
++      \+ actors:actor_namespace(Pid,_) -> true
++    ; throw(error(permission_error(exit,actor,Pid),
++                  context(actors:exit/2,'target is outside the caller ownership tree')))).
++
++namespace_owner(Namespace) :- owner_namespace(Namespace), !.
++namespace_owner(ws_lineage(Relay,_)) :-
++    actors:actor_namespace(Relay,Base), owner_namespace(Base).
++
++owned_target(Namespace, Pid) :-
++    actors:actor_namespace(Pid,Namespace), !.
++% Remote linked work belongs to its local parent's client scope. Distribution
++% still performs the receiver-side command check; a known route alone does
++% not authorize a different local namespace to use that route for exit.
++owned_target(Namespace, Pid) :-
++    nonvar(Pid), Pid = _@_,
++    actors:link(Parent,Pid), actors:actor_namespace(Parent,Namespace), !.
+diff --git a/actor_authority_tests.pl b/actor_authority_tests.pl
+new file mode 100644
+index 0000000..7fc3feb
+--- /dev/null
++++ b/actor_authority_tests.pl
+@@ -0,0 +1,60 @@
++% SPDX-License-Identifier: MIT
++:- module(actor_authority_tests, [actor_authority_tests/0]).
++:- use_module(actors).
++:- use_module(actor_authority, []).
++:- op(200, xfx, @).
++
++actor_authority_tests :-
++    foreign_exit_is_denied,
++    owner_exit_is_allowed,
++    trusted_exit_is_allowed,
++    remote_route_is_not_authority,
++    writeln('Actor exit authority: all regressions passed').
++
++ready_worker(Parent) :-
++    self(Me), send(Parent,ready(Me)),
++    receive({probe(Who)->send(Who,alive),ready_worker_wait(Parent)}).
++ready_worker_wait(_) :- receive({stop->true}).
++
++make_worker(Namespace, Pid) :-
++    self(Self),
++    actors:with_actor_namespace(Namespace,
++        spawn((self(Me),send(Self,ready(Me)),receive({probe(Who)->send(Who,alive),receive({stop->true})})),Pid,[monitor(true)])),
++    receive({ready(Pid)->true},[timeout(2),on_timeout(throw(no_readiness))]).
++
++foreign_exit_is_denied :-
++    make_worker(ws_client(authority_owner),Pid),
++    catch((actors:with_actor_namespace(ws_client(authority_stranger),
++                                      actors:exit(Pid,forbidden)), Outcome=returned),
++          Error,Outcome=thrown),
++    Outcome==thrown,nonvar(Error),Error=error(permission_error(exit,actor,Pid),_),
++    self(Self),send(Pid,probe(Self)),
++    receive({alive->true},[timeout(2),on_timeout(throw(target_was_affected))]),
++    actors:with_actor_namespace(ws_client(authority_owner),exit(Pid,owner_done)),
++    receive({down(Pid,Pid,owner_done)->true},[timeout(2),on_timeout(throw(no_owner_exit))]).
++
++owner_exit_is_allowed :-
++    make_worker(ws_client(authority_target),Pid),
++    actor_authority:open_namespace(ws_client(authority_admin),principal(admin,[admin])),
++    call_cleanup(
++        actors:with_actor_namespace(ws_client(authority_admin),exit(Pid,admin_done)),
++        actor_authority:close_namespace(ws_client(authority_admin))),
++    receive({down(Pid,Pid,admin_done)->true},[timeout(2),on_timeout(throw(no_admin_exit))]).
++
++trusted_exit_is_allowed :-
++    make_worker(ws_client(authority_trusted_target),Pid),
++    exit(Pid,trusted_done),
++    receive({down(Pid,Pid,trusted_done)->true},[timeout(2),on_timeout(throw(no_trusted_exit))]).
++
++remote_route_is_not_authority :-
++    self(Self),
++    Remote=1234567890@'http://authority.invalid',
++    setup_call_cleanup(
++        (assertz(actors:actor_namespace(Self,ws_client(remote_owner))),
++         assertz(actors:link(Self,Remote))),
++        (actors:with_actor_namespace(ws_client(remote_owner),actor_authority:check_exit(Remote)),
++         catch((actors:with_actor_namespace(ws_client(remote_stranger),
++                    actor_authority:check_exit(Remote)),Outcome=returned),E,Outcome=thrown),
++         Outcome==thrown,nonvar(E),E=error(permission_error(exit,actor,Remote),_)),
++        (retractall(actors:link(Self,Remote)),
++         retractall(actors:actor_namespace(Self,ws_client(remote_owner))))).
+diff --git a/actors.pl b/actors.pl
+index eee4580..c7757db 100644
+--- a/actors.pl
++++ b/actors.pl
+@@ -168,6 +168,7 @@ Reply = hello.
+     hook_spawn/3,
+     hook_send/2,
+     hook_exit/2,
++    hook_check_exit/1,
+     hook_monitor/3,
+     hook_demonitor/1,
+     hook_admit_spawn/2,
+@@ -956,9 +957,14 @@ actor_terminating :-
+ %   safety net.
+ 
+ exit(Pid, Reason) :-
++    must_be(ground, Pid),
++    forall(hook_check_exit(Pid), true),
++    exit_actor(Pid, Reason).
++
++exit_actor(Pid, Reason) :-
+     hook_exit(Pid, Reason),
+     !.
+-exit(Pid, Reason) :-
++exit_actor(Pid, Reason) :-
+     ( actor_thread(Pid, Thread) ->
+         catch(thread_signal(Thread, actors:exit_signal(Pid, Reason)), _, true)
+     ; logical_pid(Pid) ->
+diff --git a/docs/ACTOR_EXIT_AUTHORITY.md b/docs/ACTOR_EXIT_AUTHORITY.md
+new file mode 100644
+index 0000000..10097ba
+--- /dev/null
++++ b/docs/ACTOR_EXIT_AUTHORITY.md
+@@ -0,0 +1,29 @@
++# Submitted actor termination authority
++
++Public client ownership is checked at `actors:exit/2`, before local signalling
++or a distribution hook can take over. WebSocket command authorization alone
++does not protect predicates invoked by an admitted submitted goal.
++
++The policy hook in `actor_authority.pl` uses the actor's inherited client
++namespace, including delegated `ws_lineage` contexts. Siblings in one namespace
++can terminate one another. A separate connection is a separate scope even
++when the authenticated account is the same. A known remote route alone does
++not grant termination authority: linked remote work must belong to a parent
++in the caller's scope, or the caller must have node-owner authority.
++
++Authenticated administrator namespaces retain broader authority. Their marker
++is maintained by trusted connection/request setup, retained while cached HTTP
++actors remain, and retired after their last actor stops. Standalone unscoped
++local callers retain the unrestricted library API. Admission still restricts
++which actor operations a public profile can express; ISOBASE HTTP does not
++admit exit/2, including for an administrator.
++
++The core uses a multifile hook and does not import the upper node policy.
++`web_prolog.pl` and the HTTP node composition load the policy. Existing wire
++ownership restrictions remain independent. Application sends and monitors
++do not acquire exit authority.
++
++`actor_authority_tests.pl` is part of `./tools/test.sh unit`. The shared
++`trinity-conformance` ownership-lifecycle-0.1 pack adds public two-principal
++submitted-goal checks, survival probes, authorised owner controls and monitored
++socket-close cascades. See its 31 October before/after report.
+diff --git a/node.pl b/node.pl
+index e52bbf8..a291536 100644
+--- a/node.pl
++++ b/node.pl
+@@ -118,6 +118,7 @@ waits for their normal cleanup under a bounded timeout.
+ % Load the client before extending its owner hook: Trealla otherwise sees
+ % a hook-only rpc module and may leave the client predicates unavailable.
+ :- use_module(answer_terms,[check_answer_term/1,finite_query_error/2]).
++:- use_module(actor_authority, []).
+ :- use_module(rpc).
+ 
+ :- multifile rpc:hook_promise_owner/1.
+@@ -130,8 +131,14 @@ current_http_promise_namespace(Namespace) :-
+ :- meta_predicate with_http_promise_namespace(0).
+ with_http_promise_namespace(Goal) :-
+     thread_self(Thread),make_ref(Id),Namespace=http_client(Id),
+-    setup_call_cleanup(asserta(http_promise_namespace(Thread,Namespace)),
+-                       call(Goal),retract(http_promise_namespace(Thread,Namespace))).
++    (current_connection_governance(Principal,_) -> true
++    ; Principal=principal(local,[admin])),
++    setup_call_cleanup(
++        (asserta(http_promise_namespace(Thread,Namespace)),
++         actor_authority:open_namespace(Namespace,Principal)),
++        call(Goal),
++        call_cleanup(retract(http_promise_namespace(Thread,Namespace)),
++                     actor_authority:close_namespace(Namespace))).
+ 
+ :- use_module(library(sockets)).
+ :- use_module(library(json), [json_chars//1]).
+diff --git a/tools/test.sh b/tools/test.sh
+index d8b578f..35f6d2c 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -109,6 +109,8 @@ run_tpl_goal() {
+ }
+ 
+ run_unit() {
++    run_with_timeout "submitted actor exit authority" \
++        "$TPL" -g "(catch((consult('$ROOT/actor_authority_tests.pl'),actor_authority_tests:actor_authority_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Private shared-predicate shadowing" \
+         "$TPL" -g "consult('$ROOT/shared_shadow_tests.pl'),(catch(shared_shadow_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Actor write/1 terminal routing" \
+diff --git a/web_prolog.pl b/web_prolog.pl
+index cf58b4a..a7b1c56 100644
+--- a/web_prolog.pl
++++ b/web_prolog.pl
+@@ -89,6 +89,7 @@ Inference/stack ceilings and OS-level containment remain necessary.
+ :- use_module(rpc, [dispose_namespace_promises/1]).
+ :- use_module(websocket).
+ :- use_module(receiver_lineage, []).
++:- use_module(actor_authority, []).
+ :- use_module(json_wire,[decode_json_atom/2]).
+ 
+ :- op(200, xfx, @).
+@@ -180,7 +181,7 @@ web_prolog_handler(Profile, Sandbox, WS, '/ws') :-
+     make_ref(NamespaceId),
+     Namespace = ws_client(NamespaceId),
+     setup_call_cleanup(
+-        true,
++        actor_authority:open_namespace(Namespace, Principal),
+         ( actors:spawn_scoped(
+               relay_start(WS, Principal, Identity, AnswerTerms), Relay,
+               [link(false)], Namespace, internal),
+@@ -191,7 +192,8 @@ web_prolog_handler(Profile, Sandbox, WS, '/ws') :-
+               call_cleanup(retire_websocket_namespace(Namespace),
+                   (close_connection(Relay),
+                    observe_activity_end(ws_connection, Reader, disconnected)))) ),
+-        retire_websocket_namespace(Namespace)
++        call_cleanup(retire_websocket_namespace(Namespace),
++                     actor_authority:close_namespace(Namespace))
+     ).
+ 
+ % Each subsystem releases its mutex before the next begins. Connection actor

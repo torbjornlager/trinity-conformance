@@ -100,3 +100,12 @@ supporting and diagnostic packs. New required packs are `isobase-http-0.1`,
 Their stable IDs map to the [baseline contract](../baselines/0.1.md); the new
 runner accepts HTTP or WebSocket endpoints. Existing suites and their IDs are
 preserved, not silently merged into a claim that every node implements ACTOR.
+
+## Ownership and lifecycle across clients
+
+The draft [ownership/lifecycle pack](../profiles/ownership-lifecycle-0.1.md)
+exercises submitted-goal termination authority, explicit owner termination
+controls and independent monitor delivery after socket closure, including a
+computing grandchild. It requires a disposable private fixture and two
+execution-only principals; see the profile for provisioning and runner flags.
+The original links/monitors pack and historical reports are unchanged.

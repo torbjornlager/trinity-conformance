@@ -1,0 +1,33 @@
+[
+  {
+    "name": "trealla-authority",
+    "command": [
+      "/opt/trealla/tpl",
+      "-g",
+      "(catch((consult('actor_authority_tests.pl'),actor_authority_tests:actor_authority_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+    ],
+    "returncode": 1,
+    "seconds": 2.162
+  },
+  {
+    "name": "trealla-unit",
+    "command": [
+      "./tools/test.sh",
+      "unit"
+    ],
+    "returncode": 1,
+    "seconds": 2.239
+  },
+  {
+    "name": "swi-native",
+    "command": [
+      "./tools/test.sh",
+      "LINT",
+      "T0",
+      "T2",
+      "T4_NATIVE"
+    ],
+    "returncode": 1,
+    "seconds": 64.864
+  }
+]

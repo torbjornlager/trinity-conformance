@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-31",
+  "runtime_commits": {
+    "swi": {
+      "repository": "/Users/lager/swi-prolog-node",
+      "revision": "91d5c5257e4ef4e06e56764e6023fe58eddd93c7"
+    },
+    "trealla": {
+      "repository": "/Users/lager/trealla-port",
+      "revision": "37848901cec63ddec3631b9c8b3273a951fd9cee"
+    }
+  },
+  "results": {
+    "lifecycle-original": {
+      "pass": 15,
+      "fail": 9
+    },
+    "lifecycle-confirmed": {
+      "pass": 24,
+      "fail": 0
+    },
+    "repair-confirmed": {
+      "pass": 54,
+      "fail": 0
+    },
+    "authority-controls-confirmed": {
+      "pass": 8,
+      "fail": 0
+    }
+  },
+  "normal_cli": "4/4 on each engine; both normal runner entry points exit 0",
+  "conformance_runner_unit_tests": "50/50 pass",
+  "trealla_unit": "All existing unit groups including new authority group pass; exit 0",
+  "swi_authority": "37/37 pass",
+  "swi_native": "LINT/T0/T2 pass; T4_NATIVE exit 1 with five supervisor assertions failing in final run. Original-source control also exits 1 with five supervisor assertions; identities/strategies vary. No blanket native pass claimed.",
+  "environment": {
+    "image": "sha256:014877c00f96a9186fd6a9bffbb99aee8556e282f2d06ccadb18bd8445b43d41",
+    "runtime_versions": {
+      "swi": "10.1.19",
+      "trealla": "3.14.20"
+    },
+    "public_cases_limits": {
+      "cpus": 2,
+      "memory": "1 GiB",
+      "pids": 256
+    },
+    "native_final_limits": {
+      "cpus": 2,
+      "memory": "2 GiB",
+      "pids": 1024
+    },
+    "external_network": false,
+    "live_services_modified": false
+  },
+  "source_records": "Base revisions plus committed repairs; executable-source hashes in final-source-hashes.json",
+  "limitations": [
+    "Selected contracts on one local image; no universal scheduler/deadline/security or remote-network guarantee",
+    "Full SWI native suite remains non-green due supervisor failures reproduced on original source",
+    "Initial native container had insufficient process limit; failed resource-limited run retained",
+    "HTTP exit diagnostic corrected: ISOBASE rejects actor exit at profile admission, including for admin",
+    "Legacy case-inputs.json in lifecycle fixture records is not its OL manifest; versioned cases/ownership-lifecycle-0.1.json and runner/ownership_lifecycle.py define the actual OL cases"
+  ]
+}

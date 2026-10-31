@@ -677,3 +677,12 @@ The [25 October committed local adoption checkpoint](reports/2026-10-25-committe
 links exact implementation revisions to post-restart evidence. It records local
 configuration adoption without changing shared pack totals or reclassifying
 unresolved diagnostics.
+
+## Ownership and lifecycle across clients
+
+The draft [ownership/lifecycle pack](profiles/ownership-lifecycle-0.1.md)
+exercises submitted-goal termination authority, explicit owner termination
+controls and independent monitor delivery after socket closure, including a
+computing grandchild. It requires a disposable private fixture and two
+execution-only principals; see the profile for provisioning and runner flags.
+The original links/monitors pack and historical reports are unchanged.

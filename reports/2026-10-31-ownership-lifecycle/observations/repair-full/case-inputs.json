@@ -1,0 +1,32 @@
+[
+  [
+    "K1",
+    "First guard witness; body alternatives; one consumed message",
+    "self(S),S!offer(a),S!offer(b),findall(W-B,receive({offer(a) if member(W,[first,second])->member(B,[one,two])},[timeout(0),on_timeout(throw(missing_offer))]),Pairs),Pairs==[first-one,first-two],receive({offer(Second)->Second==b},[timeout(0),on_timeout(throw(missing_second))])"
+  ],
+  [
+    "K2",
+    "Rejected guard bindings and consumed-message failure do not roll back effects",
+    "self(S),S!offer(0),receive({offer(X) if (Tentative=wrong,fail)->fail},[timeout(0)]),var(X),var(Tentative),\\+receive({offer(Y)->Y==0,fail},[timeout(0),on_timeout(throw(missing_offer))]),var(Y),receive({offer(_)->throw(restored_message)},[timeout(0)])"
+  ],
+  [
+    "K3",
+    "One-sided matching preserves unbound message variables",
+    "self(S),S!offer(V),receive({offer(report)->throw(bound_message_variable)},[timeout(0)]),var(V),receive({offer(W)->var(W),W=accepted},[timeout(0),on_timeout(throw(missing_variable_offer))]),var(V)"
+  ],
+  [
+    "K4",
+    "Timeout does not cancel a gated query or miscorrelate its late answer",
+    "self(S),toplevel_spawn(P,[session(true)]),toplevel_call_synch(P,(self(Me),S!query_ready(Me),receive({release->true})),Early,[template(old),timeout(0)]),var(Early),receive({query_ready(P)->true},[timeout(2),on_timeout(throw(no_ready))]),P!release,toplevel_call_synch(P,true,Fresh,[template(fresh),timeout(2),on_timeout(throw(no_fresh))]),Fresh==success(P,[fresh],false),toplevel_halt(P,true)"
+  ],
+  [
+    "K5",
+    "A query error preserves a persistent session and does not deliver death",
+    "toplevel_spawn(P,[session(true),monitor(true)]),toplevel_call_synch(P,throw(paper_error),E,[timeout(2),on_timeout(throw(no_error))]),E==error(P,paper_error),receive({down(P,P,_)->throw(premature_death)},[timeout(0)]),toplevel_call_synch(P,true,A,[template(recovered),timeout(2),on_timeout(throw(no_recovery))]),A==success(P,[recovered],false),toplevel_halt(P,true),receive({down(P,P,_)->true},[timeout(2),on_timeout(throw(no_death))])"
+  ],
+  [
+    "K6",
+    "Abort of a computing guard retains its unselected message",
+    "self(S),toplevel_spawn(P,[session(true)]),toplevel_call(P,(self(Me),Me!candidate(saved),receive({candidate(X) if (S!guard_ready(Me),repeat,fail)->true}))),receive({guard_ready(P)->true},[timeout(2),on_timeout(throw(no_guard_ready))]),toplevel_abort(P),toplevel_call_synch(P,receive({candidate(V)->true}),A,[template(V),timeout(2),on_timeout(throw(no_retained_candidate))]),A==success(P,[saved],false),toplevel_halt(P,true)"
+  ]
+]

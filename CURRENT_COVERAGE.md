@@ -326,3 +326,12 @@ full browser checks, 29 public interoperability controls, 10 extra text controls
 and actual UI checks. Local n3/n5 now use guarded commit-pinned startup with
 character-list reading. Rollback and separate diagnostics are retained. Shared
 pack totals and language baseline requirements are unchanged.
+
+## 31 October ownership/lifecycle follow-up
+
+The new draft `ownership-lifecycle-0.1` pack covers two authenticated client
+contexts and language-level `exit/2`, plus explicit termination and socket-EOF
+monitor controls. The dated report under `reports/2026-10-31-ownership-lifecycle`
+contains before/after observations and exact candidate provenance. These
+selected repairs do not re-certify all deployed profiles or replace the
+historical coverage matrices.

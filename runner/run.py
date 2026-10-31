@@ -1090,6 +1090,7 @@ def main() -> int:
                         choices=tuple(PROFILE_ORDER))
     parser.add_argument("--token", help="bearer token; prefer --token-env")
     parser.add_argument("--token-env", help="environment variable containing a bearer token")
+    parser.add_argument("--observer-token-env", help="second execution-only principal token for ownership/lifecycle fixtures")
     parser.add_argument("--origin")
     parser.add_argument(
         "--header", action="append", default=[],
@@ -1127,6 +1128,15 @@ def main() -> int:
         try:portable_text.validate(manifest, selected, args.peer, args.source_base)
         except ValueError as error:parser.error(str(error))
 
+    observer_token = None
+    if manifest.get("suite") == "ownership-lifecycle-0.1":
+        import ownership_lifecycle
+        observer_token = os.environ.get(args.observer_token_env or "")
+        try:
+            ownership_lifecycle.validate(token, observer_token)
+        except ValueError as error:
+            parser.error(str(error))
+
     for header in args.header:
         if ":" not in header or "\r" in header or "\n" in header:
             parser.error("--header must be a single NAME: VALUE header line")
@@ -1150,6 +1160,8 @@ def main() -> int:
             try:
                 if manifest.get("suite") == "portable-text-0.2":
                     portable_text.execute(candidate, metadata, args.peer, args.source_base)
+                elif manifest.get("suite") == "ownership-lifecycle-0.1":
+                    ownership_lifecycle.execute(candidate, metadata, observer_token)
                 else:
                     function = CASE_FUNCTIONS[case_id]
                     function(candidate)
