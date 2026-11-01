@@ -1,0 +1,353 @@
+Trealla: trealla(3,14,20,[]) (/opt/trealla/tpl)
+
+=== Idempotent connection shutdown ===
+Node shutdown cancels each connection only once through at_exit: ok
+
+=== Committed exit mailbox boundaries ===
+Committed exits cannot re-enter mailbox waits: all regressions passed
+
+=== submitted actor exit authority ===
+Actor exit authority: all regressions passed
+
+=== Private shared-predicate shadowing ===
+Private shared-predicate shadowing: all regressions passed
+
+=== Actor write/1 terminal routing ===
+blacklist: sharing, inherited terminal, higher-order call and stream denial: ok
+whitelist: sharing, inherited terminal, higher-order call and stream denial: ok
+Actor write/1 output: all regressions passed
+
+=== Computed cyclic answer rejection ===
+pre-copy guard and finite exception envelope: ok
+HTTP pre-handoff rejection, cleanup and finite controls: ok
+Cyclic answer rejection: all regressions passed
+
+=== Canonical URI inputs ===
+URI canonicalization, early errors and local routing: passed
+
+=== Strict Boolean language options ===
+Strict Boolean options: all regressions passed
+
+=== Canonical answer negotiation context ===
+Answer negotiation context, exceptional cleanup and thread isolation: ok
+
+=== Concurrent bootstrap and reply serialization ===
+Concurrent bootstrap and reply serialization: all regressions passed
+
+=== Owned remote demonitor acknowledgement and flush ===
+Remote demonitor: lock, acknowledgement, ownership, flush and writer failures: ok
+
+=== Independent termination notification references ===
+Termination relay: default, private, duplicate, removed and unrelated refs: ok
+
+=== General toplevel creation validation and local path ===
+General toplevel creation: validation and local path unchanged
+
+=== Public synchronous toplevel wrappers ===
+answers, next, sharing and output mismatch: ok
+routing validation and asynchronous replies retained: ok
+late answer cannot satisfy a later call: ok
+timeout callback context, bindings, failure and exception: ok
+stale replies retain original deadline and unrelated monitor/messages: ok
+termination fails fast and private monitors are removed: ok
+committed exit escapes query errors; user actor_exit and unrelated monitors kept: ok
+profile, query and computed callback admission: ok
+private actor callback source context: ok
+sandbox-prepared local queries in both source modes: ok
+Synchronous toplevel wrappers: all regressions passed
+
+=== Promise stream cleanup on malformed replies ===
+{"exit_code": 0, "stdout": "malformed reply: error answer; resources reclaimed; following request succeeds\nHTTP timeout case parse_error: passed\n", "stderr": "", "executable": "/opt/trealla/tpl", "library": "/opt/trealla/library", "case": "parse_error", "elapsed_seconds": 0.561, "scope": "Plain HTTP; delayed headers, body and partial line; no TLS", "passed": true}
+
+=== HTTP transport timeout option mapping ===
+% Started server at http://localhost:22148/
+HTTP timeout options: all regressions passed
+
+=== Host runtime properties ===
+Runtime properties: enumeration, matching, sandbox, toplevel and child checks passed
+
+=== HTTP server first-slice cleanup ===
+first slice and offset stop before side effects, exceptions or blocking alternatives: ok
+non-ground template/goal sharing is preserved: ok
+same-goal ordinary continuation retains its pid, offset and lookahead: ok
+producer is retired before return; application monitor and unrelated reply survive: ok
+failure, short slices, offsets past end, errors and output mismatch reclaim producers: ok
+collection and skipping retain the whole-page deadline and cleanup: ok
+Node listening on port 22147 (profile actor, sandbox blacklist, auth open)
+HTTP once Prolog/JSON, offset, failure/error and ordinary paging on http://127.0.0.1:22147: ok
+HTTP once validates every occurrence and preserves first-value precedence: ok
+HTTP server once: all regressions passed
+
+=== RPC first-slice once option ===
+% Started server at http://localhost:22146/
+whole first slice, request count, default and duplicate precedence: ok
+validation precedes I/O; non-ground answer sharing is preserved: ok
+failure and error delivery: ok
+promise forwards once/default/first duplicate, fetches one page and preserves peer More: ok
+promise validation precedes source/resources; sharing, offset, failure/error remain intact: ok
+promise timeout/default callback and retry preserve the single request and original answer: ok
+RPC once: all regressions passed
+
+=== first_solution continuation determinism ===
+select/3 leaves a choice point when removing a unique head pid: confirmed
+failure continue returns deterministically and preserves unrelated notifications: ok
+exception continue returns deterministically and preserves unrelated notifications: ok
+exit continue returns deterministically and preserves unrelated notifications: ok
+first_solution continuation determinism: all regressions passed
+
+=== source-less toplevel worker routing ===
+Worker preparation preserves native cut and conditional scopes: ok
+Source-less toplevel worker calls: all regressions passed
+Private-source worker predicates and sharing remain available: ok
+Public worker routing: all regressions passed
+
+=== retired deployment page cap ===
+
+=== caller-controlled page sizes ===
+retired max_solutions is rejected without changing policy; positive limits stay valid: ok
+PTCP call and next honour sizes above the old default cap and preserve ordering: ok
+PTCP omitted limit no longer silently splits at 1000: ok
+Node listening on port 22145 (profile actor, sandbox blacklist, auth open)
+HTTP honours requested sizes and omitted limits; short final pages resume correctly: ok
+Caller-controlled page sizes: all regressions passed
+
+=== server promise setup/send cleanup ===
+failed reference setup removes only the newly installed monitor: ok
+send exception retains its original term and flushes only its monitor: ok
+exception during reference setup removes the installed monitor: ok
+unrelated monitor and mailbox messages survive all failure paths: ok
+successful sends retain their monitor, reply sharing and yield cleanup: ok
+Server promise setup/send cleanup: all regressions passed
+
+=== HTTP paging offsets ===
+changing page sizes resumes the same producer at returned-answer offsets: ok
+Node listening on port 22144 (profile actor, sandbox blacklist, auth open)
+HTTP operator goals and shared template variables: ok
+HTTP paging returns every answer and reuses one producer: ok
+short page at a nonzero offset advances by its actual length: ok
+HTTP paging offsets: all regressions passed
+
+=== connection-thread stack limits ===
+finite/unlimited stack policy preserves lifecycle thread options: ok
+small answers exhaust the collector stack; producer is reclaimed before reporting: ok
+Node listening on port 22143 (profile actor, sandbox blacklist, auth open)
+accepted HTTP worker reports normalized stack exhaustion: ok
+JSON stack errors retain the public error envelope: ok
+finite-limit accepted http connections preserve replies and retire their registrations: ok
+Connection-thread stack limits: all regressions passed
+
+=== finite-limit WebSocket connection ===
+Node listening on port 22143 (profile actor, sandbox blacklist, auth open)
+finite-limit accepted websocket connections preserve replies and retire their registrations: ok
+
+=== HTTP whole-page deadline ===
+deadline covers startup before the producer thread exists: ok
+many individually fast answers exceed one page budget; unrelated monitor/message retained: ok
+offset skipping shares the page deadline: ok
+lookahead shares the budget already spent collecting the page: ok
+cached pages get fresh budgets; idle time and unrelated continuations are preserved: ok
+expiry after cache publication does not reclaim the handed-off producer: ok
+success, failure and exceptions cancel the timer before later caller work: ok
+the request timer is cancelled before cleanup lasting longer than its budget: ok
+skipping, collection and lookahead select only their producer; unrelated replies remain: ok
+cleanup drains owned solution/end/error replies only, preserving application monitors: ok
+infinite owner time limit remains unbounded: ok
+HTTP whole-page deadline: all regressions passed
+
+=== HTTP continuation cache eviction cleanup ===
+real page overflow stops FIFO victim, retains paging and application monitor: ok
+one trim reclaims every excess producer in FIFO order: ok
+checkout before eviction keeps ownership; trimming skips the active request: ok
+concurrent checkout remains usable while eviction waits for termination: ok
+exception after removal reclaims every victim and preserves the original error: ok
+HTTP cache eviction: all regressions passed
+
+=== HTTP paging request cleanup ===
+paging_stage(1793522210.447761,main,startup_failure_begin)
+startup exception before thread creation leaves no owned producer: ok
+paging_stage(1793522210.460163,main,startup_failure_end)
+paging_stage(1793522210.460212,main,interruption_begin(skip))
+paging_stage(1793522210.518822,'$thread'(10),request_enter(skip))
+paging_stage(1793522210.518841,main,check_begin(producer_started))
+paging_stage(1793522210.522268,'$thread'(12),producer_started(2565617933))
+paging_stage(1793522210.522329,'$thread'(12),producer_wait_begin(2565617933))
+paging_stage(1793522210.522344,main,check_end(producer_started))
+paging_stage(1793522210.522458,main,check_begin(producer_monitor))
+paging_stage(1793522210.522554,main,check_end(producer_monitor))
+paging_stage(1793522210.522627,main,check_begin(request_thread))
+paging_stage(1793522210.5227,main,check_end(request_thread))
+paging_stage(1793522210.522769,main,check_begin(request_signal))
+paging_stage(1793522210.522847,main,check_end(request_signal))
+paging_stage(1793522210.522925,main,check_begin(request_error))
+paging_stage(1793522210.722617,'$thread'(10),request_caught(skip,page_interrupted))
+paging_stage(1793522210.722704,'$thread'(10),request_error_sent(skip,page_interrupted))
+paging_stage(1793522210.722756,'$thread'(10),request_returned(skip))
+paging_stage(1793522210.722727,main,check_end(request_error))
+paging_stage(1793522210.722891,main,check_begin(producer_retired))
+paging_stage(1793522210.722968,main,check_end(producer_retired))
+paging_stage(1793522210.723029,main,check_begin(application_monitor))
+paging_stage(1793522210.723087,main,check_end(application_monitor))
+paging_stage(1793522210.723131,main,check_begin(request_terminated))
+paging_stage(1793522210.723199,main,check_end(request_terminated))
+interrupted skip reclaims producer before returning, application monitor retained: ok
+paging_stage(1793522210.723272,main,interruption_begin(collect))
+paging_stage(1793522210.726148,'$thread'(13),request_enter(collect))
+paging_stage(1793522210.726162,main,check_begin(producer_started))
+paging_stage(1793522210.729028,'$thread'(14),producer_started(1927071663))
+paging_stage(1793522210.729083,'$thread'(14),producer_wait_begin(1927071663))
+paging_stage(1793522210.729104,main,check_end(producer_started))
+paging_stage(1793522210.729219,main,check_begin(producer_monitor))
+paging_stage(1793522210.729311,main,check_end(producer_monitor))
+paging_stage(1793522210.729386,main,check_begin(request_thread))
+paging_stage(1793522210.729463,main,check_end(request_thread))
+paging_stage(1793522210.729533,main,check_begin(request_signal))
+paging_stage(1793522210.729609,main,check_end(request_signal))
+paging_stage(1793522210.729677,main,check_begin(request_error))
+paging_stage(1793522210.930428,'$thread'(13),request_caught(collect,page_interrupted))
+paging_stage(1793522210.930523,'$thread'(13),request_error_sent(collect,page_interrupted))paging_stage(1793522210.930546,main,check_end(request_error))
+paging_stage(1793522210.930579,'$thread'(13),request_returned(collect))
+
+paging_stage(1793522210.930989,main,check_begin(producer_retired))
+paging_stage(1793522210.932241,main,check_end(producer_retired))
+paging_stage(1793522210.932293,main,check_begin(application_monitor))
+paging_stage(1793522210.932356,main,check_end(application_monitor))
+paging_stage(1793522210.932407,main,check_begin(request_terminated))
+paging_stage(1793522210.932479,main,check_end(request_terminated))
+interrupted collect reclaims producer before returning, application monitor retained: ok
+paging_stage(1793522210.932557,main,interruption_begin(lookahead))
+paging_stage(1793522210.935393,'$thread'(15),request_enter(lookahead))
+paging_stage(1793522210.935406,main,check_begin(producer_started))
+paging_stage(1793522210.93862,'$thread'(16),producer_started(1304815530))
+paging_stage(1793522210.93868,'$thread'(16),producer_wait_begin(1304815530))
+paging_stage(1793522210.938702,main,check_end(producer_started))
+paging_stage(1793522210.938969,main,check_begin(producer_monitor))
+paging_stage(1793522210.93904,main,check_end(producer_monitor))
+paging_stage(1793522210.93909,main,check_begin(request_thread))
+paging_stage(1793522210.939133,main,check_end(request_thread))
+paging_stage(1793522210.93918,main,check_begin(request_signal))
+paging_stage(1793522210.939234,main,check_end(request_signal))
+paging_stage(1793522210.939281,main,check_begin(request_error))
+paging_stage(1793522211.038725,'$thread'(15),request_caught(lookahead,page_interrupted))
+paging_stage(1793522211.038838,'$thread'(15),request_error_sent(lookahead,page_interrupted))
+paging_stage(1793522211.038926,'$thread'(15),request_returned(lookahead))
+paging_stage(1793522211.038861,main,check_end(request_error))
+paging_stage(1793522211.039102,main,check_begin(producer_retired))
+paging_stage(1793522211.039178,main,check_end(producer_retired))
+paging_stage(1793522211.03925,main,check_begin(application_monitor))
+paging_stage(1793522211.039329,main,check_end(application_monitor))
+paging_stage(1793522211.039398,main,check_begin(request_terminated))
+paging_stage(1793522211.039492,main,check_end(request_terminated))
+interrupted lookahead reclaims producer before returning, application monitor retained: ok
+paging_stage(1793522211.039603,main,cached_interruption_begin)
+abandoned cache checkout reclaims producer; unrelated message and monitor preserved: ok
+paging_stage(1793522211.142638,main,cached_interruption_end)
+paging_stage(1793522211.142692,main,handoff_begin)
+published and rechecked-out continuations survive prior request cleanup: ok
+paging_stage(1793522211.24997,main,handoff_end)
+paging_stage(1793522211.250023,main,eviction_policy_begin)
+publication releases ownership before explicit cache removal: ok
+paging_stage(1793522211.353757,main,eviction_policy_end)
+paging_stage(1793522211.353822,main,terminal_answers_begin)
+terminal success/failure, original query errors and output mismatch clean up: ok
+paging_stage(1793522211.570796,main,terminal_answers_end)
+paging_stage(1793522211.57085,main,execution_timeout_begin)
+execution timeout keeps its resource error and reclaims the producer: ok
+paging_stage(1793522211.725102,main,execution_timeout_end)
+paging_stage(1793522211.725154,main,final_cleanup_begin)
+HTTP paging cleanup: all regressions passed
+
+=== remote statechart construction and trace acknowledgements ===
+Remote chart entry shapes, shared preparation, sandbox/profile and source boundaries: ok
+
+=== remote statechart receiver boundary ===
+Remote server adapter validates source, callback and profile: ok
+
+=== discontiguous source declarations ===
+empty zero/unary predicates, negation and current_predicate via list: ok
+empty zero/unary predicates, negation and current_predicate via text: ok
+clause order, variable sharing and copied empty/mixed declarations: ok
+empty declarations execute under blacklist policy: ok
+empty declarations execute under whitelist policy: ok
+invalid and reserved declaration targets remain rejected: ok
+multifile sandbox rejection and trusted empty behavior unchanged: ok
+Discontiguous source declarations: all regressions passed
+
+=== empty dynamic declarations and boxshop ===
+empty zero/unary declarations, later assertions and existing clauses: ok
+boxshop fallback, eight-second timeout, slot collection and final order: ok
+Empty dynamic predicates and unchanged boxshop-2: all passed
+
+=== statechart local invocation ===
+actor child source, compound goal, output and monitor delivery: ok
+state exit, re-entry and halt retire unlinked children: ok
+toplevel child paging and ordinary asynchronous answers: ok
+nested chart source predicates resolve in parent datamodel: ok
+internal events precede invocation of stable states: ok
+transient invocation, spawned stabilisation and child/state completion: ok
+partial invocation failure rolls back earlier unlinked children: ok
+aborted chart cleans unlinked invoked children: ok
+child cleanup preserves unrelated monitors: ok
+unsupported types, destinations, options and inherited sandbox policy: ok
+unchanged examples 13, 14 and 17 terminate and reclaim children: ok
+unchanged server and supervisor examples: ok
+behaviour inline source, parent callbacks and predicate copying: ok
+fixture_cleanup_wait(behaviour_policy(whitelist),counter_server,names([1761087593],[]))
+fixture_cleanup_complete(behaviour_policy(whitelist),counter_server)
+server and supervisor inherit sandbox policy and reject unsafe source: ok
+aborted chart reclaims unlinked supervisor and its worker: ok
+behaviour startup rollback, child validation and invalid-destination rejection: ok
+dynamic supervisor additions retain sandbox admission: ok
+Statechart local invocation regressions: all passed
+
+=== statechart execution ===
+action errors: completed effects, other blocks, parallel microstep and chart-selected policies: ok
+parallel event aliases, failed guards and sibling bindings: ok
+unspecified event does not become stop/timer control: ok
+pause/resume hierarchy and shallow history: ok
+concurrent chart isolation and halt: ok
+event/guard/action variable sharing: ok
+timed transitions: ok
+deferred-event re-offering: ok
+parallel regions and completion events: ok
+deep history: ok
+private supplemental sources and admission guards: ok
+datamodel isolation, dynamic declarations, ordering and sandbox: ok
+datamodel GCD, transitive closure and DCG expansion: ok
+datamodel shadows shared predicates without modifying shared data: ok
+timer cancellation, forced halt and monitor cleanup: ok
+source, unsupported features, sandbox and profile checks: ok
+Statechart execution regressions: all passed
+
+=== supervisor halt ordering ===
+Supervisor halt ordering, original deadline and private monitor cleanup: ok
+
+=== spawn reply correlation ===
+Spawn correlation, error isolation, legacy replies and connection loss: ok
+
+=== nonbinding supervisor admission ===
+Nonbinding supervisor admission: all regressions passed
+
+=== constructed src_list admission ===
+Constructed src_list admission: all regressions passed
+
+=== remote supervisor receiver and sandbox ===
+Narrow receiver supervisor adapter: ok
+Receiver sandbox/profile/fresh-state and nested-source regressions: ok
+
+=== atomic remote named startup ===
+caller-side publication/rollback and pre-I/O wrapper name conflicts: ok
+closed caller namespace rejects remote publication without erasing replacement: ok
+failure/loss releases handshake and rollback preserves unrelated monitors: ok
+Atomic remote named startup: all regressions passed
+
+=== receiver delegated lineage cleanup ===
+Creation-race diagnostics preserve messages and identify failed stages: ok
+creation_race_batch_started(after_prefix,20)
+authority, token, account and sandbox validation: ok
+descendants, names, promises, late admission and unrelated lineages: ok
+connection loss closes every delegated namespace: ok
+closure during unnamed preparation rejects activation and wakes creator: ok
+closure during named preparation rejects activation and wakes creator: ok
+creation_race_iterations_started
+error(lineage_creation_race(namespace_empty,failed,race(1,ws_lineage(2243763303,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa),1000000052,1952616774,_1),snapshot(true,[1797390430],[actor(1797390430,true,[thread('$thread'(39),running)],[],false,true,[ws_lineage(2243763303,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)],[]),actor(1952616774,false,[],[],false,false,[],[])],[],empty)),context(receiver_lineage_tests:creation_race/1,'test-only diagnostic'))
+ERROR: receiver delegated lineage cleanup failed with exit status 1
