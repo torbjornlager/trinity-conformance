@@ -686,3 +686,39 @@ controls and independent monitor delivery after socket closure, including a
 computing grandchild. It requires a disposable private fixture and two
 execution-only principals; see the profile for provisioning and runner flags.
 The original links/monitors pack and historical reports are unchanged.
+
+## Scoped ACTOR release verification
+
+Use `runner/release.py` for release verification rather than treating the default
+actor-core pack as the whole release check. The versioned
+`profiles/actor-release-0.1.json` requires actor core, selective receive,
+links/monitors, private isolation, source-copying, toplevel waits, and
+ownership/lifecycle. A release passes only when every listed case reports pass;
+missing, duplicate, unsupported or failed cases keep the gate red.
+
+The fixture must be a disposable private loopback node with two **distinct
+execution-only principals**. Neither may be a node owner/administrator:
+administrators are intentionally allowed to terminate other client trees.
+Different browser connections or token strings do not establish this fixture.
+
+```sh
+python3 runner/release.py --ws-url ws://127.0.0.1:3060/ws \
+  --candidate candidate-name --disposable-fixture \
+  --token-env OWNER_TEST_TOKEN --observer-token-env OBSERVER_TEST_TOKEN \
+  --output /tmp/actor-release-results
+```
+
+`adapters/local_actor_release.py --sources /path/to/archived-sources --output
+/tmp/disposable-release-results` creates both private fixtures, provisions the
+execution-only identities, runs the gate and tears down its own processes.
+The source directory must contain `swi/` and `trealla/`; select the matching
+engines with `SWIPL`, `TPL` and `TPL_LIBRARY_PATH`. This adapter is intended for
+an isolated test environment. It never reconfigures deployed services. Its
+reports omit tokens and record source/executable hashes. Passing this scoped
+gate is not complete ACTOR or production deployment certification.
+
+The new `source-copying-0.1` pack covers a primitive guard after `src_predicates`,
+an inline worker with explicitly copied generator definitions, matching named
+controls, and copied receive timeout options. These combinations were missing
+from the earlier separate guard and isolation packs. Historical packs/reports
+remain unchanged.

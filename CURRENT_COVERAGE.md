@@ -335,3 +335,13 @@ monitor controls. The dated report under `reports/2026-10-31-ownership-lifecycle
 contains before/after observations and exact candidate provenance. These
 selected repairs do not re-certify all deployed profiles or replace the
 historical coverage matrices.
+
+## Source-copying regressions and release gate, 1 November 2026
+
+`source-copying-0.1` adds the previously missing primitive-guard/private-copy
+and inline-worker/private-generator combinations, two named controls, and a
+receive-option callback-copying regression. `actor-release-0.1` makes this and
+`ownership-lifecycle-0.1` explicit release requirements alongside five existing
+ACTOR packs. The default single-pack runner remains backward compatible.
+These tests describe selected contracts; current deployed nodes are not
+implicitly certified by local candidate results.

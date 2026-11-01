@@ -1,0 +1,136 @@
+Trealla: trealla(3,14,20,[]) (/opt/trealla/tpl)
+
+=== submitted actor exit authority ===
+Actor exit authority: all regressions passed
+
+=== Private shared-predicate shadowing ===
+Private shared-predicate shadowing: all regressions passed
+
+=== Actor write/1 terminal routing ===
+blacklist: sharing, inherited terminal, higher-order call and stream denial: ok
+whitelist: sharing, inherited terminal, higher-order call and stream denial: ok
+Actor write/1 output: all regressions passed
+
+=== Computed cyclic answer rejection ===
+pre-copy guard and finite exception envelope: ok
+HTTP pre-handoff rejection, cleanup and finite controls: ok
+Cyclic answer rejection: all regressions passed
+
+=== Canonical URI inputs ===
+URI canonicalization, early errors and local routing: passed
+
+=== Strict Boolean language options ===
+Strict Boolean options: all regressions passed
+
+=== Canonical answer negotiation context ===
+Answer negotiation context, exceptional cleanup and thread isolation: ok
+
+=== Concurrent bootstrap and reply serialization ===
+Concurrent bootstrap and reply serialization: all regressions passed
+
+=== Owned remote demonitor acknowledgement and flush ===
+Remote demonitor: lock, acknowledgement, ownership, flush and writer failures: ok
+
+=== Independent termination notification references ===
+Termination relay: default, private, duplicate, removed and unrelated refs: ok
+
+=== General toplevel creation validation and local path ===
+General toplevel creation: validation and local path unchanged
+
+=== Public synchronous toplevel wrappers ===
+answers, next, sharing and output mismatch: ok
+routing validation and asynchronous replies retained: ok
+late answer cannot satisfy a later call: ok
+timeout callback context, bindings, failure and exception: ok
+stale replies retain original deadline and unrelated monitor/messages: ok
+termination fails fast and private monitors are removed: ok
+committed exit escapes query errors; user actor_exit and unrelated monitors kept: ok
+profile, query and computed callback admission: ok
+private actor callback source context: ok
+sandbox-prepared local queries in both source modes: ok
+Synchronous toplevel wrappers: all regressions passed
+
+=== Promise stream cleanup on malformed replies ===
+{"exit_code": 0, "stdout": "malformed reply: error answer; resources reclaimed; following request succeeds\nHTTP timeout case parse_error: passed\n", "stderr": "", "executable": "/opt/trealla/tpl", "library": "/opt/trealla/library", "case": "parse_error", "elapsed_seconds": 0.565, "scope": "Plain HTTP; delayed headers, body and partial line; no TLS", "passed": true}
+
+=== HTTP transport timeout option mapping ===
+% Started server at http://localhost:22148/
+HTTP timeout options: all regressions passed
+
+=== Host runtime properties ===
+Runtime properties: enumeration, matching, sandbox, toplevel and child checks passed
+
+=== HTTP server first-slice cleanup ===
+first slice and offset stop before side effects, exceptions or blocking alternatives: ok
+non-ground template/goal sharing is preserved: ok
+same-goal ordinary continuation retains its pid, offset and lookahead: ok
+producer is retired before return; application monitor and unrelated reply survive: ok
+failure, short slices, offsets past end, errors and output mismatch reclaim producers: ok
+collection and skipping retain the whole-page deadline and cleanup: ok
+Node listening on port 22147 (profile actor, sandbox blacklist, auth open)
+HTTP once Prolog/JSON, offset, failure/error and ordinary paging on http://127.0.0.1:22147: ok
+HTTP once validates every occurrence and preserves first-value precedence: ok
+HTTP server once: all regressions passed
+
+=== RPC first-slice once option ===
+% Started server at http://localhost:22146/
+whole first slice, request count, default and duplicate precedence: ok
+validation precedes I/O; non-ground answer sharing is preserved: ok
+failure and error delivery: ok
+promise forwards once/default/first duplicate, fetches one page and preserves peer More: ok
+promise validation precedes source/resources; sharing, offset, failure/error remain intact: ok
+promise timeout/default callback and retry preserve the single request and original answer: ok
+RPC once: all regressions passed
+
+=== first_solution continuation determinism ===
+select/3 leaves a choice point when removing a unique head pid: confirmed
+failure continue returns deterministically and preserves unrelated notifications: ok
+exception continue returns deterministically and preserves unrelated notifications: ok
+exit continue returns deterministically and preserves unrelated notifications: ok
+first_solution continuation determinism: all regressions passed
+
+=== source-less toplevel worker routing ===
+Worker preparation preserves native cut and conditional scopes: ok
+Source-less toplevel worker calls: all regressions passed
+Private-source worker predicates and sharing remain available: ok
+Public worker routing: all regressions passed
+
+=== retired deployment page cap ===
+
+=== caller-controlled page sizes ===
+retired max_solutions is rejected without changing policy; positive limits stay valid: ok
+PTCP call and next honour sizes above the old default cap and preserve ordering: ok
+PTCP omitted limit no longer silently splits at 1000: ok
+Node listening on port 22145 (profile actor, sandbox blacklist, auth open)
+HTTP honours requested sizes and omitted limits; short final pages resume correctly: ok
+Caller-controlled page sizes: all regressions passed
+
+=== server promise setup/send cleanup ===
+failed reference setup removes only the newly installed monitor: ok
+send exception retains its original term and flushes only its monitor: ok
+exception during reference setup removes the installed monitor: ok
+unrelated monitor and mailbox messages survive all failure paths: ok
+successful sends retain their monitor, reply sharing and yield cleanup: ok
+Server promise setup/send cleanup: all regressions passed
+
+=== HTTP paging offsets ===
+changing page sizes resumes the same producer at returned-answer offsets: ok
+Node listening on port 22144 (profile actor, sandbox blacklist, auth open)
+HTTP operator goals and shared template variables: ok
+HTTP paging returns every answer and reuses one producer: ok
+short page at a nonzero offset advances by its actual length: ok
+HTTP paging offsets: all regressions passed
+
+=== connection-thread stack limits ===
+finite/unlimited stack policy preserves lifecycle thread options: ok
+small answers exhaust the collector stack; producer is reclaimed before reporting: ok
+Node listening on port 22143 (profile actor, sandbox blacklist, auth open)
+accepted HTTP worker reports normalized stack exhaustion: ok
+JSON stack errors retain the public error envelope: ok
+finite-limit accepted http connections preserve replies and retire their registrations: ok
+Connection-thread stack limits: all regressions passed
+
+=== finite-limit WebSocket connection ===
+Node listening on port 22143 (profile actor, sandbox blacklist, auth open)
+Segmentation fault
+ERROR: finite-limit WebSocket connection failed with exit status 139

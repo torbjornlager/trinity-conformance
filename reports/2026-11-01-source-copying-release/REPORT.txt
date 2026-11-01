@@ -1,0 +1,84 @@
+Source-copying repairs and ACTOR release verification — 1 November 2026
+===================================================================
+
+The five-case source-copying-0.1 pack reproduces three Trealla boundaries missed
+by the earlier separate source and guard packs. On the unchanged Trealla base,
+SCOPY-001 fails with permission_error for sandbox_builtin_call(A=a), SCOPY-003
+fails with no_next, and SCOPY-005 fails when its copied timeout callback becomes
+an invalid []/0 call. Both named controls, SCOPY-002 and SCOPY-004, pass.
+The repaired Trealla candidate passes all five, as does the SWI candidate.
+
+Mechanisms repaired
+-------------------
+- Exporting a private predicate restores the public goal from the internal
+  sandbox_builtin_call wrapper; clause/2's corresponding restoration agrees.
+  This changes source restoration, not the admission policy for submitted
+  module-qualified goals.
+- An inline child entry goal remains unqualified until the child's namespace
+  exists. Qualifying its receive in the copied parent's namespace made the
+  child retain execution references to the wrong private environment.
+- Option lists are reconstructed structurally during source restoration.
+  Generic compound reconstruction corrupted copied receive timeout callbacks;
+  the list clause preserves their ordinary list structure.
+
+SCOPY-003 explicitly supplies the inline child's sc_value/1 generator through
+src_predicates/1. Without private child source, an inline builtin-only worker
+is not a discriminating negative control and can pass on the old source.
+Worker and controller normal termination are both observed before passing.
+
+Release gate
+------------
+The versioned actor-release-0.1 gate runs seven named packs and requires all
+expected case IDs, exactly once, all passing. Missing reports, unsupported
+cases, duplicates, failures or nonzero subprocess exits prevent success.
+The default actor-core runner is unchanged for backward compatibility.
+
+The final stable run passes 40/40 on SWI and 40/40 on Trealla (80/80 total):
+actor core 7; selective receive 6; links/monitors 6; copying/isolation 6;
+source copying 5; toplevel waits 6; ownership/lifecycle 4.
+
+The local adapter provisions two distinct execution-only identities on each
+private loopback fixture, runs the gate and removes its own node processes.
+The administrator exception matters: a node owner may legitimately exit
+another connection's actors. An authenticated owner-browser probe cannot
+establish a missing denial. The correct OL-001 execution-only probe passes
+on both tested candidates. OL-003/004 preserve computing-child/grandchild
+monitor notifications across owning-socket EOF on both candidates.
+
+Sources and deployment
+----------------------
+SWI candidate: 91d5c5257e4ef4e06e56764e6023fe58eddd93c7 (previously committed fix).
+Trealla base: 37848901cec63ddec3631b9c8b3273a951fd9cee plus the versioned
+isolation.pl and sandbox_policy.pl repair patch in this report. Source hashes
+identify the exact candidate; final commits are recorded separately.
+
+The demonstrator's native SWI dependency was still pinned to
+11bf73f28901892ec727f4d15715fc3a3ebc7e3a. The pin is updated to the tested
+91d5c5257e4ef4e06e56764e6023fe58eddd93c7 repair, addressing why its public
+SWI deployment still exhibits the old missing-monitor behaviour.
+No live service, installed engine or running deployment was changed by this
+verification. Deployment findings and the corrected administrator observation
+are retained separately in the private paper repository.
+
+Validation limits and retained failures
+--------------------------------------
+The 53 Python runner tests pass. Native actors, authentication, source-policy
+and lifecycle groups pass. Focused native sandbox denial and private-source
+checks also pass. The release gate does not certify the whole native suite.
+
+Broader Trealla native runs remain non-green: one candidate run segfaulted
+in a finite-limit WebSocket test, while isolated executions of that test pass
+on both candidate and base. Another candidate run failed a remote-demonitor
+check; the unmodified-source full control timed out in synchronous toplevel
+wrappers. Final grouped isolation and sandbox selections timed out at t122
+and t55 respectively. A further combined sandbox selection reached t149, then
+timed out at t150; its partial output is retained as well. These are retained, not treated as passes or diagnosed
+as consequences of the repair. Further native reliability work remains.
+The pre-existing wider SWI supervisor-suite limitations are unchanged.
+
+The test environment is the existing local ARM64 runtime image
+sha256:014877c00f96a9186fd6a9bffbb99aee8556e282f2d06ccadb18bd8445b43d41,
+with external networking disabled, two CPU cores, 2 GiB memory and a 1024-process
+limit for release verification. Engines remain SWI 10.1.19 / Trealla 3.14.20.
+Raw reports, exact source/executable hashes and commands accompany this record.
+No timing repetition is presented as a statistical reliability estimate.

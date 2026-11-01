@@ -109,3 +109,13 @@ controls and independent monitor delivery after socket closure, including a
 computing grandchild. It requires a disposable private fixture and two
 execution-only principals; see the profile for provisioning and runner flags.
 The original links/monitors pack and historical reports are unchanged.
+
+The required draft `source-copying-0.1.json` tests five local ACTOR source-copy
+boundaries through `runner/baseline.py`: primitive guard restoration (SCOPY-001),
+named guard control (002), an inline nondeterministic worker with its own copied
+generator (003), named worker control (004), and preservation of receive option
+lists/timeout callbacks (005). The pacing cases install a worker monitor before
+requesting stop, wait for normal worker termination, then release the controller.
+Root-level assertion timeouts and session teardown bound failed fixtures.
+The pack is required by `profiles/actor-release-0.1.json` together with the
+separate authenticated ownership/lifecycle pack.
