@@ -1,5 +1,11 @@
 # Current Web Prolog conformance coverage
 
+**1 November deployed follow-up:** the [live case verification](reports/2026-11-01-public-native-reliability/REPORT.txt)
+passes **44/44 on each of N3, N4 and N5 (132/132)**. N3/N4 use public WSS;
+N5's full case set uses the actual deployed backend with two execution-only
+identities, plus a separate authenticated public-browser check. Only N5 required
+a runtime update; the SWI changes were confined to tests. Public SSO is preserved.
+
 **1 November native reliability follow-up:** the
 [accepted checkpoint](reports/2026-11-01-native-reliability/REPORT.txt) passes
 **44/44 per engine (88/88)** under `actor-release-0.2`, using native SWI

@@ -1,0 +1,47 @@
+Deployed ACTOR case verification — 1 November 2026
+================================================
+
+The Trealla fixes are deployed on N5 from source
+2ebaeb9ca78e8ec58578e58bf86dad02a37625b2. N5 is healthy.
+N3/N4 retain their existing SWI images: the change from deployed 91d5c52
+to tested 7405ebb changes only two test files. Every deployed runtime Prolog
+file and load.pl was compared with 7405ebb and is byte-identical. N5's 204
+tracked Prolog source files were checked in both the image and live container.
+Only the N5 service was recreated; other service identities are unchanged.
+
+The exact 44 case IDs from actor-release-0.2 were exercised on each node:
+- N3: 44/44 over public wss://n3.elfenbenstornet.se/ws;
+- N4: 44/44 over public wss://n4.elfenbenstornet.se/ws;
+- N5: 44/44 on the actual deployed backend using two temporary execution-only
+  identities, checked by a helper in the node's network namespace.
+Total: 132/132, no missing/duplicate/unsupported cases.
+
+The user explicitly authorised live deployment checks. The fixture driver
+calls the same case assertions rather than using the isolated release wrapper,
+which remains restricted to disposable private loopback fixtures. Cases own
+their created sessions/actors; no other clients' actors are targeted. Wire
+observation budgets are eight seconds; assertion-level deadlines are unchanged.
+N3/N4 use their public anonymous, connection-scoped ownership model. N5's two
+principals are distinct and neither has administrator access. Their ten-minute
+tokens were explicitly revoked after the checks. Operational records and secrets
+are not included in this public report.
+
+A separate authenticated public N5 demonstrator session also ran the four
+committed-exit checks. The query returned PublicExitChecks=passed, Checks=4;
+Next and Abort were disabled. This was an existing owner SSO session and is
+not used as evidence for foreign-exit denial. The full N5 44-case result above
+is backend verification, not 44 public-proxy executions. Public SSO was neither
+changed nor bypassed for external clients; unauthenticated node_info still
+redirects to sign-in. N1/N2 metadata and N3/N4 metadata/UI routes remain available.
+
+Conformance source: 76f08ce47dc99b02ff09d5c015f115e419810849.
+Native SWI deployed: 91d5c5257e4ef4e06e56764e6023fe58eddd93c7.
+Native SWI runtime identical to: 7405ebba59e54a3ec99c28fb8267e86a17e180ba.
+Trealla deployed: 2ebaeb9ca78e8ec58578e58bf86dad02a37625b2.
+
+Raw case rows, manifest/client hashes and the live case driver accompany this
+record. The private operator archive retains before/after container identities,
+source comparisons, build/rollout logs, rollback image, token cleanup and public
+browser screenshot. These results are separate from the isolated 88-case gate,
+the native suites and the 250 repeated runs recorded in the preceding follow-up.
+No PDF, manuscript or layout work was performed.
