@@ -7,6 +7,11 @@ another runtime.
 
 ## Current consolidated results
 
+The [1 November native reliability checkpoint](reports/2026-11-01-native-reliability/REPORT.txt)
+records 88/88 passing cases in the expanded `actor-release-0.2` gate, both
+complete native scripts, and the targeted regression evidence. The previous
+40-case gate remains available with `--profile profiles/actor-release-0.1.json`.
+
 The [current coverage matrix](CURRENT_COVERAGE.md) brings together the latest
 committed results for each shared pack, including GNU ISOBASE and both WASM
 language modes. It records tested revisions/dates, unresolved diagnostics and

@@ -1,5 +1,14 @@
 # Current Web Prolog conformance coverage
 
+**1 November native reliability follow-up:** the
+[accepted checkpoint](reports/2026-11-01-native-reliability/REPORT.txt) passes
+**44/44 per engine (88/88)** under `actor-release-0.2`, using native SWI
+`7405ebb` and Trealla `2ebaeb9`. Both complete native scripts pass; two native
+negative-control regressions and 250 repeated Trealla invocations accompany
+the result. The report preserves unresolved historical/intermediate diagnostics.
+This updates the selected native ACTOR gate; public deployments, browsers and
+other engines were not retested.
+
 **Separate 26 October follow-up:** the
 [four-mode character-list checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
 tests the selected adoption sources (native SWI abbc56f, Trealla e7c51dc,

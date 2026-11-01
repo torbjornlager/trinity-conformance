@@ -1,0 +1,119 @@
+Native reliability follow-up — 1 November 2026
+=============================================
+
+This follows the retained failures in ../2026-11-01-source-copying-release/REPORT.txt.
+The earlier record and its failed observations are unchanged. All work here used
+archived sources and disposable containers. Public services, their images and
+installed engines were unchanged. No PDF or layout checks were performed.
+
+Changes
+-------
+1. Trealla preserves a committed exit at mailbox boundaries, including between
+   protected native wait slices. Catching the unwind token cannot admit another
+   receive or timeout callback. Ordinary caught exceptions still permit receiving;
+   actor finalization does not start another unwind. This addresses actors that
+   committed an exit yet resumed waiting, leaving callers waiting for down/3.
+
+2. Trealla connection shutdown runs an owner-side signal that closes and retires
+   the connection before unwinding. It avoids native thread_cancel's combination
+   of a read-cancellation flag and a queued thread_exit signal. Draining twice is
+   idempotent; stream close is protected and performed once. Native-thread handle
+   publication and shutdown admission share the lifecycle mutex, eliminating the
+   pending-handle handoff race. No installed host engine was patched.
+
+3. The finite-limit connection fixture commits its client work so setup_call_cleanup
+   completes before connection-retirement assertions; WebSocket acquisition belongs
+   to the protected setup. The original fixture could assert before cleanup ran.
+
+4. SWI supervisor fixtures await each monitor notification independently. Receipt
+   of the spawn-time monitor notification does not imply that an additional monitor's
+   separately delivered notification is already queued. The old zero-timeout check
+   failed in 4/10 focused baseline invocations; all 20 repaired invocations pass.
+
+5. The broad Trealla run exposed the analogous assumption in the delegated-lineage
+   fixture. A creator's termination does not establish that a separately preparing
+   child has retired. Closure immediately rejects new admission but lets already
+   reserved source preparation finish and reject activation. The fixture now snapshots
+   remaining actors and observes their monitors under one deadline before asserting
+   an empty namespace. This changes the test barrier, not namespace-close semantics.
+
+6. Remote-demonitor failures now identify the failing subtest instead of returning
+   an unexplained false. Its originally reported failure was not reproduced; no
+   specific root-cause claim is made for that historical observation.
+
+Two new native regressions fail on the unchanged Trealla base and pass after repair:
+- actor_exit_wait_tests: caught committed exits cannot resume blocking/poll/timed/
+  deadline receives; a caught ordinary exception remains a positive control.
+- node_shutdown_tests: a second drain while cleanup is deliberately held cannot
+  interrupt cleanup or retain a stale connection record.
+
+The supervisor cleanup test's deliberate post-exit mailbox inspection now reads
+its internal diagnostic snapshot directly; it does not resume application receive.
+The current node cleanup uses public sig_atomic/1, so the runner requires Trealla
+3.14.10 or newer. The local build helper now defaults to the tested v3.14.20.
+
+Acceptance results
+------------------
+The versioned actor-release-0.2 gate adds committed-exit-0.1 (EXIT-001..004) to the
+unchanged seven packs of actor-release-0.1. It passes 44/44 on SWI and 44/44 on
+Trealla: 88/88 total. The previous 40-case profile remains explicitly selectable.
+The four shared cases also pass on the old sandboxed Trealla node: the existing
+public goal rewriting already protects caught control exceptions. The native
+counterexample exercises runtime/host paths outside that rewrite. The new public
+cases preserve that observable protection; they are not presented as negative
+controls for the runtime repair.
+
+On the committed Trealla runtime (170ec3f), every repeated invocation passes:
+- finite-limit WebSocket: 200/200;
+- remote demonitor: 20/20;
+- grouped isolation: 10/10;
+- grouped sandbox: 10/10;
+- synchronous toplevel wrappers: 10/10.
+These are 250 successful fresh-process invocations, not a statistical reliability
+estimate. The original-source 50-invocation control has five sandbox timeouts,
+one synchronous-wrapper timeout and one isolation failure. Its other cases pass.
+The historical finite-limit WebSocket segfault was not reproduced. Teardown races
+were reproduced as premature retirement checks and stale records after native
+cancellation. No claim is made that the original crash's precise cause is proven.
+
+All 54 Python runner tests pass. The final full native SWI script passes.
+The final full native Trealla unit script also passes, including the corrected
+lineage-retirement barrier. Both complete logs and exit observations are retained.
+
+Pins and reproducibility
+------------------------
+SWI:     7405ebba59e54a3ec99c28fb8267e86a17e180ba.
+Trealla runtime: 170ec3f002c63e098fea3616d9c659d96873bba1.
+Trealla final fixture barrier: 2ebaeb9ca78e8ec58578e58bf86dad02a37625b2.
+Conformance runner/profile: b730e2b12bc296ba7f1490f142ae948bfbb220db.
+Trealla baseline: 3496b389eb5bd7e581a6729069dc108b545852c5.
+SWI baseline: 91d5c5257e4ef4e06e56764e6023fe58eddd93c7.
+
+environment.json identifies the immutable ARM64 image and resource limits.
+Engines are SWI 10.1.19 and Trealla 3.14.20. accepted-final/provenance.json
+records executable and complete Prolog-source hashes and pack input hashes.
+The 250 repetitions use runtime 170ec3f; 2ebaeb9 only corrects a native test barrier.
+Accepted release verification and the final complete Trealla suite use 2ebaeb9.
+
+Fixtures record the commands used. Mount the investigation workspace at /work;
+final-sources/{swi,trealla} are git archives of the stated commits, conformance/
+is an archive of the runner/profile commit. For negative native controls, put the
+unchanged Trealla baseline in trealla-base/ with the two new regression files.
+The final-verify fixture retains the failed broad Trealla run before the lineage
+barrier correction; the complete rerun has its own separate log/status.
+
+Validation limits
+-----------------
+Intermediate broad SWI invocations twice timed out waiting for the remote named
+statechart's termination notification. A diagnostic full T4 run and the final
+unmodified full native script pass. Those intermediate logs remain observations;
+this task did not diagnose that separate intermittent case. Likewise, absence of
+a recurrence does not explain the historical remote-demonitor false result or
+prove the historical segfault's cause. Full native and shared-gate success do not
+establish complete language conformance, arbitrary safe-point reachability or
+unbounded distributed failure guarantees. Public deployment was not exercised.
+
+Audit: run python3 reports/2026-11-01-native-reliability/audit.py from the
+conformance checkout with the two runtime repositories alongside it. The audit
+checks case identities, repetition counts, controls, native outcomes, artifact
+hashes, and archived source/input hashes against the stated Git commits.

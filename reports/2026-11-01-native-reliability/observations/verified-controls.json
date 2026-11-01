@@ -1,0 +1,26 @@
+[
+  {
+    "source": "before",
+    "case": "actor_exit_wait_tests",
+    "status": 1,
+    "output": "committed_exit_wait_timeout(1357790093)\n"
+  },
+  {
+    "source": "before",
+    "case": "node_shutdown_tests",
+    "status": 1,
+    "output": "error(connection_cleanup_interrupted,node_shutdown_tests:run/0)\n"
+  },
+  {
+    "source": "after",
+    "case": "actor_exit_wait_tests",
+    "status": 0,
+    "output": "Committed exits cannot re-enter mailbox waits: all regressions passed\n"
+  },
+  {
+    "source": "after",
+    "case": "node_shutdown_tests",
+    "status": 0,
+    "output": "Node shutdown cancels each connection only once through at_exit: ok\n"
+  }
+]
