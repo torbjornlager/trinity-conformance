@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 import ownership_lifecycle
 
 ROOT = Path(__file__).resolve().parents[1]
-PROFILE = ROOT / 'profiles/actor-release-0.1.json'
+PROFILE = ROOT / 'profiles/actor-release-0.2.json'
 
 def complete_pass(report, expected):
     rows = report.get('results', [])
@@ -20,6 +20,7 @@ def complete_pass(report, expected):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--profile', type=Path, default=PROFILE)
     p.add_argument('--ws-url', required=True)
     p.add_argument('--candidate', required=True)
     p.add_argument('--token-env', required=True)
@@ -36,7 +37,7 @@ def main():
     except ValueError as e:
         p.error(str(e))
     a.output.mkdir(parents=True, exist_ok=False)
-    profile = json.loads(PROFILE.read_text())
+    profile = json.loads(a.profile.read_text())
     summary = dict(profile=profile['profile'], candidate=a.candidate, packs=[], passed=False)
     for pack in profile['packs']:
         manifest = ROOT / 'cases' / (pack['suite']+'.json')

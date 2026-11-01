@@ -15,6 +15,12 @@ class ReleaseGate(unittest.TestCase):
     def test_gate_requires_both_risky_boundary_packs(self):
         suites={p['suite'] for p in json.loads(release.PROFILE.read_text())['packs']}
         self.assertTrue({'source-copying-0.1','ownership-lifecycle-0.1'} <= suites)
+    def test_current_gate_extends_previous_gate_with_committed_exit(self):
+        old=json.loads((release.ROOT/'profiles/actor-release-0.1.json').read_text())
+        current=json.loads(release.PROFILE.read_text())
+        self.assertEqual(current['packs'][:-1],old['packs'])
+        self.assertEqual(current['packs'][-1]['suite'],'committed-exit-0.1')
+
     def test_missing_credentials_stop_before_connection(self):
         with tempfile.TemporaryDirectory() as d:
             p=subprocess.run([sys.executable,str(Path(release.__file__)), '--ws-url','ws://127.0.0.1:1/ws',

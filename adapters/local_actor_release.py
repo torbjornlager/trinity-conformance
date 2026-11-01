@@ -22,6 +22,7 @@ def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def atom(s): return "'"+str(s).replace("'","''")+"'"
 def main():
  p=argparse.ArgumentParser(description=__doc__)
+ p.add_argument('--profile',type=Path,default=ROOT/'profiles/actor-release-0.2.json')
  p.add_argument('--sources',type=Path,required=True)
  p.add_argument('--output',type=Path,required=True)
  p.add_argument('--engine',choices=['swi','trealla','both'],default='both')
@@ -59,7 +60,7 @@ def main():
      except (OSError,json.JSONDecodeError):time.sleep(.05)
     else:raise TimeoutError(f'{engine} node startup')
     env.update(RELEASE_OWNER_TOKEN=owner,RELEASE_OBSERVER_TOKEN=observer)
-    gate=[sys.executable,str(ROOT/'runner/release.py'),'--ws-url',f'ws://127.0.0.1:{port}/ws','--candidate',engine,'--token-env','RELEASE_OWNER_TOKEN','--observer-token-env','RELEASE_OBSERVER_TOKEN','--disposable-fixture','--output',str(a.output/engine)]
+    gate=[sys.executable,str(ROOT/'runner/release.py'),'--profile',str(a.profile.resolve()),'--ws-url',f'ws://127.0.0.1:{port}/ws','--candidate',engine,'--token-env','RELEASE_OWNER_TOKEN','--observer-token-env','RELEASE_OBSERVER_TOKEN','--disposable-fixture','--output',str(a.output/engine)]
     with (a.output/f'{engine}-release.log').open('w') as f:
      run=subprocess.run(gate,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=240)
     vcmd=[exe,'--version'] if engine=='swi' else [exe,'-g','current_prolog_flag(version_data,V),writeq(V),nl,halt']
@@ -71,6 +72,6 @@ def main():
     try:proc.wait(timeout=5)
     except subprocess.TimeoutExpired:os.killpg(proc.pid,signal.SIGKILL);proc.wait()
     log.close()
-    (a.output/'provenance.json').write_text(json.dumps(dict(engines=records,runner_sha256=sha(ROOT/'runner/release.py'),profile=json.loads((ROOT/'profiles/actor-release-0.1.json').read_text()),inputs={str(f.relative_to(ROOT)):sha(f) for d in ['runner','profiles','cases'] for f in (ROOT/d).rglob('*') if f.is_file() and '__pycache__' not in str(f)}),indent=2)+'\n')
+    (a.output/'provenance.json').write_text(json.dumps(dict(engines=records,runner_sha256=sha(ROOT/'runner/release.py'),profile=json.loads(a.profile.read_text()),inputs={str(f.relative_to(ROOT)):sha(f) for d in ['runner','profiles','cases'] for f in (ROOT/d).rglob('*') if f.is_file() and '__pycache__' not in str(f)}),indent=2)+'\n')
  return int(any(x['returncode']!=0 for x in records))
 if __name__=='__main__':raise SystemExit(main())

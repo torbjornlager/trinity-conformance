@@ -1,0 +1,32 @@
+{
+  "suite": "committed-exit-0.1",
+  "baseline": "committed-exit-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "EXIT-001",
+      "title": "Catching an explicit exit cannot resume a blocking receive",
+      "transport": "query",
+      "goal": "spawn((catch(exit(committed),_,true),receive({never->true})),P,[monitor(true)]),receive({down(P,P,committed)->true},[timeout(2),on_timeout(throw(exit_wait_resumed))])"
+    },
+    {
+      "id": "EXIT-002",
+      "title": "Catching an explicit exit cannot run a poll timeout callback",
+      "transport": "query",
+      "goal": "self(S),spawn((catch(exit(committed),_,true),receive({never->true},[timeout(0),on_timeout(send(S,exit_resumed))])),P,[monitor(true)]),receive({down(P,P,committed)->true},[timeout(2),on_timeout(throw(no_exit_down))]),receive({exit_resumed->throw(exit_callback_ran)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "EXIT-003",
+      "title": "Catching a termination signal cannot resume another receive",
+      "transport": "query",
+      "goal": "self(S),spawn((catch((send(S,exit_ready),receive({never->true})),_,true),receive({never_again->true})),P,[monitor(true)]),receive({exit_ready->true},[timeout(2),on_timeout(throw(no_exit_readiness))]),exit(P,signalled),receive({down(P,P,signalled)->true},[timeout(2),on_timeout(throw(signal_wait_resumed))])"
+    },
+    {
+      "id": "EXIT-004",
+      "title": "An ordinary caught exception still permits receiving",
+      "transport": "query",
+      "goal": "self(S),spawn((catch(throw(example_exception),_,true),receive({continue->send(S,catch_resumed)})),P,[monitor(true)]),send(P,continue),receive({catch_resumed->true},[timeout(2),on_timeout(throw(ordinary_catch_blocked))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(no_normal_down))])"
+    }
+  ]
+}
