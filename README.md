@@ -12,11 +12,13 @@ records 88/88 passing cases in the expanded `actor-release-0.2` gate, both
 complete native scripts, and the targeted regression evidence. The previous
 40-case gate remains available with `--profile profiles/actor-release-0.1.json`.
 
-The [current coverage matrix](CURRENT_COVERAGE.md) brings together the latest
-committed results for each shared pack, including GNU ISOBASE and both WASM
-language modes. It records tested revisions/dates, unresolved diagnostics and
-unmeasured surfaces. This is an evidence roll-up, not a fresh combined runtime
-run. The dated sections below retain the historical sequence of repairs.
+The [current coverage matrix](CURRENT_COVERAGE.md) identifies the running nodes,
+the 132/132 deployed ACTOR case executions, the isolated 88/88 release result
+and the latest successful implementation/browser CI. Live source hashes tie
+the deployment to tested revisions. N1/N2 metadata checks, N5's protected public
+route and its execution-only backend checks retain their separate scopes.
+Broader GNU, browser-language and interoperability results are linked as dated
+historical selections. The sections below retain the sequence of repairs.
 
 The separate [26 October text checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
 compares the selected character-list configurations in native SWI, Trealla and

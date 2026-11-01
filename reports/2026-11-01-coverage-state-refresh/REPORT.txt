@@ -1,0 +1,35 @@
+Current coverage state refresh — 1 November 2026
+===============================================
+
+This is a read-only metadata/source check and evidence audit, not a new gate
+execution, deployment or authentication change. state.json records its UTC time.
+N1 advertises ISOBASE; N2 ISOTOPE; N3/N4 ACTOR. N5's unauthenticated node_info
+redirects to the existing SSO sign-in route. N5 is healthy.
+
+Live N3/N4 each match all 72 runtime Prolog files from native ce5aa98. Those
+files are identical to the accepted 7405ebb and deployed 91d5c52 revisions.
+Live N5 matches all 204 tracked Prolog files from Trealla 2ebaeb9. Image
+identities match the earlier 1 November deployment. No service was restarted.
+
+Reproduce the source/metadata check with Docker access to the local deployment
+and sibling source repositories containing the exact commits:
+  python3 reports/2026-11-01-coverage-state-refresh/check_state.py \
+    --repositories /path/to/repositories --output /new/path/state.json
+The output must not exist. The script reads public metadata and container
+source hashes; it does not record container environment values or credentials.
+
+The native reliability audit passes: 88 scoped release executions, 250 repeated
+invocations, two before/after controls, final native suites, 54 Python tests,
+archive hashes and source hashes. The exact 44 case identities are also checked
+in each of the three earlier deployed-node results (132 total). These retained
+observations are not relabelled as new executions.
+
+ci.json identifies successful GitHub run 41303605424: 37 main check groups and
+the separate WASM job, with demonstrator 84992b5, native ce5aa98 and browser
+f9dfc66. The GitHub artifact's results/provenance and final job conclusions were
+checked. The CI dependency changes affect tests and provenance only. They do
+not imply a redeployment or add a shared browser gate result.
+
+CURRENT_COVERAGE.md now leads with these current selected results and the live
+node mapping. Broader October matrices and diagnostics remain explicitly dated;
+the previous detailed roll-up remains available at conformance revision 533e567.

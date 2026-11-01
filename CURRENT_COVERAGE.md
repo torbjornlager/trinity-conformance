@@ -1,362 +1,136 @@
 # Current Web Prolog conformance coverage
 
-**1 November deployed follow-up:** the [live case verification](reports/2026-11-01-public-native-reliability/REPORT.txt)
-passes **44/44 on each of N3, N4 and N5 (132/132)**. N3/N4 use public WSS;
-N5's full case set uses the actual deployed backend with two execution-only
-identities, plus a separate authenticated public-browser check. Only N5 required
-a runtime update; the SWI changes were confined to tests. Public SSO is preserved.
+Updated **1 November 2026**. The deployed ACTOR selection passes **44/44 on
+N3, N4 and N5 (132/132)**. The isolated release checkpoint passes **44/44 per
+engine (88/88)**. The latest demonstrator CI also passes both jobs.
 
-**1 November native reliability follow-up:** the
-[accepted checkpoint](reports/2026-11-01-native-reliability/REPORT.txt) passes
-**44/44 per engine (88/88)** under `actor-release-0.2`, using native SWI
-`7405ebb` and Trealla `2ebaeb9`. Both complete native scripts pass; two native
-negative-control regressions and 250 repeated Trealla invocations accompany
-the result. The report preserves unresolved historical/intermediate diagnostics.
-This updates the selected native ACTOR gate; public deployments, browsers and
-other engines were not retested.
+These are distinct evidence selections. The live metadata/source check below
+confirms which node configurations are running; it does not repeat the case
+executions. Older broad matrices and diagnostics retain their original dates
+and source pins in the [historical evidence index](#historical-and-broader-evidence).
 
-**Separate 26 October follow-up:** the
-[four-mode character-list checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
-tests the selected adoption sources (native SWI abbc56f, Trealla e7c51dc,
-browser b9ea7c5) on disposable nodes. SWI passes 26/26 original text cases;
-Trealla passes 22/26 with normal escaped JSON and 26/26 with literal UTF-8 JSON.
-Each browser mode has 32 passing assertions/controls and three URI/CORS
-diagnostics. A separate native SWI `atom_to_term/3` control returns a native
-string. This narrow follow-up supersedes no required-profile result below;
-see its [scope and diagnostics](reports/2026-10-26-text-migration-checkpoint/REPORT.md).
+## Deployed nodes
 
-Consolidated on **25 October 2026**, from committed evidence through
-`826d694` in trinity-conformance plus the explicit URI close-out and experimental-text follow-ups
-below. This is the latest recorded result for each
-selected area, **not a single rerun of today's runtime heads or deployed nodes**.
-All selected required and supporting assertions below pass in their cited runs.
-Diagnostic failures, incomplete observations and experimental differences remain
-separate. Passing a finite pack does not certify the whole Web Prolog language.
+The [read-only state check](reports/2026-11-01-coverage-state-refresh/state.json)
+on 1 November confirms N1–N4 public metadata, N5's SSO boundary and the live
+N3/N4/N5 source hashes. The [deployed case report](reports/2026-11-01-public-native-reliability/REPORT.txt)
+records the 44-case selection on each ACTOR node earlier the same day.
 
-The matrix uses committed reports plus the explicitly labelled B25 Boolean and U25 URI
-close-outs and the E25 experimental-text follow-up. Unrelated uncommitted acceptance staging material is
-excluded; the most recent committed broad native checkpoint is 23 October.
-Later narrow results supersede only their corresponding selections. E25 runs
-the new experimental pack on disposable archived sources with unchanged readers;
-it supersedes no required-profile result. This consolidation changes no runtime,
-dependency pin, installed engine or live n3/n5 process.
-
-## Reading the evidence
-
-Each result links to a raw report. Counts are executed case selections, not
-predicate inventories, unique language features or proof of race freedom.
-**Unmeasured** means no assertion was selected for that surface; **outside
-profile** means GNU ISOBASE has no ACTOR obligation here; **not applicable** means
-the tested browser engine is not an HTTP/ACTOR server. None means pass.
-Do not sum these tables: the HTTP selections recur in several batches and the
-packs have overlapping subject matter and different tested configurations.
-
-| Evidence | Tested configuration and scope | Exact provenance |
+| Node | Running surface | Latest selected evidence |
 |---|---|---|
-| B23: broad native, 23 Oct | SWI 10.1.18 separate core build containing 09b6299; Trealla 3.14.8 plus candidate receive-handoff primitive. Native sources f218370 / cf26bd0. Not a v3.14.10 or current-head rerun. | [Provenance](reports/2026-10-23-receive-handoff-acceptance/provenance.json), [matrix](reports/2026-10-23-receive-handoff-acceptance/COVERAGE.md) |
-| G21: all-node follow-up, 21 Oct | GNU 1.6.0 with request-framing working-tree repair over b529b3c; SWI 10.1.17 and Trealla 3.13.10 peers. Both real SWI-WASM engines execute language cases under Node, not a browser UI. | [Provenance](reports/2026-10-21-gnu-request-framing/provenance.json), [matrix](reports/2026-10-21-gnu-request-framing/COVERAGE.md) |
-| P24: promise callback follow-up, 24 Oct | SWI native source pin f316e65; Trealla 3.14.10 with callback-context candidate over fe94735. Separate SWI 10.1.18 core plus HTTP shutdown candidate. | [Provenance](reports/2026-10-24-promise-callback-context/provenance.json), [report](reports/2026-10-24-promise-callback-context/REPORT.md) |
-| L24: six local packs, 24 Oct | SWI pin f316e65; Trealla source d4e96a3 with unmodified 3.14.10 and matching library. Separate verified SWI 10.1.18 core plus HTTP shutdown candidate. | Each linked pack has its own provenance.json and REPORT.md. |
-| S24: spawn/admission follow-up, 24 Oct | SWI working-tree repair over 8c90a4d, subsequently committed as 786737f; Trealla source 7220bb5 with unmodified 3.14.10. Pin f316e65 was not promoted. | [Provenance](reports/2026-10-24-swi-spawn-source-admission-probes/provenance.json), [report](reports/2026-10-24-swi-spawn-source-admission-probes/REPORT.md) |
-| B24: Boolean compatibility follow-up, 24 Oct | SWI Boolean working-tree repair over 786737f; Trealla Boolean working-tree repair over 7220bb5. Separate verified SWI 10.1.18 and unmodified Trealla 3.14.10; pin unchanged. Shared pack is unchanged. | [Provenance](reports/2026-10-24-boolean-toplevel-waits/provenance.json), [report](reports/2026-10-24-boolean-toplevel-waits/REPORT.md) |
-| U24: URI compatibility follow-up, 24 Oct | SWI URI/Boolean working tree over 786737f and Trealla URI/Boolean working tree over 7220bb5. Same separate engines; pin unchanged. | [Provenance](reports/2026-10-24-uri-promise-http/provenance.json), [matrix](reports/2026-10-24-uri-promise-http/COVERAGE.md) |
-| B25: Boolean close-out, 25 Oct | Boolean-only source over SWI 412e5b5 / Trealla 6fb21f1, subsequently committed as 4703f49 / df6698d. Separate verified SWI 10.1.18 and unmodified Trealla 3.14.10; two unchanged toplevel-wait selections. | [Provenance](reports/2026-10-25-boolean-closeout/checks/shared/provenance.json), [report](reports/2026-10-25-boolean-closeout/REPORT.md) |
-| U25: URI close-out, 25 Oct | URI source candidates over separately committed Boolean sources 4703f49 / df6698d, using the same separate engines. Four promise/yield and four HTTP caller/peer selections. No deployment/pin update. | [Provenance](reports/2026-10-25-uri-closeout/checks/shared/provenance.json), [report](reports/2026-10-25-uri-closeout/REPORT.md) |
-| E25: experimental portable-text 0.2, 25 Oct | Archived committed SWI 786737f and Trealla 7220bb5; pending runtime changes excluded. Same separate engines, unchanged reader defaults, opposite implementation as HTTP peer. Not a deployed or portable-text-configured rerun. | [Provenance](reports/2026-10-25-portable-text-0.2/provenance.json), [matrix](reports/2026-10-25-portable-text-0.2/COVERAGE.md) |
+| N1 | Public ISOBASE | `/node_info` returns 200 and advertises `isobase`. No fresh N1 conformance run in this update. |
+| N2 | Public ISOTOPE | `/node_info` returns 200 and advertises `isotope`. No fresh N2 conformance run in this update. |
+| N3 | Public ACTOR, SWI-Prolog 10.1.19 | [44/44 pass over public WSS](reports/2026-11-01-public-native-reliability/observations/n3-public/results.json), using separate anonymous connections with connection-scoped ownership. |
+| N4 | Public ACTOR, SWI-Prolog 10.1.19 | [44/44 pass over public WSS](reports/2026-11-01-public-native-reliability/observations/n4-public/results.json), with the same client model. |
+| N5 | SSO-protected ACTOR, Trealla 3.14.20 | [44/44 pass on the deployed backend](reports/2026-11-01-public-native-reliability/observations/n5-execution-only/results.json), using two distinct execution-only identities. A separate authenticated public-browser query passes four committed-exit conditions. |
 
-Source revisions, working-tree patches, binary/library hashes and fixture policy
-are part of the identity; version strings alone are insufficient. L24 denotes
-links/monitors, server waits, selective receive, toplevel waits, local naming and
-copying/isolation. Toplevel waits now use the later B25 close-out; creation and
-child-spec validation use S24.
+N3/N4 retain the images deployed from native SWI `91d5c52`. All **72 runtime
+Prolog files** checked in each container match both the accepted release source
+`7405ebb` and the latest native revision `ce5aa98`; the intervening changes are
+test-only. N5's **204 tracked Prolog files** match deployed Trealla `2ebaeb9`.
+The state record identifies exact revisions, image identities, engine versions
+and source-manifest hashes. N5 is healthy; unauthenticated public `node_info`
+still redirects to SSO sign-in.
 
-L24 per-run provenance: [links/monitors](reports/2026-10-24-links-monitors/provenance.json),
-[server waits](reports/2026-10-24-server-waits/provenance.json),
-[selective receive](reports/2026-10-24-selective-receive/provenance.json),
-[toplevel waits](reports/2026-10-24-toplevel-waits/provenance.json),
-[naming](reports/2026-10-24-local-naming/provenance.json),
-[copying/isolation](reports/2026-10-24-copying-isolation/provenance.json).
-S24 validation provenance: [creation](reports/2026-10-24-swi-spawn-source-creation-validation/provenance.json)
-and [child specs](reports/2026-10-24-swi-spawn-source-child-specs/provenance.json).
+The N5 44-case result concerns the actual deployed backend, reached by a helper
+in its network namespace. It is not 44 public-proxy executions. The separate
+public-browser check uses an existing owner session; authority-denial assertions
+use the execution-only clients, whose temporary credentials were revoked.
+See the [deployment summary](reports/2026-11-01-public-native-reliability/SUMMARY.json)
+for the access paths and counts.
 
-## Baseline local and server selections
+## Scoped ACTOR release checkpoint
 
-| Pack | Native SWI | Native Trealla | GNU ISOBASE | WASM Worker | WASM main | Evidence |
-|---|---|---|---|---|---|---|
-| ISOBASE HTTP | [10/10 pass](reports/2026-10-23-receive-handoff-acceptance/swi-isobase-http.json) | [10/10 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-isobase-http.json) | [10/10 pass](reports/2026-10-21-gnu-request-framing/gnu-isobase-http.json) | not applicable | not applicable | B23 / G21 |
-| ACTOR language | [7/7 pass](reports/2026-10-23-receive-handoff-acceptance/swi-language-actor.json) | [7/7 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-language-actor.json) | outside profile | [7/7 pass](reports/2026-10-21-gnu-request-framing/swi-wasm-worker-language-actor.json) | [7/7 pass](reports/2026-10-21-gnu-request-framing/swi-wasm-main-language-actor.json) | B23 / G21 |
-| Server wire capabilities | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/swi-wire-capabilities.json) | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-wire-capabilities.json) | outside profile | not applicable | not applicable | B23 |
+[`actor-release-0.2`](profiles/actor-release-0.2.json) requires all expected case
+IDs exactly once, all passing. Missing, duplicate, unsupported or failed cases
+and nonzero runner exits cannot satisfy the gate. It comprises eight packs:
 
-The seven WASM language cases are actual engine runs with coordinator plumbing.
-They do not cover browser network calls, terminal UI, Worker scheduling or the
-new native-only local packs. GNU's ten HTTP cases are a subset of its separate
-ISOBASE contract, not a complete ISO audit.
-
-## HTTP interoperability
-
-Rows are callers; columns are HTTP destinations. Each cell covers HC-001 paging
-and HC-002 promise template sharing/caller independence. Native-only cells use
-U25, later than B23; every direction involving GNU retains G21 evidence and its
-older peer implementations. No GNU-to-current-native compatibility is inferred.
-
-| Caller → peer | SWI | Trealla | GNU |
+| Pack | Native SWI | Native Trealla | Selected boundary |
 |---|---|---|---|
-| swi | [2/2 pass](reports/2026-10-25-uri-closeout/checks/shared/swi-interop-http-0.1-to-swi.json) | [2/2 pass](reports/2026-10-25-uri-closeout/checks/shared/swi-interop-http-0.1-to-trealla.json) | [2/2 pass](reports/2026-10-21-gnu-request-framing/swi-interop-http-to-gnu.json) |
-| trealla | [2/2 pass](reports/2026-10-25-uri-closeout/checks/shared/trealla-interop-http-0.1-to-swi.json) | [2/2 pass](reports/2026-10-25-uri-closeout/checks/shared/trealla-interop-http-0.1-to-trealla.json) | [2/2 pass](reports/2026-10-21-gnu-request-framing/trealla-interop-http-to-gnu.json) |
-| gnu | [2/2 pass](reports/2026-10-21-gnu-request-framing/gnu-interop-http-to-swi.json) | [2/2 pass](reports/2026-10-21-gnu-request-framing/gnu-interop-http-to-trealla.json) | [2/2 pass](reports/2026-10-21-gnu-request-framing/gnu-interop-http-to-gnu.json) |
+| actor-core 0.1 | [7/7](reports/2026-11-01-native-reliability/observations/accepted-final/swi/actor-core-0.1.json) | [7/7](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/actor-core-0.1.json) | Actor search and message interaction |
+| selective-receive 0.1 | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/swi/selective-receive-0.1.json) | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/selective-receive-0.1.json) | Matching, guard commitment, rollback and body cut scope |
+| links-monitors 0.1 | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/swi/links-monitors-0.1.json) | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/links-monitors-0.1.json) | Links, monitor events and termination |
+| copying-isolation 0.1 | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/swi/copying-isolation-0.1.json) | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/copying-isolation-0.1.json) | Variable sharing, private source and isolation |
+| source-copying 0.1 | [5/5](reports/2026-11-01-native-reliability/observations/accepted-final/swi/source-copying-0.1.json) | [5/5](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/source-copying-0.1.json) | Copied primitive/named guards, inline/named workers and timeout callbacks |
+| toplevel-waits 0.1 | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/swi/toplevel-waits-0.1.json) | [6/6](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/toplevel-waits-0.1.json) | Caller targeting, timeout, late replies and unrelated traffic |
+| ownership-lifecycle 0.1 | [4/4](reports/2026-11-01-native-reliability/observations/accepted-final/swi/ownership-lifecycle-0.1.json) | [4/4](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/ownership-lifecycle-0.1.json) | Foreign exit denial/target survival, owner exit and socket-loss child/grandchild cascades |
+| committed-exit 0.1 | [4/4](reports/2026-11-01-native-reliability/observations/accepted-final/swi/committed-exit-0.1.json) | [4/4](reports/2026-11-01-native-reliability/observations/accepted-final/trealla/committed-exit-0.1.json) | Caught control cannot resume receive or timeout callbacks; ordinary exception control |
+| **Total** | **44/44** | **44/44** | **88 case executions** |
 
-## ACTOR interoperability
+This isolated checkpoint uses SWI **7405ebb / 10.1.19** and Trealla
+**2ebaeb9 / 3.14.20**, in disposable private ARM64 loopback fixtures with two
+distinct execution-only principals. Its
+[provenance](reports/2026-11-01-native-reliability/observations/accepted-final/provenance.json)
+and [environment](reports/2026-11-01-native-reliability/environment.json)
+identify exact source, executable and suite-input hashes. The deployment driver
+uses the same 44 case IDs in separately authorised live fixtures; the release
+wrapper itself remains restricted to disposable fixtures.
 
-B23 covers IX-001–003 in each direction: remote source/synchronous paging,
-canonical asynchronous answers and unrelated monitor/message preservation.
-Public-query delegated lineages require explicit fixture peer trust; an open
-execution endpoint alone grants no internal-transport authority. GNU ACTOR is
-outside its profile; WASM real-network interoperability is unmeasured here.
+The earlier 40-case `actor-release-0.1` remains explicitly selectable. The
+single-pack runner default remains backward compatible. Neither is the current
+44-case release selection.
 
-| Caller → peer | SWI | Trealla |
-|---|---|---|
-| swi | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/swi-interop-actor-to-swi.json) | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/swi-interop-actor-to-trealla.json) |
-| trealla | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-interop-actor-to-swi.json) | [3/3 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-interop-actor-to-trealla.json) |
+## Implementation and browser checks
 
-## Supporting native ACTOR contracts
+Both complete native scripts pass in the
+[1 November reliability checkpoint](reports/2026-11-01-native-reliability/REPORT.txt).
+Two native before/after regressions and **250 passing Trealla invocations**
+(WebSocket 200, demonitor 20, isolation 10, sandbox 10, synchronous waits 10)
+accompany it. These repetitions do not increase the 44-case feature coverage
+or estimate race probabilities. The shared committed-exit cases also pass on
+the older public sandbox path; the native regressions are the negative controls
+for the underlying runtime repair.
 
-These separately versioned draft packs do not amend baseline 0.1. GNU ACTOR is
-outside profile; neither WASM mode has a shared-pack result for these rows.
+The latest [demonstrator CI run](https://github.com/torbjornlager/trinity-demonstrator/actions/runs/41303605424)
+passes **all 37 main check groups and the separate WASM job**, using demonstrator
+`84992b5`, native SWI `ce5aa98` and browser package `f9dfc66`. It includes native
+and integration tiers, browser equivalence, implementation WASM checks and
+consumer regressions. See the [CI selection record](reports/2026-11-01-coverage-state-refresh/ci.json).
+The native revision and browser schema-provenance update change tests/metadata,
+not runtime or schema bytes. CI success is not evidence that those repository
+heads were redeployed, nor a shared 44-case browser conformance result.
 
-| Pack | SWI | Trealla | Evidence |
-|---|---|---|---|
-| actor-core 0.1 | [7/7 pass](reports/2026-10-23-receive-handoff-acceptance/swi-actor-core.json) | [7/7 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-actor-core.json) | B23 |
-| actor-workers 0.1 | [8/8 pass](reports/2026-10-23-receive-handoff-acceptance/swi-actor-workers.json) | [8/8 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-actor-workers.json) | B23 |
-| actor-behaviours 0.1 | [10/10 pass](reports/2026-10-23-receive-handoff-acceptance/swi-actor-behaviours.json) | [10/10 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-actor-behaviours.json) | B23 |
-| actor-supervisors 0.1 | [8/8 pass](reports/2026-10-23-receive-handoff-acceptance/swi-actor-supervisors.json) | [8/8 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-actor-supervisors.json) | B23 |
-| links-monitors 0.1 | [6/6 pass](reports/2026-10-24-links-monitors/swi-links-monitors.json) | [6/6 pass](reports/2026-10-24-links-monitors/trealla-links-monitors.json) | L24 |
-| server-waits 0.1 | [6/6 pass](reports/2026-10-24-server-waits/swi-server-waits.json) | [6/6 pass](reports/2026-10-24-server-waits/trealla-server-waits.json) | L24 |
-| selective-receive 0.1 | [6/6 pass](reports/2026-10-24-selective-receive/swi-selective-receive.json) | [6/6 pass](reports/2026-10-24-selective-receive/trealla-selective-receive.json) | L24 |
-| toplevel-waits 0.1 | [6/6 pass](reports/2026-10-25-boolean-closeout/checks/shared/swi-toplevel-waits-0.1.json) | [6/6 pass](reports/2026-10-25-boolean-closeout/checks/shared/trealla-toplevel-waits-0.1.json) | B25 |
-| local-naming 0.1 | [6/6 pass](reports/2026-10-24-local-naming/swi-local-naming.json) | [6/6 pass](reports/2026-10-24-local-naming/trealla-local-naming.json) | L24 |
-| copying-isolation 0.1 | [6/6 pass](reports/2026-10-24-copying-isolation/swi-copying-isolation.json) | [6/6 pass](reports/2026-10-24-copying-isolation/trealla-copying-isolation.json) | L24 |
-| creation-validation 0.1 | [6/6 pass](reports/2026-10-24-swi-spawn-source-creation-validation/swi-creation-validation.json) | [6/6 pass](reports/2026-10-24-swi-spawn-source-creation-validation/trealla-creation-validation.json) | S24 |
-| child-specs 0.1 | [6/6 pass](reports/2026-10-24-swi-spawn-source-child-specs/swi-child-specs.json) | [6/6 pass](reports/2026-10-24-swi-spawn-source-child-specs/trealla-child-specs.json) | S24 |
+## Historical and broader evidence
 
-The local packs each select six assertions per runtime. Creation-validation
-intentionally supplies option values at runtime, after admission; its green
-result does not settle literal-option admission semantics. Child-specs covers
-initial/nested validation and dynamic rejection/retry, not all restart/shutdown
-interleavings. Naming passes do not establish matching namespace scope:
-SWI ordinary names are client-scoped, Trealla ordinary names are node-wide.
+The following selections remain useful outside the current 44-case gate.
+Their reports identify older sources, engines and fixture policies; they are
+not reruns of today's deployed configurations. All original failures and
+intermediate observations remain unchanged. The
+[previous detailed roll-up](https://github.com/torbjornlager/trinity-conformance/blob/533e5677265899ad26bdd73a0541d495a9956ffc/CURRENT_COVERAGE.md)
+retains the per-pack/per-direction links and chronological diagnostic ledger.
 
-## Promise and yield
-
-U25 runs the same six PY assertions in four ACTOR-caller/HTTP-peer directions.
-All **24/24** pass; the earlier actor-send callback failures are superseded only
-for those selections. The eight HC assertions reused by that run are already
-represented in the HTTP table, not eight additional unique cases.
-
-| Caller → HTTP peer | SWI | Trealla |
-|---|---|---|
-| swi | [6/6 pass](reports/2026-10-25-uri-closeout/checks/shared/swi-promise-yield-0.1-to-swi.json) | [6/6 pass](reports/2026-10-25-uri-closeout/checks/shared/swi-promise-yield-0.1-to-trealla.json) |
-| trealla | [6/6 pass](reports/2026-10-25-uri-closeout/checks/shared/trealla-promise-yield-0.1-to-swi.json) | [6/6 pass](reports/2026-10-25-uri-closeout/checks/shared/trealla-promise-yield-0.1-to-trealla.json) |
-
-GNU promise use through HC-002 is covered above; the six-case PY contract has not
-been run for GNU. WASM promise network behavior is unmeasured by this shared pack.
-
-## Diagnostic and experimental observations
-
-These counts stay outside required/supporting totals. B23 is the latest committed
-rerun of the older supervisor/worker/ISOBASE diagnostic packs; S24 is the later
-admission comparison. A later related repair cannot silently turn an unchanged
-older diagnostic into a passing result.
-
-| Pack | SWI | Trealla | GNU | Evidence |
-|---|---|---|---|---|
-| isobase-diagnostics | [6 observed](reports/2026-10-23-receive-handoff-acceptance/swi-isobase-diagnostics.json) | [5 observed, 1 diagnostic_error](reports/2026-10-23-receive-handoff-acceptance/trealla-isobase-diagnostics.json) | [6 observed](reports/2026-10-21-gnu-request-framing/gnu-isobase-diagnostics.json) | B23 / G21 |
-| supervisor-diagnostics | [4 pass, 1 fail](reports/2026-10-23-receive-handoff-acceptance/swi-supervisor-diagnostics.json) | [5 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-supervisor-diagnostics.json) | outside selected scope | B23 |
-| worker-diagnostics | [1 pass](reports/2026-10-23-receive-handoff-acceptance/swi-worker-diagnostics.json) | [1 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-worker-diagnostics.json) | outside selected scope | B23 |
-| portable-text 0.1 (retained history) | [7 fail](reports/2026-10-23-receive-handoff-acceptance/swi-portable-text.json) | [7 pass](reports/2026-10-23-receive-handoff-acceptance/trealla-portable-text.json) | outside selected scope | B23 |
-| portable-text 0.2 (experimental caller/peer pairs) | [4 pass, 22 fail](reports/2026-10-25-portable-text-0.2/swi-portable-text.json), Trealla peer | [20 pass, 6 fail](reports/2026-10-25-portable-text-0.2/trealla-portable-text.json), SWI peer | unmeasured | E25 |
-| admission-paths | [10 observed](reports/2026-10-24-swi-spawn-source-admission-probes/swi-admission-paths.json) | [10 observed](reports/2026-10-24-swi-spawn-source-admission-probes/trealla-admission-paths.json) | outside selected scope | S24 |
-
-Portable Text is an experimental character-list contract. Draft 0.2 clarifies
-Unicode scalar values and constructed `src_list/1` terms. Its new observations
-include separate Unicode-reader, admission and DCG-sandbox blocks; the
-[report](reports/2026-10-25-portable-text-0.2/REPORT.md) explains why peer failures
-and blocked boundaries do not establish a local text defect. Neither native
-configuration passes the full experiment. GNU and both browser engines are
-unmeasured for 0.2. Historical 0.1 results remain available and are not added to
-0.2 totals. Experimental failures are not required ACTOR failures. Six
-ISOBASE observations likewise do not mean six normative passes: they record
-zero-limit, numeric, text, malformed-input and framing boundaries.
-
-| Finding | Latest evidence and current qualification |
+| Area | Dated evidence and scope |
 |---|---|
-| Literal versus runtime validation | [S24 admission matrix](reports/2026-10-24-swi-spawn-source-admission-probes/DIAGNOSTICS.md): SWI AP-003/AP-009 fail before entry; Trealla enters and catches the validation errors. Both catch corresponding runtime errors. This observable difference remains explicit. |
-| Boolean types | [B24 compatibility](reports/2026-10-24-boolean-toplevel-waits/REPORT.md) and [B25 close-out](reports/2026-10-25-boolean-closeout/REPORT.md) remain 12/12; it adds no shared cases. Separate native/browser regressions reject numeric/string once values before dispatch; isolated GNU regressions also reject pending values and invalid later duplicates. Necessary HTTP/JSON decoding remains transport-only. The native development ownership failure remains separate. |
-| URI fetch before invalid options | The source-fetch ordering part is repaired: AP-009 now reports spawn_option rather than a source socket error. SWI's [34 focused checks and full T4](../swi-prolog-node/docs/verification/spawn-source-validation-2026-10-24/REPORT.md) also check zero source requests, sharing and sandbox preservation. These are implementation regressions, not extra shared passes or a pin update. |
-| Runtime child-spec admission and binding | SV-001–006 now pass on both runtimes; AP-002/AP-004/AP-006/AP-008 enter as expected. These supersede the corresponding failed child-spec and admission selections. The exact older nested-supervisor SCD-001 probe was not rerun in S24: its B23 SWI failure remains recorded, with current-head status unverified. |
-| Earlier literal creation probes | [Initial CV diagnostics](reports/2026-10-24-creation-validation-initial/REPORT.md) retain outer-list/value errors and Trealla logical failure. AP-009 and native regressions address the source-order subfinding; the complete original literal manifest has not been rerun unchanged. Runtime CV passes are not a waiver. |
-| Trealla operator framing | B23 IBD-006 still times out: incomplete observation. GNU parenthesized request framing and passing HC-002 do not establish a repair of Trealla's unparenthesized-input behavior. |
-| Incidental sandbox and reply formats | [Naming report](reports/2026-10-24-local-naming/REPORT.md): Trealla rejected format(atom(...),...) in the initial fixture; supervisor_count_children/2 formats differ. Final naming assertions avoid these incidental assumptions; no runtime alignment is claimed. |
-| Older output diagnostics | [SVD-002](reports/2026-10-24-child-spec-diagnostics/REPORT.md) timed out on Trealla. The later self-message entry probes complete, but the old output probe is not rerun or relabelled as a pass. [Four entry-marker controls](reports/2026-10-24-admission-marker-controls/REPORT.md) support the later method within their stated scope. |
-| Promise callback controls | P24 PYD-001–003 complete in all four directions: 12 observations, no diagnostic errors. This supports the bounded callback repair, not arbitrary callbacks or lifecycle completion. See [controls](reports/2026-10-24-promise-callback-context/COVERAGE.md). |
-| Intermittent lifecycle observations | B23 worker stress and SCD-002–005 pass only for their attempts. The old creation_race, parser log during statechart invocation, and SWI intermittent T3 replacement-cleanup failure retain their own evidence; no race-freedom claim follows. The [spawn follow-up](reports/2026-10-24-swi-spawn-source-admission-probes/REPORT.md) leaves T3 and whitelist supervisor startup separate. |
-| Earlier cascade fixture timeout | The [exact-notification fixture repair](../trealla-port/reproducers/cascade-wait-repair-2026-10-24/REPORT.md) passes 48/48 fixed comparison processes across the original and callback-repaired source commits. This is a test-only wait-strategy correction, separate from PY conformance, not a runtime lifecycle repair. |
+| Broad native ACTOR/ISOBASE, worker/behaviour/supervisor packs and ACTOR interoperability | [23 October matrix](reports/2026-10-23-receive-handoff-acceptance/COVERAGE.md), on its SWI 10.1.18 / Trealla 3.14.8 candidate configurations. Packs outside the eight current release packs retain this older evidence. |
+| GNU ISOBASE and two WASM language modes | [21 October all-node matrix](reports/2026-10-21-gnu-request-framing/COVERAGE.md): GNU 10/10 selected HTTP cases; each real WASM engine 7/7 selected language cases under Node. These are not fresh GNU deployment or browser-UI attestations. |
+| HTTP caller/peer interoperability and promise/yield | [25 October URI close-out](reports/2026-10-25-uri-closeout/REPORT.md): native HC selections and 24/24 promise/yield executions. Directions involving GNU retain the older 21 October peers. |
+| Local server waits, naming, creation and child specifications | [24 October server waits](reports/2026-10-24-server-waits/COVERAGE.md), [naming](reports/2026-10-24-local-naming/COVERAGE.md), [creation](reports/2026-10-24-swi-spawn-source-creation-validation/COVERAGE.md), [child specs](reports/2026-10-24-swi-spawn-source-child-specs/COVERAGE.md). Not included in the 44-case release gate. |
+| Character-list text, Unicode and browser UI | [26 October four-mode checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md): SWI 26/26; Trealla 22/26 with escaped JSON and 26/26 with literal UTF-8 JSON; each browser mode 32 passed assertions/controls and three URI/CORS diagnostics. The controls overlap; the experimental text contract is not promoted by the ACTOR gate. |
+| Cyclic answers and actor output | [25 October cyclic-answer repair](reports/2026-10-25-cyclic-answer-rejection/COVERAGE.md) and [write/output checks](reports/2026-10-25-write-output/COVERAGE.md). These are focused candidate results with their own representation and engine limits. |
+| Ownership/lifecycle boundary experiments | [31 October follow-up](reports/2026-10-31-ownership-lifecycle/REPORT.md), separate from the later release and deployment selections. |
 
-## Areas without a consolidated shared result
+A historical failed diagnostic is not relabelled as a current defect or a pass
+without rerunning that assertion on an identified configuration. Later green
+implementation suites do not silently replace a different historical case ID.
 
-| Area | Coverage boundary |
-|---|---|
-| Current deployed n3/n5 and current repository heads | No fresh combined run in this consolidation. Narrow patched-candidate results are not deployment attestations. |
-| GNU beyond the selected ISOBASE surface | Full ISO modes, its broader draft contract and historical audit were not rerun. ACTOR tests do not apply to its advertised ISOBASE profile. |
-| Browser network and UI | Only G21 local language cases are selected here. Native transport tests and historical manual UI checks do not cover either browser runtime end to end. |
-| RELATION and complete ISOTOPE HTTP sessions | No complete shared profile suite in this selection. ACTOR toplevel waits cover a narrower public surface. |
-| Authentication and security containment | No general hostile-input, TLS, credential-isolation or complete whitelist certification. Blacklist remains a prototype policy. Interoperability used explicit fixture trust. |
-| Remote lifecycle and naming | Remote server waits, namespace teardown/ownership transfer, multi-hop delegated cleanup, general remote cancellation and concurrent alias races are outside the new local packs. |
-| Resources and paging policies | Selected paging assertions pass; exhaustive memory/response-byte accounting, cache expiry/eviction under load, arbitrary network fetch policy and deadline accuracy under traffic are not established. |
-| Full statechart semantics and shutdown races | Runtime tests and some older interoperability checks exist, but no complete shared statechart contract or exhaustive interruption/shutdown schedule is represented here. |
-| Portable strings and general module semantics | Experimental text results remain separate. No portable string decision or general module-qualification conformance is inferred. |
+## Coverage limits and maintenance
 
-## Historical progression and maintenance
+- The 44-case gate covers selected ACTOR contracts, not the whole language.
+  Counts are case executions, not predicate inventories or unique features.
+- N1/N2's live profile metadata is not a fresh ISOBASE/ISOTOPE conformance run.
+  No full current GNU, RELATION or ISOTOPE shared suite is established here.
+- Browser implementation CI and the four N5 public-browser conditions do not
+  establish complete browser-network, UI or end-to-end cross-engine coverage.
+- General hostile-input/TLS/credential isolation, whitelist containment,
+  arbitrary network partitions, deadline accuracy under load, resource bounds,
+  remote namespace races and exhaustive shutdown schedules remain outside the
+  selected evidence. Public actor absence does not prove host-thread termination.
+- Do not sum historical, isolated, deployed, CI and repeated-run counts as
+  independent feature coverage. Exact sources, policy, transport, case IDs and
+  executable hashes are part of each result's identity.
 
-Historical reports remain immutable evidence, including failed and initial runs.
-The latest relevant results above supersede only the exact selected cases, not
-unrelated diagnostics, different policy modes or older versions by assumption.
-
-| Earlier evidence | Latest relevant follow-up |
-|---|---|
-| [Initial baseline](reports/2026-10-21-baseline-0.1/COVERAGE.md), HTTP source/client failures | [Source loading](reports/2026-10-21-http-source-loading/COVERAGE.md), [client context](reports/2026-10-21-http-client-context/COVERAGE.md), [GNU framing](reports/2026-10-21-gnu-request-framing/COVERAGE.md); then B23 native and P24 HTTP results above |
-| [Focused native comparison](reports/2026-10-20-focused-comparison.md), worker routing/cleanup and supervisor failures | [Worker routing](reports/2026-10-20-worker-routing-repair.md), [zero polling](reports/2026-10-20-zero-poll-repair.md), [native checkpoint](reports/2026-10-21-native-checkpoint/COVERAGE.md), then B23 |
-| [ACTOR parser/source capture](reports/2026-10-21-trealla-source-capture/COVERAGE.md) | B23 required packs pass; older incidental parser diagnostic is not declared resolved |
-| [3.14.8 acceptance](reports/2026-10-23-upstream-3.14.8-acceptance/COVERAGE.md) | B23 receive-handoff candidate checkpoint; later 3.14.10 narrow-pack evidence does not replace a broad rerun |
-| [Promise/yield initial 22/24](reports/2026-10-24-promise-yield/COVERAGE.md) | [P24 callback context 24/24](reports/2026-10-24-promise-callback-context/COVERAGE.md) |
-| [Child-spec initial 6/12](reports/2026-10-24-child-specs/COVERAGE.md) | [Trealla nonbinding 7/12](reports/2026-10-24-trealla-nonbinding-child-specs/COVERAGE.md), [SWI runtime specs 12/12](reports/2026-10-24-swi-runtime-specs-child-specs/COVERAGE.md), [S24 12/12](reports/2026-10-24-swi-spawn-source-child-specs/COVERAGE.md) |
-| [Initial admission matrix](reports/2026-10-24-admission-paths/DIAGNOSTICS.md) | [Trealla nonbinding](reports/2026-10-24-trealla-nonbinding-admission-probes/DIAGNOSTICS.md), [SWI runtime specs](reports/2026-10-24-swi-runtime-specs-admission-probes/DIAGNOSTICS.md), [S24 source-order matrix](reports/2026-10-24-swi-spawn-source-admission-probes/DIAGNOSTICS.md) |
-
-For an update, select reports by exact pack/case IDs and candidate configuration,
-verify raw counts and provenance, and replace only the corresponding current
-cells. A newer date on an unrelated run is insufficient. Keep an explicit
-"not rerun" qualification when a repair is supported by different assertions.
-A release-wide statement requires a fresh full run of the intended exact sources
-and engines. [Runner instructions](docs/BASELINE_RUNNER.md) and the
-[baseline difference register](docs/BASELINE_DIFFERENCES.md) retain their scopes.
-
-## Experimental SWI portable-text configuration follow-up (25 October)
-
-The [isolated configuration matrix](reports/2026-10-25-swi-portable-text-final-r2/COVERAGE.md)
-adds **26/26 text cases per direction** with a separate Trealla JSON candidate,
-and **90/90 shared ACTOR/interoperability selections**. The ordinary-reader
-control remains 4/26 (SWI) and 25/26 (Trealla with that SWI peer); an unmodified
-Trealla v3.14.10 control retains four supplementary-Unicode failures. All are
-explicit disposable working-source configurations, not new deployed-head claims.
-The native report keeps four old string/code-list expectations and separate
-T3 diagnostics explicit. GNU/browser migration, native-string extension fidelity,
-invalid encodings and performance remain unmeasured. Earlier E25 observations
-and all historical reports above are preserved rather than replaced.
-
-### Experimental migration-test follow-up
-
-The [native SWI migration checkpoint](reports/2026-10-25-portable-text-migration/COVERAGE.md)
-preserves four exact default contracts and adds four separate character-list
-counterparts. Full T4 passes 1529 parameter selections per mode; TEXT passes
-40 per mode and the read-only example checks pass 10 per mode. These overlapping
-native tests do not add to shared cross-runtime totals. Model/Jev native-string
-service guards remain migration work; T3 diagnostics, GNU/browser adoption,
-invalid encodings and performance remain outside this checkpoint.
-
-## Separate cyclic-term boundary diagnostics (25 October)
-
-The [diagnostic matrix](reports/2026-10-25-cyclic-term-boundaries/COVERAGE.md)
-records 36 public observations, eight local engine observations and 14 supporting
-reductions on committed native SWI/Trealla sources and separate builds. Cyclic
-terms remain outside baseline 0.1 fixture coverage, so these are not added to
-required conformance totals. Fourteen of sixteen finite shared-variable controls
-succeed; two non-ground remote actor echoes to Trealla time out and remain a
-separate diagnostic. Computed cyclic answers expose SWI time-resource outcomes
-and Trealla acyclic approximations; early boundary rejection is proposed, not
-implemented. GNU/browser coverage and broad-suite reruns are not claimed.
-
-### Computed-answer repair follow-up
-
-The [native candidate matrix](reports/2026-10-25-cyclic-answer-rejection/COVERAGE.md)
-records **31/31 repair regressions** passing over disposable SWI/Trealla nodes,
-including all four RPC/promise peer pairings and callback/retry controls. These
-are working-source candidate checks outside the existing baseline pack totals.
-Computed cyclic answers now receive finite representation errors; SWI escaping
-cyclic exceptions do too. Trealla exception copying remains a separate engine
-diagnostic. Actor-message findings, GNU/browser coverage and deployed nodes
-are unchanged. Native T2/T4 and five selected Trealla regression groups also pass.
-
-### Actor write/1 follow-up
-
-The [focused output matrix](reports/2026-10-25-write-output/COVERAGE.md) records
-18/18 identical native SWI/Trealla output selections and two Trealla explicit-stream
-denials passing. Private-source and copied-child helpers use inherited actor
-terminal output. These are repair checks, not additions to baseline pack totals.
-The updated n5 backend also passes its public checks and actual UI examples;
-n3 and the installed engines are unchanged. Character-list SWI mode, GNU and WASM
-were not rerun for this batch.
-
-### Current character-list adoption checkpoint
-
-The [focused current-code matrix](reports/2026-10-25-portable-text-current-checkpoint/COVERAGE.md)
-confirms reader/source/shared-DB and round-trip controls on a temporary character-list
-SWI node: 13/13 required controls pass, alongside 16/16 default controls. Three
-term-output alignment diagnostics and the known model/Jev character-list input
-rejections remain adoption blockers. TEXT passes 40 selections per mode and the
-read-only example checks pass 10 per mode, including intentional guard-rejection
-assertions. Regular n3 is not switched; no new full-profile or deployment claim
-is made.
-
-### Character-list term-output repair
-
-The [term-output follow-up](reports/2026-10-25-portable-term-output/COVERAGE.md)
-resolves the three preceding output diagnostics in the native SWI candidate.
-All 32 focused public selections pass across the two reading configurations;
-TEXT/T1/T2/full native T4 checks also pass per mode. Prompt/format text handling
-and other payload types are retained. Model/Jev native-string boundaries remain
-pending; regular n3 is not switched. These are candidate repair checks outside
-the cumulative baseline pack totals.
-
-### Model/Jev application text follow-up
-
-The [demonstrator verification](../trinity-demonstrator/docs/verification/model-jev-text-2026-10-25/REPORT.md)
-resolves the preceding model/Jev character-list guards in the candidate.
-Mocked request/reply, JSON-type and limit checks pass in both reading modes,
-including public actor and statechart calls. Existing default model/Jev suites
-also pass unchanged. These application checks do not add to shared conformance
-totals or establish browser/Trealla service support. Raw JSON provenance remains
-native JSON; regular n3/n5, engines and the dependency pin are unchanged.
-
-The authorised [local deployment follow-up](../trinity-demonstrator/docs/verification/portable-text-live-restart-2026-10-25/REPORT.md)
-now enables character-list reading on regular n3 and refreshes n5's tested source
-snapshot. All 29 interoperability smoke checks, 10 extra text/service checks and
-both portal text checks pass. This deployment smoke does not increase shared pack
-totals or change baseline requirements. Installed engines and the pin are unchanged;
-the Trealla supplementary-character JSON-escape failure remains a separate diagnostic.
-
-### Commit-pinned local adoption
-
-The [committed adoption checkpoint](reports/2026-10-25-committed-adoption/COVERAGE.md)
-records selected SWI/Trealla/demonstrator commits, passing native/integration and
-full browser checks, 29 public interoperability controls, 10 extra text controls
-and actual UI checks. Local n3/n5 now use guarded commit-pinned startup with
-character-list reading. Rollback and separate diagnostics are retained. Shared
-pack totals and language baseline requirements are unchanged.
-
-## 31 October ownership/lifecycle follow-up
-
-The new draft `ownership-lifecycle-0.1` pack covers two authenticated client
-contexts and language-level `exit/2`, plus explicit termination and socket-EOF
-monitor controls. The dated report under `reports/2026-10-31-ownership-lifecycle`
-contains before/after observations and exact candidate provenance. These
-selected repairs do not re-certify all deployed profiles or replace the
-historical coverage matrices.
-
-## Source-copying regressions and release gate, 1 November 2026
-
-`source-copying-0.1` adds the previously missing primitive-guard/private-copy
-and inline-worker/private-generator combinations, two named controls, and a
-receive-option callback-copying regression. `actor-release-0.1` makes this and
-`ownership-lifecycle-0.1` explicit release requirements alongside five existing
-ACTOR packs. The default single-pack runner remains backward compatible.
-These tests describe selected contracts; current deployed nodes are not
-implicitly certified by local candidate results.
+For updates, verify the relevant reports and live source correspondence, state
+which interface and principal model were tested, and supersede only the same
+selected assertions. Retain dated records and clearly identify surfaces not
+rerun. See the [runner instructions](docs/BASELINE_RUNNER.md) and
+[baseline difference register](docs/BASELINE_DIFFERENCES.md).
