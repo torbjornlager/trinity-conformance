@@ -1,0 +1,43 @@
+{
+  "suite": "source-copying-0.1",
+  "baseline": "source-copying-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SCOPY-001",
+      "title": "Primitive guard remains admitted after private source copying",
+      "transport": "query",
+      "source": "sc_guard(Owner):-self(S),send(S,offer(a)),receive({offer(X) if X=a -> send(Owner,guard_ok)}).",
+      "goal": "self(S),spawn(sc_guard(S),P,[monitor(true),src_predicates([sc_guard/1])]),receive({guard_ok->true;down(P,P,R)->throw(worker_down(R))},[timeout(3),on_timeout(throw(no_guard_ok))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(no_guard_down))])"
+    },
+    {
+      "id": "SCOPY-002",
+      "title": "Named guard helper control preserves inferred bindings",
+      "transport": "query",
+      "source": "sc_match(a). sc_guard_control(Owner):-self(S),send(S,offer(a)),receive({offer(X) if sc_match(X) -> send(Owner,guard_ok)}).",
+      "goal": "self(S),spawn(sc_guard_control(S),P,[monitor(true),src_predicates([sc_guard_control/1,sc_match/1])]),receive({guard_ok->true;down(P,P,R)->throw(worker_down(R))},[timeout(3),on_timeout(throw(no_guard_ok))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(no_guard_down))])"
+    },
+    {
+      "id": "SCOPY-003",
+      "title": "Copied controller inline worker retains backtracking and stop",
+      "transport": "query",
+      "source": "sc_value(a). sc_value(b). sc_inline(Owner):-spawn((sc_value(X),send(Owner,item(X)),receive({next->fail;stop->true})),Worker,[src_predicates([sc_value/1])]),send(Owner,worker(Worker)),receive({next->send(Worker,next),receive({stop->send(Worker,stop),receive({finish->true})})}).",
+      "goal": "self(S),spawn(sc_inline(S),C,[monitor(true),src_predicates([sc_inline/1,sc_value/1])]),receive({worker(P)->true},[timeout(3),on_timeout(throw(no_worker))]),monitor(P,WR),receive({item(a)->true},[timeout(3),on_timeout(throw(no_first))]),send(C,next),receive({item(b)->true},[timeout(3),on_timeout(throw(no_next))]),send(C,stop),receive({down(P,WR,true)->true},[timeout(3),on_timeout(throw(no_worker_stop))]),send(C,finish),receive({down(C,C,true)->true},[timeout(3),on_timeout(throw(no_parent_down))])"
+    },
+    {
+      "id": "SCOPY-004",
+      "title": "Named worker control retains backtracking and stop",
+      "transport": "query",
+      "source": "sc_value(a). sc_value(b). sc_worker(Owner):-sc_value(X),send(Owner,item(X)),receive({next->fail;stop->true}). sc_named(Owner):-spawn(sc_worker(Owner),Worker,[src_predicates([sc_worker/1,sc_value/1])]),send(Owner,worker(Worker)),receive({next->send(Worker,next),receive({stop->send(Worker,stop),receive({finish->true})})}).",
+      "goal": "self(S),spawn(sc_named(S),C,[monitor(true),src_predicates([sc_named/1,sc_worker/1,sc_value/1])]),receive({worker(P)->true},[timeout(3),on_timeout(throw(no_worker))]),monitor(P,WR),receive({item(a)->true},[timeout(3),on_timeout(throw(no_first))]),send(C,next),receive({item(b)->true},[timeout(3),on_timeout(throw(no_next))]),send(C,stop),receive({down(P,WR,true)->true},[timeout(3),on_timeout(throw(no_worker_stop))]),send(C,finish),receive({down(C,C,true)->true},[timeout(3),on_timeout(throw(no_parent_down))])"
+    },
+    {
+      "id": "SCOPY-005",
+      "title": "Copied receive options retain their list and timeout callback",
+      "transport": "query",
+      "source": "sc_poll(Owner):-receive({unexpected->fail},[timeout(0),on_timeout(send(Owner,poll_timeout))]).",
+      "goal": "self(S),spawn(sc_poll(S),P,[monitor(true),src_predicates([sc_poll/1])]),receive({poll_timeout->true;down(P,P,R)->throw(worker_down(R))},[timeout(3),on_timeout(throw(no_timeout_callback))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(no_poll_down))])"
+    }
+  ]
+}
