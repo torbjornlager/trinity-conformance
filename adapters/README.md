@@ -40,3 +40,14 @@ provenance and cleans up its processes. It does not restart N3/N5.
 same LC goal manifest in Worker/main modes. The coordinator is a test fixture;
 no browser server or real-network certification is inferred. See
 [the runner guide](../docs/BASELINE_RUNNER.md).
+
+The WASM adapter runs each assertion in its own process and loads a manifest's
+`source` before its goal. `browser-local-compatibility-0.1` separately tests the
+documented browser registration errors and supervisor record format; passing it
+does not change results for the native naming and child-specification manifests.
+
+`local_isobase.py --output /fresh/path` runs the unchanged current shared HTTP
+packs against disposable native SWI and GNU nodes. It validates demonstrator
+setup, gives GNU only the two explicit loopback origins and records schema-2
+reports with the runner's normal accounting. The old GNU ISOBASE 0.2 draft is a
+separate comparison target; it does not replace the current language manual.
