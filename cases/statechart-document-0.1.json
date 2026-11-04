@@ -1,0 +1,34 @@
+{
+  "suite": "statechart-document-0.1",
+  "baseline": "statechart-document-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Appendix B statechart XML source cardinality; fetching/base exercised separately by local_statechart_documents.py and browser semantic checks",
+  "cases": [
+    {
+      "id": "DOC-001",
+      "title": "A missing XML source is rejected before actor creation",
+      "transport": "query",
+      "goal": "actors(Before),catch((statechart_spawn(Pid,[]),fail),error(existence_error(option,src_uri_or_src_text),_),Caught=true),Caught==true,var(Pid),actors(After),sort(Before,Sorted),sort(After,Sorted)"
+    },
+    {
+      "id": "DOC-002",
+      "title": "Mixed XML source kinds are rejected before fetching",
+      "transport": "query",
+      "goal": "actors(Before),catch((statechart_spawn(Pid,[src_text('<bad/>'),src_uri('http://127.0.0.1:1/never.xml')]),fail),error(domain_error(single_statechart_source_option,_),_),Caught=true),Caught==true,var(Pid),actors(After),sort(Before,Sorted),sort(After,Sorted)"
+    },
+    {
+      "id": "DOC-003",
+      "title": "Repeated XML text is rejected before parsing",
+      "transport": "query",
+      "goal": "actors(Before),catch((statechart_spawn(Pid,[src_text('<bad/>'),src_text('<bad/>')]),fail),error(domain_error(single_statechart_source_option,_),_),Caught=true),Caught==true,var(Pid),actors(After),sort(Before,Sorted),sort(After,Sorted)"
+    },
+    {
+      "id": "DOC-004",
+      "title": "Repeated XML URIs are rejected before fetching",
+      "transport": "query",
+      "goal": "actors(Before),catch((statechart_spawn(Pid,[src_uri('http://127.0.0.1:1/never.xml'),src_uri('http://127.0.0.1:1/never.xml')]),fail),error(domain_error(single_statechart_source_option,_),_),Caught=true),Caught==true,var(Pid),actors(After),sort(Before,Sorted),sort(After,Sorted)"
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+{
+  "scope": "supporting development-checkout verification; no release, deployed broker or full Appendix B certification",
+  "counts": {
+    "local.json": {
+      "pass": 237,
+      "fail": 0
+    },
+    "wasm-main-http-fields.json": {
+      "pass": 59,
+      "fail": 0,
+      "unsupported": 0,
+      "observed": 0,
+      "diagnostic_error": 0
+    },
+    "wasm-worker-http-fields.json": {
+      "pass": 59,
+      "fail": 0,
+      "unsupported": 0,
+      "observed": 0,
+      "diagnostic_error": 0
+    },
+    "live-fields.json": {
+      "pass": 66,
+      "fail": 0
+    },
+    "live-timeout-regression.json": {
+      "pass": 81,
+      "fail": 0
+    }
+  },
+  "http_field_validation_pass": 295,
+  "live_http_field_pass": 66,
+  "http_field_total_pass": 361,
+  "timeout_regression_pass": 141,
+  "total_supporting_pass": 502,
+  "total_supporting_fail": 0,
+  "wasm_semantic_scenarios": 99,
+  "wasm_runs": [
+    {
+      "label": "statechart-unit",
+      "command": [
+        "/usr/local/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-p",
+        "browser_prolog=/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/wasm-runtime-tests-pr5u1n6s/wasm",
+        "-s",
+        "tests/test_statechart_wasm.pl",
+        "-g",
+        "swi_wasm_statechart_tests:run",
+        "-t",
+        "halt"
+      ],
+      "exit_code": 0,
+      "seconds": 0.085
+    },
+    {
+      "label": "schema-equivalence",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "tools/check_statechart_wasm_equivalence.py",
+        "--wasm-dir",
+        "/private/tmp/http-options-wasm-edge-final/web/wasm"
+      ],
+      "exit_code": 0,
+      "seconds": 0.048
+    },
+    {
+      "label": "worker-mailbox",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_actor_worker_smoke.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.252
+    },
+    {
+      "label": "standalone",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_standalone.js"
+      ],
+      "exit_code": 0,
+      "seconds": 1.255
+    },
+    {
+      "label": "semantic-contracts",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_contracts.js"
+      ],
+      "exit_code": 0,
+      "seconds": 120.681
+    }
+  ],
+  "sources": {
+    "swi-prolog-node": {
+      "root": "/Users/lager/swi-prolog-node",
+      "revision": "5ccef535383b140e41648131f3fbcdc47a66cece",
+      "dirty": true,
+      "changed_files": {
+        "prolog/web_prolog/rpc_http_fields.pl": "0692252c5d568e8ced7f5fb49ff9bcd0cc7e35dbd67ecb2266c903a2350860cf",
+        "README.md": "7646523c50bf3e46893fd21a3170004512132528199c2a538c6ff5472a818427",
+        "docs/WEB_PROLOG_BUILTINS.md": "49fa2b270fd5339b3b278f12e18508e77471f1c14637b40e3c7cfa31a587532e",
+        "prolog/web_prolog/actors.pl": "8105d5328e34ac45f5d98dfa686b30f386fba4ed01a74d066fb70a8c7823dcfc",
+        "prolog/web_prolog/first_solution.pl": "d61578ca602818994178a9855a9d0681c19c263d267e3254a259cc34140207f7",
+        "prolog/web_prolog/isolation.pl": "2d452121a31d3ae563ab4e812b6020fe405c6d9e93e8d4896e4081b2c98b3a91",
+        "prolog/web_prolog/node_sandbox.pl": "07459df0682fe3b96b465adbfa9b1b8b0446628d6cbda1e5fa8be0f9e32fd528",
+        "prolog/web_prolog/pid_utils.pl": "3aa7732512fb321052e073a628e228a3205270ac97939589671ddf81df77fc61",
+        "prolog/web_prolog/rpc.pl": "b580dc0ea97be0ad8bd25b9fe8abc6efc781182f9a6c8440ee29db3640249d11",
+        "prolog/web_prolog/source_utils.pl": "4bd59e8fb50a22fe20a3d08e51c4f7daa91d7dcb07064c5452a64a717b8507f7",
+        "prolog/web_prolog/statechart_actor.pl": "16d9c5b87301f4d21c3c4fa1b9f4a3ec987f3a9a0c14b50c8293e5b3e1d22722",
+        "prolog/web_prolog/statechart_model.pl": "c1cb76312c1edb872ce6e149fe6f556ad19f764919fd54f27ed19d4702ef26cb",
+        "prolog/web_prolog/supervisor_actor.pl": "02c8870bafa503726ece8ee445277db000a74faed045757b5c2192312fac67fe",
+        "prolog/web_prolog/toplevel_actors.pl": "428142f99dd68913147ea61b7ea28b9dcc5b11b73e3ea1bdc92051adc6f41e05",
+        "tests/tiers/behaviours/parallel_tests.pl": "8489111d61be6b9f80515b86e26359257ea5302bc9b3c245614972f95cc71f5e",
+        "tests/tiers/behaviours/statechart_actor_tests.pl": "a8ac02b2056d967e11e6716c73b06d6435d407d322340ad5576fa5bc41463f9d",
+        "tests/tiers/node/boolean_options_tests.pl": "ad8de8fdf9198860683725cc57baa223f3483ce24676dd53eb49b79b6b622d24",
+        "tests/tiers/node/node_tests.pl": "8d03dc90fe11df93fa7020e687250a3a0b0cc895e53f693da18dde8ed0fc3361",
+        "tests/tiers/node/remote_named_creation_tests.pl": "ff647d5e482ace1491c493901df819aecbe43215bd8974836f7a2cba64945ca0",
+        "tests/tiers/node/rpc_options_tests.pl": "65664db93d7decc0d68ddf05ad3749977460ab8df3d9e1f6e853c3c772c5e90a",
+        "tests/tiers/node/spawn_source_validation_tests.pl": "50cd94d9ea13eade590f0a509bba90259cf8a48dcfb963ef5191d1f8e6edf273",
+        "tests/tiers/node/uri_options_tests.pl": "d9b33ffb09276e247c1f6a1140a3e9cbbe3a8df4eb2209d579c29a35334e461b",
+        "tests/tiers/spawn_options_tests.pl": "14251040c928d848a07024f40802b7f1e8e854378b41b4b997c2cabd9658c669",
+        "tests/tiers/supervisor_child_spec_tests.pl": "b825ffb2252f1fc760fa66934e1ec9a1f62e673f6a4f8a85375793d1392fc7c1",
+        "tests/tiers/supervisor_startup_tests.pl": "a18a3db2da7ee3187373b4f4c0e248dd5bd1c765811d84cb0eb4155436817b83",
+        "tests/tiers/t1_isolation.pl": "330a63cdb575c988e2217f0da8c73921fc281196b26d9967034ba7a56a186744",
+        "tests/tiers/toplevel_synch_tests.pl": "713c8d84e730d92b801c3307e427faa8a63eb228f6cada35ed479842342f99df",
+        "tests/tiers/wrapper_options_tests.pl": "951b545b774a48fa9240b5def487de9a21492a3da9937d41877459a9bdcfad11"
+      }
+    },
+    "trealla-port": {
+      "root": "/Users/lager/trealla-port",
+      "revision": "a76436f83b919e2790176e8cd31fc9204d3f7228",
+      "dirty": true,
+      "changed_files": {
+        "rpc_http_fields.pl": "0692252c5d568e8ced7f5fb49ff9bcd0cc7e35dbd67ecb2266c903a2350860cf",
+        "README.md": "16e1379517b6954bf9c979aa28e83fcce9910c1e529e1439c735fce6a85b524f",
+        "actors.pl": "9bd60884249f19e2c51bde7febb380f033767c8ef0bef468afd0f7aca4b75a2a",
+        "boolean_option_tests.pl": "87fa23b2cf1a823a3644378a910d508154bb73bc1a8104a4652015f22e7bc0c1",
+        "distribution.pl": "a8dfb571918586703bb0a4470be410ed93341330cf1a6664fd8e01ac160a6a6f",
+        "isolation.pl": "706a8de9778efa7734bd5c5cab89723a39fe14619f4ed7bee3707dd376e50575",
+        "named_creation_tests.pl": "5314cedb5e6fc26a550704720903a3d918ebdb3541c43bbce10e720090ed6cba",
+        "parallel.pl": "292b08577725620dd2ba2f48a846754270472342d85592eea8ee15f8a544715d",
+        "remote_chart_tests.pl": "ca08fa79405c770aabf547a4ca2f8e311e8138c61c9c01a78a0aa1e76ad1fd38",
+        "remote_statechart.pl": "5dc2703906780a0c9daaf0be1a8f3348ca6e3ed96f1a3c2e1b4e967f9dcf360d",
+        "remote_supervisor.pl": "f3acebd330d1e282487d96a922060ec01e43f88ec173c35939121f7f8086c26f",
+        "remote_supervisor_tests.pl": "5e9a6cb426d2099e9c34cf169a8da59f33bb89628e1cae13d6eb9bd260645386",
+        "remote_toplevel_creation_tests.pl": "7abc37e6514fc114027a67104c206c3f258e011980e494e9bcbd2c27e3f52355",
+        "rpc.pl": "725efc2639c9add7d7c33580199689845ed57d905fe00eed3597ca98fc61679e",
+        "rpc_http_timeout_enforcement_tests.pl": "e60c3af1b4d5b673eb62de16ade33ede17e83a9296846e580159781144a7037d",
+        "rpc_http_timeout_tests.pl": "077fc728625d3e182a769957d41cb2f59ffdf34c818b5457b3b975ef66088a02",
+        "rpc_once_tests.pl": "f37fef512606f754423a0dd83fdb8e2016e9e22f83eaef798cfe99b54da8308f",
+        "rpc_option_tests.pl": "67d6c59fd38dd49fbe12983114e089db78fd7189faf681a357e05aed15d297db",
+        "server_actor.pl": "86fdae76616af14c3c5360f77de18e33ad7710ef8eadc03607bace43b8131901",
+        "source_policy.pl": "bc65216e79ebf47991aacaa790259113144814dd9868080117fbb3aeb0f55000",
+        "spawn_option_tests.pl": "32c0d1a9d5c0bac77bb16752724d493c6f1f8c2d7ff02cebf2ad3bda2bd38892",
+        "statechart_actor.pl": "28a8ad11e74d92c500587426e77d220d6023db8ec10dd7acca4705c3b4ebedcd",
+        "statechart_actor_tests.pl": "f1eb5d360830ed9a3688374337ded3cf051307996fd0964c41f5aaf039ad00a7",
+        "supervisor_actor.pl": "5ab04d71069052b0e387c8affb8af7a21f2ff7ae8aaff5f4fced7e060343ac1d",
+        "supervisor_startup_tests.pl": "fcafbe7f47cd564c95d0fdf6234db25fccabfc539ff2f865ce158e09b640605a",
+        "swi_remote_chart_interop.pl": "d6a8fba85286bf207dab4368181007db5a5deedf99fb0e6b37bb37896a428074",
+        "tools/test-creation-race.py": "340269315120f5f952775bc8f0c1495d6134b36ed6799944ac0f271a69977a7a",
+        "tools/test.sh": "a483625a8ba36aa2f64d74901e477920103927939f89412e706e3282d287b2c8",
+        "toplevel_actors.pl": "32586332a67d222b4680e53d38bd7a430246e8256658a0dda55968da3eca96ad",
+        "uri_option_tests.pl": "0c3e2ee8c43338aeee372ddd32eaa52e2c23ff6753f6cf2bc8d4c48ebce6263b",
+        "wrapper_option_tests.pl": "4ea454079fecee3efd77b03a7a509b02624207b32c335d675ffb48610c8b0491"
+      }
+    },
+    "swi-wasm-node": {
+      "root": "/Users/lager/swi-wasm-node",
+      "revision": "3df5bb75a55e0245693f70382d660d9461b540a1",
+      "dirty": true,
+      "changed_files": {
+        "docs/runtime.md": "b192186f879212bf240d6cc457517aa4ff9482fcf1c0b3959a164114271a7e16",
+        "tests/wasm/swi_wasm_contracts.js": "84aa9dae284e828ee2d56da488d4fc734c1804cc23e5d64950ccdd8bb7c25dd0",
+        "web/swi_wasm_actor_worker.js": "c9509e2eacbc58d038edfec8fcecb407f817ada3556392dfab31612376e8c961",
+        "web/vendor/swi-wasm-node.js": "d112450724a9479fa22463f98778015f2866db09e52c83d4c72c7e2c826dde57"
+      }
+    },
+    "gprolog-port": {
+      "root": "/Users/lager/gprolog-port",
+      "revision": "a1bd7f285e39c048aace021002984e2231eabf5c",
+      "dirty": true,
+      "changed_files": {
+        "isobase/rpc_http_fields.pl": "0692252c5d568e8ced7f5fb49ff9bcd0cc7e35dbd67ecb2266c903a2350860cf",
+        "isobase/Makefile": "c7fcf774fd15e29e02f49bc619d498a3c540722b2d93c301e8281d1556aa81d7",
+        "isobase/README.md": "cbaacc4833a0bc03422a6c1cc354f276a1e71e9522db53f72d9c2ecd048f98e7",
+        "isobase/boolean_option_tests.py": "f1b68097bb00a93ac6b6bdf74edd9664a46bb36918c7b279717b4be8336c0449",
+        "isobase/http.c": "ffa5dd31edc7a7c9ff2bf0e096a045773f890f7893849fb2c46b39827039a46b",
+        "isobase/https_tests.py": "97d138e22bbbfae23fb2106d2dba65fc82e1a2ad1b9fcf0e1403db4208365264",
+        "isobase/outbound_broker.h": "a54e2d9e130a9abe236d435b5b03cf802008a07ec393ca2db9d2493c158fe2ec",
+        "isobase/outbound_credentials_tests.py": "400728d429a266526d3b6fa0b4330149bcee0a726154b4b59ba6312f8c7edec7",
+        "isobase/outbound_policy_tests.py": "eaa7e6bd3942580c73efdc4cec1238350da47c671aa42ddad8fa4d5cdef8c0d3",
+        "isobase/rpc.pl": "e04e7a28657c3d9318b2f9b22fbe4a619166197201a18fff23cfddf5712a818b",
+        "isobase/rpc_source_tests.py": "9b26812f53be150a1432ed52cf4f3ba15e55579ef1b68afc6d28ec2ce1160691",
+        "isobase/rpc_tests.py": "05e54188b2d018766a36dd9daee5c1a40a21a2d38ace79a0df2dd5d8b8670390",
+        "isobase/supervisor.c": "17d33585269278c24fb99886aa582ffae7af4241410a8aff9fcd31905de69551",
+        "isobase/supervisor_tests.py": "41143a22b5ecd9756514e1a89b2d048b6c02b524bb7ab423e9c6b039a7ffcc9d",
+        "isobase/transport.c": "af30e48285edcc235ca80f296f7643452129c45d02e9e43b57ba6d4f6773eeb7",
+        "isobase/uri_option_tests.py": "330fabb7d70b7371aa465d2c4c2e762888a94026e31e94e90be7858122aba618"
+      }
+    }
+  },
+  "changed_consumer_files": {
+    "Deployment/n6_egress.py": "2ca3502ef04bab73b7cd76c8278b52c675c2d7310587a6f8b3fa0f4c77ebdf94",
+    "tests/test_n6_egress.py": "a4d19fad46896b91fd171a928e8f5f10d6c33b812a4597927f61357e5478aaca"
+  },
+  "appendix_sha256": "bae23e3a4e74592e0bda2b98f2286dc296d5395f63a6cc927beb3ecb2ee611c3",
+  "book_build": {
+    "exit_code": 0,
+    "pdf_sha256": "ac02e3a1db2c54212fc72d31b30bb7adc4afe7cc861e6493f98eee4316a76892",
+    "note": "Temporary output directory; absolute index-style override compensates for makeindex cwd, manuscript unchanged by build."
+  },
+  "qualifications": [
+    "HTTP validation uses identical public goals on SWI, Trealla, GNU, WASM Worker and WASM main engines. Browser wire checks inspect real runtime Fetch options with mocked transport; no real-browser CORS claim.",
+    "Final source snapshots are captured in the final local and live-field reports. Native/Trealla broad suites passed before the final empty/Unicode character-list normalization; final focused suites and all shared/live field checks passed afterward. The full WASM suite uses the final package.",
+    "Native LINT/TEXT/T0/T1_NATIVE/T2/T3_NATIVE/T4_NATIVE passed, including 1053 T4 cases. Final field follow-up adds case-insensitive alias and Unicode projection coverage.",
+    "Trealla full unit suite includes HTTP deadline enforcement and ownership checks. Full interoperability uses a retained copy of tools/test.sh with ROOT fixed and fixture waits increased from 0.2 to 1 second for the released x86 engine.",
+    "GNU rebuilt worker, supervisor and HTTP node; full HTTP/supervisor groups, URI26, Boolean55, source10, wire6, TLS17, outbound-policy63 and scoped-credential31 checks passed. Credential tests explicitly select development native node/RPC files and record those paths/hashes.",
+    "Broker handler and real TLS hostname/CA checks passed locally. Linux UID/lease containment and actual worker-to-broker transport are not certified here. Deploy matching worker and broker together; no live service or dependency pin was updated.",
+    "A GNU HTTP-controller timeout assignment left from the prior batch was corrected at rebuild and the 81 live timeout checks were repeated successfully.",
+    "Earlier failed runs and stale-fixture corrections are retained under diagnostics. Book build succeeds; unrelated existing typesetting warnings remain."
+  ],
+  "evidence_sha256": {
+    "book-build.txt": "c57f7799c1d839d87aaa0c0b1c28180795d6cbd29692acf3f4f94eb8c7fd66ac",
+    "broker-handler.txt": "d7d0f68c6aa6822b7258b02c69ec1c82e973d837494a9eed9255b19024b8e079",
+    "broker-tls.txt": "cd7340c2154154e8d99349e90ca6d5e23bab0582f5894eb2aed9487026bba54f",
+    "gnu-bool.txt": "1f35c570b534c045a6f0c9dd0d898eb4a9a86cc272fc837b799aaa38a0d5390e",
+    "gnu-build.txt": "7fd8d50b7ab3918697fecbd8d9678f253250294a6fa020cbc1d0b284e14cfaab",
+    "gnu-credentials-provenance.json": "efbb23f64411b638e82cd65756a0aa7e654ee121a98844b72a8ef97b225096ee",
+    "gnu-credentials-results.json": "58b7edd5fa2ba81705c34564d35ef6d416b627b88ec19ade7af5d634cc90e456",
+    "gnu-credentials.txt": "46bc29e01e23eecbb446fd03153fc5e40ca40f097388fd0424c9113c7e095ce4",
+    "gnu-framing.txt": "45cea65bd09ef76fcfe1660b897be25160ca716d57664d62c245e82557cf2a34",
+    "gnu-http.txt": "53b5daadf8f8d23317794a54d157cf8a5ce1b64fea905313b7f6f1e0b8c27393",
+    "gnu-https.txt": "e895e0e783228ccc6b79483792c0eaca744f737e89e8c10e3a922cc8e4d5921a",
+    "gnu-policy.txt": "753ecf74950a6b7e42c3c62e3e4dae8ed783cf1fbc296e5e987c6ae1752c3589",
+    "gnu-source.txt": "d2b6675b2336d27638c8f46f93929babcef8cb23fdd594760caf2424cadd44b4",
+    "gnu-supervisor.txt": "a13dce50d02eb49b781a6f1a7382a01563db20b42f1eca02063a73c6f3ed0c54",
+    "gnu-uri.txt": "a4a67868e56502186b35eefdd18d44e1ffbf940f3eaa5c5eeb31b923bb047940",
+    "interop-runner.sh": "4aa1befd56f586e36dd49c62db455fc40cf0e00dba1ff8a69dbcb4f98a53383a",
+    "interop.txt": "2b565a53d6e5bdaa047915ab1dc7ced3a95382d1f3ab240e8fe8a0068a610962",
+    "live-fields.json": "8b0cf4c6fdeecc033ef877138658dbebc7f6b0f10594cf18fdf4a689aaffef09",
+    "live-timeout-regression.json": "dbf7bf2195081ef3bd1c881c671fb2c0304f9ba353897bde8c02f89415a27580",
+    "local.json": "87be06fd35c9d328231c6c352474eca8b27edb7cb4bef7a3970449cd94e04052",
+    "native-field-followup.txt": "4d8d92bbe65f62679a5c7f691fc025928d339fdb02d66f8085459973320cea05",
+    "native-regressions.txt": "4c43451e677e7038423be38ed1495029d87898ef3a9628092f7d6ca597c15f0a",
+    "node-gnu.log": "f6c6cf614c7d78f7127661be86de74460e8f5a8821042361fc858320ed7d7404",
+    "node-swi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "node-trealla.log": "8b004ffe2ff55bf10f81bd88fc820a61e2056938bb767a853a3078444f08975d",
+    "trealla-field-followup.txt": "2c1215f5c0d9a0da6c8909871f42342216d73d1fa7572a50d62975ac4d97d292",
+    "trealla-unit.txt": "cb2a13a3e1757386aead6450dd43c6c2962654e9adc1bbed7d0198014b47db3f",
+    "wasm-full-suite.json": "1043b3e92d6144ebfbabc52fd32ee30aea091cee4fbf5f6ac99607bcb535dbf4",
+    "wasm-main-http-fields.json": "83a5eaa3b21a875a60b9716583061c43c2d68419d44447c39dc1a056823da7a9",
+    "wasm-package-manifest.json": "6f8057d063d7866cd14b73ad32182a16ce4e9144c372b602f5363de563d0c22e",
+    "wasm-schema-equivalence.txt": "3958cbbb4a53860d6e46b5c74da52ad43d1d0384ec4e66789ee13a8f884e75d7",
+    "wasm-semantic-contracts.txt": "04cf03d148c5dcace4cbfd51e25d9c9d2187604acd12845951ed922bd48bd1d2",
+    "wasm-standalone.txt": "07f74fce34ff8f37488d6e59004f89ef24c2f67eebb8558690e64253410bdbf5",
+    "wasm-statecharts.txt": "a66077ef86943207137d7646646885b7c34c79575cf58979d660dbd8659e04f0",
+    "wasm-worker-http-fields.json": "2100d2d8127c82df7612c0b7e0289ecce276955da82a33d7a3e5b60d75c7ea1f",
+    "wasm-worker-mailbox.txt": "7f7fca869a91bd5c2462bbd33e349eddfe8f23e099edb40aa297a13d326a8bb3"
+  }
+}

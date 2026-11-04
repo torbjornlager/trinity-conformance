@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-04",
+  "status": "Common supervisor batch verified; full Appendix B conformance remains incomplete",
+  "scope": "Development checkouts; standalone shared API checks, repository regressions, and targeted disposable-node supervisor interoperability. No deployment or release/profile certification.",
+  "counts": {
+    "pass": 125,
+    "fail": 0
+  },
+  "reports": [
+    "local.json",
+    "wasm-worker-uri-atoms.json",
+    "wasm-worker-manual-option-sources.json",
+    "wasm-worker-supervisor-common.json",
+    "wasm-main-uri-atoms.json",
+    "wasm-main-manual-option-sources.json",
+    "wasm-main-supervisor-common.json"
+  ],
+  "manifest_hashes": {
+    "uri-atoms-0.1": "ebafa705fca82bffe1093a3fcca01af360315faa2b2db752e98f06135e454532",
+    "manual-option-sources-0.1": "17f04c28d9f63f9a73579515c7f53011acd94eb2beba0ee04f98a1c56e38fd68",
+    "supervisor-common-0.1": "0caaa5ef868ad7b0f76063617da79d8a49ce3a5396be8eb30aa02be8ac4bc1f5"
+  },
+  "verified": [
+    "Atom child IDs validated across supervisor creation and management APIs before effects",
+    "Ordered info(Id,Pid,Type,Restart) inspection and keyed specs/active/supervisors/workers counts; type counts include active children only",
+    "Successful respawn returns ok(NewPid) and preserves specification order",
+    "Native and Trealla initial child preparation/admission precede creation success and root-name publication, without waiting for application goals",
+    "Initial startup failure rolls back and reports supervisor_start_failed(Pid,Reason); original exceptions preserved",
+    "Halt acknowledges after child shutdown, before supervisor termination; available acknowledgement has priority; normal down retains the original deadline",
+    "Trealla nested receiver readiness avoids holding the descendant source lock",
+    "Trealla server callback supplied only in explicit source does not require a caller-side predicate definition",
+    "Previous URI, Boolean, duplicate, and source-order boundary checks remain green"
+  ],
+  "regressions": {
+    "native": "LINT TEXT T0 T1_NATIVE T2 T3_NATIVE T4_NATIVE and HTTP visitor ownership passed",
+    "trealla": "Full unit suite passed; receiver policy/nested-preparation tests passed again after the final nested-source-lock fix",
+    "wasm": "All 94 semantic-contract scenarios passed; added halt acknowledgement/deadline checks passed in the Worker request-wait scenario",
+    "interoperability": "Trealla -> SWI, Trealla -> Trealla (including nested/source/server starts and dynamic admission), and native SWI -> Trealla supervisor checks passed"
+  },
+  "qualifications": [
+    "The stock interop runner failed its 0.2-second one-shot fixture startup wait. A temporary runner used one second, then stopped in the Trealla remote statechart URI test after text_and_private_data_ok. The broader interop suite is not claimed to pass.",
+    "Targeted supervisor interop uses separate fixtures and records its exact runner. TCP readiness probes can produce an expected unexpected_eof diagnostic in the native fixture.",
+    "The full WASM suite package and final shared-check package have identical web runtime hashes. Only documentation and the added halt regression differ: ['docs/runtime.md', 'tests/wasm/swi_wasm_contracts.js']",
+    "Trealla atom-ID/result-format migration affects historical compatibility expectations; old conformance pack and release selections remain unchanged."
+  ],
+  "still_to_implement": [
+    "Caller fetching and document-base preservation for initial statechart XML across all runtimes",
+    "Common RPC execution/transport timeout handling and transport-option schemas",
+    "Remaining wrapper option schemas and removal of compatibility metadata",
+    "Common client contexts for names and promises, including engine-independent local ownership",
+    "Remote named preparation/publication/activation handshake and uniform remote link cleanup",
+    "Confirmed remote demonitor removal across all implementations",
+    "Uniform statechart invocation ordering, invocation features and engine placement",
+    "Capability-only runtime introspection and common sandbox admission policies",
+    "Synchronise the shared web manual and qualify immutable release pins after implementation work"
+  ],
+  "artifacts": {
+    "broader-interop-runner.sh": "c3be6f1c7315d995798ed1508e1dd8cbb846c47f9c1d932c55112aca9e68b621",
+    "broader-interop-statechart-failure.txt": "7bcf4610a9ce943ca3581e0ab0d3ee6617b32f1c2884bb69820aaab75a629141",
+    "local.json": "e2467990fd0af28cb988e72ead492b6647ca687a4c4383549dc1345c84269050",
+    "native-regressions.txt": "eec641c25c30ae6b8c5bf3233f57c34ce8109e2c34e8539fde8ad939cc3a6d59",
+    "supervisor-interop-runner.py": "3fb7a319f4edb5102394f4672092e7da75e28747afda9ef384b56f6a6b8e1e8a",
+    "supervisor-interop.txt": "59884563b104bcc4f27a99b93ea78ab04bb5918f1151d943e628d0d0cbcebc19",
+    "trealla-remote-followup.txt": "73364b4acb9a1d58dad9a409e6abaf94c994b70ef2ee65a9f2965b954166d2c9",
+    "trealla-unit.txt": "8cc0289a8359fe4ed413cd5b4bfd94cf3757da5458931e0043ae6ef60d3ce840",
+    "wasm-full-suite-package-manifest.json": "a397b38f86c56ddf21b25aa5bdc8e1d77b79c9691a2a1ef7346929155b30ca20",
+    "wasm-halt-followup.txt": "34805e4b5593d5bc816bfc99019c2da44be42e6e69ae0bd70c7f4484f34977e1",
+    "wasm-main-manual-option-sources.json": "04cfd56c6a1e1e60132cf29284c1fdd485643cbf4469dcfd3780b8b19526d11d",
+    "wasm-main-supervisor-common.json": "5490b44487ef27eb8ad6b6eb92f3f6aab4241ea07f5773264c6dac08bc098d59",
+    "wasm-main-uri-atoms.json": "f42e12e92520d1c6a3a8cf3cff3d233cdaf0727f1022330108889e71082b889a",
+    "wasm-package-manifest.json": "a2e8243ba570f925970b44a7269e903e408ede2a8daee94da12d97787ca965d6",
+    "wasm-semantic-contracts.txt": "283bce424c66f94ec79dc43d60deadd0f97db69992016ecad2dea0eed41e40cc",
+    "wasm-worker-manual-option-sources.json": "ab418fcb94b8b4502cde0b75879286c438c887c26dfd35b101cbc8f5c91b3219",
+    "wasm-worker-supervisor-common.json": "987940c235dc2e193f119c1932477449497f8ca3e6b4bbadb30eeddd6a52d327",
+    "wasm-worker-uri-atoms.json": "08061110421f81e6fdcf9b16a20ff771a6e64739bfa045e68b3f2a22c8033b9b"
+  }
+}

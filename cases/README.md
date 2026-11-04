@@ -119,3 +119,67 @@ requesting stop, wait for normal worker termination, then release the controller
 Root-level assertion timeouts and session teardown bound failed fixtures.
 The pack is required by `profiles/actor-release-0.1.json` together with the
 separate authenticated ownership/lifecycle pack.
+
+## Manual-boundary migration
+
+The draft `uri-atoms-0.1.json` requires URI atoms and exact Boolean errors at
+RPC/promise and source-URI boundaries. The ACTOR draft
+`manual-option-sources-0.1.json` adds actor-address node validation, nonbinding
+policy validation, duplicate handling and preservation of all clauses across
+mixed source kinds. Both reflect the Appendix B decisions of 2026-11-04 and
+are supporting checks, without changing historical baseline or release packs.
+The local API adapter is documented in [the adapter guide](../adapters/README.md).
+
+The optional `supervisor-common-0.1.json` pack checks common supervisor inspection
+and count formats, atom IDs, respawn results, preparation admission, and halt
+after child shutdown. Select it with
+`local_manual_boundaries.py --suite supervisor-common-0.1`, or pass the manifest
+to `wasm.cjs` for Worker/main execution. These are supporting API checks; they
+do not certify public-node transport or full Appendix B conformance.
+
+The optional `statechart-document-0.1.json` pack checks that exactly one XML
+source is required, before fetching or actor creation. The separate
+`adapters/local_statechart_documents.py` runner uses disposable SWI/Trealla
+nodes and a loopback document server to verify caller fetching with destination
+source access disabled, and document-base preservation for later relative
+fetches. It records the exact fetch paths and source/executable hashes. Example:
+
+```sh
+python3 adapters/local_statechart_documents.py \
+  --swi-root /path/to/swi-prolog-node --swipl /verified/swipl \
+  --trealla-root /path/to/trealla-port --tpl /released/trealla/tpl \
+  --output /fresh/directory/live-documents.json
+```
+
+Browser semantic checks exercise the generated public APIs and real WASM
+engines with mocked document transport in main and Worker modes. These remain
+supporting checks rather than release or full-protocol certification.
+
+The optional `rpc-timeout-0.1.json` pack checks numeric execution/HTTP limits,
+nonbinding validation and rejection before source work. Use `--suite
+rpc-timeout-0.1` with the local API adapter, or pass the manifest to `wasm.cjs`.
+`adapters/local_rpc_timeouts.py` additionally runs disposable HTTP peers and
+SWI/Trealla/GNU execution nodes. It checks execution requests and owner caps,
+whole-request transport deadlines (including slow headers/body/drip), per-page
+renewal, independent source fetching, error terms, retry and stream cleanup.
+Pass `--swi-root`, `--trealla-root`, `--gnu-root`, `--swipl`, `--tpl`, and a fresh
+`--output` path. These are supporting checks, with exact source and executable
+provenance, rather than release certification.
+
+The optional `http-transport-options-0.1.json` pack checks the closed HTTP option
+schema, nonbinding validation of every duplicate, malformed text and fields,
+reserved proxy fields, and validation before dispatch. It runs with
+`--suite http-transport-options-0.1` in `local_manual_boundaries.py` or through
+`wasm.cjs` in either browser mode. The public schema is shared; caller policy
+(including forbidden browser fields and the GNU destination allowlist) still applies.
+
+`adapters/local_http_transport_options.py` uses a disposable HTTP peer to capture
+actual SWI, Trealla and GNU requests. It checks atom/string/character-list values,
+UTF-8 header bytes and Basic credentials, Basic/Bearer RPC and promise requests,
+case-insensitive first-field precedence across aliases and pages, empty values,
+explicit query-owner retention, and separation from URI source fetching. Pass
+`--swi-root`, `--trealla-root`, `--gnu-root`, `--swipl`, `--tpl`, and a fresh
+`--output` path. Browser semantic tests additionally check the real WASM public
+APIs and Fetch options with mocked transport in main and Worker modes. Broker
+handler and TLS tests are local supporting checks; they do not certify Linux
+worker containment or a deployed worker/broker pair.

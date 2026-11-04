@@ -1,0 +1,130 @@
+{
+  "suite": "rpc-timeout-0.1",
+  "baseline": "rpc-timeout-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Appendix B independent numeric execution and HTTP request timeouts",
+  "cases": [
+    {
+      "id": "RPC-TIME-001",
+      "title": "rpc rejects [timeout(T)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(T)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-002",
+      "title": "rpc rejects [timeout(none)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(none)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,none),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-003",
+      "title": "rpc rejects [timeout(infinite)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(infinite)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,infinite),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-004",
+      "title": "rpc rejects [http_timeout(T)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(T)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-005",
+      "title": "rpc rejects [http_timeout(none)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(none)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,none),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-006",
+      "title": "rpc rejects [timeout(1),timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(1),timeout(bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-007",
+      "title": "rpc rejects [http_timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(1),http_timeout(bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-008",
+      "title": "rpc rejects [timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(1),http_timeout(bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-009",
+      "title": "rpc rejects [http_timeout(1),timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(1),timeout(bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X)"
+    },
+    {
+      "id": "RPC-TIME-010",
+      "title": "promise rejects [timeout(T)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(T)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-011",
+      "title": "promise rejects [timeout(none)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(none)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,none),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-012",
+      "title": "promise rejects [timeout(infinite)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(infinite)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,infinite),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-013",
+      "title": "promise rejects [http_timeout(T)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(T)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-014",
+      "title": "promise rejects [http_timeout(none)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(none)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,none),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-015",
+      "title": "promise rejects [timeout(1),timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(1),timeout(bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-016",
+      "title": "promise rejects [http_timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(1),http_timeout(bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-017",
+      "title": "promise rejects [timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[timeout(1),http_timeout(bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-018",
+      "title": "promise rejects [http_timeout(1),timeout(bad)] without bindings or dispatch",
+      "transport": "query",
+      "goal": "Options=[http_timeout(1),timeout(bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(number,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "RPC-TIME-019",
+      "title": "rpc validates every timeout before source fetching",
+      "transport": "query",
+      "goal": "catch((rpc('http://127.0.0.1:1',true,[src_uri('http://127.0.0.1:1/never'),timeout(1),http_timeout(bad)]),fail),error(type_error(number,bad),_),Caught=true),Caught==true"
+    },
+    {
+      "id": "RPC-TIME-020",
+      "title": "promise validates every timeout before source fetching",
+      "transport": "query",
+      "goal": "catch((promise('http://127.0.0.1:1',true,Ref,[src_uri('http://127.0.0.1:1/never'),timeout(1),http_timeout(bad)]),fail),error(type_error(number,bad),_),Caught=true),Caught==true,var(Ref)"
+    }
+  ]
+}

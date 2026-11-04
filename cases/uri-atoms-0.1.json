@@ -1,0 +1,64 @@
+{
+  "suite": "uri-atoms-0.1",
+  "baseline": "uri-atoms-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Appendix B common URI, option-validation and source-loading rules agreed 2026-11-04",
+  "cases": [
+    {
+      "id": "URI-001",
+      "title": "RPC requires a URI atom",
+      "transport": "query",
+      "goal": "catch((rpc(42,true),fail),error(type_error(atom,42),_),true)"
+    },
+    {
+      "id": "URI-002",
+      "title": "RPC does not accept authority shorthand",
+      "transport": "query",
+      "goal": "catch((rpc(localhost:8080,true),fail),error(type_error(atom,localhost:8080),_),true)"
+    },
+    {
+      "id": "URI-003",
+      "title": "Promise URI validation leaves variables unbound",
+      "transport": "query",
+      "goal": "catch((promise(U,true,Ref),fail),error(instantiation_error,_),true),var(U),var(Ref)"
+    },
+    {
+      "id": "URI-004",
+      "title": "Character lists are not URI values",
+      "transport": "query",
+      "goal": "catch((rpc([h,t,t,p],true),fail),error(type_error(atom,[h,t,t,p]),_),true)"
+    },
+    {
+      "id": "URI-005",
+      "title": "Source URI values are atoms before fetching",
+      "transport": "query",
+      "goal": "catch((rpc('http://invalid.example',true,[src_uri([h,t,t,p])]),fail),error(type_error(atom,[h,t,t,p]),_),true)"
+    },
+    {
+      "id": "URI-006",
+      "title": "A compound URI does not bind its components",
+      "transport": "query",
+      "goal": "catch((promise(host:Port,true,Ref),fail),error(type_error(atom,host:Port),_),true),var(Port),var(Ref)"
+    },
+    {
+      "id": "OPT-001",
+      "title": "Non-atom Boolean options raise an atom type error",
+      "transport": "query",
+      "goal": "catch((rpc('http://invalid.example',true,[once(1)]),fail),error(type_error(atom,1),_),true)"
+    },
+    {
+      "id": "OPT-002",
+      "title": "Invalid Boolean atoms raise a Boolean domain error",
+      "transport": "query",
+      "goal": "catch((rpc('http://invalid.example',true,[once(maybe)]),fail),error(domain_error(boolean,maybe),_),true)"
+    },
+    {
+      "id": "OPT-003",
+      "title": "Later Boolean duplicates are validated",
+      "transport": "query",
+      "goal": "catch((promise('http://invalid.example',true,Ref,[once(false),once(Pending)]),fail),error(instantiation_error,_),true),var(Pending),var(Ref)"
+    }
+  ]
+}
