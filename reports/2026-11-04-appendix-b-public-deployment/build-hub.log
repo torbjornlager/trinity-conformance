@@ -1,0 +1,49 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.node
+#1 transferring dockerfile: 1.73kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [stage-0 1/5] FROM docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8
+#6 resolve docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 16.35kB done
+#7 DONE 0.0s
+
+#8 [stage-0 2/5] RUN apt-get update && apt-get install -y --no-install-recommends python3 git     && rm -rf /var/lib/apt/lists/*     && groupadd -r webprolog     && useradd -r -g webprolog -d /app -s /usr/sbin/nologin webprolog
+#8 CACHED
+
+#9 [stage-0 3/5] WORKDIR /app
+#9 CACHED
+
+#10 [stage-0 4/5] COPY . /app/
+#10 CACHED
+
+#11 [stage-0 5/5] RUN --mount=type=secret,id=github_token     python3 tools/fetch_swi.py --destination /opt/swi-prolog-node --token-file /run/secrets/github_token     && git config --system --add safe.directory /opt/swi-prolog-node     && python3 tools/fetch_browser.py --destination /opt/swi-wasm-node --token-file /run/secrets/github_token     && python3 tools/setup_swi.py --native-root /opt/swi-prolog-node --browser-root /opt/swi-wasm-node     && WP_CHECK=1 swipl -f none -q -s Deployment/start_node.pl     && mkdir -p /var/log/webprolog     && chown -R webprolog:webprolog /app/.trinity /var/log/webprolog
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:fe589fd8fa3906037ef52860ab84fcb00148f2a456dd05399ed69bed464f293f done
+#12 exporting config sha256:4257f79a7d0b0459b9ac66655f095a1e396149eb9b431cb92cc1cd1f694e17bb done
+#12 exporting attestation manifest sha256:08c12e5863ee39632e961003deea9d87cb7fb3e4282b26604b136f83cfa8855b done
+#12 exporting manifest list sha256:c6a225a8ab3e12c502a22725982dd87a880a8b26cf495c03dc15e85db15c11ae done
+#12 naming to docker.io/library/trinity-appendix-hub:20261104 done
+#12 unpacking to docker.io/library/trinity-appendix-hub:20261104 done
+#12 DONE 0.0s
