@@ -647,11 +647,12 @@ def case_sc_001(candidate: Candidate) -> None:
     supervisor_cleanup_goal(candidate,
         "setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_bad),src_predicates([probe/4])]),"
         "setup_call_cleanup(true,"
-        "(supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
+        "(catch((supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
         "child(sc_c,[start(server(probe,[])),shutdown(0.1)]),"
         "child(sc_bad,[start(server(probe,[]))])],Sup,"
-        "[monitor(true),src_predicates([probe/4])]),"
-        "await(Sup,Sup,exception(Error)),nonvar(Error),absent(sc_a),absent(sc_c),"
+        "[monitor(true),src_predicates([probe/4])]),fail),"
+        "error(supervisor_start_failed(Failed,name_is_in_use(sc_bad)),_),Caught=true),"
+        "Caught==true,ground(Failed),var(Sup),absent(sc_a),absent(sc_c),"
         "whereis(sc_bad,Block),server_request(Block,ping,pong,[timeout(1),on_timeout(throw(blocker_unresponsive))])),cleanup(Sup)),cleanup(Block))")
 
 

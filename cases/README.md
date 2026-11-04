@@ -183,3 +183,10 @@ explicit query-owner retention, and separation from URI source fetching. Pass
 APIs and Fetch options with mocked transport in main and Worker modes. Broker
 handler and TLS tests are local supporting checks; they do not certify Linux
 worker containment or a deployed worker/broker pair.
+
+Creation validation now follows Appendix B formal errors: Boolean atoms outside
+the permitted domain raise `domain_error(boolean,Value)`, while non-atoms
+raise `type_error(atom,Value)`. The initial supervisor-failure check requires
+a wrapped caller exception, an unbound output and completed sibling rollback
+before checking the surviving conflicting actor. The earlier asynchronous
+startup-notification expectation is superseded by that common contract.
