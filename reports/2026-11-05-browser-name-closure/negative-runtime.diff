@@ -1,0 +1,29 @@
+--- original/web/vendor/swi-wasm-node.js
++++ unsafe/web/vendor/swi-wasm-node.js
+@@ -932,7 +932,6 @@
+             return "published";
+           },
+           commitSwiWasmName: function(owner, token, name) {
+-            if (this.swiWasmClientContextClosed) return false;
+             name = String(name);
+             var r = (this.swiWasmNameReservations || {})[name];
+             if (!r || r.owner !== String(owner) || r.token !== String(token) || r.pid === undefined) return false;
+@@ -1249,10 +1248,6 @@
+             // Retire admission before cancellation or rollback can call back.
+             this.swiWasmClientContextClosed = true;
+             this.swiWasmActorNames = Object.create(null);
+-            Object.keys(this.swiWasmNameReservations || {}).forEach(function(name) {
+-              var r = this.swiWasmNameReservations[name];
+-              this.releaseSwiWasmName(r.owner, r.token, name);
+-            }.bind(this));
+             this.closeSwiWasmPromiseContext();
+             // Existing actors and owner service names have separate lifetimes.
+           },
+@@ -2238,7 +2233,6 @@
+             return true;
+           },
+           registerSwiWasmActorName: function(kind, nameText, pidText) {
+-            if (String(kind || "actor") !== "service" && this.swiWasmClientContextClosed) return false;
+             var registry = String(kind || "actor") === "service" ? this.swiWasmActorServices : this.swiWasmActorNames;
+             var name = String(nameText || "");
+             var pid = this.resolveSwiWasmActorTarget(pidText);

@@ -54,15 +54,18 @@ That evidence does not yet close these complete source units:
 - B-004: directly combine ordinary-name isolation, retained shell replacement,
   and remote descendant return with browser/native transports. Establish which
   return paths are possible under the advertised inbound-connectivity capability.
-- B-354: qualify ordinary-name reservations/publication at the browser context
-  boundary, including an in-flight child startup. The promise-only close hook
-  does not by itself qualify ordinary-name closure.
+- B-354: the [browser name-closure repair](../reports/2026-11-05-browser-name-closure/README.md) now qualifies ordinary-name retirement, pending
+  startup rollback, late publication/commit denial, committed-actor survival,
+  isolation, late URI-source completion without child leaks, and synchronous disposal admission. Browser/native context
+  attachment and closure propagation still need direct transport controls;
+  coordinator-only barriers do not certify those remote paths.
 - B-296: qualify browser/native reference forwarding in both directions and the
   remote authentication boundary. Two local runtime instances and a simple HTTP
   answer fixture do not establish every remote context-admission rule.
 
-Both browser whole-unit statuses remain unverified. These are concrete missing
-evidence items, not observed implementation failures.
+Both browser whole-unit statuses remain unverified. The ordinary-name lifecycle
+gap found in this audit is repaired; the remaining transport items are concrete
+missing evidence, not observed implementation failures.
 
 ## GNU ISOBASE evidence and remaining tests
 

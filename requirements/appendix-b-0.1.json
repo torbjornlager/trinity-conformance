@@ -536,15 +536,47 @@
         },
         "wasm_worker": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-browser-name-closure/final.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BC-001",
+                "BC-002",
+                "BC-003",
+                "BC-004",
+                "BC-005",
+                "BC-006",
+                "BC-007",
+                "BC-008"
+              ]
+            }
+          ],
+          "note": "Ordinary-name/promise scope closure, pending startup retirement, late URI-source completion without child leaks, late publication/commit denial, committed-actor survival, independent contexts and dispose admission pass in real Chrome. Deliberately unsafe variants fail the targeted assertions. Browser/native context attachment and closure propagation still require transport controls; no whole-unit or public release certificate."
         },
         "wasm_main": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-browser-name-closure/final.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BC-001",
+                "BC-002",
+                "BC-003",
+                "BC-004",
+                "BC-005",
+                "BC-006",
+                "BC-007",
+                "BC-008"
+              ]
+            }
+          ],
+          "note": "Ordinary-name/promise scope closure, pending startup retirement, late URI-source completion without child leaks, late publication/commit denial, committed-actor survival, independent contexts and dispose admission pass in real Chrome. Deliberately unsafe variants fail the targeted assertions. Browser/native context attachment and closure propagation still require transport controls; no whole-unit or public release certificate."
         }
       },
       "evidence_candidates": [],
-      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
+      "audit_note": "Native SWI/Trealla clause mapping is complete within the qualified boundaries. Browser ordinary-name closure repaired and covered by BC-001\u2013008 in each mode; remote attachment/closure propagation and GNU retirement remain unverified. See docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "B-005",
@@ -23742,7 +23774,7 @@
       "requirements": [
         "B-296"
       ],
-      "next_step": "Native B-004/B-354/B-296 clause mapping is complete on scoped evidence. Add browser/native reference-forwarding and context-return controls, browser ordinary-name publication/closure barriers, and GNU request/root ownership and late-completion controls; see docs/CONTEXT_LIFETIME_AUDIT.md."
+      "next_step": "Native B-004/B-354/B-296 mapping complete; browser ordinary-name closure repaired with real-Chrome publication/commit barriers. Add browser/native reference-forwarding, context-return and attachment/closure propagation controls, and GNU request/root ownership and late-completion controls; see docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "AUDIT-LIBRARY-MODES",

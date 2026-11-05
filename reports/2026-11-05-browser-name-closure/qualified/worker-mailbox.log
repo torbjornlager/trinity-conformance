@@ -1,0 +1,45 @@
+  ok   deliver then receive
+  ok   receive then deliver wakes waiter
+  ok   receive timeout returns null
+  ok   receive timeout actually waited
+  ok   send to self delivers locally
+  ok   send posts a request
+  ok   reply (ok) resolves the request
+  ok   reply (not ok) rejects the request
+  ok   make_ref is delegated to the node controller
+  ok   make_ref returns an opaque numeric reference
+  ok   spawn request preserves target pid and defaults link to true
+  ok   spawn request preserves an explicit link(false)
+  ok   remote spawn is delegated to the node controller
+  ok   remote spawn reply preserves the distributed pid
+  ok   shell call consumes limit, offset, and once from canonical options
+  ok   shell next carries no limit and leaves the active call limit unchanged
+  ok   shell call escapes negation inside nested Prolog source before reparsing it
+  ok   shell call rejects the legacy call-time src_text field
+  ok   shell call rejects source hidden in call options
+  ok   shell input parenthesises the answer and strips the read terminator
+  ok   an empty shell input answer is end_of_file
+  ok   toplevel success is posted in the canonical API response shape
+  ok   toplevel success fields are emitted in the book's response order
+  ok   toplevel errors preserve raw data and add a context-elided exception term
+  ok   RPC delegates the common execution and transport options to the node controller
+  ok   RPC response text returns to Prolog
+  ok   an unlimited RPC carries no numeric limit
+  ok   RPC src_text terminator detection ignores trailing whitespace
+  ok   RPC src_uri source is delegated to the node controller
+  ok   RPC src_uri source returns to the worker
+  ok   promise starts RPC and returns an opaque ten-digit reference
+  ok   yield wait consumes the promised RPC response
+  ok   separate worker promises receive distinct ten-digit references
+  ok   timed-out yield leaves the promise pending
+  ok   a later yield consumes a previously timed-out promise
+  ok   consumed promise is distinct from a timeout
+  ok   unknown promise is distinct from a timeout
+  ok   rejected promise delivers a quoted error answer: error(rpc_error("network \"failure\""))
+  ok   statechart spawn is delegated to the node controller
+  ok   statechart spawn returns its Worker pid in an explicit startup result
+  ok   statechart startup failures preserve their diagnostic across the Worker boundary
+  ok   nested statechart output defaults to its spawning actor
+  ok   statechart terminal output crosses the Worker boundary as a mailbox term
+
+swi_wasm_actor_worker smoke: PASS

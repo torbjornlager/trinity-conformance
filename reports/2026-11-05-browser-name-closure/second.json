@@ -1,0 +1,215 @@
+{
+  "suite": "browser-context-closure-0.1",
+  "adapter_sha256": "cf110787245f7a297dbfbb551b3e041dec703006265dda7012afc6eb5b5bd00a",
+  "package_manifest_sha256": "b9817f3b4c1a5fb6c4d2ca84cfe7145d660f3f0f8440eac631ba0a3d0ef1a3a3",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "c3ca3e873fde52cb8420ae8ce5a24558193f0a3f377192e5f495288ad74c5794",
+    "web/swi_wasm_actor_worker.js": "ad831df5dbea7bcd2803ad92120a9bd742c664b27b29fa77c796cd20fa2ff8d1"
+  },
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-001",
+      "observation": [
+        "query self(S),spawn(receive({probe->catch((self(Me),register(late_child,Me)),E,true),S!survived(E)}),P,[link(false)]),register(before_close,P),register_service(kept_service,P),assertz(survivor(P)) {\"type\":\"success\",\"pid\":3352087133,\"data\":[{\"P\":\"1161806080@localhost\",\"S\":\"3352087133@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "host can close name and promise scopes independently of actors",
+        "host can close name and promise scopes independently of actors",
+        "promise cancellation and idempotent closure",
+        "late completion stays retired",
+        "query whereis(before_close,undefined),survivor(P),whereis_service(kept_service,P),catch(register(late_parent,P),error(permission_error(register,actor_name,late_parent),_),Denied=true),Denied==true,P!probe,receive({survived(error(permission_error(register,actor_name,late_child),_))->true},[timeout(2),on_timeout(throw(no_survivor))]) {\"type\":\"success\",\"pid\":3352087133,\"data\":[{\"P\":\"1161806080@localhost\",\"ClosureCheck\":\"passed\",\"Denied\":\"true\"}],\"more\":false}",
+        "closed promise admission"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-002",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"pid\":3016001865,\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-003",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"pid\":4524885830,\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-004",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"pid\":5353456784,\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-005",
+      "observation": [
+        "query spawn(receive({stop->true}),P,[link(false)]),register(shared,P),assertz(saved(P)) {\"type\":\"success\",\"pid\":5021119768,\"data\":[{\"P\":\"4549241724@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "query whereis(shared,undefined),spawn(receive({stop->true}),P,[link(false)]),register(shared,P),assertz(saved(P)) {\"type\":\"success\",\"pid\":2673659573,\"data\":[{\"P\":\"4045083542@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "host can close name and promise scopes independently of actors",
+        "query whereis(shared,undefined) {\"type\":\"success\",\"pid\":5021119768,\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "query saved(P),whereis(shared,P),P!stop {\"type\":\"success\",\"pid\":2673659573,\"data\":[{\"P\":\"4045083542@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "other runtime context stays open"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BC-006",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "dispose retires admission and reservations before returning",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-001",
+      "observation": [
+        "query self(S),spawn(receive({probe->catch((self(Me),register(late_child,Me)),E,true),S!survived(E)}),P,[link(false)]),register(before_close,P),register_service(kept_service,P),assertz(survivor(P)) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"7790618822@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "host can close name and promise scopes independently of actors",
+        "host can close name and promise scopes independently of actors",
+        "promise cancellation and idempotent closure",
+        "late completion stays retired",
+        "query whereis(before_close,undefined),survivor(P),whereis_service(kept_service,P),catch(register(late_parent,P),error(permission_error(register,actor_name,late_parent),_),Denied=true),Denied==true,P!probe,receive({survived(error(permission_error(register,actor_name,late_child),_))->true},[timeout(2),on_timeout(throw(no_survivor))]) {\"type\":\"success\",\"data\":[{\"P\":\"7790618822@localhost\",\"ClosureCheck\":\"passed\",\"Denied\":\"true\"}],\"more\":false}",
+        "closed promise admission"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-002",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-003",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-004",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "host can close name and promise scopes independently of actors",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child",
+        "late reservation denied",
+        "stale commit denied",
+        "query whereis(preparing,undefined) {\"type\":\"success\",\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-005",
+      "observation": [
+        "query spawn(receive({stop->true}),P,[link(false)]),register(shared,P),assertz(saved(P)) {\"type\":\"success\",\"data\":[{\"P\":\"2659717156@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "query whereis(shared,undefined),spawn(receive({stop->true}),P,[link(false)]),register(shared,P),assertz(saved(P)) {\"type\":\"success\",\"pid\":8903114530,\"data\":[{\"P\":\"3285786963@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "host can close name and promise scopes independently of actors",
+        "query whereis(shared,undefined) {\"type\":\"success\",\"data\":[{\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "query saved(P),whereis(shared,P),P!stop {\"type\":\"success\",\"pid\":8903114530,\"data\":[{\"P\":\"3285786963@localhost\",\"ClosureCheck\":\"passed\"}],\"more\":false}",
+        "other runtime context stays open"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BC-006",
+      "observation": [
+        "one pending reservation at barrier",
+        "pending alias invisible",
+        "prepared child is alive before closure",
+        "dispose retires admission and reservations before returning",
+        "late creation cannot report successful publication",
+        "late alias remains absent",
+        "pending reservations retired {\"closed\":true,\"reservations\":{}}",
+        "startup rollback ownership retired",
+        "failed attempt reclaims its prepared child"
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 12,
+    "fail": 0
+  }
+}
