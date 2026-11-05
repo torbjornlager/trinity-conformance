@@ -1,0 +1,35 @@
+/Users/lager/gprolog-port/install/bin/gplc --no-top-level compile_shared.pl query.pl source.pl policy.pl prologue.pl text.pl rpc.pl shared_empty.pl terms.c transport.c compile_shared.c -L -lcurl -L -lpthread -o shared-compiler
+python3 compiled_tests.py
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+PASS security: startup policy, credentials, headers, browser boundary and protected continuations
+PASS credential provisioning, restart revocation, ACL rejection, dump limits and child environment/descriptor isolation
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+PASS query paging, sharing, cut, failure, exceptions, cancellation, EOF, parsing, escaping
+PASS 1000 recovered queries: {'queries': 1000, 'before': 4216, 'after': 4216}
+PASS source facts, recursion, cuts, sharing, DCGs, declarations, errors, isolation and size limit
+PASS policy: control semantics, meta-calls, higher-order calls, DCGs, introspection and denied execution
+PASS 10 source failure/order/slot recovery checks
+PASS 63 outbound policy checks; forbidden and proxy fixtures received zero requests
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/outbound_credentials_tests.py", line 176, in <module>
+    if __name__=='__main__':main()
+  File "/Users/lager/gprolog-port/isobase/outbound_credentials_tests.py", line 47, in main
+    swi,trinity=record_run('outbound-credentials');checks=0;processes=[];bridges=[]
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 99, in record_run
+    swi,trinity,gprolog,gnu=comparison_inputs()
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 65, in comparison_inputs
+    verify_checkout(trinity,LOCK['repositories']['trinity']['commit'])
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 40, in verify_checkout
+    if actual!=expected:raise RuntimeError(f'Comparison revision mismatch at {path}: expected {expected}, got {actual}')
+RuntimeError: Comparison revision mismatch at /Users/lager/trinity-demonstrator: expected f237dd5c806893dad17c95cad9a2dc1692a73607, got 7071a22861547daff1ac306a9128417d4c3548f6
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/compiled_tests.py", line 157, in <module>
+    subprocess.run(['python3',test],check=True,env=env,cwd=ROOT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', 'outbound_credentials_tests.py']' returned non-zero exit status 1.
+make: *** [compiled-test] Error 1

@@ -1,0 +1,279 @@
+{
+  "suite": "gnu-node-settings-0.1",
+  "results": [
+    {
+      "candidate": "gnu",
+      "id": "GS-001",
+      "title": "No serving-node settings in a standalone process",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "answers": [
+          "ok"
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-003",
+      "title": "Trusted bootstrap installs the exact public context",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "answers": [
+          "ok"
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-002",
+      "title": "No serving-node settings in a standalone process",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "answers": [
+          "ok"
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-004",
+      "title": "Trusted bootstrap installs the exact public context",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "answers": [
+          "ok"
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-005",
+      "title": "Malformed and duplicate trusted metadata is rejected before query execution",
+      "status": "pass",
+      "observation": {
+        "rejected": 28
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-006",
+      "title": "Open HTTP node reports real settings despite forged ambient metadata",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-007",
+      "title": "Authenticated HTTP node keeps credentials and per-owner quotas private",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-008",
+      "title": "Private source helpers can read the current node settings",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-009",
+      "title": "Shared source helpers read the serving node rather than their load context",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-010",
+      "title": "Unknown, private and unavailable family values fail without coercion",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-011",
+      "title": "Bound mismatches cannot change metadata or select defaults",
+      "status": "pass",
+      "observation": "success([ok],false).\n"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-012",
+      "title": "Queries and source cannot inspect, initialize or replace private metadata",
+      "status": "pass",
+      "observation": [
+        "error(error(permission_error(execute,isobase,/(iso_node_public,4)),/(iso_execute,1))).\n",
+        "error(error(permission_error(execute,isobase,/(iso_install_node_settings,4)),/(iso_execute,1))).\n",
+        "error(error(permission_error(execute,isobase,/(assertz,1)),/(iso_execute,1))).\n",
+        "error(error(permission_error(redefine,procedure,/(node_setting,2)),/(iso_load_source,1))).\n",
+        "error(error(permission_error(redefine,procedure,/(iso_node_public,4)),/(iso_load_source,1))).\n"
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-013",
+      "title": "Independent nodes and unknown HTTP parameters cannot override owner metadata",
+      "status": "pass",
+      "observation": {
+        "ports": [
+          54122,
+          54123
+        ],
+        "capacities": [
+          2,
+          4
+        ],
+        "forged_http_metadata_status": 400
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GS-014",
+      "title": "A retained continuation keeps its serving-node settings across pages",
+      "status": "pass",
+      "observation": [
+        {
+          "K": "url",
+          "V": "'http://127.0.0.1:54123'"
+        },
+        {
+          "K": "profile",
+          "V": "isobase"
+        },
+        {
+          "K": "sandbox",
+          "V": "whitelist"
+        },
+        {
+          "K": "auth",
+          "V": "private"
+        },
+        {
+          "K": "max_inflight_calls",
+          "V": "4"
+        },
+        {
+          "K": "max_load_text_bytes",
+          "V": "1048576"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "pass": 14,
+    "fail": 0
+  },
+  "adapter_sha256": "857cd117f79a463f1cacce220f9f64b5461b6a509d2201ed9a930680f53098b1",
+  "test_source_sha256": "da35757fc39f98b677fd04bb54235931fa00423ad2dedc693c8ec73c59a8d5d1",
+  "sources": {
+    "revision": "4a3e587f0b53fb38a11006bb1abc9cc10376ebc5",
+    "tracked_diff_sha256": "f19b571991a168e8d82bc7319450d5be8bfd7261381841cecd8b881584876594",
+    "files_sha256": {
+      "isobase/Makefile": "27c90e6863f895a794ca5d9f837ae01915ef3ced2370b553d884f0a98fb411b4",
+      "isobase/boolean_option_tests.py": "f1b68097bb00a93ac6b6bdf74edd9664a46bb36918c7b279717b4be8336c0449",
+      "isobase/boundary_cases.py": "bf282aa5f33ec108b6197b6ef1f2b446ec0ca0638b8620a831fe22237459f673",
+      "isobase/boundary_contract_tests.py": "04b3d5cf84b88ecb6e360842c1a4d8df480ff785784b8f39c0d2c8dfb387c61c",
+      "isobase/boundary_decisions.py": "91f3fc9ae82b18547b4842df88b0e8d8dfdae29d08ef8a46251986da9e6199fb",
+      "isobase/boundary_decisions_tests.py": "4baa263ab015d8dea8fd562afd465c58e6e1f1ce4dc8f3a5203ca31395ddc32f",
+      "isobase/build_shared.py": "946b599154e7bbc48225b0ffe94a59e57f25cc7dc4206cf7a2377279886ce8d7",
+      "isobase/character_reader_tests.py": "696d45c2e740cb99be815eef393c8c8cf5cd39203dc5f533c4088d28b93840c7",
+      "isobase/comparison_config.py": "82183b5d9ac8f1d21fd67d2968dfd515e6c5e76c5d810466250e612efe324f14",
+      "isobase/comparison_config_tests.py": "733eddc2e12d29a0eddc14d839f7820e4b98ec5b37da3018ab67e8260e25a332",
+      "isobase/compile_shared.c": "349503073bbcd3cf161570061004818783e0f9c4fc433dfe698478664c9d7203",
+      "isobase/compile_shared.pl": "4727338ac2754283c851cf39119c79c102ff01f3872f5407a635510493253969",
+      "isobase/compiled_benchmark.py": "5c945df232da3d4a7e6df1947b83a36b037b12f8eea9f7ebf641581d7a546e9d",
+      "isobase/compiled_tests.py": "640cf9984a8dca479e3da1ae3457b00a2ba65262ab3dff8fc971edcb943c8866",
+      "isobase/conformance_tests.py": "febf0aae6af270d5f1f7692f721dbddbe2f8f3e96e4a3bba0b8c95e31e6868e6",
+      "isobase/contract_tests.py": "4be42ca4392f283fcfb186793e7d500b184be6b12088fb0e76e9182df8e57934",
+      "isobase/conversion_mode_cases.py": "70c98d62a319e6967cacd0426567d21d5a10a896d081b1804cec9c04758d366a",
+      "isobase/credential_file.h": "41971ab638c75b9a396af3b44a5342507e379cd14578b2cdcfb5c6970f426592",
+      "isobase/credential_lifecycle_tests.py": "4dd2080ef7bb6bfb65f74933eb5c4c0980bd32cb4bbb1ddfc7a7fbf026736ac3",
+      "isobase/dcg_mode_cases.py": "b75ed21b0ec23a32f64792f121a86ece372262350998d6e8f0eea72fd83f6a5f",
+      "isobase/differential_tests.py": "246b07c457b319481a3d0fc70f9e5ea0fd20c51ded7c7a36e496ea6a88e0cc30",
+      "isobase/endurance_tests.py": "3b64602e481c94e99b71cbb039a015d3274ec95121e90228058affde6bed8138",
+      "isobase/eviction_tests.py": "f18d839af2c1e249261cf61f8fcd9844dff6b02248d153314709fcef2f2b0bd9",
+      "isobase/example.pl": "9d97898616d543349ae6f48e317cff63afad0b308afed3c8ce748bcbae80f6c2",
+      "isobase/higher_arithmetic_cases.py": "b68bd98a380503d79ba44797d6da59c29587b408251c2e812b1b4bb4a7a3a9c0",
+      "isobase/http.c": "eff2f34e01c5848a61c4404db2638e0f7d78daf9086779882ab7755dc35747be",
+      "isobase/http_security.h": "583290df6b6fb2ef5ae3cb39b0365a20bc9969733fe5be242f7fb60b20559096",
+      "isobase/http_tests.py": "2ad19f0a605d6f4fc1420267f03398d3247d9938695b82ef12d01453850f10e0",
+      "isobase/https_tests.py": "97d138e22bbbfae23fb2106d2dba65fc82e1a2ad1b9fcf0e1403db4208365264",
+      "isobase/linux_query_jail.h": "199f3b689c65328eba9fb9f3b423baf49ac5299d803b9bb39fe8a742fca82c5b",
+      "isobase/list_mode_cases.py": "0acb54a494005a89f4839528878a4e24830bb1c993411b16a2a75ec3e335b08c",
+      "isobase/memory.h": "02c4c2c7eb7a49a30835eaece71010bb0b4ef77817c56d6b6e32fb3e45724957",
+      "isobase/memory_probe.py": "52218f95aa547753edccab587046a56b01916f938757ab84c5ec917519bfce93",
+      "isobase/memory_tests.py": "0fd92ca595686e25f292911940c55fb2f1fc31679fa8adb0308c05ef1daa6f4b",
+      "isobase/memory_tree.h": "381c0b6c4e3d0f7994b452248380bcdcea2245c3e49a4e1636196989a2699ac4",
+      "isobase/mode_cases.py": "318473e810a15ac9323d7d2dd7ccff48a4217613cb1045360bc5f9087efcee1a",
+      "isobase/node_settings.h": "522de1477afa59b250120c4e4d1ea540de697a885524e6ca5d96688340db3dd3",
+      "isobase/node_settings_tests.py": "da35757fc39f98b677fd04bb54235931fa00423ad2dedc693c8ec73c59a8d5d1",
+      "isobase/numeric_contract_tests.py": "ef1814a7dcfbc4fe1a7273b7b31bc4b61ff8a40c3a630ed63cafa7450ea0d0d5",
+      "isobase/numeric_mode_cases.py": "9c2fb449f57e8b6cb68f032558bcaf6febb9c0820d8f625d0beafc3ad2264541",
+      "isobase/outbound_broker.h": "a54e2d9e130a9abe236d435b5b03cf802008a07ec393ca2db9d2493c158fe2ec",
+      "isobase/outbound_credentials.h": "e926427421027d9678abcf5f03268fc0be0fc124b5f47571a173ad418aabde8a",
+      "isobase/outbound_credentials_tests.py": "400728d429a266526d3b6fa0b4330149bcee0a726154b4b59ba6312f8c7edec7",
+      "isobase/outbound_policy.h": "d1f7bc06563ee3cc802bf93a0a7e40cb53ef65afd171fd1dad123d1bfdd318ee",
+      "isobase/outbound_policy_tests.py": "eaa7e6bd3942580c73efdc4cec1238350da47c671aa42ddad8fa4d5cdef8c0d3",
+      "isobase/outbound_socket_tests.c": "cbb40a87c654eeb3d7b75fa709a8f951a5805f7f378ad79b2b5d1ae37fe24de1",
+      "isobase/outbound_socket_tests.py": "6810a930b90b19940d02bf4b1a22f671a7d7838531761ce55e4b5582814fd8d1",
+      "isobase/outbound_test_policy.py": "2ec35225d79e1bf99a377cda8539d7a07b51509c44a1bc99bb7dc67ff2baa67d",
+      "isobase/parameter_encoding_tests.py": "7754bd270cee4d7eb51e969bdc58b86fa9b4eb6881ef01d125aa705f46bda1d1",
+      "isobase/policy.pl": "fbc8617b3a4c029119c440ff142cc693353d2fad4566fd1e37372de8f58633a4",
+      "isobase/policy_tests.py": "c34f8d32a2376a48d4e6053a15e5ca96861b8feed4060db3d7cd4dc03db7bb0c",
+      "isobase/predicate_inventory.py": "ce2d159b9cfd644b0b82c033d54b8aac3c56653eb6898dec03ebc8b9a763269b",
+      "isobase/predicate_mode_cases.py": "15744ef592b7af6b1dbf3b99e8602698d8496f68feff861fe72128bdbc10bd72",
+      "isobase/process_security.h": "92a3b89190f3b527b3c6ce464848ae9b76f3e391c206c052a48d582bbc62286e",
+      "isobase/prologue.pl": "5fb0df63cdaec5e4682dfdd2c26d937f45a6b3b0459d39137fb91067b283583c",
+      "isobase/proof_tree_tests.py": "2eca03e97d95548e429d51b8fe24214fc9a1bd60f160d3f5e965405b9e2d03f8",
+      "isobase/protocol.h": "ee3bcf94f954c15c3dbff13227ee5c501a86a8a0e209975df49ff622ff631e0b",
+      "isobase/query.pl": "781e5fbe55f899c111d2f44afec611b170430e0dcbae46d2bef0295d3abb7776",
+      "isobase/query_ownership_tests.py": "54fd4ce294d8a6e40a78f556039b6668c70379f3db9b1a78b6fa1824d770b538",
+      "isobase/request_line_tests.py": "280f0bce2ebddf12cbb82132c4d0f05b356c81d7a2eae3cd49dffe58aed5850f",
+      "isobase/request_reader_tests.py": "c76b1f550a9bb6af87240142f07e604dc03cb88493daad8c346877d21251ac3c",
+      "isobase/rpc.pl": "9ab5b62508f8d7e62b3614782148da68ae65d5242304143ee929733ca97f8a6f",
+      "isobase/rpc_address_tests.py": "f4b5b022e786e73aa71cd06b0d36d03559be63448cc6ca4b2d49cb662693a6f0",
+      "isobase/rpc_boundary_cases.py": "573c42448edbb822b78a8da50a408aac1b60e95f68eb0c77b5d01988bb891ad3",
+      "isobase/rpc_framing_tests.py": "02f42693a6d28771dca2b42062ed9a4a5673ba76d487fdf65677adadf2f95266",
+      "isobase/rpc_http_fields.pl": "0692252c5d568e8ced7f5fb49ff9bcd0cc7e35dbd67ecb2266c903a2350860cf",
+      "isobase/rpc_localhost_tests.py": "f368dd2ab2f2adf675b45236ea0ca4bf4f8a25a39146c29704b247f287f7ba55",
+      "isobase/rpc_option_cases.py": "b03a49f24a9a8c014282ebf869d2c15a216669ceeac56f0a7476238b870084a3",
+      "isobase/rpc_source_tests.py": "9b26812f53be150a1432ed52cf4f3ba15e55579ef1b68afc6d28ec2ce1160691",
+      "isobase/rpc_tests.py": "05e54188b2d018766a36dd9daee5c1a40a21a2d38ace79a0df2dd5d8b8670390",
+      "isobase/security_tests.py": "cc3e3e85ba90b1ab89b5247fe6512016682568961cde0afdadd39715345d8284",
+      "isobase/shared-example.pl": "eb412a16949a3851b50670df40446cf4acc8b499ae202146a742fd9041cfcb2d",
+      "isobase/shared_db_tests.py": "5de3515846642610fefdb785cdfc98cab1e3dbb7c7fb53d0b76b95f676ab27d0",
+      "isobase/shared_empty.pl": "e3c2690e6b3cb03077d20b2179605e7f6f4500f20697880dd03d8a931abfed03",
+      "isobase/source.pl": "f7d781fcfd313b8f00069f3784e48de4330c5266f08fd54b43d428fa88de5184",
+      "isobase/source_tests.py": "72f7c9ba329c158656bf58fa347019abb0435297e97d0f9119b23ce351620e20",
+      "isobase/standard_library_tests.py": "401ad5a2529f5de3d10597947efe5ae2725631b16b1bb63482f6e42674ef37e7",
+      "isobase/status_report.py": "eed89aae543b94d69b15f7829dc5c0b9ef618463cf3f5a4e4fc7164a19a4c58d",
+      "isobase/status_report_tests.py": "7fdfc636d42f510a8da472abfec6399c0dbd0305b7899b4cb91f597ad05cf503",
+      "isobase/supervisor.c": "ecf138c1e274f84f32a6ddd2371958893425eb1ec59b1cf2c9d4845dd43432a3",
+      "isobase/supervisor_tests.py": "41143a22b5ecd9756514e1a89b2d048b6c02b524bb7ab423e9c6b039a7ffcc9d",
+      "isobase/swi_latency_benchmark.py": "44c5407963ff572b3b4a104e0e1dd091d321145921efdf6b9b086c4f4c2dda43",
+      "isobase/term_mode_cases.py": "7c681b0ec10aad1c6a462788266d147793e25010ebb101c9055d6f56dc9008b7",
+      "isobase/terms.c": "f9c57169d2f13fcc26e85f12849a43153e91fb77cb7a11f6a1bd0b8554fed0b3",
+      "isobase/tests.py": "bbf6d063bc0db3976c9f727d953e9e488a958f7709c58858aa9e8677304d3635",
+      "isobase/text.pl": "6bc5d14019ff8ca280d58d304c4848131e313fd3a2c46ba36b1f422fbb24cda9",
+      "isobase/total_memory_tests.py": "f1662db0bd9cd8bf39433b0654783e9a3093a405e93aa1bfcd0c084e68508c23",
+      "isobase/transport.c": "c4074ca921fe4a1190ae19de8a4ac22734e3cc176c59ae9f49521009df329fac",
+      "isobase/uri_option_tests.py": "330fabb7d70b7371aa465d2c4c2e762888a94026e31e94e90be7858122aba618",
+      "isobase/worker.c": "91e66801769fd03d86fb25abc9135259bf5b587afab115c344bdcfc35554c421"
+    },
+    "binaries_sha256": {
+      "isobase-node": "cb119c2cdff7872f75aad70e6404c49a68c1d9d71ead464baa75554e77f4aeff",
+      "query-supervisor": "38b5fc26f110503240455e5af70e9bf6556d4362d8b0095447b9ca724e49c086",
+      "query-worker": "e35359e9aa9565b07f2d330b095a36373d364fe6a14ac712c419aae4e1a2e8c4"
+    }
+  },
+  "driver_exit_code": 0,
+  "scope": "Disposable GNU ISOBASE HTTP nodes and trusted private worker/supervisor inputs; no public deployment or Linux query-jail qualification"
+}
