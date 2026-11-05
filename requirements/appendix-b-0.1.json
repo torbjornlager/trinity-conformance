@@ -21226,24 +21226,98 @@
       "statement": "node_setting(?Key, ?Value) is nondet.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-008"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-008"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "gnu",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-008"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-008"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-008"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         }
       },
       "evidence_candidates": []
@@ -21263,24 +21337,113 @@
       "statement": "Enumerates publicly visible settings of the node servicing the current request. With Key bound, succeeds for its visible current value; an unknown or unavailable key fails. Shared-database source, credentials, and principal policies are not exposed. The public keys are:",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-004",
+                "NS-005",
+                "NS-006",
+                "NS-007"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-004",
+                "NS-005",
+                "NS-006",
+                "NS-007"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "gnu",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-004",
+                "NS-005",
+                "NS-006",
+                "NS-007"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-004",
+                "NS-005",
+                "NS-006",
+                "NS-007"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "failing",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "NS-001",
+                "NS-002",
+                "NS-003",
+                "NS-004",
+                "NS-005",
+                "NS-006",
+                "NS-007"
+              ]
+            }
+          ],
+          "note": "The public node_setting/2 relation is absent or rejected; these are facility failures, not individual key/value mismatches."
         }
       },
       "evidence_candidates": []
@@ -21300,27 +21463,91 @@
       "statement": "[General settings:] url, profile, sandbox, auth, timeout, and rate_window_seconds.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-008"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-008"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-008"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-008"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-008"
+          ]
+        }
+      ]
     },
     {
       "id": "B-342",
@@ -21337,27 +21564,91 @@
       "statement": "[Stateless API:] max_inflight_calls, max_term_text_bytes, and max_call_requests_per_window.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-006"
+          ]
+        }
+      ]
     },
     {
       "id": "B-343",
@@ -21374,27 +21665,91 @@
       "statement": "[Private database:] max_load_text_bytes and load_uri_allowed_origins.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-006"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-006"
+          ]
+        }
+      ]
     },
     {
       "id": "B-344",
@@ -21411,27 +21766,91 @@
       "statement": "[Session API:] max_sessions_per_principal and max_session_spawns_per_window.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-009"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-009"
+          ]
+        }
+      ]
     },
     {
       "id": "B-345",
@@ -21448,27 +21867,91 @@
       "statement": "[Actor API:] max_ws_actors_per_principal, max_ws_frame_bytes, and max_ws_commands_per_window.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-node-settings/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-009"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+              "candidate": "swi",
+              "cases": [
+                "NS-CONFIG-isobase",
+                "NS-CONFIG-isotope",
+                "NS-CONFIG-actor",
+                "NS-CONFIG-isobase-host",
+                "NS-CONFIG-isotope-host",
+                "NS-CONFIG-actor-host",
+                "NS-CONFIG-retained",
+                "NS-CONFIG-child"
+              ]
+            }
+          ],
+          "note": "Native HTTP workers, ACTOR retained session and linked child, and default ISOBASE/ISOTOPE/ACTOR profiles in one process; custom family policy edits are outside this boundary."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-009"
+          ]
+        }
+      ]
     },
     {
       "id": "B-346",
@@ -21486,26 +21969,94 @@
       "targets": {
         "swi": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [],
+          "note": "Default profile visibility and read-only reads pass. Owner-edited built-in family policies still need an execution probe."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "missing",
+          "evidence": [],
+          "source_gap": {
+            "note": "No public node_setting/2 implementation: native baseline reports undefined procedure (Trealla) or policy rejection (GNU); generated Worker/main Prolog surfaces lack the relation. Source pins and observed failures are retained in reports/2026-11-05-node-settings/README.md."
+          }
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "swi",
+          "cases": [
+            "NS-007",
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/configuration-final/results.json",
+          "candidate": "swi",
+          "cases": [
+            "NS-CONFIG-isobase",
+            "NS-CONFIG-isotope",
+            "NS-CONFIG-actor",
+            "NS-CONFIG-isobase-host",
+            "NS-CONFIG-isotope-host",
+            "NS-CONFIG-actor-host",
+            "NS-CONFIG-retained",
+            "NS-CONFIG-child"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "NS-007",
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/native/results.json",
+          "candidate": "gnu",
+          "cases": [
+            "NS-007",
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "NS-007",
+            "NS-009"
+          ]
+        },
+        {
+          "report": "reports/2026-11-05-node-settings/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "NS-007",
+            "NS-009"
+          ]
+        }
+      ]
     },
     {
       "id": "B-356",

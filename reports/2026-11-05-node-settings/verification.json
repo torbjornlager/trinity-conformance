@@ -1,0 +1,51 @@
+{
+  "scope": "Audit only. No runtime, manuscript, release pin or public node changed.",
+  "files_sha256": {
+    "cases/node-settings-0.1.json": "81e488dbc916afae445c1447e790ee49a0194b6b6f548cb192a308852d43454d",
+    "adapters/local_node_settings.py": "c0bd812e4c78efc7148a07a26a7061f70af4299e1b06a1c0592f6d565d6b8a85",
+    "adapters/local_standard_library.py": "a23ddcdef39bd07c7715e685bdf77807bfe01fcb4eb5d85da320ec2ec25511dc",
+    "adapters/wasm_actor_cases.cjs": "142ba2ad0d09e49a5c2888deba0014939a54e5e0fd4cd80dd241f7571edb609a",
+    "runner/baseline.py": "0e672a082e2ed159f34396cb56fef80632269ace648215b9b21c8798d643538f",
+    "runner/run.py": "946b1ab3146290bde299ff32640b6a2d73d0a6505d572fa11c1d2531539bde6f"
+  },
+  "reports": {
+    "native/results.json": {
+      "pass": 18,
+      "fail": 27
+    },
+    "browser.json": {
+      "pass": 0,
+      "fail": 18
+    },
+    "configuration-final/results.json": {
+      "pass": 8,
+      "fail": 0
+    }
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s runner",
+      "exit_code": 0,
+      "tests": 104
+    },
+    {
+      "command": "python3 runner/appendix_coverage.py --manual /Users/lager/boken/author/appendix-B-current-manual.tex --check",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 runner/library_coverage.py --check",
+      "exit_code": 0,
+      "covered": 43
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "report_sha256": {
+    "native/results.json": "4273d8f7c4a18b35754dd7dff816c1a7364217fd8bf1ab0d3a6672de56784a29",
+    "browser.json": "87be0bb579e4526354b099762f1c6acbd8fd74965b0f4c23dc88e10e91ac13ed",
+    "configuration-final/results.json": "36e9dbf3d7970926bec4af9447da803f60fa5f7195471c4c949a4dab26b89d69"
+  },
+  "previous_ledger_revision": "5e111b7"
+}
