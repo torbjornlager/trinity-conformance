@@ -1,0 +1,1836 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/torbjornlager/boken.git",
+    "revision": "3edc3698774258f71b11bf9998955d273ee26220",
+    "path": "author/appendix-B-current-manual.tex",
+    "sha256": "b9c4df58594650926acd81beaafc53c26aa483fcf523cd06368a3822b71538fb",
+    "line_count": 2557
+  },
+  "scope": "Clause-level mapping to 289 shared cases on identified development sources. 143 new finite callback cases preserve the original 146 assertions; no runtime or public deployment change.",
+  "manifest": "cases/standard-library-0.3.json",
+  "manifest_sha256": "63942e782d57ad9116cf5a4df4bbf2561a18ca4fe18d544a8ead884c8b77e022",
+  "evidence": {
+    "swi": {
+      "report": "reports/2026-11-05-library-callback-cases/native/results.json",
+      "candidate": "swi"
+    },
+    "trealla": {
+      "report": "reports/2026-11-05-library-callback-cases/native/results.json",
+      "candidate": "trealla"
+    },
+    "gnu": {
+      "report": "reports/2026-11-05-library-callback-cases/native/results.json",
+      "candidate": "gnu"
+    },
+    "wasm_worker": {
+      "report": "reports/2026-11-05-library-callback-cases/browser.json",
+      "candidate": "swi-wasm-worker"
+    },
+    "wasm_main": {
+      "report": "reports/2026-11-05-library-callback-cases/browser.json",
+      "candidate": "swi-wasm-main"
+    }
+  },
+  "obligations": [
+    {
+      "id": "LIB-001",
+      "family": "member/2",
+      "requirements": [
+        "B-359"
+      ],
+      "statement": "Enumerate supplied-list positions left to right, including duplicate values and variable sharing",
+      "existing_cases": [
+        "STDLIB-001",
+        "STDLIB-002"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-002",
+      "family": "member/2",
+      "requirements": [
+        "B-359"
+      ],
+      "statement": "Generate lists when List is uninstantiated",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Collect a bounded prefix of fresh-list answers and check increasing occurrence positions and sharing."
+      ],
+      "per_target": {
+        "swi": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "needs_tests",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-003",
+      "family": "memberchk/2",
+      "requirements": [
+        "B-361"
+      ],
+      "statement": "Commit to the first unifying position, preserve bindings, fail on no match and ignore an unused improper tail",
+      "existing_cases": [
+        "STDLIB-001",
+        "STDLIB-003",
+        "STDLIB-004",
+        "STDLIB-005",
+        "STDLIB-060"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-004",
+      "family": "append/3",
+      "requirements": [
+        "B-363"
+      ],
+      "statement": "Construct concatenations and enumerate every split from the empty prefix in order",
+      "existing_cases": [
+        "STDLIB-007",
+        "STDLIB-008"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-005",
+      "family": "append/3",
+      "requirements": [
+        "B-363"
+      ],
+      "statement": "Remove a supplied prefix in the bound-prefix mode",
+      "existing_cases": [
+        "STDLIB-007",
+        "STDLIB-113"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-006",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Measure a proper list and construct a supplied length",
+      "existing_cases": [
+        "STDLIB-009",
+        "STDLIB-010"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-007",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Every constructed unknown position is a distinct fresh variable",
+      "existing_cases": [
+        "STDLIB-009",
+        "STDLIB-114"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-008",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Enumerate proper completions of partial lists and fresh lists in increasing length",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use bounded external answer collection for partial-tail and two-fresh-argument generation; check answer order without exhausting an infinite relation."
+      ],
+      "per_target": {
+        "swi": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "needs_tests",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-009",
+      "family": "select/3",
+      "requirements": [
+        "B-367"
+      ],
+      "statement": "Enumerate removals in position order and preserve the remainder",
+      "existing_cases": [
+        "STDLIB-011"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-010",
+      "family": "select/3",
+      "requirements": [
+        "B-367"
+      ],
+      "statement": "Insert into a supplied remainder in successive positions",
+      "existing_cases": [
+        "STDLIB-115",
+        "STDLIB-116"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-011",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "Enumerate zero- and one-based three-argument positions",
+      "existing_cases": [
+        "STDLIB-012",
+        "STDLIB-013"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-012",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "Remove and construct through the four-argument forms",
+      "existing_cases": [
+        "STDLIB-014",
+        "STDLIB-015",
+        "STDLIB-016",
+        "STDLIB-117",
+        "STDLIB-118"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-013",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "A supplied index beyond a finite list fails",
+      "existing_cases": [
+        "STDLIB-119",
+        "STDLIB-120",
+        "STDLIB-121",
+        "STDLIB-122"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-014",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "Enumerate inclusive bounds in order and test interval membership",
+      "existing_cases": [
+        "STDLIB-017",
+        "STDLIB-018"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-015",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "A reversed interval has no answers",
+      "existing_cases": [
+        "STDLIB-123"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-016",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "Bounds are instantiated integers under the common validation rules",
+      "existing_cases": [
+        "STDLIB-124",
+        "STDLIB-125",
+        "STDLIB-126",
+        "STDLIB-127",
+        "STDLIB-128",
+        "STDLIB-129"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-017",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "Compute in both integer directions",
+      "existing_cases": [
+        "STDLIB-019"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-018",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "Check supplied pairs and reject a predecessor of zero",
+      "existing_cases": [
+        "STDLIB-130",
+        "STDLIB-131"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-019",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "At least one nonnegative integer argument is supplied",
+      "existing_cases": [
+        "STDLIB-132",
+        "STDLIB-133",
+        "STDLIB-134",
+        "STDLIB-135",
+        "STDLIB-136",
+        "STDLIB-137",
+        "STDLIB-138"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-020",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Every arity calls private callbacks with list arguments in the documented order",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-021",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Preserve callback alternatives and partial application",
+      "existing_cases": [
+        "STDLIB-034",
+        "STDLIB-035",
+        "STDLIB-147",
+        "STDLIB-148",
+        "STDLIB-151",
+        "STDLIB-152",
+        "STDLIB-157",
+        "STDLIB-158",
+        "STDLIB-167",
+        "STDLIB-168",
+        "STDLIB-179",
+        "STDLIB-180",
+        "STDLIB-193",
+        "STDLIB-194",
+        "STDLIB-209",
+        "STDLIB-210"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-022",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Traverse positions left to right and bind unknown lists from known lists",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032",
+        "STDLIB-034",
+        "STDLIB-035",
+        "STDLIB-149",
+        "STDLIB-153",
+        "STDLIB-154",
+        "STDLIB-155",
+        "STDLIB-159",
+        "STDLIB-160",
+        "STDLIB-161",
+        "STDLIB-162",
+        "STDLIB-169",
+        "STDLIB-170",
+        "STDLIB-171",
+        "STDLIB-172",
+        "STDLIB-173",
+        "STDLIB-181",
+        "STDLIB-182",
+        "STDLIB-183",
+        "STDLIB-184",
+        "STDLIB-185",
+        "STDLIB-186",
+        "STDLIB-195",
+        "STDLIB-196",
+        "STDLIB-197",
+        "STDLIB-198",
+        "STDLIB-199",
+        "STDLIB-200",
+        "STDLIB-201",
+        "STDLIB-211",
+        "STDLIB-212",
+        "STDLIB-213",
+        "STDLIB-214",
+        "STDLIB-215",
+        "STDLIB-216",
+        "STDLIB-217",
+        "STDLIB-218"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-023",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Successful lists have equal length; mismatches fail",
+      "existing_cases": [
+        "STDLIB-036",
+        "STDLIB-163",
+        "STDLIB-164",
+        "STDLIB-165",
+        "STDLIB-174",
+        "STDLIB-175",
+        "STDLIB-176",
+        "STDLIB-177",
+        "STDLIB-187",
+        "STDLIB-188",
+        "STDLIB-189",
+        "STDLIB-190",
+        "STDLIB-191",
+        "STDLIB-202",
+        "STDLIB-203",
+        "STDLIB-204",
+        "STDLIB-205",
+        "STDLIB-206",
+        "STDLIB-207",
+        "STDLIB-219",
+        "STDLIB-220",
+        "STDLIB-221",
+        "STDLIB-222",
+        "STDLIB-223",
+        "STDLIB-224",
+        "STDLIB-225",
+        "STDLIB-261"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-024",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Empty inputs succeed without invoking invalid closures",
+      "existing_cases": [
+        "STDLIB-021",
+        "STDLIB-023",
+        "STDLIB-025",
+        "STDLIB-027",
+        "STDLIB-029",
+        "STDLIB-031",
+        "STDLIB-033",
+        "STDLIB-058",
+        "STDLIB-059",
+        "STDLIB-069",
+        "STDLIB-073",
+        "STDLIB-077",
+        "STDLIB-081",
+        "STDLIB-085",
+        "STDLIB-089",
+        "STDLIB-093"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-025",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Thread ordered elements and incoming/outgoing accumulators at every arity",
+      "existing_cases": [
+        "STDLIB-039",
+        "STDLIB-040",
+        "STDLIB-041"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-026",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Preserve callback alternatives and empty accumulator identity",
+      "existing_cases": [
+        "STDLIB-042",
+        "STDLIB-043",
+        "STDLIB-062",
+        "STDLIB-097",
+        "STDLIB-101",
+        "STDLIB-105",
+        "STDLIB-228",
+        "STDLIB-229",
+        "STDLIB-233",
+        "STDLIB-234",
+        "STDLIB-240",
+        "STDLIB-241"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-027",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "All supplied lists have the same length on success",
+      "existing_cases": [
+        "STDLIB-235",
+        "STDLIB-236",
+        "STDLIB-242",
+        "STDLIB-243",
+        "STDLIB-244"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-028",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Callbacks append arguments after pre-applied closure arguments",
+      "existing_cases": [
+        "STDLIB-227",
+        "STDLIB-232",
+        "STDLIB-239"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-029",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Number duplicate answers from one and select one bound position or fail past the end",
+      "existing_cases": [
+        "STDLIB-044",
+        "STDLIB-045",
+        "STDLIB-046"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-030",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Reject zero, negative and non-integer positions with the documented errors",
+      "existing_cases": [
+        "STDLIB-047",
+        "STDLIB-139",
+        "STDLIB-140",
+        "STDLIB-141",
+        "STDLIB-142",
+        "STDLIB-143"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-031",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Bound selection does not enumerate later alternatives on backtracking",
+      "existing_cases": [
+        "STDLIB-045",
+        "STDLIB-144"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-032",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Count duplicates, failure and one final result; check prebound outputs",
+      "existing_cases": [
+        "STDLIB-048",
+        "STDLIB-049",
+        "STDLIB-050",
+        "STDLIB-051"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-033",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Discard generator bindings/cuts and preserve independent nested counters",
+      "existing_cases": [
+        "STDLIB-048",
+        "STDLIB-052",
+        "STDLIB-053",
+        "STDLIB-063"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-034",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Shared Goal/Count variables receive only final-count unification",
+      "existing_cases": [
+        "STDLIB-145",
+        "STDLIB-146"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-035",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "An infinite generator cannot return a completed count",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process."
+      ],
+      "per_target": {
+        "swi": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "needs_tests",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "needs_tests",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-036",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "Fail on a counterexample, export no generator/test bindings and handle vacuous generators",
+      "existing_cases": [
+        "STDLIB-054",
+        "STDLIB-055",
+        "STDLIB-056",
+        "STDLIB-057",
+        "STDLIB-061",
+        "STDLIB-110"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-037",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "One successful nondeterministic test alternative is enough for each generator answer",
+      "existing_cases": [
+        "STDLIB-247"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-038",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "Preserve double-negation behavior inside other meta-predicates",
+      "existing_cases": [
+        "STDLIB-054",
+        "STDLIB-055",
+        "STDLIB-061",
+        "STDLIB-248",
+        "STDLIB-249",
+        "STDLIB-250"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-039",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Non-callable invoked callbacks have exact callable type errors and original culprits",
+      "existing_cases": [
+        "STDLIB-064",
+        "STDLIB-065",
+        "STDLIB-066",
+        "STDLIB-067",
+        "STDLIB-070",
+        "STDLIB-071",
+        "STDLIB-074",
+        "STDLIB-075",
+        "STDLIB-078",
+        "STDLIB-079",
+        "STDLIB-082",
+        "STDLIB-083",
+        "STDLIB-086",
+        "STDLIB-087",
+        "STDLIB-090",
+        "STDLIB-091",
+        "STDLIB-094",
+        "STDLIB-095",
+        "STDLIB-098",
+        "STDLIB-099",
+        "STDLIB-102",
+        "STDLIB-103",
+        "STDLIB-106",
+        "STDLIB-107",
+        "STDLIB-108",
+        "STDLIB-109",
+        "STDLIB-112"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-040",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Uninstantiated invoked callbacks raise instantiation_error without binding them",
+      "existing_cases": [
+        "STDLIB-038",
+        "STDLIB-068",
+        "STDLIB-072",
+        "STDLIB-076",
+        "STDLIB-080",
+        "STDLIB-084",
+        "STDLIB-088",
+        "STDLIB-092",
+        "STDLIB-096",
+        "STDLIB-100",
+        "STDLIB-104",
+        "STDLIB-251",
+        "STDLIB-252",
+        "STDLIB-253",
+        "STDLIB-254"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-041",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Unused callback variables remain untouched",
+      "existing_cases": [
+        "STDLIB-058",
+        "STDLIB-062",
+        "STDLIB-150",
+        "STDLIB-156",
+        "STDLIB-166",
+        "STDLIB-178",
+        "STDLIB-192",
+        "STDLIB-208",
+        "STDLIB-226",
+        "STDLIB-229",
+        "STDLIB-234",
+        "STDLIB-241",
+        "STDLIB-255",
+        "STDLIB-280",
+        "STDLIB-281",
+        "STDLIB-282",
+        "STDLIB-283",
+        "STDLIB-284",
+        "STDLIB-285",
+        "STDLIB-286",
+        "STDLIB-287",
+        "STDLIB-288",
+        "STDLIB-289"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-042",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Application exceptions retain their original terms",
+      "existing_cases": [
+        "STDLIB-037",
+        "STDLIB-052",
+        "STDLIB-057",
+        "STDLIB-111",
+        "STDLIB-230",
+        "STDLIB-231",
+        "STDLIB-237",
+        "STDLIB-238",
+        "STDLIB-245",
+        "STDLIB-246",
+        "STDLIB-256",
+        "STDLIB-257",
+        "STDLIB-262",
+        "STDLIB-263",
+        "STDLIB-264",
+        "STDLIB-265",
+        "STDLIB-266",
+        "STDLIB-267",
+        "STDLIB-268",
+        "STDLIB-269",
+        "STDLIB-270",
+        "STDLIB-271",
+        "STDLIB-272",
+        "STDLIB-273",
+        "STDLIB-274",
+        "STDLIB-275",
+        "STDLIB-276",
+        "STDLIB-277",
+        "STDLIB-278",
+        "STDLIB-279"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    },
+    {
+      "id": "LIB-043",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Callbacks retain the caller source context",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032",
+        "STDLIB-039",
+        "STDLIB-040",
+        "STDLIB-041",
+        "STDLIB-250",
+        "STDLIB-258",
+        "STDLIB-259",
+        "STDLIB-260"
+      ],
+      "status": "covered",
+      "tests_needed": [],
+      "per_target": {
+        "swi": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "trealla": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "gnu": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_worker": {
+          "status": "covered",
+          "failing_cases": []
+        },
+        "wasm_main": {
+          "status": "covered",
+          "failing_cases": []
+        }
+      }
+    }
+  ],
+  "deferred_semantic_decisions": [
+    "Do not import Neumerkel draft expectations for call_nth(true,0), invalid countall outputs or malformed length lists as new Web Prolog requirements. The committed manual and common error contract remain authoritative.",
+    "External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability."
+  ],
+  "case_count": 289,
+  "failure_notes": []
+}

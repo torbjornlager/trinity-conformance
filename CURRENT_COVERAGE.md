@@ -18,13 +18,24 @@ The ledger now pins book revision `3edc369`, including the context clarification
 and expanded standard-library entries, plus a reviewed layout-only refresh.
 The [migration record](reports/2026-11-05-appendix-b-ledger-migration/README.md)
 retains the previous ledger and a byte-exact manuscript snapshot. The
-[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 40
-covered within recorded five-mode evidence, and three needing bounded fixtures.
+[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 42
+covered within recorded five-mode evidence, and one needing a bounded fixture.
 The broad callback paragraph returns to unverified after clause review; the new
 memberchk prose is verified against existing commitment/binding/tail cases.
 At that migration, whole-unit totals remained 11 verified per target; new
 signatures and expanded paragraphs were not automatically promoted. The migration
 itself reran no runtimes; the subsequent finite-case execution is recorded below.
+
+The [bounded generation extension](reports/2026-11-05-library-generation-cases/README.md)
+adds six member/length checks in `standard-library-0.4`. All 295 cases pass in all
+five modes. Each new case checks six generated answers in two externally limited
+pages, including structure, variable freshness/sharing and increasing positions
+or lengths. Retained sessions stop their continuation and run a recovery query;
+HTTP checks offset slices and service recovery. These are bounded observations,
+not proofs about every infinite enumeration. Member and length prose units are
+now verified, bringing every target to 22 verified source units. Infinite
+countall noncompletion remains the one selected library gap. No runtime, pin,
+manuscript or public deployment changes were needed.
 
 The [finite callback extension](reports/2026-11-05-library-callback-cases/README.md)
 adds 143 common assertions in `standard-library-0.3`. All 289 cases pass in all

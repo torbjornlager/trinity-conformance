@@ -210,3 +210,13 @@ Select `cases/standard-library-0.3.json` for the full 289-case finite callback
 selection; use the same file for both native `--manifest` and browser
 `LIBRARY_MANIFEST` runs. This adds only submitted source/goals, not runtime API
 or sandbox requirements. All five modes pass the [recorded selection](../reports/2026-11-05-library-callback-cases/README.md).
+
+
+For bounded member/length generation, select `cases/standard-library-0.4.json`.
+The native adapter delegates `bounded_prefix` to `runner/library_prefix.py`:
+HTTP offset slices or retained next/stop, followed by recovery. For browsers use
+`adapters/wasm_standard_library.cjs`, setting `LIBRARY_RUNTIME_ROOT` to the runtime
+checkout and `LIBRARY_MANIFEST` to the absolute shared manifest path. It uses
+real Chrome Worker/main sessions with next/stop and recovery; a host-process
+watchdog bounds the complete browser run. Existing upstream defaults are unchanged.
+See [generation results](../reports/2026-11-05-library-generation-cases/README.md).

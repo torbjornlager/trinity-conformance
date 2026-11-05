@@ -1,10 +1,10 @@
 # Library requirement test gaps
 
-Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **40 covered** within existing evidence and **3 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
+Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **42 covered** within existing evidence and **1 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
 
-The 289-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
+The 295-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
 
-[Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../cases/standard-library-0.1.json)
+[Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../cases/standard-library-0.4.json)
 
 ## Observed failures
 
@@ -18,8 +18,6 @@ No failures in the current selected development evidence. The [earlier Trealla f
 
 | ID / source unit | Family | Existing cases | Tests still needed |
 |---|---|---|---|
-| LIB-002 / B-359 | `member/2` | None for this clause | Collect a bounded prefix of fresh-list answers and check increasing occurrence positions and sharing. |
-| LIB-008 / B-365 | `length/2` | None for this clause | Use bounded external answer collection for partial-tail and two-fresh-argument generation; check answer order without exhausting an infinite relation. |
 | LIB-035 / B-381 | `countall/2` | None for this clause | Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process. |
 
 ## Covered clauses within the recorded selection
@@ -27,11 +25,13 @@ No failures in the current selected development evidence. The [earlier Trealla f
 | ID / source unit | Assertion | Cases passing on all five recorded targets |
 |---|---|---|
 | LIB-001 / B-359 | `member/2` — Enumerate supplied-list positions left to right, including duplicate values and variable sharing | STDLIB-001, STDLIB-002 |
+| LIB-002 / B-359 | `member/2` — Generate lists when List is uninstantiated | STDLIB-290, STDLIB-291, STDLIB-292 |
 | LIB-003 / B-361 | `memberchk/2` — Commit to the first unifying position, preserve bindings, fail on no match and ignore an unused improper tail | STDLIB-001, STDLIB-003, STDLIB-004, STDLIB-005, STDLIB-060 |
 | LIB-004 / B-363 | `append/3` — Construct concatenations and enumerate every split from the empty prefix in order | STDLIB-007, STDLIB-008 |
 | LIB-005 / B-363 | `append/3` — Remove a supplied prefix in the bound-prefix mode | STDLIB-007, STDLIB-113 |
 | LIB-006 / B-365 | `length/2` — Measure a proper list and construct a supplied length | STDLIB-009, STDLIB-010 |
 | LIB-007 / B-365 | `length/2` — Every constructed unknown position is a distinct fresh variable | STDLIB-009, STDLIB-114 |
+| LIB-008 / B-365 | `length/2` — Enumerate proper completions of partial lists and fresh lists in increasing length | STDLIB-293, STDLIB-294, STDLIB-295 |
 | LIB-009 / B-367 | `select/3` — Enumerate removals in position order and preserve the remainder | STDLIB-011 |
 | LIB-010 / B-367 | `select/3` — Insert into a supplied remainder in successive positions | STDLIB-115, STDLIB-116 |
 | LIB-011 / B-369 | `nth0/3-4, nth1/3-4` — Enumerate zero- and one-based three-argument positions | STDLIB-012, STDLIB-013 |
@@ -72,6 +72,6 @@ No failures in the current selected development evidence. The [earlier Trealla f
 - Do not import Neumerkel draft expectations for call_nth(true,0), invalid countall outputs or malformed length lists as new Web Prolog requirements. The committed manual and common error contract remain authoritative.
 - External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability.
 
-The nineteen manuscript examples checked on native SWI do not supply five-target evidence. The formerly native-only nested forall controls are now shared cases passing in all five recorded modes. Fresh-list generation and infinite generators still require bounded observation and cleanup, never an unbounded conformance process.
+The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Shared nested forall controls and externally bounded member/length generation now pass in all five recorded modes. Generation evidence checks six-answer prefixes, followed by continuation stop and recovery on retained sessions; it is not a proof of every infinite enumeration. Infinite countall still requires its own bounded noncompletion fixture and cleanup, never an unbounded conformance process.
 
 New source-unit signatures remain unverified pending full supported-mode mapping. Finite callback assertions pass, but the common paragraph incorporates the broader ISO call/N contract, which remains unexpanded; it is not promoted wholesale. Unverified does not mean an implementation has failed.

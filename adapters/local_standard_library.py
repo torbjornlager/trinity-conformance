@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'runner'))
 from baseline import http_case
 from run import Candidate,Harness,prolog_quote_atom
+from library_prefix import http_prefix,session_prefix
 
 def port():
     with socket.socket() as s:s.bind(('127.0.0.1',0));return s.getsockname()[1]
@@ -48,7 +49,7 @@ def main():
           for case in pack['cases']:
             row=dict(candidate=name,id=case['id'],title=case['title'])
             wire=dict(requests=[dict(params=dict(goal='('+case['goal']+'),LibraryCheck=passed',template='LibraryCheck',format='prolog',limit=1,src_text=pack['source']),expect_prolog='success([passed],false).')])
-            try:row.update(status='pass',observation=http_case(wire,url,8,None,False))
+            try:row.update(status='pass',observation=http_prefix(case,pack['source'],url) if case.get('bounded_prefix') else http_case(wire,url,8,None,False))
             except Exception as e:row.update(status='fail',detail=str(e))
             rows.append(row);print(name,case['id'],row['status'],flush=True)
           if name != 'gnu':
@@ -57,6 +58,10 @@ def main():
               for case in pack['cases']:
                 row=dict(candidate=name+'-session',id=case['id'],title=case['title'])
                 try:
+                  if case.get('bounded_prefix'):
+                    row.update(status='pass',observation=session_prefix(case,h))
+                    rows.append(row);print(name+'-session',case['id'],row['status'],flush=True)
+                    continue
                   h.call('('+case['goal']+'),LibraryCheck=passed','[limit(1)]')
                   event=h.recv()
                   if event.get('type')!='success' or event.get('more') is not False:raise AssertionError(event)
@@ -67,7 +72,7 @@ def main():
           node.terminate()
           try:node.wait(timeout=5)
           except subprocess.TimeoutExpired:node.kill();node.wait()
-    report=dict(suite=pack['suite'],scope='Shared source and goals through fresh native HTTP workers; development source snapshots',manifest_sha256=sha(a.manifest),adapter_sha256=sha(__file__),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail']})
+    report=dict(suite=pack['suite'],scope='Shared source and goals through fresh native HTTP workers; development source snapshots',manifest_sha256=sha(a.manifest),adapter_sha256=sha(__file__),prefix_helper_sha256=sha(ROOT/'runner/library_prefix.py'),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail']})
     (a.output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     return int(report['counts']['fail']>0)
 if __name__=='__main__':raise SystemExit(main())

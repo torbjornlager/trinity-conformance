@@ -85,7 +85,7 @@ def render(audit, counts):
     out = ['# Library requirement test gaps', '',
            f"Pinned Appendix B: `{audit['source']['revision']}`. The expanded prose is mapped into **{sum(counts.values())} testable obligations**: **{counts.get('covered', 0)} covered** within existing evidence and **{counts.get('needs_tests', 0)} needing additional tests**, and **{counts.get('failing', 0)} with an observed failure**. These are clause counts, not a conformance percentage.", '',
            f"The {audit.get('case_count', 112)}-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.", '',
-           '[Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../cases/standard-library-0.1.json)', '',
+           '[Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../' + audit['manifest'] + ')', '',
            '## Observed failures', '',
            '| ID / source unit | Assertion | Failing target and cases |', '|---|---|---|']
     for r in audit['obligations']:
@@ -111,7 +111,7 @@ def render(audit, counts):
             out.append('| ' + r['id'] + ' / ' + ', '.join(r['requirements']) + ' | `' + r['family'] + '` — ' + r['statement'] + ' | ' + ', '.join(r['existing_cases']) + ' |')
     out += ['', '## Separate decisions and limits', '']
     out += ['- ' + note for note in audit['deferred_semantic_decisions']]
-    out += ['', 'The nineteen manuscript examples checked on native SWI do not supply five-target evidence. The formerly native-only nested forall controls are now shared cases passing in all five recorded modes. Fresh-list generation and infinite generators still require bounded observation and cleanup, never an unbounded conformance process.', '',
+    out += ['', 'The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Shared nested forall controls and externally bounded member/length generation now pass in all five recorded modes. Generation evidence checks six-answer prefixes, followed by continuation stop and recovery on retained sessions; it is not a proof of every infinite enumeration. Infinite countall still requires its own bounded noncompletion fixture and cleanup, never an unbounded conformance process.', '',
             'New source-unit signatures remain unverified pending full supported-mode mapping. Finite callback assertions pass, but the common paragraph incorporates the broader ISO call/N contract, which remains unexpanded; it is not promoted wholesale. Unverified does not mean an implementation has failed.', '']
     return '\n'.join(out)
 

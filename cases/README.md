@@ -272,3 +272,14 @@ separate. Select this file explicitly with the native adapter's `--manifest` or
 the browser runner's `LIBRARY_MANIFEST`. Earlier pinned upstream defaults retain
 their separately versioned selections. [Evidence](../reports/2026-11-05-library-callback-cases/README.md)
 records every case on five modes and both native session surfaces.
+
+
+`standard-library-0.4.json` retains all 289 earlier definitions and source and adds
+six externally bounded generation cases, STDLIB-290–295. `bounded_prefix` selects
+two three-answer pages; each answer validates generated structure and variable
+identities before exposing its ordinal as `LibraryCheck`. Invalid answers throw
+rather than being filtered away. Native HTTP checks offsets zero and three;
+retained native and browser sessions use next, stop and a same-session recovery
+query. The new browser adapter lives in this repository and requires
+`LIBRARY_RUNTIME_ROOT`. [Generation evidence](../reports/2026-11-05-library-generation-cases/README.md)
+records all 295 cases across five modes; infinite countall remains separate.
