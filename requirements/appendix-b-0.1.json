@@ -4744,24 +4744,88 @@
       "statement": "For portable code, a guard must be observationally free of side effects; the runtime is not required to enforce this restriction, and effects performed by a non-conforming guard are not undone when that guard fails. If a guard raises an ordinary exception, the exception and its tentative bindings are discarded and the clause does not accept the message. Control exceptions (abort, termination, and the enforced running-time limit; see Section~sec:actor-control) are not discarded: they propagate out of receive/1-2, and the message being examined remains in the mailbox in its original position. This error-as-non-match rule follows the selection discipline of restricted actor guards, but it also means that a guard which calls a fallible external service should translate failures into explicit results when the actor needs to distinguish them from an ordinary non-match.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-receive-controls/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "RG-001",
+                "RG-002",
+                "RG-003",
+                "RG-004",
+                "RG-005",
+                "RG-006",
+                "RG-007",
+                "RG-008"
+              ]
+            }
+          ],
+          "note": "Actual controls after held RPC guard entry, with and without private source. Abort runs on the primary session (including the main browser engine); configured PTCP execution limits and actor termination run on public child actors. Abort/time recovery checks original message order and variable sharing on the same surviving actor; termination checks the monitor reason while the peer is held. Ordinary RPC errors remain non-matches. A destroyed mailbox is not inspected after termination. Browser child limit/termination cases execute Workers under either coordinator; no main-engine time-limit or hard-termination API is inferred."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-receive-controls/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "RG-001",
+                "RG-002",
+                "RG-003",
+                "RG-004",
+                "RG-005",
+                "RG-006",
+                "RG-007",
+                "RG-008"
+              ]
+            }
+          ],
+          "note": "Actual controls after held RPC guard entry, with and without private source. Abort runs on the primary session (including the main browser engine); configured PTCP execution limits and actor termination run on public child actors. Abort/time recovery checks original message order and variable sharing on the same surviving actor; termination checks the monitor reason while the peer is held. Ordinary RPC errors remain non-matches. A destroyed mailbox is not inspected after termination. Browser child limit/termination cases execute Workers under either coordinator; no main-engine time-limit or hard-termination API is inferred."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-receive-controls/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "RG-001",
+                "RG-002",
+                "RG-003",
+                "RG-004",
+                "RG-005",
+                "RG-006",
+                "RG-007",
+                "RG-008"
+              ]
+            }
+          ],
+          "note": "Actual controls after held RPC guard entry, with and without private source. Abort runs on the primary session (including the main browser engine); configured PTCP execution limits and actor termination run on public child actors. Abort/time recovery checks original message order and variable sharing on the same surviving actor; termination checks the monitor reason while the peer is held. Ordinary RPC errors remain non-matches. A destroyed mailbox is not inspected after termination. Browser child limit/termination cases execute Workers under either coordinator; no main-engine time-limit or hard-termination API is inferred."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-receive-controls/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "RG-001",
+                "RG-002",
+                "RG-003",
+                "RG-004",
+                "RG-005",
+                "RG-006",
+                "RG-007",
+                "RG-008"
+              ]
+            }
+          ],
+          "note": "Actual controls after held RPC guard entry, with and without private source. Abort runs on the primary session (including the main browser engine); configured PTCP execution limits and actor termination run on public child actors. Abort/time recovery checks original message order and variable sharing on the same surviving actor; termination checks the monitor reason while the peer is held. Ordinary RPC errors remain non-matches. A destroyed mailbox is not inspected after termination. Browser child limit/termination cases execute Workers under either coordinator; no main-engine time-limit or hard-termination API is inferred."
         }
       },
       "evidence_candidates": [
@@ -21763,13 +21827,6 @@
       "id": "AUDIT-REMAINING",
       "requirements": [],
       "next_step": "Map existing exact case IDs to each full source unit; add shared cases for uncovered clauses, including remote lifecycle, statechart invocation, node settings and external ISO semantics."
-    },
-    {
-      "id": "AUDIT-RECEIVE-CONTROL",
-      "requirements": [
-        "B-104"
-      ],
-      "next_step": "The 29-case receive selection verifies ten source units. Complete actual control-signal propagation through a running guard, including original mailbox position, on native and both browser modes; ordinary guard exceptions already pass."
     }
   ],
   "migration": {

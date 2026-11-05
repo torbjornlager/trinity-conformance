@@ -303,3 +303,14 @@ controls. The traffic helper is explicitly supplied to its child; both probe and
 parent have external deadlines. These 29 cases run on four ACTOR modes, not GNU
 ISOBASE. [Repair and clause mapping](../reports/2026-11-05-selective-receive/README.md)
 keep actual guard control-signal semantics open.
+
+
+`receive-control-0.1.json` defines RG-001–008: actual abort, configured PTCP time
+limit, monitored actor termination and ordinary RPC error, each without source
+and with private source. A held read-only RPC confirms entry before control.
+Abort/time recovery checks the same actor's original mailbox order, variable
+sharing and absence of duplicates; ordinary errors check binding rollback.
+Main-browser abort runs directly; child lifecycle tests use Workers under either
+coordinator. [Evidence and bounds](../reports/2026-11-05-receive-controls/README.md)
+state the distinction. Run `runner/receive_controls.py` to validate complete,
+unique accounting and barrier/control/recovery/cleanup evidence.

@@ -25,8 +25,9 @@ obligations are covered within their recorded limits; broader Appendix B and
 external ISO coverage remain open.
 The [29-case selective receive selection](reports/2026-11-05-selective-receive/README.md)
 passes on all four ACTOR modes after native/browser deadline and Worker request-ID
-repairs. Ten receive source units are mapped; actual guard control signals remain
-open. Public consumer pins are unchanged.
+repairs. Ten receive source units are mapped. The [held-guard control matrix](reports/2026-11-05-receive-controls/README.md)
+adds 32 passing observations and maps the remaining guard-control unit within its
+recorded execution boundaries. Public consumer pins are unchanged.
 The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
 [Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
 and the repair of the Trealla succ float-error failure found by

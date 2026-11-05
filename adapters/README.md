@@ -239,3 +239,13 @@ use `LIBRARY_RUNTIME_ROOT`, `LIBRARY_MANIFEST` and `LIBRARY_REPORT`. Each query 
 an external eight-second deadline, startup is bounded, and pages/nodes are closed.
 The [selective receive report](../reports/2026-11-05-selective-receive/README.md)
 records exact input hashes, failed baselines and runtime repair qualification.
+
+
+`local_receive_controls.py` and `wasm_receive_controls.cjs` run the held-guard
+selection. `receive_control_peer.py` supplies the native entry/release barrier;
+the browser controller serves an equivalent gated peer. Actual abort applies to
+the primary session, PTCP time limits to retained child toplevels, and termination
+to monitored children. Ordinary errors are a contrast control. All actors/pages,
+HTTP handlers and owned nodes/browsers have bounded cleanup. The [report](../reports/2026-11-05-receive-controls/README.md)
+records exact execution backends, rather than inferring main-engine lifecycle
+support from its Worker children.

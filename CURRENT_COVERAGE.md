@@ -26,6 +26,19 @@ At that migration, whole-unit totals remained 11 verified per target; new
 signatures and expanded paragraphs were not automatically promoted. The migration
 itself reran no runtimes; the subsequent finite-case execution is recorded below.
 
+The [held-guard control matrix](reports/2026-11-05-receive-controls/README.md)
+adds eight abort, running-time, termination and ordinary-error cases, with and
+without private source. All 32 observations pass across the four ACTOR modes.
+Abort and execution-limit recovery preserve the original mailbox order and shared
+variables on the surviving actor; termination is confirmed while the peer is
+held. Direct main-browser abort runs on the main engine; public child lifecycle
+limits and termination run in Workers under either coordinator. B-104 is now
+verified within those boundaries, bringing ACTOR targets to 34 verified units;
+GNU remains at 23. Trealla's submitted receive callbacks now use the API dispatcher
+in source-less and private contexts; its core receive selector is unchanged.
+The browser package maintains these control probes. No public deployment or
+book revision is included.
+
 The [selective receive audit and repair](reports/2026-11-05-selective-receive/README.md)
 adds 23 assertions to the six-case receive selection. All 29 cases pass on native
 SWI, Trealla and real Chrome Worker/main modes: 116 observations. Native SWI now
@@ -33,8 +46,8 @@ honours relative timeout precedence over an absolute deadline. Browser receive
 now resolves its wait budget once and honours absolute deadlines; Worker delayed
 send/cancel identifiers are separate from request correlation IDs. The ten mapped
 receive source units are verified on ACTOR targets, bringing them to 33 verified
-units; GNU remains at 23 because ACTOR is outside its profile. Actual control
-signals during a running guard (B-104) still need common controlled probes.
+units; GNU remains at 23 because ACTOR is outside its profile. At that stage, actual control
+signals during a running guard (B-104) still needed common controlled probes.
 This is development qualification; deployed consumer pins are unchanged.
 
 The [countall noncompletion fixture](reports/2026-11-05-library-noncompletion/README.md)
