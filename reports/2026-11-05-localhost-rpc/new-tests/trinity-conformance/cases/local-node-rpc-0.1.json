@@ -1,0 +1,122 @@
+{
+  "suite": "local-node-rpc-0.1",
+  "baseline": "local-node-rpc-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Appendix B rpc and promise destinations accept the atom localhost as the current node; it remains a stateless call with caller-prepared temporary source. Peer root must serve local_node_loaded(one). local_node_loaded(two).",
+  "cases": [
+    {
+      "id": "LOCAL-001",
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(findall(X,rpc(localhost,member(X,[a,b]),[limit(1)]),[a,b])),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-002",
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(rpc(localhost,local_node_probe(ok),[src_text('local_node_probe(ok).')]),catch(rpc(localhost,local_node_probe(_)),_,Missing=true),Missing==true),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-003",
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(promise(localhost,X=ok,R,[template(v(X)),once(true)]),var(X),yield(R,success([v(ok)],false)),var(X)),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-004",
+      "title": "Local promise failure remains an answer term",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(promise(localhost,fail,R),yield(R,failure)),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-005",
+      "title": "Local promise exception remains an answer term",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(promise(localhost,throw(local_node_error),R),yield(R,error(local_node_error))),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-006",
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(rpc(localhost,local_node_loaded(one),[src_uri('__PEER__')])),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    },
+    {
+      "id": "LOCAL-007",
+      "title": "Local promise prepares URI source in the caller",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(promise(localhost,local_node_loaded(X),R,[src_uri('__PEER__'),template(v(X)),once(true)]),var(X),yield(R,success([v(one),v(two)],false)),var(X)),LocalNodeCheck=passed",
+            "template": "LocalNodeCheck",
+            "format": "prolog",
+            "limit": 1
+          },
+          "expect_prolog": "success([passed],false)."
+        }
+      ]
+    }
+  ]
+}

@@ -6,13 +6,20 @@ requirement-level accounting. This first inventory has 353 manuscript source
 units, including related prose groups and signatures. Earlier test selections
 still need full clause mapping; these unit counts are not a conformance percentage.
 
-The [5 November public release](reports/2026-11-05-public-promise-release/README.md)
-deploys portable capabilities and context-wide browser promises to N0–N6.
-All 34 pinned consumer CI groups pass, including 109 runtime/consumer scenarios.
-The clean browser package also passes its full qualification and real-browser
-lifetime controls. All 132 selected live checks pass: 60 readiness/asset/RPC
-checks, 30 capability assertions and 42 real-browser ownership checks loading
-the deployed assets from all seven public hosts in both modes.
+The [latest 5 November runtime repair release](reports/2026-11-05-public-runtime-repair-release/README.md)
+is committed, pushed and deployed to N0–N6. All 36 pinned consumer CI groups
+pass, along with 21 shared committed-source localhost assertions and the
+contained N6 public, broker and Linux containment checks. Live checks cover
+readiness/assets and cross-node RPC, localhost RPC/promises on N1–N6, real-browser
+ownership on every public host in both execution modes, and the repaired N5–N4
+remote ping-pong tutorial. The retained `localhost` designator now works in
+Trealla and GNU; the exact reported N2-source query returns six pairs on N5/N6.
+
+The [preceding promise release](reports/2026-11-05-public-promise-release/README.md)
+records the full browser package qualification, 34 earlier consumer CI groups
+and its separate 132-check live selection. The [localhost development
+record](reports/2026-11-05-localhost-rpc/README.md) is historical evidence before
+promotion. Counts from different selections are not added together.
 
 The earlier [4 November release](reports/2026-11-04-appendix-b-public-deployment/README.md)
 retains its separate 456-assertion transport/creation/supervisor selection.

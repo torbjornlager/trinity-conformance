@@ -141,3 +141,15 @@ It passes on the 5 November development repair. Upstream runtime tests now also
 include coordinator claim controls and real Chrome/HTTP ownership/lifetime
 checks in both execution modes; see `reports/2026-11-05-promise-context/README.md`.
 The requirement ledger and renderer are linked from `docs/APPENDIX_B_COVERAGE.md`.
+
+
+The draft `local-node-rpc-0.1.json` pack checks the retained `localhost`
+destination through stateless HTTP calls: paging, RPC/promise source isolation,
+goal/template sharing, caller-fetched URI source and failure/error answers.
+For URI cases, `--peer` must serve `local_node_loaded(one). local_node_loaded(two).`
+at its root. The existing `runner/baseline.py` runs the HTTP pack. The explicit
+`adapters/local_node_rpc.py` adapter starts disposable SWI, Trealla and GNU
+listeners and a source fixture; it records source and executable hashes. It
+never changes a live node or owner egress policy. The [5 November development
+repair evidence](../reports/2026-11-05-localhost-rpc/README.md) also covers the
+actual contained GNU broker path and the reported N2-source example.

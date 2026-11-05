@@ -1,0 +1,67 @@
+diff --git a/README.md b/README.md
+index 0151bee..2fc6749 100644
+--- a/README.md
++++ b/README.md
+@@ -2690,3 +2690,10 @@ connection cache keep the public URL; unmapped nodes retain the normal URL
+ conversion. Use only owner-controlled mappings: the hook selects transport,
+ not a new public node identity. The canonical distribution tests cover exact
+ mapping, fallback and preservation of explicit WebSocket endpoints.
++
++
++`rpc(localhost, ...)` and `promise(localhost, ...)` select this node's local
++stateless HTTP listener, configured at node startup independently of its public
++proxy URL. Source options remain caller-prepared temporary source. The local
++endpoint metadata stays private to the node layer and cannot be supplied by
++sandboxed client goals. The `localhost_rpc_tests.pl` live selection runs in the interop tier.
+diff --git a/rpc.pl b/rpc.pl
+index 946bb44..cdc16e8 100644
+--- a/rpc.pl
++++ b/rpc.pl
+@@ -257,7 +257,14 @@ rpc(URI0, Goal0, Options) :-
+     rpc_page(Template, 0, Limit, GoalAtom, TemplateAtom, URI, Options,
+              LoadText).
+ 
+-resolve_rpc_uri(Input, URI) :- source_policy:uri_atom(Input, URI).
++% The node layer registers trusted listener metadata through a private hook.
++% Standalone clients retain their normal HTTP localhost fallback.
++:- multifile hook_local_rpc_uri/1.
++resolve_rpc_uri(Input, URI) :-
++    source_policy:uri_atom(Input, Atom),
++    ( Atom == localhost ->
++        (hook_local_rpc_uri(Local) -> URI=Local ; URI='http://localhost')
++    ; URI=Atom ).
+ 
+ rpc_source_module(Module) :-
+     self(Pid),
+diff --git a/tools/test.sh b/tools/test.sh
+index c8b0999..35b61da 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -467,6 +467,8 @@ run_interop() {
+     trealla_remote_pid=$STARTED_PID
+     sleep 0.2
+     kill -0 "$trealla_remote_pid" 2>/dev/null || fail "remote Trealla protocol node did not start on port $trealla_remote_port"
++    run_with_timeout "localhost RPC/promise -> current Trealla node" \
++        "$TPL" -g "consult('$ROOT/localhost_rpc_tests.pl'),(catch(localhost_rpc_tests:run('http://127.0.0.1:$trealla_remote_port','http://127.0.0.1:$source_port'),E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Public remote demonitor -> Trealla" \
+         "$TPL" -g "consult('$ROOT/remote_demonitor_tests.pl'),(catch(remote_demonitor_tests:live('http://localhost:$trealla_remote_port'),E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Termination notifications -> Trealla" \
+diff --git a/web_prolog.pl b/web_prolog.pl
+index a7b1c56..50bd201 100644
+--- a/web_prolog.pl
++++ b/web_prolog.pl
+@@ -142,7 +142,14 @@ web_prolog_node(Port, Options) :-
+     node(Port, web_prolog_handler(Profile, Sandbox),
+          [websocket_options([optional_subprotocols(['web-prolog-sync-spawn-v1','web-prolog-sync-v1'])|WSOptions])|NodeOptions]).
+ 
++% Listener metadata belongs to the trusted node layer, not actor API imports.
++:- dynamic local_rpc_uri/1.
++:- multifile rpc:hook_local_rpc_uri/1.
++rpc:hook_local_rpc_uri(URI) :- web_prolog:local_rpc_uri(URI).
++
+ configure_node_url(Port, Options, URL) :-
++    format(atom(LocalRPC), 'http://127.0.0.1:~w', [Port]),
++    retractall(local_rpc_uri(_)), asserta(local_rpc_uri(LocalRPC)),
+     ( memberchk(node_url(URL0), Options) -> node_url_atom(URL0, URL1)
+     ; format(atom(URL1), 'http://127.0.0.1:~w', [Port])
+     ),

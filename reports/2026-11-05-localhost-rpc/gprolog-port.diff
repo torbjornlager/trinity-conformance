@@ -1,0 +1,130 @@
+diff --git a/isobase/Makefile b/isobase/Makefile
+index 07d92a3..e27eeb7 100644
+--- a/isobase/Makefile
++++ b/isobase/Makefile
+@@ -39,6 +39,7 @@ rpc-test: all
+ 	python3 rpc_tests.py
+ 	python3 rpc_source_tests.py
+ 	python3 rpc_address_tests.py
++	python3 rpc_localhost_tests.py
+ 	python3 https_tests.py
+ https-test: all
+ 	python3 https_tests.py
+@@ -64,6 +65,7 @@ local-test: query-worker query-supervisor isobase-node
+ 	python3 policy_tests.py
+ 	python3 numeric_contract_tests.py
+ 	python3 rpc_address_tests.py
++	python3 rpc_localhost_tests.py
+ 	python3 supervisor_tests.py
+ 	python3 memory_tests.py
+ 	python3 security_tests.py
+diff --git a/isobase/RPC_BOUNDARY.md b/isobase/RPC_BOUNDARY.md
+index c1d8724..ac7053d 100644
+--- a/isobase/RPC_BOUNDARY.md
++++ b/isobase/RPC_BOUNDARY.md
+@@ -197,3 +197,18 @@ Nodes now require `--auth-token-file FILE` or explicit `--auth open` at startup.
+ The compatibility fixtures select open mode. GNU RPC has no destination bearer
+ credential option yet, so it cannot currently call a protected node. Owner
+ credentials are never implicitly forwarded to outbound URLs. See SECURITY.md.
++
++
++### Current-node destination
++
++`localhost` is accepted as the destination atom of `rpc` and `promise`; it does
++not enable `Host:Port` terms or alter source-URI interpretation. The HTTP
++controller supplies its local listener as trusted worker metadata. Direct
++workers without a configured listener retain the normal outbound-policy check.
++Contained workers use the broker's reserved `http://localhost/call` route.
++Only the fixed local stateless controller endpoint is reachable through it;
++source requests, alternate loopback addresses/ports and administration paths
++are denied. The two-line root-owned worker lease carries budget and client
++identity. The broker binds local continuation ownership to that identity and
++nonce, supplies controller credentials itself, and retains all admission limits.
++The updated controller and broker must be promoted together.
+diff --git a/isobase/http.c b/isobase/http.c
+index 53619ed..c72b4ed 100644
+--- a/isobase/http.c
++++ b/isobase/http.c
+@@ -300,7 +300,9 @@ static int start_query(Query *q,Request *r,char *key) {
+     if(snprintf(q->lease,sizeof q->lease,"%s/%u",lease_directory,q->jail_uid)>=(int)sizeof q->lease){free(term);goto failed;}
+     int lease=open(q->lease,O_WRONLY|O_CREAT|O_EXCL|O_CLOEXEC,0644);
+     const char *group=r->budget?r->budget:"0000000000000000000000000000000000000000000000000000000000000000";
+-    if(lease<0||!write_all(lease,group,64)||!write_all(lease,"\n",1)){if(lease>=0)close(lease);free(term);goto failed;}
++    const char *context=r->owner?r->owner:"0000000000000000000000000000000000000000000000000000000000000000";
++    if(lease<0||!write_all(lease,group,64)||!write_all(lease,"\n",1)||
++       !write_all(lease,context,64)||!write_all(lease,"\n",1)){if(lease>=0)close(lease);free(term);goto failed;}
+     close(lease);
+     snprintf(uid_text,sizeof uid_text,"%u",q->jail_uid);
+     args[next++]="--jail";args[next++]=(char *)query_jail;
+@@ -317,12 +319,18 @@ static int start_query(Query *q,Request *r,char *key) {
+   if(!query_jail)posix_spawn_file_actions_addopen(&a,2,"/dev/null",O_WRONLY,0);
+   /* Explicit configuration only; never inherit ambient credentials or loaders. */
+   const char *names[]={"LANG","LC_ALL","LC_CTYPE","TZ","ISO_CA_FILE","ISO_OUTBOUND_POLICY"};
+-  char *environment[8]={0};size_t count=0;int status=0;
++  char *environment[9]={0};size_t count=0;int status=0;
+   for(size_t i=0;i<sizeof names/sizeof names[0];i++) {
+     if(query_jail&&i>=4)continue;
+     const char *value=getenv(names[i]);
+     if(value) {if(asprintf(&environment[count],"%s=%s",names[i],value)<0){status=ENOMEM;break;}count++;}
+   }
++  if(!status) {
++    int written=query_jail
++      ? asprintf(&environment[count],"ISO_LOCAL_NODE_URI=http://localhost")
++      : asprintf(&environment[count],"ISO_LOCAL_NODE_URI=http://127.0.0.1:%u",bound_port);
++    if(written<0)status=ENOMEM;else count++;
++  }
+   if(query_jail) {
+     environment[count++]=strdup("ISO_OUTBOUND_BROKER=/broker.sock");
+     if(!environment[count-1])status=ENOMEM;
+diff --git a/isobase/rpc.pl b/isobase/rpc.pl
+index 6b67232..97f869f 100644
+--- a/isobase/rpc.pl
++++ b/isobase/rpc.pl
+@@ -6,6 +6,7 @@
+ :- foreign(iso_net_cancel(+integer)).
+ :- foreign(iso_net_escape(+string,term)).
+ :- foreign(iso_net_node_uri(+string)).
++:- foreign(iso_net_local_node_uri(term)).
+ :- foreign(iso_net_nonce(term)).
+ 
+ iso_rpc(Scope,URI,Goal,Options) :-
+@@ -102,7 +103,9 @@ iso_param(Base,Key,Value,Out) :-
+     (iso_net_escape(Atom,Encoded)->true;throw(error(request_too_large,rpc/3))),
+     atom_concat(Base,'&',A),atom_concat(A,Key,B),atom_concat(B,'=',C),atom_concat(C,Encoded,Out).
+ iso_uri(URI0,URI) :-
+-    iso_source_uri(URI0,A),
++    (var(URI0)->throw(error(instantiation_error,rpc/3));true),
++    (atom(URI0)->true;throw(error(type_error(atom,URI0),rpc/3))),
++    (URI0==localhost -> iso_net_local_node_uri(A);iso_source_uri(URI0,A)),
+     (iso_net_node_uri(A)->true;throw(error(domain_error(http_uri,A),rpc/3))),
+     (sub_atom(A,_,1,0,'/')->atom_length(A,N),M is N-1,sub_atom(A,0,M,1,URI);URI=A).
+ % A source URL identifies an exact resource, not a node base URL.
+diff --git a/isobase/rpc_address_tests.py b/isobase/rpc_address_tests.py
+index 28c9e59..7e1dccd 100644
+--- a/isobase/rpc_address_tests.py
++++ b/isobase/rpc_address_tests.py
+@@ -52,7 +52,7 @@ def check(execute):
+             execute(f"{operation}('{base}',[src_uri('{base}/source?name=a%2Fb')])")
+             assert server.paths[0]=='/source?name=a%2Fb' and len(server.paths)==2,server.paths
+             checks+=1
+-            execute(f"{operation}('127.0.0.1':{server.server_port},[])")
++            execute(f"catch(({operation}('127.0.0.1':{server.server_port},[]),fail),error(type_error(atom,'127.0.0.1':{server.server_port}),_),true)")
+             # Invalid attempts must not exhaust the 16 asynchronous request slots.
+             execute(f"findall(N,(between(1,24,N),address_rejected('{base}?x',{operation},[])),Ns),length(Ns,24),{operation}('{base}',[])")
+             checks+=2
+diff --git a/isobase/transport.c b/isobase/transport.c
+index faedc6e..390a1fa 100644
+--- a/isobase/transport.c
++++ b/isobase/transport.c
+@@ -47,6 +47,11 @@ static int initialize(void) {
+ /* Parse only: no resolver, socket, request slot or worker thread is started.
+  * Keep the caller's path bytes; this handle validates without normalizing them.
+  * Exact source-resource URLs intentionally use a separate Prolog interface. */
++/* Trusted controller metadata only; never inferred from a caller URL/header. */
++PlBool iso_net_local_node_uri(PlTerm uri) {
++  const char *value=getenv("ISO_LOCAL_NODE_URI");
++  return Pl_Un_String(value&&*value?value:"http://localhost",uri);
++}
+ PlBool iso_net_node_uri(char *url) {
+   size_t length=strlen(url);
+   if(length>URL_MAX)return PL_FALSE;
