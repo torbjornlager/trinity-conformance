@@ -1,0 +1,81 @@
+{
+  "suite": "private-helper-admission-0.1",
+  "baseline": "private-helper-admission-0.1",
+  "status": "draft",
+  "scope": "required",
+  "source": "ha_value(one). ha_value(two). ha_pair(X,X).\n:- dynamic ha_dynamic/1.\nha_dynamic(seed).\n",
+  "cases": [
+    {
+      "id": "HA-001",
+      "title": "Retained private helper preserves alternatives and sharing",
+      "transport": "query",
+      "goal": "findall(X,ha_value(X),Xs),Xs==[one,two],ha_pair(A,B),A=kept,B==kept"
+    },
+    {
+      "id": "HA-002",
+      "title": "Literal text defines the child entry helper",
+      "transport": "query",
+      "goal": "self(Me),spawn((ha_child(Me)),P,[src_text('ha_child(To):-To!ha_ok.'),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "HA-003",
+      "title": "Literal clause list defines a helper used by the child",
+      "transport": "query",
+      "goal": "self(Me),spawn((ha_leaf(done),Me!ha_ok),P,[src_list([ha_leaf(done)]),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "HA-004",
+      "title": "Ordered mixed sources admit cooperating child helpers",
+      "transport": "query",
+      "goal": "self(Me),spawn((ha_child(Me)),P,[src_text('ha_child(To):-ha_mark,To!ha_ok.'),src_list([ha_mark]),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "HA-005",
+      "title": "Copied private helper is admitted in a child",
+      "transport": "query",
+      "goal": "self(Me),spawn((ha_value(one),Me!ha_ok),P,[src_predicates([ha_value/1]),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "HA-006",
+      "title": "Constructed text is checked when the child is created",
+      "transport": "query",
+      "goal": "Text='ha_leaf(done).',self(Me),spawn((ha_leaf(done),Me!ha_ok),P,[src_text(Text),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)])"
+    },
+    {
+      "id": "HA-007",
+      "title": "Constructed clause list keeps variables and sharing",
+      "transport": "query",
+      "goal": "Clauses=[ha_leaf(X,X)],self(Me),spawn((ha_leaf(A,B),A=ok,B==ok,Me!ha_ok),P,[src_list(Clauses),monitor(true)]),receive({ha_ok->true},[timeout(2)]),receive({down(P,P,true)->true},[timeout(2)]),var(X),var(A),var(B)"
+    },
+    {
+      "id": "HA-008",
+      "title": "Private helpers are callable in receive guards and bodies",
+      "transport": "query",
+      "goal": "self(Me),Me!ha_message(one),receive({ha_message(V) if ha_value(V)->ha_pair(V,W),W==one},[timeout(1)])"
+    },
+    {
+      "id": "HA-009",
+      "title": "Private helper is callable in a timeout callback",
+      "transport": "query",
+      "goal": "receive({ha_unmatched->fail},[timeout(0),on_timeout(ha_value(one))])"
+    },
+    {
+      "id": "HA-010",
+      "title": "Failed private helper branches roll back caller bindings",
+      "transport": "query",
+      "goal": "((ha_pair(A,B),A=tentative,fail);(var(A),var(B)))"
+    },
+    {
+      "id": "HA-011",
+      "title": "Private helper is admitted as a library closure",
+      "transport": "query",
+      "goal": "maplist(ha_pair,[a,b],Ys),Ys==[a,b]"
+    },
+    {
+      "id": "HA-012",
+      "title": "Checked dynamic updates stay in the retained private database",
+      "transport": "query",
+      "goal": "assertz(ha_dynamic(extra)),findall(V,ha_dynamic(V),Values),Values==[seed,extra]"
+    }
+  ]
+}

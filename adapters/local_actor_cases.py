@@ -26,6 +26,7 @@ def main():
         p.add_argument('--' + arg, required=True)
     for arg in ('swi-root', 'trealla-root', 'manifest', 'output'):
         p.add_argument('--' + arg, type=Path, required=True)
+    p.add_argument('--sandbox', choices=['blacklist', 'whitelist', 'off'])
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     pack = json.loads(a.manifest.read_text())
@@ -39,10 +40,12 @@ def main():
         for key in ('WP_CONFIG_FILE', 'SWI_HOME_DIR', 'SWIPL_HOME_DIR', 'WP_NATIVE_STATE', 'WP_NATIVE_MODE'):
             env.pop(key, None)
         if name == 'swi':
-            command = [a.swipl, '-f', 'none', '-q', '-g', f'use_module({prolog_quote_atom(str(root / "prolog/web_prolog.pl"))}),node({port},[profile(actor),auth(open),max_session_spawns_per_window(1000)]),thread_get_message(stop)']
+            policy = ',sandbox('+a.sandbox+')' if a.sandbox else ''
+            command = [a.swipl, '-f', 'none', '-q', '-g', f'use_module({prolog_quote_atom(str(root / "prolog/web_prolog.pl"))}),node({port},[profile(actor),auth(open),max_session_spawns_per_window(1000){policy}]),thread_get_message(stop)']
         else:
             env['TPL_LIBRARY_PATH'] = str(Path(a.tpl).parent / 'library')
-            command = [a.tpl, '-g', f'use_module(distribution),web_prolog:web_prolog_node({port},[max_session_spawns_per_window(1000)])']
+            policy = ',sandbox('+a.sandbox+')' if a.sandbox else ''
+            command = [a.tpl, '-g', f'use_module(distribution),web_prolog:web_prolog_node({port},[max_session_spawns_per_window(1000){policy}])']
         scope = root / 'prolog' if name == 'swi' else root
         files = scope.rglob('*.pl') if name == 'swi' else scope.glob('*.pl')
         sources[name] = dict(revision=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
@@ -78,7 +81,7 @@ def main():
                     node.kill()
                     node.wait(timeout=2)
     report = dict(suite=pack['suite'], manifest_sha256=sha(a.manifest), adapter_sha256=sha(__file__),
-                  sources=sources, scope='Disposable native ACTOR WebSocket sessions; fresh session per case', results=rows,
+                  sources=sources, sandbox=a.sandbox or 'runtime default', scope='Disposable native ACTOR WebSocket sessions; fresh session per case', results=rows,
                   counts={s: sum(r['status'] == s for r in rows) for s in ('pass', 'fail')})
     (a.output / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
     return int(report['counts']['fail'] > 0)

@@ -131,7 +131,7 @@ def main():
                           raise AssertionError(event)
                       return event
                   for case in pack['cases']:
-                      check(case['id']+'-'+label+'-session',case['title'],lambda c=case:session(c['goal']))
+                      check(case['id']+'-'+label+'-session',case['title'],lambda c=case:session(c['goal'].replace('node_setting(','ns_read(') if source else c['goal']))
                   check('configured-'+label,'Exact settings in a retained session',lambda:session(config))
                   child = 'self(Me),spawn((findall(K-V,node_setting(K,V),Pairs),Me!ns_settings(Pairs)),_,[]),receive({ns_settings(Pairs)->sort(Pairs,Sorted)},[timeout(3)]),'+compare
                   check('child-'+label,'Spawned child retains the serving node',lambda:session(child))
