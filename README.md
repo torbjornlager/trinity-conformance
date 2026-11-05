@@ -7,17 +7,19 @@ another runtime.
 
 ## Current consolidated results
 
-The [latest public peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
-deploys the N3–N5 peer permissions and passes all 51 selected context checks
-without exclusions. Intermediate context and browser CI failures remain recorded
-alongside passing reruns; no repair is claimed for those intermittent observations.
+The [latest public successor release](reports/2026-11-05-successor-public-release/README.md)
+commits, pushes and deploys Trealla's successor validation repair to N5. All
+38 consumer CI groups and 268 selected public assertions pass, including all
+146 library cases and 51 context cases without exclusions. Peer policy and
+persistent state are preserved; eleven other images are unchanged. Historical
+intermittent observations remain recorded without a fix claim.
 
 The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
 51-case matrix, six controlled promise cases and deterministic attachment
 controls as a strict selection.
 The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
 [Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
-and the development repair of the Trealla succ float-error failure found by
+and the repair of the Trealla succ float-error failure found by
 the new 146-case selection. Full obligation mapping and external ISO coverage remain open. See the
 [coverage overview](CURRENT_COVERAGE.md) for dated release boundaries and counts.
 These selections do not establish a language-conformance percentage.

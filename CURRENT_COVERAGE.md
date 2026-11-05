@@ -6,6 +6,14 @@ requirement-level accounting. The migrated inventory has 383 manuscript source
 units, preserving the original 353 IDs and adding 30 units from the revision.
 Earlier test selections still need full clause mapping; these unit counts are not a conformance percentage.
 
+The [latest public successor release](reports/2026-11-05-successor-public-release/README.md)
+is committed, pushed and deployed to N5: consumer image `a44c23d`, Trealla
+`5741bd7`. Eleven other runtime/asset images are unchanged. All 38 consumer CI
+groups, 311 Linux library controls and 268 selected public assertions pass,
+including every one of the 146 library cases and all 51 context cases without
+exclusions. Configuration, controls, volumes and peer credentials are preserved.
+This promotes the selected successor repair; it is not full Appendix B certification.
+
 The ledger now pins book revision `3edc369`, including the context clarifications
 and expanded standard-library entries, plus a reviewed layout-only refresh.
 The [migration record](reports/2026-11-05-appendix-b-ledger-migration/README.md)
@@ -21,9 +29,9 @@ itself reran no runtimes; the subsequent finite-case execution is recorded below
 The [finite library test extension](reports/2026-11-05-library-finite-cases/README.md)
 adds 34 shared cases in `standard-library-0.2`, preserving the original 112 cases.
 The complete 146-case selection passes on native SWI, GNU and both real-browser
-modes. Trealla fails two float-argument succ cases in each of fresh HTTP and
-retained sessions: it returns instantiation_error instead of the integer type
-error. These four failed observations remain visible, with the initial invalid
+modes. Trealla initially failed two float-argument succ cases in each of fresh
+HTTP and retained sessions, returning instantiation_error instead of the integer
+type error. These four failed observations remain visible, with the initial invalid
 select fixture recorded separately. At that baseline, the clause inventory recorded 27 covered, 15 needing tests
 and one failing obligation; the Trealla succ paragraph and common error rule
 were marked failing. No runtime or public node was changed by adding the tests.
@@ -36,12 +44,12 @@ passes across all five modes: 730 native observations and 294 browser observatio
 unit returns to verified on Trealla; the general error paragraph returns to
 unverified pending complete mapping. All five targets now have 17 verified
 source units, with no currently observed failing units in this selected ledger.
-This is a development repair; installed engine/library bytes, consumer pins and
-public nodes remain unchanged.
+That record is the pre-promotion development qualification; the subsequent
+public release is recorded above.
 
-The [cluster peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
-is committed, pushed and deployed to N0–N6. All twelve runtime/asset services run
-consumer image revision `1581acc`, with unchanged qualified runtime pins.
+The [preceding cluster peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
+deployed twelve services from consumer image revision `1581acc`. N5 is superseded
+by the successor release above; the other eleven images remain unchanged.
 N3/N4 now permit N5; N5 now permits N3. All **51 public context checks pass,
 with no policy exclusions**. External spawn/source destinations remain denied
 in six controls. All 38 consumer CI groups qualify after a complete WASM rerun;
@@ -81,8 +89,8 @@ The [previous standard-library release](reports/2026-11-05-standard-library-rele
 retains its historical `1b04f27` image record, 36-group CI and 2,379 public checks.
 Its required forms and callback semantics remain covered by the new live selection.
 
-The required library forms and described semantics work across all five runtime
-modes. Library callback errors require exact callable types and original culprits
+The recorded library selection passes its forms and selected semantics across
+all five runtime modes. Library callback errors require exact callable types and original culprits
 at invocation, with lazy unused callbacks and unchanged application exceptions.
 The final Trealla repair also preserves this behaviour inside nested meta-calls.
 The report retains the initial failed nested probe and the repeated final gates.

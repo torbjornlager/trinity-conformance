@@ -1,0 +1,118 @@
+{
+  "scope": "External spawn/source denial and session recovery on N3-N5 after peer allowlist expansion",
+  "results": [
+    {
+      "node": 3,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "data": "node_sandbox:reject_forbidden_spawn_option/2: No permission to option sandboxed node('https://external.invalid')' (spawn option is disabled in sandbox mode)",
+        "details": "error(permission_error(option,sandboxed,node('https://external.invalid')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 2211783269,
+        "type": "success"
+      }
+    },
+    {
+      "node": 3,
+      "id": "EXTERNAL-SOURCE",
+      "status": "pass",
+      "denial": {
+        "data": "source_utils:open_source_uri/2: No permission to load source_uri 'https://external.invalid/probe.pl'' (src_uri target origin is not on the configured allowlist)",
+        "details": "error(permission_error(load,source_uri,'https://external.invalid/probe.pl'),_)",
+        "pid": 2211783269,
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 2211783269,
+        "type": "success"
+      }
+    },
+    {
+      "node": 4,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "data": "node_sandbox:reject_forbidden_spawn_option/2: No permission to option sandboxed node('https://external.invalid')' (spawn option is disabled in sandbox mode)",
+        "details": "error(permission_error(option,sandboxed,node('https://external.invalid')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6510035313,
+        "type": "success"
+      }
+    },
+    {
+      "node": 4,
+      "id": "EXTERNAL-SOURCE",
+      "status": "pass",
+      "denial": {
+        "data": "source_utils:open_source_uri/2: No permission to load source_uri 'https://external.invalid/probe.pl'' (src_uri target origin is not on the configured allowlist)",
+        "details": "error(permission_error(load,source_uri,'https://external.invalid/probe.pl'),_)",
+        "pid": 6510035313,
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6510035313,
+        "type": "success"
+      }
+    },
+    {
+      "node": 5,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "type": "error",
+        "data": "error(permission_error(option,sandboxed,node('https://external.invalid')),context(sandbox_policy:sandbox_prepare_spawn/7,'remote spawn destination is not allowlisted'))"
+      },
+      "recovery": {
+        "type": "success",
+        "pid": 2231782535,
+        "data": [
+          {}
+        ],
+        "more": false
+      }
+    },
+    {
+      "node": 5,
+      "id": "EXTERNAL-SOURCE",
+      "status": "pass",
+      "denial": {
+        "type": "error",
+        "pid": 2231782535,
+        "data": "error(permission_error(load,source_origin,'https://external.invalid/probe.pl'),source_policy:fetch_source_uri/2)"
+      },
+      "recovery": {
+        "type": "success",
+        "pid": 2231782535,
+        "data": [
+          {}
+        ],
+        "more": false
+      }
+    }
+  ],
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  }
+}
