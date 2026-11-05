@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Audit native client-context boundaries on disposable localhost nodes.
+"""Test native client-context boundaries on disposable localhost nodes.
 
 No live nodes, installed engines, release pins or runtime implementations change.
-Failures are recorded as observations, not converted to successful controls.
+Every failed, blocked or errored observation causes a nonzero exit.
 """
 import argparse,contextlib,hashlib,json,os,re,secrets,socket,subprocess,sys,tempfile,time,urllib.parse,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'runner'))
 from run import Candidate,Harness,prolog_quote_atom,row_value
+from controlled_promise_peer import ControlledPromisePeer
 
 SOURCE = """audit_create(Parent,URL):-promise(URL,true,R,[template(mark)]),send(Parent,created(R)),receive({finish->true}).
 audit_collect(Parent,Ref):-catch(yield(Ref,A,[timeout(2)]),E,A=error(E)),send(Parent,collected(A)).
@@ -22,7 +23,8 @@ def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--swipl',required=True);p.add_argument('--tpl',required=True)
  p.add_argument('--swi-root',type=Path,required=True);p.add_argument('--trealla-root',type=Path,required=True)
- p.add_argument('--output',type=Path,required=True);p.add_argument('--routes',nargs='*',default=['swi-a:swi-b'],choices=['swi-a:swi-b','swi-a:trealla-b','trealla-a:swi-b','trealla-a:trealla-b']);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
+ p.add_argument('--controlled-promises',action='store_true',help='add six barrier-controlled timeout/ownership checks, including public-style self routes')
+ p.add_argument('--output',type=Path,required=True);p.add_argument('--routes',nargs='*',default=['swi-a:swi-b','swi-a:trealla-b','trealla-a:swi-b','trealla-a:trealla-b'],choices=['swi-a:swi-b','swi-a:trealla-b','trealla-a:swi-b','trealla-a:trealla-b']);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
  ports={name:port() for name in ['swi-a','swi-b','swi-c','trealla-a','trealla-b']}
  urls={name:('http://localhost:' if name.startswith('swi-') else 'http://127.0.0.1:')+str(n) for name,n in ports.items()};rows=[];processes=[];logs=[]
  sources={}
@@ -75,9 +77,9 @@ def main():
  def collector(h,remote,ref):
   source=SOURCE.splitlines()[1]+'\n'
   return run(h,f'self(S),spawn(audit_collect(S,{ref}),_,[node({literal(remote)}),src_text({literal(source)})]),receive({{collected(Outcome)->true}},[timeout(4),on_timeout(throw(no_collector_reply))])')
- def remote_create(h,remote):
+ def remote_create(h,remote,promise_url=None):
   source=SOURCE.splitlines()[0]+'\n'
-  e=run(h,f'self(S),spawn(audit_create(S,{literal(remote)}),Creator,[node({literal(remote)}),src_text({literal(source)})]),receive({{created(Ref)->true}},[timeout(4),on_timeout(throw(no_creator_reply))])')
+  e=run(h,f'self(S),spawn(audit_create(S,{literal(promise_url or remote)}),Creator,[node({literal(remote)}),src_text({literal(source)})]),receive({{created(Ref)->true}},[timeout(4),on_timeout(throw(no_creator_reply))])')
   if not good(e):raise RuntimeError('remote creator setup: '+json.dumps(e))
   ref=row_value(e,'Ref')
   if not ref.isdigit():raise RuntimeError('unbound remote promise reference: '+json.dumps(e))
@@ -89,7 +91,7 @@ def main():
   with tempfile.TemporaryDirectory(prefix='retained-context-audit-') as tmp:
    tmp=Path(tmp);creds=tmp/'credentials.json';boot=tmp/'swi.pl'
    peers=','.join(literal(u)+'-Peer' for u in urls.values())
-   node_goals=[f'node({ports[n]},[profile(actor),auth(open),max_call_requests_per_window(1000),peer_transport_tokens([{peers}])])' for n in ['swi-a','swi-b','swi-c']]
+   node_goals=[f'node({ports[n]},[profile(actor),auth(open),max_call_requests_per_window(1000),max_ws_actors_per_principal(256),max_principal_actors(256),peer_transport_tokens([{peers}])])' for n in ['swi-a','swi-b','swi-c']]
    boot.write_text(':- use_module('+literal(a.swi_root/'prolog/web_prolog.pl')+').\n:- use_module(library(http/json)).\n:- initialization(main,main).\nmain :- node_tokens:issue_token("node:context-audit",[execute,internal_transport],[],PeerString),atom_string(Peer,PeerString),node_tokens:issue_token("audit-client",[execute],[],Client),open('+literal(creds)+',write,S),json_write_dict(S,_{peer:Peer,client:Client}),close(S),'+','.join(node_goals)+',thread_get_message(stop).\n')
    swi=start('swi-fixture',[a.swipl,'-f','none','-q',str(boot)],a.swi_root,env)
    for name in ['swi-a','swi-b','swi-c']:wait(name,swi)
@@ -185,6 +187,39 @@ def main():
        ref=create(h,urls[home]);goal=f'self(S),spawn(audit_back_promise(S,{ref}),Bridge,[node({literal(remote)}),src_text({literal(source)})]),receive({{collected(Outcome)->true}},[timeout(4),on_timeout(throw(roundtrip_promise_missing))]),send(Bridge,finish)'
        e=run(h,goal);return e,collected(e)
       record(candidate,'CTX-017-'+dest,'round-trip descendant rejoins origin promise context: '+pair,roundtrip_promise,['B-004','B-296'])
+   if a.controlled_promises:
+    for home,dest in [('swi-a','swi-a'),('swi-a','swi-b'),('swi-a','trealla-b'),('trealla-a','trealla-a'),('trealla-a','swi-b'),('trealla-a','trealla-b')]:
+     def controlled(home=home,dest=dest):
+      trace=[];peer=None;creator=None
+      def observe(phase,event):
+       trace.append(dict(phase=phase,elapsed_ms=peer.elapsed(),event=event))
+       return event
+      try:
+       with ControlledPromisePeer() as peer,contextlib.ExitStack() as stack:
+        h=stack.enter_context(harness(home,client));h.spawn_shell('[session(true)]')
+        other=stack.enter_context(harness(home,client));other.spawn_shell('[session(true)]')
+        ref,creator=remote_create(h,urls[dest],peer.url)
+        observe('created',dict(reference=ref,creator=creator))
+        if not peer.arrived.wait(4):raise RuntimeError('producer did not receive HTTP request')
+        observe('producer_arrived',dict(released=peer.release.is_set()))
+        foreign=observe('foreign_pending',collector(other,urls[dest],ref))
+        early=observe('owner_pending',collector(h,urls[dest],ref))
+        held=not peer.release.is_set() and not peer.sent.is_set()
+        peer.release.set()
+        if not peer.sent.wait(4):raise RuntimeError('producer did not send released answer')
+        observe('producer_sent',dict(request_count=len(peer.requests)))
+        foreign_ready=observe('foreign_released',collector(other,urls[dest],ref))
+        answer=observe('owner_retry',collector(h,urls[dest],ref))
+        consumed=observe('owner_after_collection',collector(h,urls[dest],ref))
+        finish=observe('creator_finish',run(h,f'send({creator},finish)'))
+        missing_answer=lambda e: good(e) and 'existence_error(promise,'+ref+')' in row_value(e,'Outcome')
+        ok=(held and good(early) and row_value(early,'Outcome')=='timeout' and
+            missing_answer(foreign) and missing_answer(foreign_ready) and collected(answer) and
+            missing_answer(consumed) and good(finish) and len(peer.requests)==1 and not peer.errors)
+        return dict(trace=trace,requests=peer.requests,producer_errors=peer.errors),ok
+      except Exception as e:
+       return dict(trace=trace,requests=peer.requests if peer else [],detail=str(e)),False
+     record(home.split('-')[0],'CP-001-'+dest,'controlled pending timeout, foreign denial, release and owner retry: '+home+' -> '+dest,controlled,['B-296','B-304'])
  except Exception as e:
   rows.append(dict(candidate='fixture',id='CTX-FIXTURE',title='audit fixture setup',status='error',detail=str(e)));save();print('fixture error',str(e),flush=True)
  finally:
@@ -195,5 +230,5 @@ def main():
   for f in logs:f.close()
   save()
  print('counts',json.loads((a.output/'results.json').read_text())['counts'],flush=True)
- return int(any(r['status']=='error' for r in rows))
+ return int(any(r['status']!='pass' for r in rows))
 if __name__=='__main__':raise SystemExit(main())

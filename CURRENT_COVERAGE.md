@@ -16,6 +16,29 @@ the initial browser failure and one intermediate N5 context timeout remain recor
 The report distinguishes successful reruns from unresolved intermittent behavior.
 N5's persistent self-route credential remains owner-only and mounted read-only.
 
+The [maintained native context gate](profiles/retained-context-0.1.md) now requires
+the exact 51-case matrix, six controlled promise cases, all four routes and
+separate deterministic attachment controls. Its [first run](reports/2026-11-05-maintained-context-suite/README.md)
+passes all groups without retries; 69 runner self-tests pass. This promotes
+existing probes into a strict routine selection, without resolving the retained
+intermittent observations or changing whole-unit verification counts.
+
+The [controlled producer extension](reports/2026-11-05-controlled-promise-suite-qualified/README.md)
+passes all 57 original/extended cases and 71 runner self-tests. It checks pending
+owner timeout, foreign denial before/after release, owner retry and single
+collection with explicit HTTP barriers. It includes both native
+transport self-routes. The initial fixture admission failures are retained;
+disposable actor ceilings were raised for the larger selection, without changing
+public configuration or wait deadlines. This does not explain the earlier public
+timeout or certify its HTTPS/proxy path.
+
+The subsequent [N5 public self-route diagnostic](reports/2026-11-05-public-self-route-diagnostic/README.md)
+passes twenty alternating original and producer-timestamped attempts using the
+unchanged two-second wait. It did not reproduce the historical timeout and does
+not claim a fix. Phase measurements distinguish producer execution from later
+collection; exact response arrival/installation remains unmeasured. The temporary
+execute-only credential was revoked. These repetitions do not add feature coverage.
+
 The [previous native context release](reports/2026-11-05-native-context-release/README.md)
 retains its historical `3c8702a` image record, 2,421 selected public checks and
 nine policy exclusions. Broader library and browser selections were not repeated

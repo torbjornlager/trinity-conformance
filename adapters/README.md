@@ -166,16 +166,16 @@ the earlier baseline. [The public release](../reports/2026-11-05-standard-librar
 records exact callback errors, the nested Trealla follow-up and deployed pins. This selection does not
 expand every external ISO mode or error refinement into a complete contract.
 
-`adapters/local_retained_context.py` audits real retained WSS clients, explicit
-SWI HTTP sessions, fresh HTTP request ownership and selected native remote routes
-on disposable nodes. Its core and optional route runs distinguish measured
-contract failures from transport-blocked ownership probes. See the
-[native retained-context audit](../reports/2026-11-05-native-retained-context/README.md).
-
-The [native context repair](../reports/2026-11-05-native-retained-context-repair/README.md)
-runs all four directed route combinations together (51 probes), including the
-original failing and blocked cases. Trealla fixtures configure explicit outgoing
-peer bearer tokens as well as receiving credentials; no live service is changed.
+`adapters/local_retained_context.py` now defaults to all four native route
+combinations and exits nonzero for any failed, blocked or errored observation.
+Use the [maintained retained-context gate](../profiles/retained-context-0.1.md)
+for routine qualification: `runner/context_release.py` additionally requires all
+51 original observations plus six controlled producer cases exactly once, every
+route and the attachment controls. Pass `--controlled-promises` to the adapter
+when running the new cases directly.
+Partial `--routes` selections remain diagnostic and cannot satisfy the full gate.
+The [original audit](../reports/2026-11-05-native-retained-context/README.md) and
+[repair](../reports/2026-11-05-native-retained-context-repair/README.md) remain historical.
 
 `adapters/local_attachment_race.py` tests both attachment orderings on disposable
 copies of the committed runtimes. A barrier pauses retirement after its last
@@ -183,3 +183,15 @@ attachment decision. Moving retirement outside the lock is a negative control:
 the harness must reproduce a successful attachment followed by context closure.
 No installed engine, upstream checkout or public node is modified by the adapter.
 See the [qualification](../reports/2026-11-05-native-context-attachment-repair/README.md).
+
+
+`adapters/public_promise_self_route.py` is an explicit public-route diagnostic,
+not a local fixture or automatic conformance gate. Pass an authorised `--url`,
+a private JSON `--credentials-file` containing an execute-only `token`, and a
+fresh `--output` directory. Its fixed default is twenty alternating original and
+producer-timestamped attempts. It halts each retained toplevel and preserves a
+timeout as a failure even if a separate diagnostic retry recovers. Use
+`runner/promise_self_route_analysis.py --report RESULTS --output ANALYSIS` for
+phase summaries. Tokens must be provisioned/revoked by the deployment owner;
+the adapter neither grants authority nor changes public policy.
+See the [N5 diagnostic](../reports/2026-11-05-public-self-route-diagnostic/README.md).

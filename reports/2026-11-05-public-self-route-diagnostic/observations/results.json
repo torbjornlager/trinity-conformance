@@ -1,0 +1,1535 @@
+{
+  "suite": "public-promise-self-route-diagnostic-0.1",
+  "url": "https://n5.elfenbenstornet.se",
+  "adapter_sha256": "db9944283177077c70e2f08e8bb76ec7955187f52cf9b84796c309cadb04e53a",
+  "source": "probe_create(Parent,URL,Stamped):-get_time(Start),(Stamped==true->promise(URL,get_time(T),R,[template(mark(T))]);promise(URL,true,R,[template(mark)])),get_time(Returned),send(Parent,created(R,Start,Returned)),receive({finish->true}).\nprobe_collect(Parent,R):-get_time(Start),catch(yield(R,A,[timeout(2)]),E,A=error(E)),get_time(End),send(Parent,collected(A,Start,End)).\n",
+  "deadline_seconds": 2,
+  "results": [
+    {
+      "id": "SELF-001",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 420.436,
+          "event": {
+            "type": "success",
+            "pid": 1648316140,
+            "data": [
+              {
+                "S": "1648316140@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1117050820@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002172",
+                "PromiseStart": "1793886540.873084",
+                "PromiseReturned": "1793886540.873337",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 567.506,
+          "event": {
+            "type": "success",
+            "pid": 3051555342,
+            "data": [
+              {
+                "S": "3051555342@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002172),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886541.022824",
+                "WaitEnd": "1793886541.022995",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 623.641,
+          "event": {
+            "type": "success",
+            "pid": 1648316140,
+            "data": [
+              {
+                "S": "1648316140@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886541.077974",
+                "WaitEnd": "1793886541.078086",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 635.284,
+          "event": {
+            "type": "success",
+            "pid": 1648316140,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-002",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 1114.575,
+          "event": {
+            "type": "success",
+            "pid": 2924167056,
+            "data": [
+              {
+                "S": "2924167056@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2463658691@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002219",
+                "PromiseStart": "1793886541.569871",
+                "PromiseReturned": "1793886541.570018",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 1265.186,
+          "event": {
+            "type": "success",
+            "pid": 2276280077,
+            "data": [
+              {
+                "S": "2276280077@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002219),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886541.717427",
+                "WaitEnd": "1793886541.717561",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 1316.437,
+          "event": {
+            "type": "success",
+            "pid": 2924167056,
+            "data": [
+              {
+                "S": "2924167056@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886541.621767)],false)",
+                "WaitStart": "1793886541.771192",
+                "WaitEnd": "1793886541.77132",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 1328.358,
+          "event": {
+            "type": "success",
+            "pid": 2924167056,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-003",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 1758.974,
+          "event": {
+            "type": "success",
+            "pid": 1820776397,
+            "data": [
+              {
+                "S": "1820776397@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1424911363@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002266",
+                "PromiseStart": "1793886542.215094",
+                "PromiseReturned": "1793886542.215223",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 1886.67,
+          "event": {
+            "type": "success",
+            "pid": 2245085538,
+            "data": [
+              {
+                "S": "2245085538@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002266),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886542.343305",
+                "WaitEnd": "1793886542.343439",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 1936.043,
+          "event": {
+            "type": "success",
+            "pid": 1820776397,
+            "data": [
+              {
+                "S": "1820776397@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886542.392843",
+                "WaitEnd": "1793886542.39294",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 1948.491,
+          "event": {
+            "type": "success",
+            "pid": 1820776397,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-004",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 2399.159,
+          "event": {
+            "type": "success",
+            "pid": 1247453440,
+            "data": [
+              {
+                "S": "1247453440@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1118553776@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002313",
+                "PromiseStart": "1793886542.856199",
+                "PromiseReturned": "1793886542.856314",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 2535.613,
+          "event": {
+            "type": "success",
+            "pid": 2551943479,
+            "data": [
+              {
+                "S": "2551943479@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002313),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886542.991173",
+                "WaitEnd": "1793886542.99131",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 2585.602,
+          "event": {
+            "type": "success",
+            "pid": 1247453440,
+            "data": [
+              {
+                "S": "1247453440@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886542.913426)],false)",
+                "WaitStart": "1793886543.042809",
+                "WaitEnd": "1793886543.042909",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 2597.656,
+          "event": {
+            "type": "success",
+            "pid": 1247453440,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-005",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 3080.847,
+          "event": {
+            "type": "success",
+            "pid": 2392555560,
+            "data": [
+              {
+                "S": "2392555560@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1097387766@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002360",
+                "PromiseStart": "1793886543.53173",
+                "PromiseReturned": "1793886543.531856",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 3224.362,
+          "event": {
+            "type": "success",
+            "pid": 1682863861,
+            "data": [
+              {
+                "S": "1682863861@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002360),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886543.679915",
+                "WaitEnd": "1793886543.680043",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 3273.068,
+          "event": {
+            "type": "success",
+            "pid": 2392555560,
+            "data": [
+              {
+                "S": "2392555560@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886543.730652",
+                "WaitEnd": "1793886543.730739",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 3284.954,
+          "event": {
+            "type": "success",
+            "pid": 2392555560,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-006",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 3728.126,
+          "event": {
+            "type": "success",
+            "pid": 1988935588,
+            "data": [
+              {
+                "S": "1988935588@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1228908988@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002407",
+                "PromiseStart": "1793886544.185277",
+                "PromiseReturned": "1793886544.185393",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 3860.786,
+          "event": {
+            "type": "success",
+            "pid": 1815149706,
+            "data": [
+              {
+                "S": "1815149706@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002407),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886544.318044",
+                "WaitEnd": "1793886544.318183",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 3910.533,
+          "event": {
+            "type": "success",
+            "pid": 1988935588,
+            "data": [
+              {
+                "S": "1988935588@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886544.244091)],false)",
+                "WaitStart": "1793886544.36642",
+                "WaitEnd": "1793886544.366507",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 3924.786,
+          "event": {
+            "type": "success",
+            "pid": 1988935588,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-007",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 4380.304,
+          "event": {
+            "type": "success",
+            "pid": 2452909331,
+            "data": [
+              {
+                "S": "2452909331@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2194284924@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002454",
+                "PromiseStart": "1793886544.835139",
+                "PromiseReturned": "1793886544.835271",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 4511.216,
+          "event": {
+            "type": "success",
+            "pid": 1622385164,
+            "data": [
+              {
+                "S": "1622385164@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002454),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886544.966811",
+                "WaitEnd": "1793886544.967001",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 4559.874,
+          "event": {
+            "type": "success",
+            "pid": 2452909331,
+            "data": [
+              {
+                "S": "2452909331@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886545.015881",
+                "WaitEnd": "1793886545.015972",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 4572.366,
+          "event": {
+            "type": "success",
+            "pid": 2452909331,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-008",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 5038.359,
+          "event": {
+            "type": "success",
+            "pid": 1602284268,
+            "data": [
+              {
+                "S": "1602284268@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2451386942@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002503",
+                "PromiseStart": "1793886545.494971",
+                "PromiseReturned": "1793886545.495115",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 5176.25,
+          "event": {
+            "type": "success",
+            "pid": 3013709892,
+            "data": [
+              {
+                "S": "3013709892@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002503),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886545.634136",
+                "WaitEnd": "1793886545.63427",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 5228.368,
+          "event": {
+            "type": "success",
+            "pid": 1602284268,
+            "data": [
+              {
+                "S": "1602284268@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886545.549066)],false)",
+                "WaitStart": "1793886545.685174",
+                "WaitEnd": "1793886545.685274",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 5241.627,
+          "event": {
+            "type": "success",
+            "pid": 1602284268,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-009",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 5709.344,
+          "event": {
+            "type": "success",
+            "pid": 2864100420,
+            "data": [
+              {
+                "S": "2864100420@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2850095147@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002550",
+                "PromiseStart": "1793886546.162324",
+                "PromiseReturned": "1793886546.162474",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 5844.383,
+          "event": {
+            "type": "success",
+            "pid": 1154925621,
+            "data": [
+              {
+                "S": "1154925621@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002550),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886546.30137",
+                "WaitEnd": "1793886546.301504",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 5895.725,
+          "event": {
+            "type": "success",
+            "pid": 2864100420,
+            "data": [
+              {
+                "S": "2864100420@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886546.352004",
+                "WaitEnd": "1793886546.352092",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 5908.259,
+          "event": {
+            "type": "success",
+            "pid": 2864100420,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-010",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 6359.848,
+          "event": {
+            "type": "success",
+            "pid": 2927901025,
+            "data": [
+              {
+                "S": "2927901025@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1525182838@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002597",
+                "PromiseStart": "1793886546.816976",
+                "PromiseReturned": "1793886546.817087",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 6497.103,
+          "event": {
+            "type": "success",
+            "pid": 1252413728,
+            "data": [
+              {
+                "S": "1252413728@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002597),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886546.952972",
+                "WaitEnd": "1793886546.953129",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 6549.672,
+          "event": {
+            "type": "success",
+            "pid": 2927901025,
+            "data": [
+              {
+                "S": "2927901025@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886546.876689)],false)",
+                "WaitStart": "1793886547.005869",
+                "WaitEnd": "1793886547.005968",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 6565.128,
+          "event": {
+            "type": "success",
+            "pid": 2927901025,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-011",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 7027.531,
+          "event": {
+            "type": "success",
+            "pid": 1449176175,
+            "data": [
+              {
+                "S": "1449176175@'https://n5.elfenbenstornet.se'",
+                "Creator": "(3061345520@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002644",
+                "PromiseStart": "1793886547.484851",
+                "PromiseReturned": "1793886547.484976",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 7157.952,
+          "event": {
+            "type": "success",
+            "pid": 2472537795,
+            "data": [
+              {
+                "S": "2472537795@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002644),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886547.612826",
+                "WaitEnd": "1793886547.61304",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 7210.074,
+          "event": {
+            "type": "success",
+            "pid": 1449176175,
+            "data": [
+              {
+                "S": "1449176175@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886547.666692",
+                "WaitEnd": "1793886547.66679",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 7223.631,
+          "event": {
+            "type": "success",
+            "pid": 1449176175,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-012",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 7691.229,
+          "event": {
+            "type": "success",
+            "pid": 1913783141,
+            "data": [
+              {
+                "S": "1913783141@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1904951147@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002692",
+                "PromiseStart": "1793886548.14491",
+                "PromiseReturned": "1793886548.145029",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 7818.523,
+          "event": {
+            "type": "success",
+            "pid": 1442744472,
+            "data": [
+              {
+                "S": "1442744472@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002692),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886548.274772",
+                "WaitEnd": "1793886548.274942",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 7872.359,
+          "event": {
+            "type": "success",
+            "pid": 1913783141,
+            "data": [
+              {
+                "S": "1913783141@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886548.197351)],false)",
+                "WaitStart": "1793886548.328137",
+                "WaitEnd": "1793886548.328223",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 7885.639,
+          "event": {
+            "type": "success",
+            "pid": 1913783141,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-013",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 8342.516,
+          "event": {
+            "type": "success",
+            "pid": 1864813456,
+            "data": [
+              {
+                "S": "1864813456@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2598471696@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002739",
+                "PromiseStart": "1793886548.796973",
+                "PromiseReturned": "1793886548.797099",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 8494.982,
+          "event": {
+            "type": "success",
+            "pid": 1521958722,
+            "data": [
+              {
+                "S": "1521958722@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002739),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886548.950469",
+                "WaitEnd": "1793886548.950607",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 8545.2,
+          "event": {
+            "type": "success",
+            "pid": 1864813456,
+            "data": [
+              {
+                "S": "1864813456@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886549.000388",
+                "WaitEnd": "1793886549.000482",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 8557.986,
+          "event": {
+            "type": "success",
+            "pid": 1864813456,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-014",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 9020.479,
+          "event": {
+            "type": "success",
+            "pid": 2370260601,
+            "data": [
+              {
+                "S": "2370260601@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2112292115@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002786",
+                "PromiseStart": "1793886549.476313",
+                "PromiseReturned": "1793886549.476443",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 9155.692,
+          "event": {
+            "type": "success",
+            "pid": 2372579346,
+            "data": [
+              {
+                "S": "2372579346@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002786),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886549.611471",
+                "WaitEnd": "1793886549.611598",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 9206.579,
+          "event": {
+            "type": "success",
+            "pid": 2370260601,
+            "data": [
+              {
+                "S": "2370260601@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886549.530302)],false)",
+                "WaitStart": "1793886549.662899",
+                "WaitEnd": "1793886549.662995",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 9224.952,
+          "event": {
+            "type": "success",
+            "pid": 2370260601,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-015",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 9659.224,
+          "event": {
+            "type": "success",
+            "pid": 3076785236,
+            "data": [
+              {
+                "S": "3076785236@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1766149801@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002835",
+                "PromiseStart": "1793886550.112479",
+                "PromiseReturned": "1793886550.112592",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 9794.261,
+          "event": {
+            "type": "success",
+            "pid": 2830841810,
+            "data": [
+              {
+                "S": "2830841810@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002835),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886550.250483",
+                "WaitEnd": "1793886550.250628",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 9846.82,
+          "event": {
+            "type": "success",
+            "pid": 3076785236,
+            "data": [
+              {
+                "S": "3076785236@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886550.30167",
+                "WaitEnd": "1793886550.301764",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 9859.685,
+          "event": {
+            "type": "success",
+            "pid": 3076785236,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-016",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 10310.065,
+          "event": {
+            "type": "success",
+            "pid": 1777359771,
+            "data": [
+              {
+                "S": "1777359771@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1229697052@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002882",
+                "PromiseStart": "1793886550.766881",
+                "PromiseReturned": "1793886550.766993",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 10457.181,
+          "event": {
+            "type": "success",
+            "pid": 1241606311,
+            "data": [
+              {
+                "S": "1241606311@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002882),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886550.913748",
+                "WaitEnd": "1793886550.913923",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 10508.468,
+          "event": {
+            "type": "success",
+            "pid": 1777359771,
+            "data": [
+              {
+                "S": "1777359771@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886550.826454)],false)",
+                "WaitStart": "1793886550.963785",
+                "WaitEnd": "1793886550.963888",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 10520.203,
+          "event": {
+            "type": "success",
+            "pid": 1777359771,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-017",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 10985.822,
+          "event": {
+            "type": "success",
+            "pid": 2538649184,
+            "data": [
+              {
+                "S": "2538649184@'https://n5.elfenbenstornet.se'",
+                "Creator": "(1304041021@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002929",
+                "PromiseStart": "1793886551.442763",
+                "PromiseReturned": "1793886551.44289",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 11114.0,
+          "event": {
+            "type": "success",
+            "pid": 2873794579,
+            "data": [
+              {
+                "S": "2873794579@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002929),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886551.57044",
+                "WaitEnd": "1793886551.570636",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 11167.193,
+          "event": {
+            "type": "success",
+            "pid": 2538649184,
+            "data": [
+              {
+                "S": "2538649184@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886551.62466",
+                "WaitEnd": "1793886551.624751",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 11178.916,
+          "event": {
+            "type": "success",
+            "pid": 2538649184,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-018",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 11658.329,
+          "event": {
+            "type": "success",
+            "pid": 2174297067,
+            "data": [
+              {
+                "S": "2174297067@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2217784649@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000002976",
+                "PromiseStart": "1793886552.114588",
+                "PromiseReturned": "1793886552.114703",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 11791.318,
+          "event": {
+            "type": "success",
+            "pid": 2523022181,
+            "data": [
+              {
+                "S": "2523022181@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000002976),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886552.244573",
+                "WaitEnd": "1793886552.244714",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 11847.242,
+          "event": {
+            "type": "success",
+            "pid": 2174297067,
+            "data": [
+              {
+                "S": "2174297067@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886552.167439)],false)",
+                "WaitStart": "1793886552.303376",
+                "WaitEnd": "1793886552.303535",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 11860.383,
+          "event": {
+            "type": "success",
+            "pid": 2174297067,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-019",
+      "stamped": false,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 12298.107,
+          "event": {
+            "type": "success",
+            "pid": 2087570350,
+            "data": [
+              {
+                "S": "2087570350@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2897580433@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000003023",
+                "PromiseStart": "1793886552.750193",
+                "PromiseReturned": "1793886552.750327",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 12435.161,
+          "event": {
+            "type": "success",
+            "pid": 2032397666,
+            "data": [
+              {
+                "S": "2032397666@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000003023),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886552.889936",
+                "WaitEnd": "1793886552.890111",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 12487.869,
+          "event": {
+            "type": "success",
+            "pid": 2087570350,
+            "data": [
+              {
+                "S": "2087570350@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark],false)",
+                "WaitStart": "1793886552.943725",
+                "WaitEnd": "1793886552.943815",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 12500.418,
+          "event": {
+            "type": "success",
+            "pid": 2087570350,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SELF-020",
+      "stamped": true,
+      "trace": [
+        {
+          "phase": "created",
+          "elapsed_ms": 12950.619,
+          "event": {
+            "type": "success",
+            "pid": 3104860639,
+            "data": [
+              {
+                "S": "3104860639@'https://n5.elfenbenstornet.se'",
+                "Creator": "(2409569557@'https://n5.elfenbenstornet.se')@'https://n5.elfenbenstornet.se'",
+                "Ref": "1000003070",
+                "PromiseStart": "1793886553.407187",
+                "PromiseReturned": "1793886553.407303",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "foreign_collection",
+          "elapsed_ms": 13086.275,
+          "event": {
+            "type": "success",
+            "pid": 2391106559,
+            "data": [
+              {
+                "S": "2391106559@'https://n5.elfenbenstornet.se'",
+                "Outcome": "error(error(existence_error(promise,1000003070),context(rpc:yield/3,'unknown, consumed, or expired promise')))",
+                "WaitStart": "1793886553.542355",
+                "WaitEnd": "1793886553.542489",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "owner_collection",
+          "elapsed_ms": 13133.87,
+          "event": {
+            "type": "success",
+            "pid": 3104860639,
+            "data": [
+              {
+                "S": "3104860639@'https://n5.elfenbenstornet.se'",
+                "Outcome": "success([mark(1793886553.460491)],false)",
+                "WaitStart": "1793886553.590438",
+                "WaitEnd": "1793886553.590528",
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "phase": "creator_finish",
+          "elapsed_ms": 13147.607,
+          "event": {
+            "type": "success",
+            "pid": 3104860639,
+            "data": [
+              {
+                "ProbeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 20,
+    "fail": 0,
+    "error": 0
+  },
+  "scope": "Public actor and HTTP self-route; producer execution timestamps do not measure client-side answer installation"
+}

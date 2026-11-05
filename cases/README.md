@@ -228,3 +228,11 @@ hashes. The upstream browser real-session runner accepts the same file through
 the earlier baseline. [The public release](../reports/2026-11-05-standard-library-release/README.md)
 records exact callback errors, the nested Trealla follow-up and deployed pins. This selection does not
 expand every external ISO mode or error refinement into a complete contract.
+
+
+`retained-context-0.1.json` maintains the 51-case native context selection and
+adds six barrier-controlled promise timeout/ownership cases.
+The [profile](../profiles/retained-context-0.1.md) defines its matrix and limits.
+`runner/context_release.py` requires all four routes, exact case coverage and
+passing attachment regression controls; no policy exclusion or successful retry
+can replace a failed invocation. Historical audit reports remain unchanged.

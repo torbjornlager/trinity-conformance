@@ -1,0 +1,71 @@
+{
+  "suite": "last-attachment-race-0.1",
+  "sources": {
+    "swi": {
+      "root": "/Users/lager/swi-prolog-node",
+      "revision": "c8261115cb4cdedacdea1de2216e994f78f6751c",
+      "clean": true
+    },
+    "trealla": {
+      "root": "/Users/lager/trealla-port",
+      "revision": "62e93c3b5d0e9cbfdebd4f42e9d66fa6665dbfef",
+      "clean": true
+    }
+  },
+  "results": [
+    {
+      "candidate": "swi",
+      "id": "ATTACH-REJOIN-FIRST",
+      "status": "pass",
+      "returncode": 0,
+      "observation": "reattach_first_passed"
+    },
+    {
+      "candidate": "swi",
+      "id": "ATTACH-ATOMIC",
+      "status": "pass",
+      "negative_control": false,
+      "returncode": 0,
+      "source_sha256": "636df427e75d37f7325cd3abceb609526475542e4ee21d94ff714247cfabe84c",
+      "instrumented_sha256": "d5126cc5d1a1c747ac6f7376ca1f5782d24e645df375487e0183efc417d50500",
+      "observation": "race_result(busy,rejected(error(permission_error(use,closed_client_context,delegated_context(context(global,0))),_106004)),closed)\nattachment_race_passed"
+    },
+    {
+      "candidate": "swi",
+      "id": "ATTACH-NEGATIVE",
+      "status": "pass",
+      "negative_control": true,
+      "returncode": 1,
+      "source_sha256": "636df427e75d37f7325cd3abceb609526475542e4ee21d94ff714247cfabe84c",
+      "instrumented_sha256": "bb33c8b9f03bde3d3b6171abfde2dbefe3591403510fa8bc3f078cd7612cf34f",
+      "observation": "race_result(free,attached(delegated_context(context(global,0))),closed)"
+    },
+    {
+      "candidate": "trealla",
+      "id": "ATTACH-REJOIN-FIRST",
+      "status": "pass",
+      "returncode": 0,
+      "observation": "reattach_first_passed"
+    },
+    {
+      "candidate": "trealla",
+      "id": "ATTACH-ATOMIC",
+      "status": "pass",
+      "negative_control": false,
+      "returncode": 0,
+      "source_sha256": "38fcd88b7ac6e9e1eb94918579d8d1d483c2200210aec8f3c43e84b943afd122",
+      "instrumented_sha256": "547808496951f34f4ee11320782f7fd5b24f0df68b520885341f24b2eef96c55",
+      "observation": "race_result(busy,rejected(error(permission_error(register,closed_namespace,delegated_context(bd8f8dff979998109515802e2d81e2c6)),context(actors:register/2,'client namespace has ended'))),closed)\nattachment_race_passed"
+    },
+    {
+      "candidate": "trealla",
+      "id": "ATTACH-NEGATIVE",
+      "status": "pass",
+      "negative_control": true,
+      "returncode": 1,
+      "source_sha256": "38fcd88b7ac6e9e1eb94918579d8d1d483c2200210aec8f3c43e84b943afd122",
+      "instrumented_sha256": "d5fc01a01f56f0b69ab25175c63a27cef114074e1b39b0f2596c82cb443996f2",
+      "observation": "race_result(free,attached(delegated_context('64a257363641ccb7c008b02d9b402758')),closed)"
+    }
+  ]
+}

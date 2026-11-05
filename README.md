@@ -7,18 +7,16 @@ another runtime.
 
 ## Current consolidated results
 
-The [5 November public release](reports/2026-11-05-public-promise-release/README.md)
-commits, pushes and deploys portable runtime capabilities and context-wide browser
-promises to N0–N6. All 34 pinned consumer CI groups and 132 selected live assertions
-pass, including real-browser promise sharing and separate-context denial through
-the deployed assets on every public host in both execution modes.
+The [latest public peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
+deploys the N3–N5 peer permissions and passes all 51 selected context checks
+without exclusions. Intermediate context and browser CI failures remain recorded
+alongside passing reruns; no repair is claimed for those intermittent observations.
 
-The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) inventories the manuscript's
-353 source units and separates verified requirements, unverified coverage,
-missing facilities, observed failures and profile exclusions. GNU library-policy
-gaps and native retained-context auditing remain open; the browser ownership
-failure has been repaired. The [coverage overview](CURRENT_COVERAGE.md) keeps the
-new release, earlier 456-assertion rollout and development evidence separate.
+The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
+51-case matrix and deterministic attachment controls as a strict selection.
+The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
+full obligation mapping and external ISO coverage remain open. See the
+[coverage overview](CURRENT_COVERAGE.md) for dated release boundaries and counts.
 These selections do not establish a language-conformance percentage.
 
 Earlier ACTOR release and historical matrices remain available below with their
