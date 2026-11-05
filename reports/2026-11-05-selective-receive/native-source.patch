@@ -1,0 +1,80 @@
+diff --git a/prolog/web_prolog/actors.pl b/prolog/web_prolog/actors.pl
+index df542aa..0a91157 100644
+--- a/prolog/web_prolog/actors.pl
++++ b/prolog/web_prolog/actors.pl
+@@ -1538,13 +1538,19 @@ receive(Clauses, Options) :-
+     ).
+ 
+ receive(Mailbox, Clauses, Options) :-
+-    (   selectchk(timeout(Seconds), Options, Rest),
+-        Seconds > 0
+-    ->  get_time(Now),
+-        Deadline is Now + Seconds,
+-        receive_scan(Mailbox, Clauses, [deadline(Deadline)|Rest], Options)
+-    ;   receive_scan(Mailbox, Clauses, Options, Options)
+-    ).
++    validate_receive_wait_options(Mailbox, Options),
++    (   selectchk(timeout(Seconds), Options, WithoutTimeout)
++    ->  exclude(receive_deadline_option, WithoutTimeout, Rest),
++        (   Seconds > 0
++        ->  get_time(Now), Deadline is Now + Seconds,
++            GetOptions = [deadline(Deadline)|Rest]
++        ;   GetOptions = [timeout(Seconds)|Rest]
++        )
++    ;   GetOptions = Options
++    ),
++    receive_scan(Mailbox, Clauses, GetOptions, Options).
++
++receive_deadline_option(deadline(_)).
+ 
+ % Keep one deadline throughout the scan: unrelated arrivals do not restart
+ % the wait. Preserve timeout(0), whose queue-inspection semantics differ
+@@ -1594,9 +1600,7 @@ receive_message(Mailbox, Msg, Options, Ref) :-
+ % options and their native validation rather than introducing a second scanner.
+ % Resolve any relative native timeout once, before the first bounded wait.
+ receive_wait_options(Mailbox, Options, Deadline, WaitOptions) :-
+-    must_be(list, Options),
+-    append(Options, [deadline(-1)], ValidationOptions),
+-    (thread_get_message(Mailbox, _, ValidationOptions) -> true ; true),
++    validate_receive_wait_options(Mailbox, Options),
+     get_time(Now),
+     findall(T, member(timeout(T), Options), Timeouts),
+     findall(D, member(deadline(D), Options), Deadlines),
+@@ -1609,6 +1613,11 @@ receive_wait_options(Mailbox, Options, Deadline, WaitOptions) :-
+     receive_wait_deadline(Relative, Absolute, Now, Deadline),
+     exclude(receive_time_option, Options, WaitOptions).
+ 
++validate_receive_wait_options(Mailbox, Options) :-
++    must_be(list, Options),
++    append(Options, [deadline(-1)], ValidationOptions),
++    (thread_get_message(Mailbox, _, ValidationOptions) -> true ; true).
++
+ receive_time_option(timeout(_)).
+ receive_time_option(deadline(_)).
+ 
+diff --git a/tests/tiers/t0_actors.pl b/tests/tiers/t0_actors.pl
+index 76fa8e6..4346c82 100644
+--- a/tests/tiers/t0_actors.pl
++++ b/tests/tiers/t0_actors.pl
+@@ -304,6 +304,21 @@ test(receive_zero_timeout_scans_queued_messages,
+    receive({queued_match -> true}, [timeout(Zero), on_timeout(fail)]),
+    receive({timeout_noise -> true}, [timeout(Zero), on_timeout(fail)]).
+ 
++test(receive_relative_timeout_overrides_expired_deadline,
++     [forall(member(Order,[relative_first,absolute_first]))]) :-
++   self(Self), get_time(Now), Past is Now-1,
++   send(Self, relative_wins, [delay(0.02)]),
++   (Order==relative_first -> Limits=[timeout(1),deadline(Past)]
++   ; Limits=[deadline(Past),timeout(1)]),
++   receive({relative_wins -> Result=message},
++           [on_timeout(Result=expired)|Limits]),
++   assertion(Result==message).
++
++test(receive_zero_timeout_overrides_expired_deadline) :-
++   self(Self), Self ! zero_wins, get_time(Now), Past is Now-1,
++   receive({zero_wins -> true},
++           [deadline(Past),timeout(0),on_timeout(fail)]).
++
+ test(receive_without_timeout_preserves_unmatched_messages) :-
+    self(Self),
+    Self ! timeout_noise,

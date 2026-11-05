@@ -26,6 +26,17 @@ At that migration, whole-unit totals remained 11 verified per target; new
 signatures and expanded paragraphs were not automatically promoted. The migration
 itself reran no runtimes; the subsequent finite-case execution is recorded below.
 
+The [selective receive audit and repair](reports/2026-11-05-selective-receive/README.md)
+adds 23 assertions to the six-case receive selection. All 29 cases pass on native
+SWI, Trealla and real Chrome Worker/main modes: 116 observations. Native SWI now
+honours relative timeout precedence over an absolute deadline. Browser receive
+now resolves its wait budget once and honours absolute deadlines; Worker delayed
+send/cancel identifiers are separate from request correlation IDs. The ten mapped
+receive source units are verified on ACTOR targets, bringing them to 33 verified
+units; GNU remains at 23 because ACTOR is outside its profile. Actual control
+signals during a running guard (B-104) still need common controlled probes.
+This is development qualification; deployed consumer pins are unchanged.
+
 The [countall noncompletion fixture](reports/2026-11-05-library-noncompletion/README.md)
 closes LIB-035 with a separate common case, STDLIB-296. Every mode passes a finite
 control, signals entry from inside the generator callback, returns no completed

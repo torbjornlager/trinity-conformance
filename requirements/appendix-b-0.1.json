@@ -4226,24 +4226,68 @@
       "statement": "receive(+Clauses) is nondet. receive(+Clauses, +Options) is nondet.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-007",
+                "SR-018",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-007",
+                "SR-018",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-007",
+                "SR-018",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-007",
+                "SR-018",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4263,24 +4307,80 @@
       "statement": "Waits for, selects, and consumes one message from the calling process's mailbox. A call is single-message, but not necessarily single-solution. During one invocation it selects and consumes at most one message. Messages are considered in arrival order, and each message is tested against the receive clauses in textual order. The first message accepted by a clause is removed from the mailbox. This selection is committed: backtracking through the invocation never selects another message or another clause.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-002",
+                "SR-005",
+                "SR-007",
+                "SR-008",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-002",
+                "SR-005",
+                "SR-007",
+                "SR-008",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-002",
+                "SR-005",
+                "SR-007",
+                "SR-008",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-002",
+                "SR-005",
+                "SR-007",
+                "SR-008",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4300,24 +4400,72 @@
       "statement": "The selected clause body is ordinary Prolog code. The call as a whole therefore has the determinism of the fired body: a body may fail, succeed once, throw an exception, or yield several solutions. Choice points left by the body remain available, but they enumerate solutions of that same body; they do not inspect the mailbox again. The selected message remains consumed if the body fails or throws, and is not restored on backtracking. Thus the nondet declaration concerns the possible number of logical solutions, not the number of messages consumed by one invocation. For example, after one foo message has arrived, receive(\\foo -> member(X, [a,b])\\) consumes that message once but can yield both X = a and X = b.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-005",
+                "SR-007",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-005",
+                "SR-007",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-005",
+                "SR-007",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-005",
+                "SR-007",
+                "SR-009",
+                "SR-010"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4337,24 +4485,64 @@
       "statement": "A cut executed in a selected clause body is scoped to that body, as if the body were invoked through call/1. It can prune choice points created since entry to the body, but it cannot prune choice points in the caller; nor does it alter the already committed message and clause selection.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-006",
+                "SR-015"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-006",
+                "SR-015"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-006",
+                "SR-015"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-006",
+                "SR-015"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4374,24 +4562,72 @@
       "statement": "Clauses has the following form:",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-003",
+                "SR-008",
+                "SR-009",
+                "SR-012"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-003",
+                "SR-008",
+                "SR-009",
+                "SR-012"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-003",
+                "SR-008",
+                "SR-009",
+                "SR-012"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-003",
+                "SR-008",
+                "SR-009",
+                "SR-012"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4411,24 +4647,84 @@
       "statement": "A clause accepts a message if its pattern matches the message and its optional guard succeeds. Matching is one-sided: the pattern must subsume the message, so matching may bind variables in the pattern but never binds variables that occur in the message. For a ground message this is the same as unification. A guard is an ordinary goal and is not restricted in this way; a guard that checks a correlation reference or a pid should test the value, for example with ==, rather than bind it. Candidate matching and guard evaluation use a tentative substitution. If matching or the guard fails, all bindings made while trying that candidate are discarded before the next clause or message is considered; the mailbox is not changed until a clause accepts. A guard is evaluated for its first solution only, as if by once/1. Bindings from the successful pattern and guard are in scope in the body.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-001",
+                "SR-003",
+                "SR-004",
+                "SR-011",
+                "SR-012",
+                "SR-013",
+                "SR-014"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-001",
+                "SR-003",
+                "SR-004",
+                "SR-011",
+                "SR-012",
+                "SR-013",
+                "SR-014"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-001",
+                "SR-003",
+                "SR-004",
+                "SR-011",
+                "SR-012",
+                "SR-013",
+                "SR-014"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-001",
+                "SR-003",
+                "SR-004",
+                "SR-011",
+                "SR-012",
+                "SR-013",
+                "SR-014"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4468,7 +4764,44 @@
           "evidence": []
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [
+        {
+          "report": "reports/2026-11-05-selective-receive/native/results.json",
+          "candidate": "swi",
+          "cases": [
+            "SR-003",
+            "SR-012"
+          ],
+          "note": "Ordinary guard exceptions and rollback pass. Actual abort, termination and running-time control exceptions during guard evaluation still need common controlled probes."
+        },
+        {
+          "report": "reports/2026-11-05-selective-receive/native/results.json",
+          "candidate": "trealla",
+          "cases": [
+            "SR-003",
+            "SR-012"
+          ],
+          "note": "Ordinary guard exceptions and rollback pass. Actual abort, termination and running-time control exceptions during guard evaluation still need common controlled probes."
+        },
+        {
+          "report": "reports/2026-11-05-selective-receive/browser.json",
+          "candidate": "swi-wasm-worker",
+          "cases": [
+            "SR-003",
+            "SR-012"
+          ],
+          "note": "Ordinary guard exceptions and rollback pass. Actual abort, termination and running-time control exceptions during guard evaluation still need common controlled probes."
+        },
+        {
+          "report": "reports/2026-11-05-selective-receive/browser.json",
+          "candidate": "swi-wasm-main",
+          "cases": [
+            "SR-003",
+            "SR-012"
+          ],
+          "note": "Ordinary guard exceptions and rollback pass. Actual abort, termination and running-time control exceptions during guard evaluation still need common controlled probes."
+        }
+      ]
     },
     {
       "id": "B-105",
@@ -4485,24 +4818,64 @@
       "statement": "Messages accepted by no clause are deferred: they remain in the mailbox, without any change in their contents or relative order, and are available to later receive calls. receive(\\\\) accepts no message and waits, subject to Options. Valid options for receive/2 are:",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-002",
+                "SR-016"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-002",
+                "SR-016"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-002",
+                "SR-016"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-002",
+                "SR-016"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4522,24 +4895,72 @@
       "statement": "timeout(+Number) Bounds the wait for an accepted message, in seconds. The value 0 inspects messages already in the mailbox without waiting for another. A positive timeout is converted once to an absolute deadline, so messages skipped during the scan do not restart the timeout. Default is no timeout.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-017",
+                "SR-022",
+                "SR-024",
+                "SR-025"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-017",
+                "SR-022",
+                "SR-024",
+                "SR-025"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-017",
+                "SR-022",
+                "SR-024",
+                "SR-025"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-017",
+                "SR-022",
+                "SR-024",
+                "SR-025"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4559,24 +4980,76 @@
       "statement": "deadline(+AbsoluteTime) Sets an absolute deadline in the same time scale as get_time/1. This is useful when several operations must share one time budget. A deadline that has already passed expires immediately. If both timeout/1 and deadline/1 are present, timeout/1 takes precedence.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-021",
+                "SR-022",
+                "SR-023",
+                "SR-028",
+                "SR-029"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-021",
+                "SR-022",
+                "SR-023",
+                "SR-028",
+                "SR-029"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-021",
+                "SR-022",
+                "SR-023",
+                "SR-028",
+                "SR-029"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-021",
+                "SR-022",
+                "SR-023",
+                "SR-028",
+                "SR-029"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -4596,24 +5069,80 @@
       "statement": "on_timeout(+Goal) Called if the relative timeout or absolute deadline expires with no message accepted. Its success, failure, exception, and any choice points determine the outcome of the receive on the timeout path. Default is true. This option is only meaningful when timeout/1 or deadline/1 is present.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "SR-017",
+                "SR-018",
+                "SR-019",
+                "SR-020",
+                "SR-021",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "SR-017",
+                "SR-018",
+                "SR-019",
+                "SR-020",
+                "SR-021",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "SR-017",
+                "SR-018",
+                "SR-019",
+                "SR-020",
+                "SR-021",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-selective-receive/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "SR-017",
+                "SR-018",
+                "SR-019",
+                "SR-020",
+                "SR-021",
+                "SR-024"
+              ]
+            }
+          ],
+          "note": "Mapped clause evidence on the 29-case selective receive selection, through native WebSocket sessions or real Chrome Worker/main sessions. GNU remains outside ACTOR. Public deployment and complete control-exception coverage are separate."
         }
       },
       "evidence_candidates": []
@@ -21234,6 +21763,13 @@
       "id": "AUDIT-REMAINING",
       "requirements": [],
       "next_step": "Map existing exact case IDs to each full source unit; add shared cases for uncovered clauses, including remote lifecycle, statechart invocation, node settings and external ISO semantics."
+    },
+    {
+      "id": "AUDIT-RECEIVE-CONTROL",
+      "requirements": [
+        "B-104"
+      ],
+      "next_step": "The 29-case receive selection verifies ten source units. Complete actual control-signal propagation through a running guard, including original mailbox position, on native and both browser modes; ordinary guard exceptions already pass."
     }
   ],
   "migration": {

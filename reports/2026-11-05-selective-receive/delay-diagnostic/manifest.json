@@ -1,0 +1,25 @@
+{
+  "suite": "receive-delay-diagnostic",
+  "cases": [
+    {
+      "id": "D-1",
+      "title": "reference",
+      "goal": "make_ref(R),nonvar(R)"
+    },
+    {
+      "id": "D-2",
+      "title": "delayed send only with supplied id",
+      "goal": "self(S),send(S,diag_delay,[delay(0.01),id(diag_id)])"
+    },
+    {
+      "id": "D-3",
+      "title": "delayed send and receive with supplied id",
+      "goal": "self(S),send(S,diag_delay,[delay(0.01),id(diag_id)]),receive({diag_delay->true},[timeout(1),on_timeout(fail)])"
+    },
+    {
+      "id": "D-4",
+      "title": "delayed send and receive with generated id",
+      "goal": "self(S),send(S,diag_delay,[delay(0.01)]),receive({diag_delay->true},[timeout(1),on_timeout(fail)])"
+    }
+  ]
+}

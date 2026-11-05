@@ -293,3 +293,13 @@ An external controller observes no terminal result for at least 500 ms, confirms
 process/browser termination and runs a fresh-execution finite control. This is
 bounded evidence, not a proof of nontermination. [Results and negative controls](../reports/2026-11-05-library-noncompletion/README.md)
 are separate from public transport certificates and same-session cancellation.
+
+
+`selective-receive-0.2.json` preserves SR-001–006 and adds SR-007–029: one-message
+commitment, body alternatives/cuts, clause order and rollback, ordinary guard
+exceptions, empty clauses, timeout callbacks, relative/absolute deadline priority,
+absolute time scale, sustained unmatched traffic and delayed-send/cancel bridge
+controls. The traffic helper is explicitly supplied to its child; both probe and
+parent have external deadlines. These 29 cases run on four ACTOR modes, not GNU
+ISOBASE. [Repair and clause mapping](../reports/2026-11-05-selective-receive/README.md)
+keep actual guard control-signal semantics open.

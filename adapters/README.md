@@ -230,3 +230,12 @@ standalone SWI/Trealla APIs and private GNU worker; the browser probes use real
 Chrome Worker/main sessions in disposable browser processes. The browser's entry
 wait, observation deadline and kill all run in Node, outside the renderer. See
 [exact bounds, scope and negative controls](../reports/2026-11-05-library-noncompletion/README.md).
+
+
+`local_actor_cases.py` runs an explicit finite ACTOR manifest against fresh
+WebSocket sessions on disposable native SWI/Trealla nodes. `wasm_actor_cases.cjs`
+runs the same manifest in fresh real Chrome pages/sessions in Worker/main modes;
+use `LIBRARY_RUNTIME_ROOT`, `LIBRARY_MANIFEST` and `LIBRARY_REPORT`. Each query has
+an external eight-second deadline, startup is bounded, and pages/nodes are closed.
+The [selective receive report](../reports/2026-11-05-selective-receive/README.md)
+records exact input hashes, failed baselines and runtime repair qualification.
