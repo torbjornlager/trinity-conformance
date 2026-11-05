@@ -1,0 +1,226 @@
+#!/usr/bin/env python3
+"""Public RELATION lookups and owner-edited SWI family visibility; local fixtures only."""
+import argparse
+from collections import Counter
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import socket
+import subprocess
+import sys
+import time
+from urllib.error import HTTPError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'runner'))
+from baseline import variant_tokens
+from local_standard_library import atom,port,sha
+
+FAMILIES={
+    'stateless_api':['max_inflight_calls','max_term_text_bytes','max_call_requests_per_window'],
+    'private_db':['max_load_text_bytes','load_uri_allowed_origins'],
+    'semistateful_api':['max_sessions_per_principal','max_session_spawns_per_window'],
+    'stateful_api':['max_ws_actors_per_principal','max_ws_frame_bytes','max_ws_commands_per_window'],
+}
+
+
+def term(value):
+    if isinstance(value,list):return '['+','.join(term(v) for v in value)+']'
+    if isinstance(value,int):return str(value)
+    return value if re.fullmatch('[a-z][A-Za-z_0-9]*',value) else atom(value)
+
+
+def request(url,goal,template='V',limit=2):
+    params=dict(goal=goal,template=template,format='prolog',limit=limit)
+    with urlopen(url+'/call?'+urlencode(params),timeout=8) as response:
+        return response.read().decode()
+
+
+def config(url,updates=None):
+    req=Request(url+'/admin/config',data=json.dumps(updates).encode() if updates is not None else None,
+                headers={'Content-Type':'application/json'})
+    with urlopen(req,timeout=8) as response:return json.load(response)
+
+
+def keys(url,expected):
+    body=request(url,'node_setting(K,V)','K',100)
+    match=re.fullmatch(r'\s*success\(\[(.*?)\],\s*false\)\.\s*',body,re.S)
+    if not match:raise AssertionError(body)
+    observed=[k.strip() for k in match.group(1).split(',')] if match.group(1).strip() else []
+    if Counter(observed)!=Counter(expected):raise AssertionError(dict(expected=list(expected),observed=observed,body=body))
+    return body
+
+
+def values(url,expected):
+    observations={}
+    for key,value in expected.items():
+        body=request(url,f'node_setting({key},V)')
+        want='success(['+term(value)+'],false).'
+        if variant_tokens(body)!=variant_tokens(want):raise AssertionError(dict(key=key,expected=want,body=body))
+        observations[key]=body
+    return observations
+
+
+def fails(url,key,value='V'):
+    body=request(url,f'node_setting({key},{value})')
+    if variant_tokens(body)!=variant_tokens('failure.'):raise AssertionError(body)
+    return body
+
+
+def snapshot(url,expected):return dict(keys=keys(url,expected),values=values(url,expected))
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--swipl',required=True)
+    parser.add_argument('--tpl',required=True)
+    parser.add_argument('--swi-root',type=Path,required=True)
+    parser.add_argument('--trealla-root',type=Path,required=True)
+    parser.add_argument('--output',type=Path,required=True)
+    args=parser.parse_args()
+    args.output.mkdir(parents=True,exist_ok=False)
+    rows=[]
+    sources={}
+    def check(candidate,case_id,title,operation):
+        row=dict(candidate=candidate,id=case_id,title=title)
+        try:row.update(status='pass',observation=operation())
+        except Exception as error:row.update(status='fail',detail=str(error))
+        rows.append(row)
+        print(candidate,case_id,row['status'],flush=True)
+    def readiness(process,n,log):
+        for _ in range(200):
+            if process.poll() is not None:
+                log.seek(0)
+                raise RuntimeError(log.read())
+            try:
+                with socket.create_connection(('127.0.0.1',n),timeout=.1):return
+            except OSError:time.sleep(.03)
+        raise TimeoutError('fixture startup')
+    def stop(process):
+        process.terminate()
+        try:process.wait(timeout=5)
+        except subprocess.TimeoutExpired:process.kill();process.wait()
+    def source(name,root,exe):
+        files=(root/'prolog').rglob('*.pl') if name=='swi' else root.glob('*.pl')
+        result=dict(revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
+                    tracked_diff_sha256=hashlib.sha256(subprocess.check_output(['git','diff','HEAD','--'],cwd=root)).hexdigest(),
+                    executable_sha256=sha(exe),files_sha256={str(f.relative_to(root)):sha(f) for f in sorted(files)})
+        if name=='trealla':
+            lib=Path(exe).parent/'library'
+            result['engine_library_sha256']=hashlib.sha256(''.join(str(f.relative_to(lib))+':'+sha(f)+'\n' for f in sorted(lib.rglob('*')) if f.is_file()).encode()).hexdigest()
+        return result
+    def relation(candidate,url,mode,expected):
+        prefix='NV-relation-'+mode
+        check(candidate,prefix+'-keys','RELATION enumerates exactly the visible keys',lambda:keys(url,expected))
+        check(candidate,prefix+'-values','RELATION bound lookups return the configured values',lambda:values(url,expected))
+        hidden=[k for family in FAMILIES.values() for k in family if k not in expected]
+        if candidate=='trealla':hidden+=['timeout']
+        check(candidate,prefix+'-hidden','Unavailable families and private keys fail in RELATION',lambda:{k:fails(url,k) for k in hidden+['shared_db_source','principal_policies','builtin_family_policy','nv_unknown']})
+        check(candidate,prefix+'-mismatches','Invalid keys and mismatched values fail as relations',lambda:[fails(url,'42'),fails(url,'[]'),fails(url,'bad(key)'),fails(url,'profile','actor'),fails(url,'profile','[]')])
+        def readonly():
+            before=config(url) if candidate=='swi' else None
+            first=snapshot(url,expected)
+            fails(url,'profile','nv_wrong_profile')
+            second=snapshot(url,expected)
+            if first!=second:raise AssertionError('Repeated reads changed the relation')
+            if candidate=='swi' and config(url)!=before:raise AssertionError('Public reads changed owner configuration')
+            return dict(first=first,second=second,owner_configuration_unchanged=candidate=='swi')
+        check(candidate,prefix+'-readonly','RELATION reads and failed value matches preserve settings',readonly)
+
+    # Five SWI listeners in one process exercise request/node isolation too.
+    fixtures=[]
+    occupied=set()
+    for profile,mode in [('actor','blacklist'),('actor','blacklist')]+[('relation',m) for m in ['blacklist','whitelist','off']]:
+        n=port()
+        while n in occupied:n=port()
+        occupied.add(n)
+        expected=dict(url=f'http://localhost:{n}',profile=profile,sandbox=mode,auth='dev',timeout=9,
+                      rate_window_seconds=73,max_inflight_calls=13,max_term_text_bytes=65536,
+                      max_call_requests_per_window=1000,max_load_text_bytes=131072,load_uri_allowed_origins=[],
+                      max_sessions_per_principal=19,max_session_spawns_per_window=211,
+                      max_ws_actors_per_principal=23,max_ws_frame_bytes=262144,max_ws_commands_per_window=307)
+        options=[f'{k}({term(v)})' for k,v in expected.items() if k!='url']+['dev_capabilities([admin,execute])']
+        if profile=='relation':
+            for family in ['private_db','semistateful_api','stateful_api']:
+                for key in FAMILIES[family]:del expected[key]
+        fixtures.append(dict(port=n,url=f'http://127.0.0.1:{n}',expected=expected,options=options))
+    commands=['use_module('+atom(args.swi_root/'prolog/web_prolog.pl')+')']+[f"node({f['port']},["+','.join(f['options'])+'])' for f in fixtures]+['thread_get_message(stop)']
+    env=os.environ.copy()
+    for name in ['WP_CONFIG_FILE','SWI_HOME_DIR','SWIPL_HOME_DIR','WP_NATIVE_STATE','WP_NATIVE_MODE']:env.pop(name,None)
+    sources['swi']=source('swi',args.swi_root,args.swipl)
+    with (args.output/'swi.log').open('w+') as log:
+      process=subprocess.Popen([args.swipl,'-f','none','-q','-g',','.join(commands)],cwd=args.swi_root,env=env,stdout=log,stderr=subprocess.STDOUT)
+      try:
+        for fixture in fixtures:readiness(process,fixture['port'],log)
+        for fixture in fixtures[2:]:relation('swi',fixture['url'],fixture['expected']['sandbox'],fixture['expected'])
+        owner,peer=fixtures[:2]
+        url=owner['url'];expected=owner['expected'];peer_before=config(peer['url']);owner_before=config(url)
+        check('swi','NV-actor-baseline','All default ACTOR API families expose their actual settings',lambda:snapshot(url,expected))
+        def update(families,enabled):
+            result=config(url,dict(builtin_families=[dict(id=f,profiles=dict(actor=enabled)) for f in families]))
+            for family in families:
+                row=next(f for f in result['builtin_families'] if f['id']==family)
+                if row['profiles']['actor'] is not enabled:raise AssertionError(result)
+            return result
+        def peer_unchanged():
+            if config(peer['url'])!=peer_before:raise AssertionError('Family edit escaped to another node')
+            return snapshot(peer['url'],peer['expected'])
+        def edited(families):
+            before=config(url)
+            visible={k:v for k,v in expected.items() if not any(k in FAMILIES[f] for f in families)}
+            observed=snapshot(url,visible)
+            for family in families:
+                for key in FAMILIES[family]:fails(url,key)
+            fails(url,'profile','nv_wrong_profile')
+            fails(url,'builtin_family_policy')
+            if config(url)!=before:raise AssertionError('Public queries changed the owner policy')
+            return dict(expected=visible,snapshot=observed,owner_configuration_unchanged=True)
+        for family in FAMILIES:
+            def disabled(f=family):update([f],False);return edited([f])
+            check('swi','NV-family-'+family+'-off','Owner-disabled family keys disappear without changing other settings',disabled)
+            check('swi','NV-family-'+family+'-peer','A second node keeps its own family settings',peer_unchanged)
+            def restored(f=family):
+                update([f],True)
+                result=snapshot(url,expected)
+                if config(url)!=owner_before:raise AssertionError('Restored policy differs from the initial configuration')
+                return result
+            check('swi','NV-family-'+family+'-restored','Re-enabling the family restores its keys and values',restored)
+        def all_off():update(FAMILIES,False);return edited(FAMILIES)
+        check('swi','NV-family-all-off','Disabling all API families leaves only general settings visible',all_off)
+        check('swi','NV-family-all-peer','Combined changes remain confined to the target node',peer_unchanged)
+        check('swi','NV-family-relation-unaffected','Actor-only policy edits do not change RELATION profile visibility',lambda:snapshot(fixtures[2]['url'],fixtures[2]['expected']))
+        def restore_all():
+            update(FAMILIES,True)
+            result=snapshot(url,expected)
+            if config(url)!=owner_before:raise AssertionError('Combined restoration changed other settings')
+            return result
+        check('swi','NV-family-all-restored','Combined policy restoration preserves initial values',restore_all)
+      finally:stop(process)
+
+    # Trealla families are profile-defined; no fabricated policy-edit API.
+    sources['trealla']=source('trealla',args.trealla_root,args.tpl)
+    for mode in ['blacklist','whitelist','off']:
+        n=port();url=f'http://127.0.0.1:{n}'
+        expected=dict(url=f'https://visibility.example.test/{mode}',profile='relation',sandbox=mode,auth='open',
+                      rate_window_seconds=73,max_inflight_calls=13,max_term_text_bytes=65536,max_call_requests_per_window=1000)
+        options=[f'profile(relation)',f'sandbox({mode})','auth(open)',f"node_url({atom(expected['url'])})",'rate_window_seconds(73)',
+                 'max_inflight_calls(13)','max_term_text_bytes(65536)','max_call_requests_per_window(1000)']
+        env=dict(os.environ,TPL_LIBRARY_PATH=str(Path(args.tpl).parent/'library'))
+        with (args.output/('trealla-'+mode+'.log')).open('w+') as log:
+          process=subprocess.Popen([args.tpl,'-g',f'use_module(distribution),web_prolog:web_prolog_node({n},['+','.join(options)+'])'],cwd=args.trealla_root,env=env,stdout=log,stderr=subprocess.STDOUT)
+          try:
+            readiness(process,n,log)
+            relation('trealla',url,mode,expected)
+          finally:stop(process)
+    report=dict(suite='node-setting-visibility-0.1',adapter_sha256=sha(__file__),
+                helpers_sha256={f:sha(ROOT/f) for f in ['adapters/local_standard_library.py','runner/baseline.py','runner/run.py']},
+                sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail']})
+    (args.output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
+    return int(any(r['status']=='fail' for r in rows))
+
+
+if __name__=='__main__':raise SystemExit(main())

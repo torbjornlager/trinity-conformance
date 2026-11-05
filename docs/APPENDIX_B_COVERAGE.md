@@ -10,8 +10,8 @@ Passing implementation suites do not automatically verify every paragraph. Most 
 
 | Target | Verified | Unverified | Missing | Failing | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| swi | 41 | 342 | 0 | 0 | 0 |
-| trealla | 41 | 342 | 0 | 0 | 0 |
+| swi | 42 | 341 | 0 | 0 | 0 |
+| trealla | 42 | 341 | 0 | 0 | 0 |
 | gnu | 23 | 108 | 6 | 2 | 244 |
 | wasm_worker | 34 | 341 | 6 | 2 | 0 |
 | wasm_main | 34 | 341 | 6 | 2 | 0 |
@@ -22,7 +22,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 1. **Native retained contexts:** the development repair passes all 51 scoped probes across both native runtimes and all four directed routes. Original failures and blocked source-export cases are resolved. Atomic last-attachment retirement also passes both orderings and negative controls. The latest public peer-policy release passes all 51 scoped probes without exclusions; external destinations remain denied. Intermediate timeout and CI failures are retained alongside successful reruns. Complete remaining lifetime/transport obligation mapping.
 2. **Standard library:** all 43 obligations in the [clause-level inventory](LIBRARY_TEST_GAPS.md) have passing five-mode evidence: the 295-case selection and one isolated bounded countall noncompletion fixture. No new runtime changes were needed. Bounded observations are not proofs of mathematical nontermination. The earlier 146-case successor repair remains the public N5 certificate; historical failures remain in dated reports. External ISO mode/error inventory remains separate.
-3. **Node settings and private helpers:** the [Trealla settings repair](../reports/2026-11-05-node-settings-trealla/README.md) now has [passing helper-admission evidence](../reports/2026-11-05-whitelist-helper-admission/README.md): all 314 settings probes pass, including the two former whitelist failures. Twelve new shared cases pass on both native runtimes in whitelist/blacklist/off modes (72 observations), and 15 transport controls pass. GNU and both browser modes still lack node_setting/2. Complete family-policy/RELATION endpoint mapping; the new source/toplevel cases are candidate evidence, not whole-unit certificates.
+3. **Node settings and private helpers:** the [native visibility repair](../reports/2026-11-05-node-setting-visibility/README.md) closes B-346 with 47 passing RELATION/family-policy probes; SWI now admits node_setting/2 through its RELATION filter. Both native targets have scoped evidence for B-339–B-346. The [helper-admission repair](../reports/2026-11-05-whitelist-helper-admission/README.md) retains all 314 passing settings probes, 72 shared native observations and 15 transport controls. GNU and both browser modes still lack node_setting/2; these are the next introspection implementation gaps. Source/toplevel cases remain candidate evidence, not whole-unit certificates.
 4. **Coverage mapping:** the [selective receive repair](../reports/2026-11-05-selective-receive/README.md) maps ten source units. The [held-guard controls](../reports/2026-11-05-receive-controls/README.md) add 32 passing observations and map B-104 within the documented primary-session/child-lifecycle boundaries. Continue remote lifecycle and monitor barriers, statechart invocation combinations, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.
 
 ## Source and evidence
@@ -544,7 +544,7 @@ The validator checks manuscript drift, complete target accounting, applicable pr
 | [B-343](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2495) | `node_setting/2` — [Private database:] max_load_text_bytes and load_uri_allowed_origins. | V | V | M | M | M |
 | [B-344](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2497) | `node_setting/2` — [Session API:] max_sessions_per_principal and max_session_spawns_per_window. | V | V | M | M | M |
 | [B-345](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2499) | `node_setting/2` — [Actor API:] max_ws_actors_per_principal, max_ws_frame_bytes, and max_ws_commands_per_window. | V | V | M | M | M |
-| [B-346](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2504) | `node_setting/2` — API-specific keys are visible only when their corresponding built-in family is enabled for the node's current profile. The predicate reports settings; it does not change them. | U | U | M | M | M |
+| [B-346](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2504) | `node_setting/2` — API-specific keys are visible only when their corresponding built-in family is enabled for the node's current profile. The predicate reports settings; it does not change them. | V | V | M | M | M |
 
 ### Remote execution and compatibility
 
