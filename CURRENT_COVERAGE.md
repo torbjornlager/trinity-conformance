@@ -16,8 +16,29 @@ modes. Library callback errors require exact callable types and original culprit
 at invocation, with lazy unused callbacks and unchanged application exceptions.
 The final Trealla repair also preserves this behaviour inside nested meta-calls.
 The report retains the initial failed nested probe and the repeated final gates.
-Full external ISO mode/error coverage and native retained-context propagation
+Full external ISO mode/error coverage and native retained-context public promotion
 remain open; these checks do not certify the complete language.
+
+The [native retained-context audit](reports/2026-11-05-native-retained-context/README.md)
+retains its original **31 passing, nine failing and 11 blocked** observations.
+The subsequent [development repair](reports/2026-11-05-native-retained-context-repair/README.md)
+passes **all 51 probes**, including previously blocked native and mixed-runtime
+routes. Context identity now survives remote return while separate clients remain
+isolated. Fresh authenticated HTTP requests have distinct promise owners;
+Trealla ordinary names are scoped to their client context. SWI exposes cleanup,
+and Trealla exports public language goals. New upstream tests exercise attachment
+closure, late replay, immutable bindings and narrowed transport authority.
+These are scoped development results. Repaired source units return to unverified
+pending complete obligation mapping; installed engines and public pins are unchanged.
+
+The [attachment repair qualification](reports/2026-11-05-native-context-attachment-repair/README.md)
+adds atomic last-attachment retirement on both native runtimes. Four deterministic
+positive checks cover both orderings; two negative controls reproduce the old
+race on disposable copies. All 51 context probes pass on committed native sources.
+N5 outgoing credential-file support, read-only Compose overlays and exact consumer
+pins are committed. All 38 consumer CI groups, seven browser package groups, the
+full native suite and the clean Trealla unit/interoperability run pass. Source
+qualification is complete for this selection; the public deployment remains unchanged.
 
 The [preceding runtime repair release](reports/2026-11-05-public-runtime-repair-release/README.md)
 records the earlier localhost, remote output and N5–N4 ping-pong fixes. The
@@ -40,7 +61,8 @@ and [promise repair evidence](reports/2026-11-05-promise-context/README.md)
 record development findings before promotion. The browser ownership failure is
 resolved; the required GNU library forms are deployed, while
 full ISO mode/error coverage and full clause mapping remain open.
-Native retained-context propagation still needs its own audit. GNU ISOBASE is
+Native retained-context propagation passes its scoped repair selection; complete
+lifetime/transport coverage and public promotion remain open. GNU ISOBASE is
 not required to provide ACTOR APIs.
 
 The checkpoint below is historical. Its N5 SSO topology, revisions and case

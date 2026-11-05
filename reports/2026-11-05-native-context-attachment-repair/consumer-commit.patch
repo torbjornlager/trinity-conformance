@@ -1,0 +1,144 @@
+diff --git a/Deployment/README.md b/Deployment/README.md
+index 253ddce..b670553 100644
+--- a/Deployment/README.md
++++ b/Deployment/README.md
+@@ -1070,6 +1070,21 @@ Mounts remain read-only. Retain every overlay used by the running deployment;
+ when N6 is present, `compose.gprolog-n6-caddy.yaml` must also follow the public
+ N5 overlay so rebuilding Caddy retains N6 routing and its network attachment.
+ 
++Native retained-context propagation requires N5 to authenticate outgoing transports
++and their return paths too. The pinned Trealla launcher now accepts the same
++`WP_PEER_TRANSPORT_TOKENS_FILE` format, validates every entry and rejects extra
++terms without printing credentials. Configure exact public destination URLs for
++N3/N4 (and other permitted peers), with owner-issued `execute,internal_transport`
++tokens accepted by those destinations. Ordinary browser credentials remain separate.
++
++Add `compose.peer-transport-n5.yaml` **after** the public N5 overlay, and set
++`WP_N5_PEER_TOKENS_FILE` to the owner-only credential file. On hosts without bind
++mounts, use `compose.peer-transport-n5-volumes.yaml` and
++`WP_N5_PEER_TOKENS_VOLUME` instead. The volume contains `peers.pl`, readable by
++UID 10001. The public N5 overlay overrides its volumes, so reversing this overlay
++order would discard the credential mount. Both variants mount credentials
++read-only; neither creates tokens or changes a running node.
++
+ The N5 owner adapter maps N3/N4's exact public node URLs to their private Docker
+ WebSocket listeners, matching the named SWI launchers. Public URLs stay in PIDs;
+ only the dial endpoint changes. This requires the pinned Trealla endpoint hook
+diff --git a/Deployment/compose.peer-transport-n5-volumes.yaml b/Deployment/compose.peer-transport-n5-volumes.yaml
+new file mode 100644
+index 0000000..b0bed58
+--- /dev/null
++++ b/Deployment/compose.peer-transport-n5-volumes.yaml
+@@ -0,0 +1,11 @@
++# Alternative for Docker hosts without bind mounts. Apply after public N5.
++services:
++  wp_n5:
++    environment:
++      WP_PEER_TRANSPORT_TOKENS_FILE: /run/peer-transport/peers.pl
++    volumes:
++      - n5_peer_tokens:/run/peer-transport:ro
++volumes:
++  n5_peer_tokens:
++    external: true
++    name: ${WP_N5_PEER_TOKENS_VOLUME:?Set WP_N5_PEER_TOKENS_VOLUME}
+diff --git a/Deployment/compose.peer-transport-n5.yaml b/Deployment/compose.peer-transport-n5.yaml
+new file mode 100644
+index 0000000..1f472a6
+--- /dev/null
++++ b/Deployment/compose.peer-transport-n5.yaml
+@@ -0,0 +1,8 @@
++# Add after the public N5 overlay so its volume override retains this mount.
++# Owner-provisioned destination URL - bearer token pairs; no credentials in Git.
++services:
++  wp_n5:
++    environment:
++      WP_PEER_TRANSPORT_TOKENS_FILE: /run/secrets/peer-transport.pl
++    volumes:
++      - ${WP_N5_PEER_TOKENS_FILE:?Set WP_N5_PEER_TOKENS_FILE}:/run/secrets/peer-transport.pl:ro
+diff --git a/dependencies/swi-prolog-node.json b/dependencies/swi-prolog-node.json
+index 33d2b4d..c861293 100644
+--- a/dependencies/swi-prolog-node.json
++++ b/dependencies/swi-prolog-node.json
+@@ -1,6 +1,6 @@
+ {
+   "repository": "https://github.com/torbjornlager/swi-prolog-node.git",
+-  "revision": "d1b11fb5e4d963a7fca1249642b39d012db19dfa",
++  "revision": "c8261115cb4cdedacdea1de2216e994f78f6751c",
+   "pack": "web_prolog",
+   "mode": "required for startup, tests and container builds"
+ }
+diff --git a/dependencies/swi-wasm-node.json b/dependencies/swi-wasm-node.json
+index c4b7ef3..cc27849 100644
+--- a/dependencies/swi-wasm-node.json
++++ b/dependencies/swi-wasm-node.json
+@@ -1,6 +1,6 @@
+ {
+   "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+-  "revision": "6b47feba602b90ce5b7bd83b57f1ed86c714236c",
++  "revision": "f5fbafb4a5b49f6c2d352c31f0be6f53224b2c8b",
+   "version": "0.1.0",
+-  "manifest_sha256": "4ba46530ebf24ec55ab656d75b5fb319cb3d589c1b79fa6ba6031d30a356bdb5"
++  "manifest_sha256": "67bea88e328a669a0c07f4a7b95033bf79ce754591ccdbcbd81aeafec15275be"
+ }
+diff --git a/dependencies/trealla-port.json b/dependencies/trealla-port.json
+index 128144e..f75e73f 100644
+--- a/dependencies/trealla-port.json
++++ b/dependencies/trealla-port.json
+@@ -1,6 +1,6 @@
+ {
+   "repository": "https://github.com/torbjornlager/trealla-port.git",
+-  "revision": "1359f9827d689a3e74580b3b91bd836112f0b48a",
++  "revision": "62e93c3b5d0e9cbfdebd4f42e9d66fa6665dbfef",
+   "mode": "required for optional Trealla N5 builds",
+   "engine": {
+     "repository": "https://github.com/trealla-prolog/trealla.git",
+diff --git a/tests/test_n5_peer_transport_compose.py b/tests/test_n5_peer_transport_compose.py
+new file mode 100644
+index 0000000..94c3fc9
+--- /dev/null
++++ b/tests/test_n5_peer_transport_compose.py
+@@ -0,0 +1,31 @@
++"""N5 peer credentials must survive public-overlay volume replacement."""
++import json,os,shutil,subprocess,unittest
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1]
++@unittest.skipUnless(shutil.which('docker'),'Docker Compose CLI is required')
++class N5PeerCompose(unittest.TestCase):
++    def config(self,overlay,*,before_public=False):
++        files=['compose.yaml','compose.trealla-n5.yaml']
++        files+=([overlay,'compose.trealla-n5-public.yaml'] if before_public else ['compose.trealla-n5-public.yaml',overlay])
++        cmd=['docker','compose','--env-file','/dev/null']
++        for f in files:cmd+=['-f',str(ROOT/'Deployment'/f)]
++        cmd+=['config','--format','json']
++        env=dict(os.environ,WP_N5_OWNER='fixture@example.test',WP_TREALLA_N5_ADMIN_TOKEN='fixture_admin_123456789012345',WP_N5_PEER_TOKENS_FILE='/tmp/fixture-peers.pl',WP_N5_PEER_TOKENS_VOLUME='fixture_n5_peer_tokens',OAUTH2_PROXY_GITHUB_USERS='fixture',OAUTH2_PROXY_CLIENT_ID='fixture',OAUTH2_PROXY_CLIENT_SECRET='fixture',OAUTH2_PROXY_COOKIE_SECRET='fixture')
++        r=subprocess.run(cmd,cwd=ROOT,env=env,capture_output=True,text=True,timeout=15)
++        self.assertEqual(r.returncode,0,'Compose rejected the fixture configuration')
++        return json.loads(r.stdout)
++    def check_mount(self,overlay,target):
++        n5=self.config(overlay)['services']['wp_n5'];mounts=n5['volumes']
++        mount=next(m for m in mounts if m['target']==target)
++        self.assertTrue(mount['read_only'])
++        self.assertIn('/state',[m['target'] for m in mounts])
++        self.assertIn('/var/log/webprolog',[m['target'] for m in mounts])
++        self.assertEqual(n5['environment']['WP_PEER_TRANSPORT_TOKENS_FILE'],target if target.endswith('.pl') else target+'/peers.pl')
++    def test_readonly_bind_keeps_public_state(self):
++        self.check_mount('compose.peer-transport-n5.yaml','/run/secrets/peer-transport.pl')
++    def test_readonly_volume_keeps_public_state(self):
++        self.check_mount('compose.peer-transport-n5-volumes.yaml','/run/peer-transport')
++    def test_wrong_overlay_order_discards_credentials(self):
++        n5=self.config('compose.peer-transport-n5.yaml',before_public=True)['services']['wp_n5']
++        self.assertNotIn('/run/secrets/peer-transport.pl',[m['target'] for m in n5['volumes']])
++if __name__=='__main__':unittest.main()
+diff --git a/tools/ci_pinned_swi.py b/tools/ci_pinned_swi.py
+index 25c779b..af0b316 100644
+--- a/tools/ci_pinned_swi.py
++++ b/tools/ci_pinned_swi.py
+@@ -40,6 +40,8 @@ def plan(native, wasm, swipl):
+         ('pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_swi_dependency.py']),
+         ('browser-pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_browser_dependency.py']),
+         ('trealla-pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_trealla.py']),
++        ('peer-transport-setup-regressions', ROOT, [sys.executable, 'tests/test_peer_transport_setup.py']),
++        ('n5-peer-compose-regressions', ROOT, [sys.executable, 'tests/test_n5_peer_transport_compose.py']),
+         ('n6-egress-regressions', ROOT, [sys.executable, 'tests/test_n6_egress.py']),
+         ('n6-adapter-regressions', ROOT, [sys.executable, 'tests/test_n6_adapter.py']),
+         ('static-distribution-regressions', ROOT, [sys.executable, 'tests/test_static_demonstrator.py']),

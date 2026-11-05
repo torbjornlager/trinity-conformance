@@ -165,3 +165,21 @@ hashes. The upstream browser real-session runner accepts the same file through
 the earlier baseline. [The public release](../reports/2026-11-05-standard-library-release/README.md)
 records exact callback errors, the nested Trealla follow-up and deployed pins. This selection does not
 expand every external ISO mode or error refinement into a complete contract.
+
+`adapters/local_retained_context.py` audits real retained WSS clients, explicit
+SWI HTTP sessions, fresh HTTP request ownership and selected native remote routes
+on disposable nodes. Its core and optional route runs distinguish measured
+contract failures from transport-blocked ownership probes. See the
+[native retained-context audit](../reports/2026-11-05-native-retained-context/README.md).
+
+The [native context repair](../reports/2026-11-05-native-retained-context-repair/README.md)
+runs all four directed route combinations together (51 probes), including the
+original failing and blocked cases. Trealla fixtures configure explicit outgoing
+peer bearer tokens as well as receiving credentials; no live service is changed.
+
+`adapters/local_attachment_race.py` tests both attachment orderings on disposable
+copies of the committed runtimes. A barrier pauses retirement after its last
+attachment decision. Moving retirement outside the lock is a negative control:
+the harness must reproduce a successful attachment followed by context closure.
+No installed engine, upstream checkout or public node is modified by the adapter.
+See the [qualification](../reports/2026-11-05-native-context-attachment-repair/README.md).
