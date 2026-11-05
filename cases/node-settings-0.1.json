@@ -58,6 +58,12 @@
       "title": "Unavailable API families do not expose settings",
       "transport": "query",
       "goal": "node_setting(profile,Profile),(member(Profile,[relation,isobase])-> \\+node_setting(max_sessions_per_principal,_),\\+node_setting(max_session_spawns_per_window,_);true),(Profile\\==actor-> \\+node_setting(max_ws_actors_per_principal,_),\\+node_setting(max_ws_frame_bytes,_),\\+node_setting(max_ws_commands_per_window,_);true)"
+    },
+    {
+      "id": "NS-010",
+      "title": "Bound values filter the current relation and mismatched representations fail",
+      "transport": "query",
+      "goal": "findall(K-V,node_setting(K,V),Pairs),Pairs=[_|_],findall(K-V,(member(K-V,Pairs),node_setting(K,V)),Matching),Matching==Pairs,\\+node_setting(_,ns_never_current_value),\\+node_setting(load_uri_allowed_origins,ns_not_a_list)"
     }
   ]
 }

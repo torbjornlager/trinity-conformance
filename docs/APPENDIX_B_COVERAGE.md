@@ -11,7 +11,7 @@ Passing implementation suites do not automatically verify every paragraph. Most 
 | Target | Verified | Unverified | Missing | Failing | Not applicable |
 |---|---:|---:|---:|---:|---:|
 | swi | 41 | 342 | 0 | 0 | 0 |
-| trealla | 34 | 341 | 6 | 2 | 0 |
+| trealla | 41 | 342 | 0 | 0 | 0 |
 | gnu | 23 | 108 | 6 | 2 | 244 |
 | wasm_worker | 34 | 341 | 6 | 2 | 0 |
 | wasm_main | 34 | 341 | 6 | 2 | 0 |
@@ -22,7 +22,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 1. **Native retained contexts:** the development repair passes all 51 scoped probes across both native runtimes and all four directed routes. Original failures and blocked source-export cases are resolved. Atomic last-attachment retirement also passes both orderings and negative controls. The latest public peer-policy release passes all 51 scoped probes without exclusions; external destinations remain denied. Intermediate timeout and CI failures are retained alongside successful reruns. Complete remaining lifetime/transport obligation mapping.
 2. **Standard library:** all 43 obligations in the [clause-level inventory](LIBRARY_TEST_GAPS.md) have passing five-mode evidence: the 295-case selection and one isolated bounded countall noncompletion fixture. No new runtime changes were needed. Bounded observations are not proofs of mathematical nontermination. The earlier 146-case successor repair remains the public N5 certificate; historical failures remain in dated reports. External ISO mode/error inventory remains separate.
-3. **Node settings:** the [node-setting audit](../reports/2026-11-05-node-settings/README.md) adds nine shared cases and eight native configuration/context probes. SWI passes; Trealla, GNU and both browser modes lack the public relation. Implement it using actual host settings, preserving unavailable-key failure and the privacy allowlist. SWI owner-edited family-policy visibility remains unverified.
+3. **Node settings:** the [initial audit](../reports/2026-11-05-node-settings/README.md) found missing relations outside SWI. The [Trealla repair](../reports/2026-11-05-node-settings-trealla/README.md) passes the extended ten-case shared selection through HTTP and retained sessions; 312 profile/sandbox/context probes pass, while two probes reproduce a pre-existing whitelist private-helper admission gap. GNU and both browser modes still lack the relation. Complete family-policy/RELATION endpoint mapping; preserve unavailable-key failure and the privacy allowlist.
 4. **Coverage mapping:** the [selective receive repair](../reports/2026-11-05-selective-receive/README.md) maps ten source units. The [held-guard controls](../reports/2026-11-05-receive-controls/README.md) add 32 passing observations and map B-104 within the documented primary-session/child-lifecycle boundaries. Continue remote lifecycle and monitor barriers, statechart invocation combinations, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.
 
 ## Source and evidence
@@ -537,14 +537,14 @@ The validator checks manuscript drift, complete target accounting, applicable pr
 
 | ID | Requirement | SWI | Trealla | GNU | Worker | Main |
 |---|---|---|---|---|---|---|
-| [B-339](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2479) | `node_setting/2` — node_setting(?Key, ?Value) is nondet. | V | F | F | F | F |
-| [B-340](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2483) | `node_setting/2` — Enumerates publicly visible settings of the node servicing the current request. With Key bound, succeeds for its visible current value; an unknown or unavailable key fails. Shared-database source, credentials, and principal policies are not exposed. The public keys are: | V | F | F | F | F |
-| [B-341](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2490) | `node_setting/2` — [General settings:] url, profile, sandbox, auth, timeout, and rate_window_seconds. | V | M | M | M | M |
-| [B-342](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2492) | `node_setting/2` — [Stateless API:] max_inflight_calls, max_term_text_bytes, and max_call_requests_per_window. | V | M | M | M | M |
-| [B-343](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2495) | `node_setting/2` — [Private database:] max_load_text_bytes and load_uri_allowed_origins. | V | M | M | M | M |
-| [B-344](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2497) | `node_setting/2` — [Session API:] max_sessions_per_principal and max_session_spawns_per_window. | V | M | M | M | M |
-| [B-345](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2499) | `node_setting/2` — [Actor API:] max_ws_actors_per_principal, max_ws_frame_bytes, and max_ws_commands_per_window. | V | M | M | M | M |
-| [B-346](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2504) | `node_setting/2` — API-specific keys are visible only when their corresponding built-in family is enabled for the node's current profile. The predicate reports settings; it does not change them. | U | M | M | M | M |
+| [B-339](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2479) | `node_setting/2` — node_setting(?Key, ?Value) is nondet. | V | V | F | F | F |
+| [B-340](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2483) | `node_setting/2` — Enumerates publicly visible settings of the node servicing the current request. With Key bound, succeeds for its visible current value; an unknown or unavailable key fails. Shared-database source, credentials, and principal policies are not exposed. The public keys are: | V | V | F | F | F |
+| [B-341](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2490) | `node_setting/2` — [General settings:] url, profile, sandbox, auth, timeout, and rate_window_seconds. | V | V | M | M | M |
+| [B-342](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2492) | `node_setting/2` — [Stateless API:] max_inflight_calls, max_term_text_bytes, and max_call_requests_per_window. | V | V | M | M | M |
+| [B-343](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2495) | `node_setting/2` — [Private database:] max_load_text_bytes and load_uri_allowed_origins. | V | V | M | M | M |
+| [B-344](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2497) | `node_setting/2` — [Session API:] max_sessions_per_principal and max_session_spawns_per_window. | V | V | M | M | M |
+| [B-345](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2499) | `node_setting/2` — [Actor API:] max_ws_actors_per_principal, max_ws_frame_bytes, and max_ws_commands_per_window. | V | V | M | M | M |
+| [B-346](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2504) | `node_setting/2` — API-specific keys are visible only when their corresponding built-in family is enabled for the node's current profile. The predicate reports settings; it does not change them. | U | U | M | M | M |
 
 ### Remote execution and compatibility
 

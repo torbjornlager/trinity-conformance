@@ -1,0 +1,42 @@
+{
+  "scope": "Independent diagnostic on an archived clean pre-repair revision; does not call node_setting/2",
+  "revision": "d92364caaef3b23efdce07d388aa221e20a83b00",
+  "source_archive": "/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/trealla-settings-baseline-be6p5_ae",
+  "results": [
+    {
+      "candidate": "trealla",
+      "id": "existing-helper-blacklist",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1929728242,
+        "data": [
+          {
+            "Value": "ok"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "id": "existing-helper-whitelist",
+      "status": "fail",
+      "observation": {
+        "type": "error",
+        "data": "error(permission_error(call,sandboxed,ns_probe(A)),context(sandbox_policy:sandbox_check_goal/4,not_whitelisted))"
+      }
+    },
+    {
+      "candidate": "trealla",
+      "id": "existing-source-child-whitelist",
+      "goal": "spawn(ns_probe(ok),_,[src_text('ns_probe(ok).')])",
+      "status": "fail",
+      "observation": {
+        "type": "error",
+        "data": "error(permission_error(call,sandboxed,ns_probe(ok)),context(sandbox_policy:sandbox_check_goal/4,not_whitelisted))"
+      }
+    }
+  ],
+  "executable_sha256": "7ec2aadedf60101520a58edcb0d1dd03f882fabc2480dddb2b4b0b8ffc317242"
+}
