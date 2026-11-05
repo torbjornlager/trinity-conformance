@@ -10,7 +10,9 @@ The original opt-in parent/child diagnostic now passes. Upstream regression
 scenarios and a real Chrome suite cover cross-engine collection/disposal,
 creator exit, collector interruption, retained shell replacement, expiry, late
 completion, equal references in foreign contexts, and closure/admission rules.
-The browser suite uses a real local HTTP fixture. These changes are not deployed.
+The browser suite uses a real local HTTP fixture. The repair was committed,
+pushed and deployed on 5 November; the [release record](../reports/2026-11-05-public-promise-release/README.md)
+also repeats selected ownership controls with deployed assets and real HTTPS calls.
 
 ## Ownership design
 

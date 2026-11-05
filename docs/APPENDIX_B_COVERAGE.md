@@ -20,7 +20,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 ## Priorities
 
-1. **Promise coverage:** browser context-wide ownership is repaired in development, including real-browser lifetime and isolation checks. Complete the remaining clause mapping and audit native retained-context propagation; the repaired browser finding is no longer a current failure.
+1. **Promise coverage:** browser context-wide ownership is repaired and deployed, including real-browser lifetime and isolation checks. Complete the remaining clause mapping and audit native retained-context propagation; the repaired browser finding is no longer a current failure.
 2. **GNU standard library:** shared probes reject `memberchk/2` and `forall/2` at execution policy. Higher `maplist` arities and the remaining library modes need audit.
 3. **Coverage mapping:** review remote lifecycle and monitor barriers, statechart invocation combinations, node settings, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.
 
@@ -28,7 +28,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 Manuscript revision: `9de2fc28e31d3c3ef915d52f3642ef40a47d9bd4`; SHA-256: `bae23e3a4e74592e0bda2b98f2286dc296d5395f63a6cc927beb3ecb2ee611c3`.
 
-[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Last public rollout](../reports/2026-11-04-appendix-b-public-deployment/README.md)
+[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Current public release](../reports/2026-11-05-public-promise-release/README.md)
 
 The validator checks manuscript drift, complete target accounting, applicable profiles, exact case IDs, candidate identity and outcomes. A whole-unit “verified” annotation still requires review that those assertions cover the complete statement.
 

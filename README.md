@@ -7,21 +7,19 @@ another runtime.
 
 ## Current consolidated results
 
-The [4 November public rollout](reports/2026-11-04-appendix-b-public-deployment/README.md)
-records 456 selected live assertions on the exact deployed pins, including 354
-shared HTTP-field assertions across N1–N6, and the complete consumer CI checks.
-The [5 November Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) inventories the
-manuscript's source units and separates verified requirements, unverified
-coverage, missing facilities, observed failures and profile exclusions.
+The [5 November public release](reports/2026-11-05-public-promise-release/README.md)
+commits, pushes and deploys portable runtime capabilities and context-wide browser
+promises to N0–N6. All 34 pinned consumer CI groups and 132 selected live assertions
+pass, including real-browser promise sharing and separate-context denial through
+the deployed assets on every public host in both execution modes.
 
-The [development introspection repair](reports/2026-11-04-runtime-introspection/README.md)
-passes 25 shared capability assertions across five runtime modes and the full
-native/upstream-browser regressions. It is not deployed. The audit retains GNU library-policy failures. The
-[context-wide browser promise repair](reports/2026-11-05-promise-context/README.md)
-now resolves the earlier parent/child finding in development, with real-browser
-ownership, lifetime and foreign-context checks in both execution modes.
-The [coverage overview](CURRENT_COVERAGE.md) links these distinct scopes without
-adding execution counts into a language-conformance percentage.
+The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) inventories the manuscript's
+353 source units and separates verified requirements, unverified coverage,
+missing facilities, observed failures and profile exclusions. GNU library-policy
+gaps and native retained-context auditing remain open; the browser ownership
+failure has been repaired. The [coverage overview](CURRENT_COVERAGE.md) keeps the
+new release, earlier 456-assertion rollout and development evidence separate.
+These selections do not establish a language-conformance percentage.
 
 Earlier ACTOR release and historical matrices remain available below with their
 original sources, dates and failures. They do not silently certify new requirements.

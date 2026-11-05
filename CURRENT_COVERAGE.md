@@ -6,20 +6,24 @@ requirement-level accounting. This first inventory has 353 manuscript source
 units, including related prose groups and signatures. Earlier test selections
 still need full clause mapping; these unit counts are not a conformance percentage.
 
-The [4 November public deployment](reports/2026-11-04-appendix-b-public-deployment/README.md)
-records N0–N6, 456 selected live assertions (including 354 shared HTTP-field
-assertions), 34 consumer CI groups and 107 browser/runtime scenarios. It retains
-exact image/source pins and earlier failed attempts. It does not certify all
-Appendix B clauses.
+The [5 November public release](reports/2026-11-05-public-promise-release/README.md)
+deploys portable capabilities and context-wide browser promises to N0–N6.
+All 34 pinned consumer CI groups pass, including 109 runtime/consumer scenarios.
+The clean browser package also passes its full qualification and real-browser
+lifetime controls. All 132 selected live checks pass: 60 readiness/asset/RPC
+checks, 30 capability assertions and 42 real-browser ownership checks loading
+the deployed assets from all seven public hosts in both modes.
 
-The [current development introspection batch](reports/2026-11-04-runtime-introspection/README.md)
-passes all 25 shared capability assertions and the full native and upstream browser suites.
-It is not deployed. The audit retains two GNU library failures. The subsequent
-[browser promise ownership repair](reports/2026-11-05-promise-context/README.md)
-resolves the same-context finding in development and exercises main/Worker
-sharing, creator exit, interruption, closure and separate-context denial in real
-Chrome. Full paragraph coverage still requires further evidence mapping. GNU
-ISOBASE is not required to provide ACTOR APIs.
+The earlier [4 November release](reports/2026-11-04-appendix-b-public-deployment/README.md)
+retains its separate 456-assertion transport/creation/supervisor selection.
+Those counts are not added to the new release's live checks.
+
+The [introspection audit](reports/2026-11-04-runtime-introspection/README.md)
+and [promise repair evidence](reports/2026-11-05-promise-context/README.md)
+record development findings before promotion. The browser ownership failure is
+resolved; GNU library-policy failures and full clause mapping remain open.
+Native retained-context propagation still needs its own audit. GNU ISOBASE is
+not required to provide ACTOR APIs.
 
 The checkpoint below is historical. Its N5 SSO topology, revisions and case
 counts do not describe the latest public deployment; its evidence remains intact.
