@@ -1,0 +1,27 @@
+{
+  "suite": "library-noncompletion-0.1",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Bounded observation after callback entry, forced termination of disposable execution, and finite recovery; no proof of mathematical nontermination or public transport certification.",
+  "source": "",
+  "cases": [
+    {
+      "id": "STDLIB-296",
+      "title": "Infinite countall returns no completed count during a bounded externally observed interval",
+      "transport": "isolated-query",
+      "goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),repeat),LibraryCount)",
+      "warmup_goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),member(X,[a,b,a])),N),N==3,var(X),countall(fail,0),catch(countall(throw(library_noncompletion_control),C),library_noncompletion_control,Caught=true),Caught==true,var(C)",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-035"
+      ],
+      "bounded_noncompletion": {
+        "observation_ms": 500,
+        "entry_timeout_ms": 5000,
+        "termination_timeout_ms": 3000
+      }
+    }
+  ]
+}

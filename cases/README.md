@@ -283,3 +283,13 @@ retained native and browser sessions use next, stop and a same-session recovery
 query. The new browser adapter lives in this repository and requires
 `LIBRARY_RUNTIME_ROOT`. [Generation evidence](../reports/2026-11-05-library-generation-cases/README.md)
 records all 295 cases across five modes; infinite countall remains separate.
+
+
+`library-noncompletion-0.1.json` supplies STDLIB-296 as a separately pinned
+supplement to the 295-case shared pack. Its finite control verifies duplicate
+counting, failure, binding isolation and exceptions through the same RPC entry
+peer. The probe calls that peer from inside countall and then enumerates repeat.
+An external controller observes no terminal result for at least 500 ms, confirms
+process/browser termination and runs a fresh-execution finite control. This is
+bounded evidence, not a proof of nontermination. [Results and negative controls](../reports/2026-11-05-library-noncompletion/README.md)
+are separate from public transport certificates and same-session cancellation.

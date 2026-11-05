@@ -116,6 +116,49 @@ class LibraryCoverageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'parent library manifest changed'):
             validate(self.audit, self.ledger, self.root)
 
+    def supplemental(self):
+        manifest = dict(cases=[dict(id='EXTERNAL-001')])
+        raw = json.dumps(manifest).encode()
+        (self.root / 'extra.json').write_bytes(raw)
+        sha = hashlib.sha256(raw).hexdigest()
+        report = dict(manifest_sha256=sha, results=[dict(id='EXTERNAL-001', candidate='swi', status='pass')])
+        (self.root / 'extra-report.json').write_text(json.dumps(report))
+        self.audit['supplemental_suites'] = [dict(manifest='extra.json', manifest_sha256=sha,
+            case_count=1, evidence=dict(swi=dict(report='extra-report.json', candidate='swi')))]
+        self.audit['obligations'][0]['existing_cases'].append('EXTERNAL-001')
+        return manifest, report
+
+    def test_supplemental_cases_use_their_own_manifest_and_report(self):
+        self.supplemental()
+        self.assertEqual(validate(self.audit, self.ledger, self.root), dict(covered=1))
+        self.audit['supplemental_suites'][0]['evidence']['swi']['report'] = 'run.json'
+        with self.assertRaisesRegex(ValueError, 'different library manifest'):
+            validate(self.audit, self.ledger, self.root)
+
+    def test_supplement_cannot_shadow_an_existing_case(self):
+        manifest, report = self.supplemental()
+        manifest['cases'][0]['id'] = 'STDLIB-001'
+        raw = json.dumps(manifest).encode()
+        (self.root / 'extra.json').write_bytes(raw)
+        sha = hashlib.sha256(raw).hexdigest()
+        self.audit['supplemental_suites'][0]['manifest_sha256'] = sha
+        report.update(manifest_sha256=sha)
+        (self.root / 'extra-report.json').write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, 'duplicate supplemental'):
+            validate(self.audit, self.ledger, self.root)
+
+    def test_passing_supplement_requires_its_bounded_observation(self):
+        manifest, report = self.supplemental()
+        manifest['cases'][0]['bounded_noncompletion'] = dict(observation_ms=500, entry_timeout_ms=5000, termination_timeout_ms=3000)
+        raw = json.dumps(manifest).encode()
+        (self.root / 'extra.json').write_bytes(raw)
+        sha = hashlib.sha256(raw).hexdigest()
+        self.audit['supplemental_suites'][0]['manifest_sha256'] = sha
+        report.update(manifest_sha256=sha)
+        (self.root / 'extra-report.json').write_text(json.dumps(report))
+        with self.assertRaises((KeyError, ValueError)):
+            validate(self.audit, self.ledger, self.root)
+
 
 if __name__ == '__main__':
     unittest.main()

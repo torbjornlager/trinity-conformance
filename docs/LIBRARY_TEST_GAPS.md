@@ -1,8 +1,8 @@
 # Library requirement test gaps
 
-Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **42 covered** within existing evidence and **1 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
+Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **43 covered** within existing evidence and **0 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
 
-The 295-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
+The 295-case shared manifest and 1 supplemental case(s) supply recorded native SWI, Trealla, GNU and both browser-mode observations. Each case is checked against its own pinned manifest and all five recorded targets. This does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
 
 [Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../cases/standard-library-0.4.json)
 
@@ -18,7 +18,9 @@ No failures in the current selected development evidence. The [earlier Trealla f
 
 | ID / source unit | Family | Existing cases | Tests still needed |
 |---|---|---|---|
-| LIB-035 / B-381 | `countall/2` | None for this clause | Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process. |
+
+No additional test gaps in this selected obligation inventory. The scope limits below still apply.
+
 
 ## Covered clauses within the recorded selection
 
@@ -58,6 +60,7 @@ No failures in the current selected development evidence. The [earlier Trealla f
 | LIB-032 / B-381 | `countall/2` — Count duplicates, failure and one final result; check prebound outputs | STDLIB-048, STDLIB-049, STDLIB-050, STDLIB-051 |
 | LIB-033 / B-381 | `countall/2` — Discard generator bindings/cuts and preserve independent nested counters | STDLIB-048, STDLIB-052, STDLIB-053, STDLIB-063 |
 | LIB-034 / B-381 | `countall/2` — Shared Goal/Count variables receive only final-count unification | STDLIB-145, STDLIB-146 |
+| LIB-035 / B-381 | `countall/2` — An infinite generator cannot return a completed count | STDLIB-296 |
 | LIB-036 / B-383 | `forall/2` — Fail on a counterexample, export no generator/test bindings and handle vacuous generators | STDLIB-054, STDLIB-055, STDLIB-056, STDLIB-057, STDLIB-061, STDLIB-110 |
 | LIB-037 / B-383 | `forall/2` — One successful nondeterministic test alternative is enough for each generator answer | STDLIB-247 |
 | LIB-038 / B-383 | `forall/2` — Preserve double-negation behavior inside other meta-predicates | STDLIB-054, STDLIB-055, STDLIB-061, STDLIB-248, STDLIB-249, STDLIB-250 |
@@ -72,6 +75,6 @@ No failures in the current selected development evidence. The [earlier Trealla f
 - Do not import Neumerkel draft expectations for call_nth(true,0), invalid countall outputs or malformed length lists as new Web Prolog requirements. The committed manual and common error contract remain authoritative.
 - External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability.
 
-The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Shared nested forall controls and externally bounded member/length generation now pass in all five recorded modes. Generation evidence checks six-answer prefixes, followed by continuation stop and recovery on retained sessions; it is not a proof of every infinite enumeration. Infinite countall still requires its own bounded noncompletion fixture and cleanup, never an unbounded conformance process.
+The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Shared nested forall controls and externally bounded member/length generation pass in all five recorded modes. Generation evidence checks six-answer prefixes, followed by continuation stop and recovery on retained sessions; it is not a proof of every infinite enumeration. The [countall fixture](../reports/2026-11-05-library-noncompletion/README.md) confirms callback entry, no completed count or error during 500 ms, external termination and fresh-execution recovery on every mode. It is not a mathematical nontermination proof, same-session abort guarantee or public transport certificate.
 
 New source-unit signatures remain unverified pending full supported-mode mapping. Finite callback assertions pass, but the common paragraph incorporates the broader ISO call/N contract, which remains unexpanded; it is not promoted wholesale. Unverified does not mean an implementation has failed.

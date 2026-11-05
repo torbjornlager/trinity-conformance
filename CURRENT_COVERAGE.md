@@ -18,13 +18,25 @@ The ledger now pins book revision `3edc369`, including the context clarification
 and expanded standard-library entries, plus a reviewed layout-only refresh.
 The [migration record](reports/2026-11-05-appendix-b-ledger-migration/README.md)
 retains the previous ledger and a byte-exact manuscript snapshot. The
-[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 42
-covered within recorded five-mode evidence, and one needing a bounded fixture.
+[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations, all covered within the recorded five-mode evidence.
+The noncompletion clause has an explicit bounded-observation limit.
 The broad callback paragraph returns to unverified after clause review; the new
 memberchk prose is verified against existing commitment/binding/tail cases.
 At that migration, whole-unit totals remained 11 verified per target; new
 signatures and expanded paragraphs were not automatically promoted. The migration
 itself reran no runtimes; the subsequent finite-case execution is recorded below.
+
+The [countall noncompletion fixture](reports/2026-11-05-library-noncompletion/README.md)
+closes LIB-035 with a separate common case, STDLIB-296. Every mode passes a finite
+control, signals entry from inside the generator callback, returns no completed
+count or error during a 500 ms external observation, and has its disposable
+process/browser terminated before a fresh-execution recovery control. All fifteen
+negative controls (completed count, exception and missing entry on every mode)
+are rejected, with cleanup confirmed. This is bounded regression evidence, not
+a mathematical proof of nontermination or same-session abort. All 43 selected
+library obligations now have passing evidence; countall prose brings each target
+to 23 verified source units. The 295-case shared pack and public certificate are
+unchanged. Other Appendix B units and the external ISO inventory remain open.
 
 The [bounded generation extension](reports/2026-11-05-library-generation-cases/README.md)
 adds six member/length checks in `standard-library-0.4`. All 295 cases pass in all
@@ -33,8 +45,8 @@ pages, including structure, variable freshness/sharing and increasing positions
 or lengths. Retained sessions stop their continuation and run a recovery query;
 HTTP checks offset slices and service recovery. These are bounded observations,
 not proofs about every infinite enumeration. Member and length prose units are
-now verified, bringing every target to 22 verified source units. Infinite
-countall noncompletion remains the one selected library gap. No runtime, pin,
+now verified, bringing every target to 22 verified source units. At that stage, infinite
+countall noncompletion remained the one selected library gap. No runtime, pin,
 manuscript or public deployment changes were needed.
 
 The [finite callback extension](reports/2026-11-05-library-callback-cases/README.md)
@@ -45,7 +57,7 @@ prose units are now verified, bringing every target to 20 verified source units.
 Signatures, external ISO contracts and other source units retain their previous
 limits. No runtime, pin or public deployment changes were needed. The original
 profile-invalid database-write trace and passing intermediate selections remain
-recorded separately. The three selected gaps left need bounded observation of
+recorded separately. The three selected gaps then left needed bounded observation of
 member/length generation and infinite countall noncompletion.
 
 The [finite library test extension](reports/2026-11-05-library-finite-cases/README.md)

@@ -1,0 +1,63 @@
+{
+  "suite": "library-noncompletion-negative-controls",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Bounded observation after callback entry, forced termination of disposable execution, and finite recovery; no proof of mathematical nontermination or public transport certification.",
+  "source": "",
+  "cases": [
+    {
+      "id": "NONCOMPLETION-NEGATIVE-COMPLETED",
+      "title": "Intentionally rejected completed fixture",
+      "transport": "isolated-query",
+      "goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),true),LibraryCount)",
+      "warmup_goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),member(X,[a,b,a])),N),N==3,var(X),countall(fail,0),catch(countall(throw(library_noncompletion_control),C),library_noncompletion_control,Caught=true),Caught==true,var(C)",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-035"
+      ],
+      "bounded_noncompletion": {
+        "observation_ms": 100,
+        "entry_timeout_ms": 300,
+        "termination_timeout_ms": 3000
+      }
+    },
+    {
+      "id": "NONCOMPLETION-NEGATIVE-EXCEPTION",
+      "title": "Intentionally rejected exception fixture",
+      "transport": "isolated-query",
+      "goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),throw(deliberate_noncompletion_control)),LibraryCount)",
+      "warmup_goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),member(X,[a,b,a])),N),N==3,var(X),countall(fail,0),catch(countall(throw(library_noncompletion_control),C),library_noncompletion_control,Caught=true),Caught==true,var(C)",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-035"
+      ],
+      "bounded_noncompletion": {
+        "observation_ms": 100,
+        "entry_timeout_ms": 300,
+        "termination_timeout_ms": 3000
+      }
+    },
+    {
+      "id": "NONCOMPLETION-NEGATIVE-NO-ENTRY",
+      "title": "Intentionally rejected no-entry fixture",
+      "transport": "isolated-query",
+      "goal": "countall(repeat,LibraryCount)",
+      "warmup_goal": "countall((rpc(LibraryEntryURI,true,[http_timeout(2)]),member(X,[a,b,a])),N),N==3,var(X),countall(fail,0),catch(countall(throw(library_noncompletion_control),C),library_noncompletion_control,Caught=true),Caught==true,var(C)",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-035"
+      ],
+      "bounded_noncompletion": {
+        "observation_ms": 100,
+        "entry_timeout_ms": 300,
+        "termination_timeout_ms": 3000
+      }
+    }
+  ]
+}

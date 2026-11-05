@@ -220,3 +220,13 @@ checkout and `LIBRARY_MANIFEST` to the absolute shared manifest path. It uses
 real Chrome Worker/main sessions with next/stop and recovery; a host-process
 watchdog bounds the complete browser run. Existing upstream defaults are unchanged.
 See [generation results](../reports/2026-11-05-library-generation-cases/README.md).
+
+
+`local_library_noncompletion.py` and `wasm_library_noncompletion.cjs` execute the
+separate `library-noncompletion-0.1` selection. Both host an entry peer, require
+finite controls, observe a fixed interval after callback entry, terminate the
+owned process/browser and verify fresh-execution recovery. Native probes use the
+standalone SWI/Trealla APIs and private GNU worker; the browser probes use real
+Chrome Worker/main sessions in disposable browser processes. The browser's entry
+wait, observation deadline and kill all run in Node, outside the renderer. See
+[exact bounds, scope and negative controls](../reports/2026-11-05-library-noncompletion/README.md).

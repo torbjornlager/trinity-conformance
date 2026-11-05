@@ -10,18 +10,18 @@ Passing implementation suites do not automatically verify every paragraph. Most 
 
 | Target | Verified | Unverified | Missing | Failing | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| swi | 22 | 361 | 0 | 0 | 0 |
-| trealla | 22 | 361 | 0 | 0 | 0 |
-| gnu | 22 | 117 | 0 | 0 | 244 |
-| wasm_worker | 22 | 361 | 0 | 0 | 0 |
-| wasm_main | 22 | 361 | 0 | 0 | 0 |
+| swi | 23 | 360 | 0 | 0 | 0 |
+| trealla | 23 | 360 | 0 | 0 | 0 |
+| gnu | 23 | 116 | 0 | 0 | 244 |
+| wasm_worker | 23 | 360 | 0 | 0 | 0 |
+| wasm_main | 23 | 360 | 0 | 0 | 0 |
 
 The five columns describe runtime language modes. A local API result does not certify every public admission path, browser network policy, or lower-profile endpoint. GNU ISOBASE is not required to provide ACTOR APIs.
 
 ## Priorities
 
 1. **Native retained contexts:** the development repair passes all 51 scoped probes across both native runtimes and all four directed routes. Original failures and blocked source-export cases are resolved. Atomic last-attachment retirement also passes both orderings and negative controls. The latest public peer-policy release passes all 51 scoped probes without exclusions; external destinations remain denied. Intermediate timeout and CI failures are retained alongside successful reruns. Complete remaining lifetime/transport obligation mapping.
-2. **Standard library:** the 295-case selection, including externally bounded member/length generation, passes across all five modes without new runtime changes. The [clause-level inventory](LIBRARY_TEST_GAPS.md) separates 42 covered obligations from one requiring a bounded infinite-countall noncompletion fixture. The earlier 146-case successor repair remains the public N5 certificate; historical failures remain in dated reports. External ISO mode/error inventory remains separate.
+2. **Standard library:** all 43 obligations in the [clause-level inventory](LIBRARY_TEST_GAPS.md) have passing five-mode evidence: the 295-case selection and one isolated bounded countall noncompletion fixture. No new runtime changes were needed. Bounded observations are not proofs of mathematical nontermination. The earlier 146-case successor repair remains the public N5 certificate; historical failures remain in dated reports. External ISO mode/error inventory remains separate.
 3. **Coverage mapping:** review remote lifecycle and monitor barriers, statechart invocation combinations, node settings, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.
 
 ## Source and evidence
@@ -524,7 +524,7 @@ The validator checks manuscript drift, complete target accounting, applicable pr
 | [B-378](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2390) | `call_nth/2` — call_nth(+Goal, ?Nth) is nondet. | U | U | U | U | U |
 | [B-379](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2393) | `call_nth/2` — Executes Goal and numbers its successive answers from one, including equal answers reached by different alternatives. With an uninstantiated Nth, returns the goal's bindings together with each answer number. A supplied positive integer selects that answer only; it does not enumerate later answers on backtracking. Selection past the final answer fails. A non-integer Nth raises type_error(integer,Nth); zero or a negative integer raises domain_error(not_less_than_one,Nth). | V | V | V | V | V |
 | [B-380](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2411) | `countall/2` — countall(+Goal, ?Count) is semidet. | U | U | U | U | U |
-| [B-381](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2414) | `countall/2` — Exhausts Goal and unifies Count with its number of answers, counting duplicates separately. A supplied non-negative integer count succeeds exactly when it equals that number. A failing goal has count zero. Bindings made while enumerating the goal do not escape; variables shared with Count are bound only by unification with the final count. Backtracking does not produce another count. An exception propagates without returning a partial count. A goal with infinitely many answers does not yield a completed count. | U | U | U | U | U |
+| [B-381](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2414) | `countall/2` — Exhausts Goal and unifies Count with its number of answers, counting duplicates separately. A supplied non-negative integer count succeeds exactly when it equals that number. A failing goal has count zero. Bindings made while enumerating the goal do not escape; variables shared with Count are bound only by unification with the final count. Backtracking does not produce another count. An exception propagates without returning a partial count. A goal with infinitely many answers does not yield a completed count. | V | V | V | V | V |
 | [B-382](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2432) | `forall/2` — forall(+Generate, ?Test) is semidet. | U | U | U | U | U |
 | [B-383](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2435) | `forall/2` — Requires Test to succeed for every answer of Generate. Each generator answer supplies bindings to its test; one successful test alternative is enough for that answer. The predicate fails as soon as a test has no successful alternative. Bindings made by either callback do not escape. If the generator has no answers, forall/2 succeeds without invoking the test. These rules also apply inside other meta-predicates. It has the same success and binding behaviour as: \+ (call(Generate), \+ call(Test)) | V | V | V | V | V |
 | [B-335](https://github.com/torbjornlager/boken/blob/3edc3698774258f71b11bf9998955d273ee26220/author/appendix-B-current-manual.tex#L2455) | `make_ref/1` — make_ref(-Ref) is det. | U | U | — | U | U |

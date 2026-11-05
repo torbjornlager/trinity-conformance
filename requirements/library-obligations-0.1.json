@@ -7,7 +7,7 @@
     "sha256": "b9c4df58594650926acd81beaafc53c26aa483fcf523cd06368a3822b71538fb",
     "line_count": 2557
   },
-  "scope": "Clause-level mapping to 289 shared cases on identified development sources. 143 new finite callback cases preserve the original 146 assertions; no runtime or public deployment change.",
+  "scope": "Clause-level mapping to 295 shared library cases plus one isolated bounded-noncompletion case on all five development runtime modes. No runtime or public deployment change; bounded observations do not prove mathematical nontermination or full external ISO conformance.",
   "manifest": "cases/standard-library-0.4.json",
   "manifest_sha256": "4b8b68bd2bc2f8e3d99fbae7047841b23fcd9625364e65d784817fa6695d52cf",
   "evidence": {
@@ -1403,33 +1403,34 @@
         "B-381"
       ],
       "statement": "An infinite generator cannot return a completed count",
-      "existing_cases": [],
-      "status": "needs_tests",
-      "tests_needed": [
-        "Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process."
+      "existing_cases": [
+        "STDLIB-296"
       ],
+      "status": "covered",
+      "tests_needed": [],
       "per_target": {
         "swi": {
-          "status": "needs_tests",
+          "status": "covered",
           "failing_cases": []
         },
         "trealla": {
-          "status": "needs_tests",
+          "status": "covered",
           "failing_cases": []
         },
         "gnu": {
-          "status": "needs_tests",
+          "status": "covered",
           "failing_cases": []
         },
         "wasm_worker": {
-          "status": "needs_tests",
+          "status": "covered",
           "failing_cases": []
         },
         "wasm_main": {
-          "status": "needs_tests",
+          "status": "covered",
           "failing_cases": []
         }
-      }
+      },
+      "observation_limit": "Callback entry, no completed count or error during a 500 ms interval, externally confirmed termination and fresh-execution recovery. Not a proof for arbitrary durations or same-session abort."
     },
     {
       "id": "LIB-036",
@@ -1836,5 +1837,34 @@
     "External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability."
   ],
   "case_count": 295,
-  "failure_notes": []
+  "failure_notes": [],
+  "supplemental_suites": [
+    {
+      "manifest": "cases/library-noncompletion-0.1.json",
+      "manifest_sha256": "b4a59a5d5f7ae2bf6cbfd6148fefe6048deb0f50b3eb0e1b6c0b094ceb574b6a",
+      "case_count": 1,
+      "evidence": {
+        "swi": {
+          "report": "reports/2026-11-05-library-noncompletion/native/results.json",
+          "candidate": "swi"
+        },
+        "trealla": {
+          "report": "reports/2026-11-05-library-noncompletion/native/results.json",
+          "candidate": "trealla"
+        },
+        "gnu": {
+          "report": "reports/2026-11-05-library-noncompletion/native/results.json",
+          "candidate": "gnu"
+        },
+        "wasm_worker": {
+          "report": "reports/2026-11-05-library-noncompletion/browser.json",
+          "candidate": "swi-wasm-worker"
+        },
+        "wasm_main": {
+          "report": "reports/2026-11-05-library-noncompletion/browser.json",
+          "candidate": "swi-wasm-main"
+        }
+      }
+    }
+  ]
 }

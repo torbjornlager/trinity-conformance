@@ -19,8 +19,10 @@ The [maintained context gate](profiles/retained-context-0.1.md) now runs the nat
 controls as a strict selection.
 The [295-case generation selection](reports/2026-11-05-library-generation-cases/README.md)
 passes across all five modes without runtime changes, including externally bounded
-member/length generation. The clause inventory now has 42 covered obligations;
-infinite countall noncompletion remains the one selected gap.
+member/length generation. The [isolated countall fixture](reports/2026-11-05-library-noncompletion/README.md)
+adds bounded noncompletion evidence on all five modes. All 43 selected library
+obligations are covered within their recorded limits; broader Appendix B and
+external ISO coverage remain open.
 The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
 [Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
 and the repair of the Trealla succ float-error failure found by
