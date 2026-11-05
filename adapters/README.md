@@ -262,3 +262,9 @@ orderings and Trealla writer-confirmation/timeout/retry controls in the full
 native compositions, with source fingerprints and a bounded process deadline.
 The GNU counterpart is maintained in `gprolog-port/isobase` as
 `make promise-context-race-test` and as part of `make local-test`.
+
+`runner/monitor_release.py` runs the 49-case shared monitor contract in native
+SWI/Trealla and real Chrome Worker/main modes, then the complete 64-observation
+browser/native transport selection and native monitor barrier controls. See
+[the monitor profile](../profiles/monitor-contracts-0.1.md) for clause mapping,
+validation semantics and the exact maintained gate command.

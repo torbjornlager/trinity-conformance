@@ -2625,24 +2625,60 @@
       "statement": "monitor(+PidOrName, -Ref) is det.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MC-001"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MC-001"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MC-001"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "MC-001"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2662,22 +2698,85 @@
       "statement": "Installs a monitor and returns a fresh reference in Ref. The first argument may be a pid or a registered local name, subject to the same target policy as sending. Fresh references are single-use and provide correlation, not sender authentication. References are opaque and must not be constructed or interpreted by application code. When the monitored process terminates, the monitoring process receives a message of the form down(Pid, Ref, Reason). If observation of a remote target is lost, the runtime instead delivers the same form with Reason = connection_closed. This discharges the monitor without claiming that the target terminated; reconnection does not restore it automatically.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MC-001",
+                "MC-002",
+                "MC-005",
+                "MC-027",
+                "MC-028",
+                "MC-029",
+                "LM-001",
+                "LM-002",
+                "LM-003"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/regression-results.json",
+              "candidate": "swi",
+              "cases": [
+                "MW-REGRESSIONS"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MC-001",
+                "MC-002",
+                "MC-005",
+                "MC-027",
+                "MC-028",
+                "MC-029",
+                "LM-001",
+                "LM-002",
+                "LM-003"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/regression-results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MW-REGRESSIONS"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MC-001",
+                "MC-002",
+                "MC-005",
+                "MC-027",
+                "MC-028",
+                "MC-029",
+                "LM-001",
+                "LM-002",
+                "LM-003"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-worker",
               "cases": [
                 "BN-014-swi",
@@ -2689,13 +2788,28 @@
               ]
             }
           ],
-          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "MC-001",
+                "MC-002",
+                "MC-005",
+                "MC-027",
+                "MC-028",
+                "MC-029",
+                "LM-001",
+                "LM-002",
+                "LM-003"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-main",
               "cases": [
                 "BN-014-swi",
@@ -2707,7 +2821,7 @@
               ]
             }
           ],
-          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2727,52 +2841,153 @@
       "statement": "Spawn-time monitoring and additional monitors are independent, including private monitors used by synchronous waits. Each active reference receives its own termination notification; removing a private or explicit monitor does not suppress notifications for other references.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MC-004",
+                "MC-019",
+                "MC-020",
+                "MC-021",
+                "MC-022",
+                "MC-023",
+                "MC-024",
+                "MC-025",
+                "LM-002",
+                "LM-006",
+                "SW-005",
+                "SW-006",
+                "TW-005",
+                "TW-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/regression-results.json",
+              "candidate": "swi",
+              "cases": [
+                "MW-REGRESSIONS"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MC-004",
+                "MC-019",
+                "MC-020",
+                "MC-021",
+                "MC-022",
+                "MC-023",
+                "MC-024",
+                "MC-025",
+                "LM-002",
+                "LM-006",
+                "SW-005",
+                "SW-006",
+                "TW-005",
+                "TW-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/regression-results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MW-REGRESSIONS"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MC-004",
+                "MC-019",
+                "MC-020",
+                "MC-021",
+                "MC-022",
+                "MC-023",
+                "MC-024",
+                "MC-025",
+                "LM-002",
+                "LM-006",
+                "SW-005",
+                "SW-006",
+                "TW-005",
+                "TW-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-worker",
               "cases": [
                 "BN-014-swi",
-                "BN-015-swi",
                 "BN-016-swi",
                 "BN-014-trealla",
-                "BN-015-trealla",
                 "BN-016-trealla"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/regression-results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MW-REGRESSIONS"
               ]
             }
           ],
-          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "MC-004",
+                "MC-019",
+                "MC-020",
+                "MC-021",
+                "MC-022",
+                "MC-023",
+                "MC-024",
+                "MC-025",
+                "LM-002",
+                "LM-006",
+                "SW-005",
+                "SW-006",
+                "TW-005",
+                "TW-006"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-main",
               "cases": [
                 "BN-014-swi",
-                "BN-015-swi",
                 "BN-016-swi",
                 "BN-014-trealla",
-                "BN-015-trealla",
                 "BN-016-trealla"
               ]
             }
           ],
-          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2792,24 +3007,68 @@
       "statement": "Note: Using monitor(true) in spawn/3 installs monitoring before the child can terminate, so its actual exit reason is observed. If monitor/2 is called after the target has already terminated, the runtime still discharges the monitor with down(Pid,Ref,no_process).",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MC-001",
+                "LM-001",
+                "LM-003"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MC-001",
+                "LM-001",
+                "LM-003"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MC-001",
+                "LM-001",
+                "LM-003"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "MC-001",
+                "LM-001",
+                "LM-003"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2829,24 +3088,64 @@
       "statement": "demonitor(+Ref) is det. demonitor(+Ref, +Options) is det.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MC-003",
+                "MC-004"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MC-003",
+                "MC-004"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "MC-003",
+                "MC-004"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "MC-003",
+                "MC-004"
+              ]
+            }
+          ],
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2866,70 +3165,128 @@
       "statement": "Stops the calling actor's monitor identified by Ref. An unknown reference or another actor's reference has no effect. This is idempotent. There is only one valid option:",
       "targets": {
         "swi": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
               "candidate": "swi",
               "cases": [
-                "MON-SELECTED-DOWN"
+                "MC-003",
+                "MC-004",
+                "MC-006",
+                "MC-007",
+                "MC-008",
+                "MC-009",
+                "MC-010",
+                "MC-011",
+                "MC-012",
+                "MC-013",
+                "MC-014",
+                "MC-015",
+                "MC-016",
+                "MC-017",
+                "MC-018",
+                "MC-026",
+                "MC-030",
+                "MC-031"
               ]
             }
           ],
-          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "trealla": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/native/results.json",
               "candidate": "trealla",
               "cases": [
-                "MON-WRITER-RETRY"
+                "MC-003",
+                "MC-004",
+                "MC-006",
+                "MC-007",
+                "MC-008",
+                "MC-009",
+                "MC-010",
+                "MC-011",
+                "MC-012",
+                "MC-013",
+                "MC-014",
+                "MC-015",
+                "MC-016",
+                "MC-017",
+                "MC-018",
+                "MC-026",
+                "MC-030",
+                "MC-031"
               ]
             }
           ],
-          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
               "candidate": "swi-wasm-worker",
               "cases": [
-                "BN-014-swi",
-                "BN-015-swi",
-                "BN-016-swi",
-                "BN-014-trealla",
-                "BN-015-trealla",
-                "BN-016-trealla"
+                "MC-003",
+                "MC-004",
+                "MC-006",
+                "MC-007",
+                "MC-008",
+                "MC-009",
+                "MC-010",
+                "MC-011",
+                "MC-012",
+                "MC-013",
+                "MC-014",
+                "MC-015",
+                "MC-016",
+                "MC-017",
+                "MC-018",
+                "MC-026",
+                "MC-030",
+                "MC-031"
               ]
             }
           ],
-          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
-              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "report": "reports/2026-11-05-monitor-contracts/final/browser.json",
               "candidate": "swi-wasm-main",
               "cases": [
-                "BN-014-swi",
-                "BN-015-swi",
-                "BN-016-swi",
-                "BN-014-trealla",
-                "BN-015-trealla",
-                "BN-016-trealla"
+                "MC-003",
+                "MC-004",
+                "MC-006",
+                "MC-007",
+                "MC-008",
+                "MC-009",
+                "MC-010",
+                "MC-011",
+                "MC-012",
+                "MC-013",
+                "MC-014",
+                "MC-015",
+                "MC-016",
+                "MC-017",
+                "MC-018",
+                "MC-026",
+                "MC-030",
+                "MC-031"
               ]
             }
           ],
-          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
+          "note": "Shared finite documented modes across native ACTOR sessions and real Chrome Worker/main engines, with exact exception variants, strict expected receives and preservation of live observations/mailbox state. Remote loss and private-wait controls are mapped in profiles/monitor-contracts-0.1.md and reports/2026-11-05-monitor-contracts/README.md. Source review connects the primary shared wait cases to reference-scoped cleanup; this is scoped development evidence, not every endpoint or schedule."
         }
       },
       "evidence_candidates": []
@@ -2957,6 +3314,13 @@
               "cases": [
                 "MON-SELECTED-DOWN"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/barriers/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MON-SELECTED-DOWN"
+              ]
             }
           ],
           "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
@@ -2966,6 +3330,13 @@
           "evidence": [
             {
               "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MON-WRITER-RETRY"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/barriers/results.json",
               "candidate": "trealla",
               "cases": [
                 "MON-WRITER-RETRY"
@@ -2992,6 +3363,18 @@
                 "BN-015-trealla",
                 "BN-016-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
             }
           ],
           "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
@@ -3001,6 +3384,18 @@
           "evidence": [
             {
               "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-main",
               "cases": [
                 "BN-014-swi",
@@ -3040,6 +3435,13 @@
               "cases": [
                 "MON-SELECTED-DOWN"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/barriers/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MON-SELECTED-DOWN"
+              ]
             }
           ],
           "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
@@ -3049,6 +3451,13 @@
           "evidence": [
             {
               "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MON-WRITER-RETRY"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/barriers/results.json",
               "candidate": "trealla",
               "cases": [
                 "MON-WRITER-RETRY"
@@ -3075,6 +3484,18 @@
                 "BN-015-trealla",
                 "BN-016-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
             }
           ],
           "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
@@ -3084,6 +3505,18 @@
           "evidence": [
             {
               "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-monitor-contracts/final/remote/results.json",
               "candidate": "swi-wasm-main",
               "cases": [
                 "BN-014-swi",

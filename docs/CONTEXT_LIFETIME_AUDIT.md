@@ -122,9 +122,9 @@ and reference possession from ownership.
 ## Monitor observation ownership
 
 The [monitor qualification](../reports/2026-11-05-context-races-and-monitors/README.md)
-adds browser BN-014–016 and native deterministic controls. B-053 gains candidate evidence for owner-only
-withdrawal, harmless foreign/unknown references and idempotence; its full
-option/value/error mapping is still required. B-054 maps all
+adds browser BN-014–016 and native deterministic controls. The [shared monitor qualification](../reports/2026-11-05-monitor-contracts/README.md)
+now completes B-053 owner-only withdrawal, harmless foreign/unknown references,
+idempotence and finite option/value/error mapping. B-054 maps all
 matching queued notifications, nonblocking flush and unrelated mailbox state.
 B-055 maps the observation-owner confirmation barrier, queued-message retention
 without flush, suppression after successful withdrawal, and declared connection
@@ -137,6 +137,8 @@ SWI's synchronous lifecycle mutex covers remote monitor selection, delivery and
 withdrawal, so it has no asynchronous peer-confirmation timeout branch. Trealla
 uses its serialized connection writer; the browser uses its coordinator's
 observation filter and ordered engine channel. These are reviewed implementation
-boundaries for the same public rule, not language exceptions. Remote loss and
-additional/private-reference clauses B-049/B-050 gain candidate evidence, but
-remain unverified until their complete clause inventories are mapped.
+boundaries for the same public rule, not language exceptions. The same new qualification maps B-048–B-055 across all four ACTOR targets,
+including fresh references, local names, strict immediate/dead-target
+notifications and public/private wait independence. See the
+[clause/test inventory](../profiles/monitor-contracts-0.1.md) for the complete
+scoped mapping and supporting implementation controls.

@@ -1,0 +1,46 @@
+{
+  "suite": "monitor-implementation-regressions-0.1",
+  "scope": "Named implementation controls reviewed in passing full suites; these rows are regression groups, not additional portable language cases",
+  "results": [
+    {
+      "candidate": "swi",
+      "id": "MW-REGRESSIONS",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "swi-full.txt",
+      "log_sha256": "0ce1e9b708977c37283a8d321a5c106fff0cc7eb340aceae94af2cf8cdc36df8",
+      "assertions_reviewed": [
+        "node_controller connection loss clears only its node state",
+        "server promise and upgrade cleanup preserves application monitors",
+        "supervisor request success/mismatch/send/interruption/timeout cleanup",
+        "synchronous toplevel private wait cleanup and worker ownership"
+      ]
+    },
+    {
+      "candidate": "trealla",
+      "id": "MW-REGRESSIONS",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "trealla-full.txt",
+      "log_sha256": "9f897b6f6b5d7fcb8d64d6448762da529c80c7576261257912b15504b3bd54eb",
+      "assertions_reviewed": [
+        "connection loss reports connection_closed in actual native routes",
+        "server promise/yield and supervisor halt private monitor cleanup",
+        "synchronous toplevel wrappers and remote monitor contracts against both peers"
+      ]
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MW-REGRESSIONS",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "browser-regressions/semantic-contracts.txt",
+      "log_sha256": "11af71787ae77c099586b7f86e1f11bc67a9023c8b6e80d8dc10c5c28e3f5e53",
+      "assertions_reviewed": [
+        "private wait tables after success and mismatch",
+        "supervisor ten-second timeout, send exception and interruption cleanup",
+        "child shutdown private monitor/reply cleanup"
+      ]
+    }
+  ]
+}
