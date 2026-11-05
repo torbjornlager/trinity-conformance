@@ -86,5 +86,6 @@ browser/native context attachment and closure-propagation transport controls.
 Coordinator barriers do not certify remote authentication, reconnection, or
 context return. Historical public timeouts remain separate.
 
-All runner tests and ledger validation pass. No public nodes, credentials,
+Archived text logs have trailing whitespace removed; JSON observations and
+package hashes are unchanged. All runner tests and ledger validation pass. No public nodes, credentials,
 deployment policies or release dependency pins changed.
