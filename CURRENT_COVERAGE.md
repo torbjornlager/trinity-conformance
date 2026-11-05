@@ -6,17 +6,24 @@ requirement-level accounting. This first inventory has 353 manuscript source
 units, including related prose groups and signatures. Earlier test selections
 still need full clause mapping; these unit counts are not a conformance percentage.
 
-The [latest standard-library release](reports/2026-11-05-standard-library-release/README.md)
-is committed, pushed and deployed to N0–N6. All twelve services have exact checked
-pins. Its 112-case shared selection passes 786 committed-source observations;
-all 36 pinned consumer CI groups and 2,379 selected public checks pass.
+The [native retained-context release](reports/2026-11-05-native-context-release/README.md)
+is committed, pushed and deployed to N0–N6. All twelve runtime/asset services run
+consumer image revision `3c8702a`, with the qualified native and browser pins.
+All 38 pinned consumer CI groups and **2,421 selected public checks** pass. Nine
+context cases are explicitly excluded by unchanged spawn destination policy.
+N5's persistent self-route credential is owner-only and mounted read-only; the
+existing private-Docker N3/N4 transport boundary is preserved.
+
+The [previous standard-library release](reports/2026-11-05-standard-library-release/README.md)
+retains its historical `1b04f27` image record, 36-group CI and 2,379 public checks.
+Its required forms and callback semantics remain covered by the new live selection.
 
 The required library forms and described semantics work across all five runtime
 modes. Library callback errors require exact callable types and original culprits
 at invocation, with lazy unused callbacks and unchanged application exceptions.
 The final Trealla repair also preserves this behaviour inside nested meta-calls.
 The report retains the initial failed nested probe and the repeated final gates.
-Full external ISO mode/error coverage and native retained-context public promotion
+Full external ISO mode/error coverage and complete lifetime/transport clause mapping
 remain open; these checks do not certify the complete language.
 
 The [native retained-context audit](reports/2026-11-05-native-retained-context/README.md)
@@ -29,7 +36,7 @@ Trealla ordinary names are scoped to their client context. SWI exposes cleanup,
 and Trealla exports public language goals. New upstream tests exercise attachment
 closure, late replay, immutable bindings and narrowed transport authority.
 These are scoped development results. Repaired source units return to unverified
-pending complete obligation mapping; installed engines and public pins are unchanged.
+pending complete obligation mapping; the following release records public promotion.
 
 The [attachment repair qualification](reports/2026-11-05-native-context-attachment-repair/README.md)
 adds atomic last-attachment retirement on both native runtimes. Four deterministic
@@ -38,7 +45,7 @@ race on disposable copies. All 51 context probes pass on committed native source
 N5 outgoing credential-file support, read-only Compose overlays and exact consumer
 pins are committed. All 38 consumer CI groups, seven browser package groups, the
 full native suite and the clean Trealla unit/interoperability run pass. Source
-qualification is complete for this selection; the public deployment remains unchanged.
+qualification is complete for this selection; the public release is recorded above.
 
 The [preceding runtime repair release](reports/2026-11-05-public-runtime-repair-release/README.md)
 records the earlier localhost, remote output and N5–N4 ping-pong fixes. The
@@ -62,7 +69,7 @@ record development findings before promotion. The browser ownership failure is
 resolved; the required GNU library forms are deployed, while
 full ISO mode/error coverage and full clause mapping remain open.
 Native retained-context propagation passes its scoped repair selection; complete
-lifetime/transport coverage and public promotion remain open. GNU ISOBASE is
+lifetime/transport coverage remains open after the scoped public promotion. GNU ISOBASE is
 not required to provide ACTOR APIs.
 
 The checkpoint below is historical. Its N5 SSO topology, revisions and case
