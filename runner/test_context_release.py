@@ -16,7 +16,7 @@ class ContextReleaseTests(unittest.TestCase):
         validate(report, self.expected, self.manifest['routes'])
 
     def test_exact_inventory_passes(self):
-        self.assertEqual(len(self.report['results']), 57)
+        self.assertEqual(len(self.report['results']), 61)
         self.check_report(self.report)
 
     def test_missing_duplicate_or_unknown_case_cannot_pass(self):

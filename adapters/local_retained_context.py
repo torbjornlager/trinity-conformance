@@ -176,6 +176,14 @@ def main():
         if not any(r['candidate']==candidate and r['id']=='CTX-'+number+'-'+dest for r in rows):
          rows.append(dict(candidate=candidate,id='CTX-'+number+'-'+dest,title='remote promise prerequisite: '+pair,status='blocked',requirements=[],detail=str(e)))
        save()
+      def forwarded_reference(h=h,remote=remote,home=home):
+       ref=create(h,urls[home])
+       denied=collector(h,remote,ref)
+       source='audit_dispose(Parent,Ref):-promise_cleanup(Ref),send(Parent,disposed).'
+       disposed=run(h,f'self(S),spawn(audit_dispose(S,{ref}),_,[node({literal(remote)}),src_text({literal(source)})]),receive({{disposed->true}},[timeout(4),on_timeout(throw(remote_cleanup_missing))])')
+       kept=run(h,f'yield({ref},success([mark],false))')
+       return dict(remote_collect=denied,remote_cleanup=disposed,origin_collect=kept),good(denied) and 'existence_error(promise,'+ref+')' in row_value(denied,'Outcome') and good(disposed) and good(kept)
+      record(candidate,'CTX-019-'+dest,'forwarding an origin reference grants no destination access or cleanup authority: '+pair,forwarded_reference,['B-296'])
       name='loop_context_'+secrets.token_hex(6);run(h,f'self(S),register({name},S)')
       def roundtrip_name(h=h,name=name,remote=remote,home=home):
        source=SOURCE.splitlines()[2]+'\n'+f'audit_back_name(Parent,Name):-spawn(audit_lookup(Parent,Name),_,[node({literal(urls[home])}),src_predicates([audit_lookup/2])]),receive({{finish->true}}).\n'

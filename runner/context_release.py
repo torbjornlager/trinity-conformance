@@ -44,6 +44,7 @@ def main():
     for label, adapter, expected in [
         ('contexts', 'local_retained_context.py', manifest['cases'] + manifest['controlled_promise_cases']),
         ('attachments', 'local_attachment_race.py', manifest['attachment_cases']),
+        ('closure', 'local_context_closure.py', manifest['closure_cases']),
     ]:
         target = args.output / label
         command = [sys.executable, str(ROOT / 'adapters' / adapter), *common, '--output', str(target)]

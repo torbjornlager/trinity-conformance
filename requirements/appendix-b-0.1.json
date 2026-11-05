@@ -150,12 +150,81 @@
       "statement": "A client context groups one client interaction and its descendants. The hosting environment establishes the context and its lifetime, for example for an interactive session or a stateless request. Local and remote child creation retain that association. At each node, ordinary names and promises are scoped to this context. Sharing authentication credentials does not by itself merge contexts; reuse across requests requires an explicitly retained client context. Ending one request or replacing one toplevel within an explicitly retained context does not close that context. A remote descendant returning to a node retains its original context association there; it does not acquire a new context merely because its transport or execution engine changes.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/contexts/results.json",
+              "candidate": "swi",
+              "cases": [
+                "CTX-001",
+                "CTX-002",
+                "CTX-004",
+                "CTX-006",
+                "CTX-009",
+                "CTX-010",
+                "CTX-011",
+                "CTX-020",
+                "CTX-012-swi-b",
+                "CTX-013-swi-b",
+                "CTX-014-swi-b",
+                "CTX-016-swi-b",
+                "CTX-017-swi-b",
+                "CTX-012-trealla-b",
+                "CTX-013-trealla-b",
+                "CTX-014-trealla-b",
+                "CTX-016-trealla-b",
+                "CTX-017-trealla-b"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "swi",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/contexts/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "CTX-001",
+                "CTX-002",
+                "CTX-004",
+                "CTX-006",
+                "CTX-009",
+                "CTX-010",
+                "CTX-011",
+                "CTX-012-swi-b",
+                "CTX-013-swi-b",
+                "CTX-014-swi-b",
+                "CTX-016-swi-b",
+                "CTX-017-swi-b",
+                "CTX-012-trealla-b",
+                "CTX-013-trealla-b",
+                "CTX-014-trealla-b",
+                "CTX-016-trealla-b",
+                "CTX-017-trealla-b"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
           "status": "unverified",
@@ -399,7 +468,7 @@
           "note": "All selected public routes pass without policy exclusions on consumer 1581acc. An intermediate N5 timeout is retained separately; whole-unit obligations remain unverified."
         }
       ],
-      "audit_note": "The native retained-context repair passes all 51 scoped probes on development sources, including all original counterexamples and previously blocked routes. The unit remains unverified pending complete obligation mapping; this is not a public release certificate."
+      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
     },
     {
       "id": "B-354",
@@ -416,12 +485,50 @@
       "statement": "Closing a context ends admission to its ordinary-name and promise scopes. Late creation, publication or attachment cannot reopen the closed scopes. An attachment concurrent with closure either joins the still-open context or is rejected after closure; it must not join a context whose retirement has already been committed. Context closure and actor termination are distinct: closing these scopes does not by itself terminate surviving actors. Standalone execution has an environment-provided root context.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "swi",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/attachments/results.json",
+              "candidate": "swi",
+              "cases": [
+                "ATTACH-REJOIN-FIRST",
+                "ATTACH-ATOMIC"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/attachments/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "ATTACH-REJOIN-FIRST",
+                "ATTACH-ATOMIC"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
           "status": "unverified",
@@ -436,7 +543,8 @@
           "evidence": []
         }
       },
-      "evidence_candidates": []
+      "evidence_candidates": [],
+      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
     },
     {
       "id": "B-005",
@@ -12826,12 +12934,83 @@
       "statement": "A promise is local to its creating node and belongs to the client context in which it was created. Its reference identifies it within that node and context independently of engine placement. Code running at that node on behalf of the same context may collect or dispose of it; code in another context cannot. Passing a reference to a remote node does not create a distributed promise or confer access to the originating node's promise. Authentication alone does not grant access to another context's promises. A client collecting across requests must retain its context explicitly. Ownership transfer is unsupported.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/contexts/results.json",
+              "candidate": "swi",
+              "cases": [
+                "CTX-001",
+                "CTX-002",
+                "CTX-004",
+                "CTX-010",
+                "CTX-011",
+                "CTX-020",
+                "CTX-013-swi-b",
+                "CTX-014-swi-b",
+                "CTX-015-swi-b",
+                "CTX-017-swi-b",
+                "CTX-013-trealla-b",
+                "CTX-014-trealla-b",
+                "CTX-015-trealla-b",
+                "CTX-017-trealla-b",
+                "CTX-019-swi-b",
+                "CTX-019-trealla-b",
+                "CP-001-swi-a",
+                "CP-001-swi-b",
+                "CP-001-trealla-b"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "swi",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/contexts/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "CTX-001",
+                "CTX-002",
+                "CTX-004",
+                "CTX-010",
+                "CTX-011",
+                "CTX-013-swi-b",
+                "CTX-014-swi-b",
+                "CTX-015-swi-b",
+                "CTX-017-swi-b",
+                "CTX-013-trealla-b",
+                "CTX-014-trealla-b",
+                "CTX-015-trealla-b",
+                "CTX-017-trealla-b",
+                "CTX-019-swi-b",
+                "CTX-019-trealla-b",
+                "CP-001-trealla-a",
+                "CP-001-swi-b",
+                "CP-001-trealla-b"
+              ]
+            },
+            {
+              "report": "reports/2026-11-05-context-lifetime/native-forwarding/closure/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "LIFE-NAMES",
+                "LIFE-OWNERSHIP",
+                "LIFE-LIFECYCLE"
+              ]
+            }
+          ],
+          "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
           "status": "unverified",
@@ -13038,7 +13217,7 @@
           "note": "Controlled HTTP producer verifies pending timeout, foreign denial before/after release, owner retry and consumption on native peers/self routes. Does not diagnose the historical public timeout; whole-unit obligations remain unverified."
         }
       ],
-      "audit_note": "The native retained-context repair passes all 51 scoped probes on development sources, including all original counterexamples and previously blocked routes. The unit remains unverified pending complete obligation mapping; this is not a public release certificate."
+      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
     },
     {
       "id": "B-355",
@@ -23563,7 +23742,7 @@
       "requirements": [
         "B-296"
       ],
-      "next_step": "Browser context-wide ownership repaired in development, including real Chrome and HTTP lifetime/isolation controls. Complete full-paragraph mapping and audit native retained-context propagation; see reports/2026-11-05-promise-context/README.md."
+      "next_step": "Native B-004/B-354/B-296 clause mapping is complete on scoped evidence. Add browser/native reference-forwarding and context-return controls, browser ordinary-name publication/closure barriers, and GNU request/root ownership and late-completion controls; see docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "AUDIT-LIBRARY-MODES",

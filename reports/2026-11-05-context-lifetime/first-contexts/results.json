@@ -1,0 +1,51 @@
+{
+  "suite": "retained-context-0.1",
+  "manifest_sha256": "3018f05faba636a5567b7df2fb601862a224f40a4c91943bfe8d244b73cfcb72",
+  "groups": [
+    {
+      "group": "contexts",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/lager/trinity-conformance/adapters/local_retained_context.py",
+        "--swipl",
+        "/usr/local/bin/swipl",
+        "--tpl",
+        "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+        "--swi-root",
+        "/Users/lager/swi-prolog-node",
+        "--trealla-root",
+        "/Users/lager/trealla-port",
+        "--output",
+        "/tmp/context-lifetime-qualified-20261105/contexts",
+        "--controlled-promises",
+        "--routes",
+        "swi-a:swi-b",
+        "swi-a:trealla-b",
+        "trealla-a:swi-b",
+        "trealla-a:trealla-b"
+      ],
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "group": "attachments",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/lager/trinity-conformance/adapters/local_attachment_race.py",
+        "--swipl",
+        "/usr/local/bin/swipl",
+        "--tpl",
+        "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+        "--swi-root",
+        "/Users/lager/swi-prolog-node",
+        "--trealla-root",
+        "/Users/lager/trealla-port",
+        "--output",
+        "/tmp/context-lifetime-qualified-20261105/attachments"
+      ],
+      "exit_code": 0,
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

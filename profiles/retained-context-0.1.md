@@ -21,6 +21,7 @@ are separately provisioned for the disposable fixtures.
 | CTX-010–011 | Equal credentials and anonymous fresh HTTP requests do not retain promise ownership between requests. |
 | CTX-020 | An explicit retained HTTP session preserves ownership between requests and isolates another session. This transport fixture currently runs on SWI only. |
 | CTX-012–015, CTX-018 per route | Remote transport and public goal export work; remote siblings share destination context while other clients remain isolated; foreign collection leaves the owner's promise intact. |
+| CTX-019 per route | Forwarding an origin reference to its remote descendant grants neither destination collection nor cleanup authority; the origin still collects. |
 | CTX-016–017 per route | Returning descendants rejoin the origin's name and promise scopes. |
 
 ## Routine gate
@@ -32,11 +33,12 @@ python3 runner/context_release.py \
   --output /fresh/report/directory
 ```
 
-This command runs all 57 cases and the existing attachment regression adapter
-once each. It checks the exact candidate/case inventory and all four routes.
+This command runs all 61 cases and the existing attachment regression adapter
+once each, followed by six native scope/closure regression groups. It checks
+the exact candidate/case inventory and all four routes.
 Missing, duplicate, unexpected, blocked, excluded and failed observations cannot
 qualify. A nonzero adapter exit cannot qualify even if its report contains only
-passing rows. Both groups run so an early failure does not hide the other group's
+passing rows. All groups run so an early failure does not hide later
 observations. There is no automatic retry, deadline enlargement or failure masking.
 Historical release packs remain unchanged.
 
@@ -44,7 +46,7 @@ The attachment group supplies four deterministic positive observations and two
 negative controls on disposable source copies. Both orderings of reattachment
 and retirement are checked. Each negative control must reproduce unsafe closure
 when retirement is deliberately moved outside the decision lock. These are
-implementation regression controls, reported separately from the 57 black-box
+implementation regression controls, reported separately from the 61 black-box
 language observations; they are not six additional portable language cases.
 
 Run the gate's own inventory/rejection tests with the routine runner checks:
@@ -76,11 +78,17 @@ set both actor ceilings to 256 to accommodate the larger selection under the
 shared test principal. Public settings are unchanged. The
 [qualified run](../reports/2026-11-05-controlled-promise-suite-qualified/README.md)
 retains the corrected configuration and all observations.
-Native attachment instrumentation does not certify every context closure or
-late-completion schedule. The browser interruption failure remains separate.
+The closure group runs the maintained native name, promise ownership and
+promise lifecycle selections. It includes explicit completion after committed
+closure, late name publication, surviving actors and creation/collection races.
+These implementation regressions complement the black-box transport cases;
+they are not six additional portable language cases. Native attachment
+instrumentation does not certify every possible schedule. The browser
+interruption failure remains separate.
 
 GNU ISOBASE and browser execution are outside this native selection. Source
 policy denial controls, source-fetch counters, statechart documents, and browser
 interrupted-wait controls retain their separate suites and evidence; this gate
-does not claim to expand those contracts. Full lifetime/transport clause mapping
-and additional deterministic schedules remain work to do.
+does not claim to expand those contracts. The [clause-level context audit](../docs/CONTEXT_LIFETIME_AUDIT.md) completes
+the native B-004/B-354/B-296 mapping and lists the browser/GNU boundaries
+that still need tests. Other lifetime/transport obligations remain separate.
