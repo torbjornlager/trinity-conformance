@@ -1,0 +1,638 @@
+diff --git a/UPSTREAM_OUTSTANDING.md b/UPSTREAM_OUTSTANDING.md
+index d7e6ca1..196dfe8 100644
+--- a/UPSTREAM_OUTSTANDING.md
++++ b/UPSTREAM_OUTSTANDING.md
+@@ -467,3 +467,21 @@ with the 148 passing focused unmodified-upstream checks and their qualifications
+ The [verification and closure record](reproducers/upstream-1177-verification-2026-10-23/REPORT.md)
+ retains exact outputs, provenance, the published comment and API confirmation.
+ Earlier open-status statements are historical. The installed runtime is unchanged.
++
++
++### succ/2 float argument validation (5 November 2026)
++
++With the qualified Trealla 3.14.20 engine, `succ(1.5,X)` and `succ(X,1.5)`
++raise `instantiation_error` rather than `type_error(integer,1.5)`. The engine's
++preliminary `can_be(not_less_than_zero,_)` accepts floats, but its direction
++selection then finds neither argument is an integer. Bound float/integer pairs
++can instead fail without the required type error.
++
++The Web Prolog port now checks instantiated argument types before delegating to
++the native relation. Submitted goals, callbacks, receive guards/bodies and copied
++source share that bridge. Integer behavior, zero, domain errors and the
++both-variable instantiation error retain their normal semantics. The installed
++engine/library is unchanged; this is a port-level conformance repair, while the
++standalone engine reproducer remains an upstream issue. `succ_validation_tests.pl`
++and the shared 146-case library fixture cover the repaired paths and original
++culprits without changing sandbox permissions.
+diff --git a/isolation.pl b/isolation.pl
+index c8b2f13..4ffd64a 100644
+--- a/isolation.pl
++++ b/isolation.pl
+@@ -411,6 +411,8 @@ actor_query_goal(_, fail, fail) :- !.
+ actor_query_goal(_, repeat, repeat) :- !.
+ actor_query_goal(_, between(Low, High, Value),
+                  sandbox_policy:sandbox_between(Low, High, Value)) :- !.
++actor_query_goal(_, succ(Before,After),
++                 sandbox_policy:sandbox_succ(Before,After)) :- !.
+ actor_query_goal(_, Goal, sandbox_policy:sandbox_builtin_call(Goal)) :-
+     nonvar(Goal),
+     functor(Goal, Name, Arity),
+@@ -567,6 +569,7 @@ guard_public(sandbox_abolish,6,4,abolish).
+ guard_public(sandbox_format,2,0,format).
+ guard_public(sandbox_sleep,1,0,sleep).
+ guard_public(sandbox_between,3,0,between).
++guard_public(sandbox_succ,2,0,succ).
+ guard_public(sandbox_atom_string,2,0,atom_string).
+ guard_public(sandbox_random_member,2,0,random_member).
+ guard_public(sandbox_time,2,1,time).
+@@ -783,7 +786,7 @@ bootstrap_lines(Module, ActorsFile, ToplevelFile,
+     bootstrap_line( 'parallel(Goals) :- parallel:parallel_in(~q,Goals).~n', [Module]),
+     bootstrap_line( 'first_solution(Solution,Goals) :- parallel:first_solution_in(~q,Solution,Goals,[on_fail(continue),on_error(stop)]).~n', [Module]),
+     bootstrap_line( 'first_solution(Solution,Goals,Options) :- parallel:first_solution_in(~q,Solution,Goals,Options).~n', [Module]),
+-    bootstrap_line( ':- use_module(~q, [sandbox_call/5,sandbox_call/6,sandbox_call/7,sandbox_call/8,sandbox_call/9,sandbox_call/10,sandbox_call/11,sandbox_call/12,sandbox_spawn/7,sandbox_toplevel_call/7,sandbox_toplevel_synch/9,sandbox_control_catch/4,sandbox_format/2,sandbox_sleep/1,sandbox_between/3,sandbox_atom_string/2,sandbox_clause/6,sandbox_assert/5,sandbox_assert/6,sandbox_asserta/5,sandbox_asserta/6,sandbox_assertz/5,sandbox_assertz/6,sandbox_retract/5,sandbox_retractall/5,sandbox_abolish/5,sandbox_abolish/6]).~n', [SandboxFile]),
++    bootstrap_line( ':- use_module(~q, [sandbox_call/5,sandbox_call/6,sandbox_call/7,sandbox_call/8,sandbox_call/9,sandbox_call/10,sandbox_call/11,sandbox_call/12,sandbox_spawn/7,sandbox_toplevel_call/7,sandbox_toplevel_synch/9,sandbox_control_catch/4,sandbox_format/2,sandbox_sleep/1,sandbox_between/3,sandbox_succ/2,sandbox_atom_string/2,sandbox_clause/6,sandbox_assert/5,sandbox_assert/6,sandbox_asserta/5,sandbox_asserta/6,sandbox_assertz/5,sandbox_assertz/6,sandbox_retract/5,sandbox_retractall/5,sandbox_abolish/5,sandbox_abolish/6]).~n', [SandboxFile]),
+     bootstrap_line( ':- dynamic \'$actor_source_pi\'/1.~n', []),
+     bootstrap_line( ':- dynamic \'$actor_dynamic_pi\'/1.~n', []),
+     bootstrap_line( ':- dynamic \'$actor_discontiguous_pi\'/1.~n', []),
+@@ -812,6 +815,7 @@ bootstrap_lines(Module, ActorsFile, ToplevelFile,
+     bootstrap_line( '\'$actor_qualify_goal\'((A0->B0), (A->B)) :- !, \'$actor_qualify_goal\'(A0,A), \'$actor_qualify_goal\'(B0,B).~n', []),
+     bootstrap_line( '\'$actor_qualify_goal\'((\\+ A0), (\\+ A)) :- !, \'$actor_qualify_goal\'(A0,A).~n', []),
+     bootstrap_line( '\'$actor_qualify_goal\'(between(Low,High,Value), sandbox_policy:sandbox_between(Low,High,Value)) :- !.~n', []),
++    bootstrap_line( '\'$actor_qualify_goal\'(succ(Before,After), sandbox_policy:sandbox_succ(Before,After)) :- !.~n', []),
+     % The child must qualify its own entry goal after its namespace exists.
+     bootstrap_line( '\'$actor_qualify_goal\'(sandbox_policy:sandbox_spawn(M,P,C,A,Goal,Pid,Options), \'$actor_sandbox_spawn\'(M,P,C,A,Goal,Pid,Options)) :- !.~n', []),
+     bootstrap_line( '\'$actor_qualify_goal\'(toplevel_spawn(Pid), \'$actor_toplevel_spawn\'(Pid,[])) :- !.~n', []),
+@@ -841,6 +845,7 @@ bootstrap_lines(Module, ActorsFile, ToplevelFile,
+     bootstrap_line( '\'$actor_qualify_receive_guard\'((\\+ A0), (\\+ A)) :- !, \'$actor_qualify_receive_guard\'(A0,A).~n', []),
+     bootstrap_line( '\'$actor_qualify_receive_guard\'(Qualified:Goal, Qualified:Goal) :- atom(Qualified), !.~n', []),
+     bootstrap_line( '\'$actor_qualify_receive_guard\'(between(Low,High,Value), sandbox_policy:sandbox_between(Low,High,Value)) :- !.~n', []),
++    bootstrap_line( '\'$actor_qualify_receive_guard\'(succ(Before,After), sandbox_policy:sandbox_succ(Before,After)) :- !.~n', []),
+     bootstrap_line( '\'$actor_qualify_receive_guard\'(Goal, sandbox_policy:sandbox_builtin_call(Goal)) :- isolation:actor_builtin_goal(Goal), !.~n', []),
+     bootstrap_line( '\'$actor_qualify_receive_guard\'(Goal, ~q:Goal).~n', [Module]),
+     bootstrap_line( '\'$actor_qualify_receive_options\'(Options, Options) :- var(Options), !.~n', []),
+@@ -855,6 +860,7 @@ bootstrap_lines(Module, ActorsFile, ToplevelFile,
+     bootstrap_line( '\'$actor_qualify_receive_body\'(receive(Clauses0), actors:receive(~q:Clauses)) :- !, \'$actor_qualify_receive\'(Clauses0,Clauses).~n', [Module]),
+     bootstrap_line( '\'$actor_qualify_receive_body\'(receive(Clauses0,Options0), actors:receive(~q:Clauses,Options)) :- !, \'$actor_qualify_receive\'(Clauses0,Clauses), \'$actor_qualify_receive_options\'(Options0,Options).~n', [Module]),
+     bootstrap_line( '\'$actor_qualify_receive_body\'(between(Low,High,Value), sandbox_policy:sandbox_between(Low,High,Value)) :- !.~n', []),
++    bootstrap_line( '\'$actor_qualify_receive_body\'(succ(Before,After), sandbox_policy:sandbox_succ(Before,After)) :- !.~n', []),
+     bootstrap_line( '\'$actor_qualify_receive_body\'(Goal, ~q:Goal).~n', [Module]),
+     bootstrap_line( '\'$actor_expanded\'([]) :- !.~n', []),
+     bootstrap_line( '\'$actor_expanded\'([Term|Terms]) :- !, \'$actor_expanded\'(Term), \'$actor_expanded\'(Terms).~n', []),
+@@ -953,6 +959,7 @@ bootstrap_lines(Module, ActorsFile, ToplevelFile,
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_library(_M,_P,_C,_A,Goal0), Goal) :- !, \'$actor_strip_source_module\'(Goal0,Goal).~n', []),
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_format(Format,Args), format(Format,Args)) :- !.~n', []),
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_sleep(Seconds), sleep(Seconds)) :- !.~n', []),
++    bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_succ(Before,After), succ(Before,After)) :- !.~n', []),
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_atom_string(Atom,String), atom_string(Atom,String)) :- !.~n', []),
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_random_member(Element,List), random_member(Element,List)) :- !.~n', []),
+     bootstrap_line( '\'$actor_strip_source_module\'(sandbox_policy:sandbox_time(_Context,Goal0), time(Goal)) :- !, \'$actor_strip_source_module\'(Goal0,Goal).~n', []),
+diff --git a/sandbox_policy.pl b/sandbox_policy.pl
+index a9ada4b..3e98be1 100644
+--- a/sandbox_policy.pl
++++ b/sandbox_policy.pl
+@@ -25,6 +25,7 @@
+          sandbox_time/2,
+          sandbox_sleep/1,
+          sandbox_between/3,
++         sandbox_succ/2,
+          sandbox_atom_string/2,
+          sandbox_random_member/2,
+          sandbox_clause/6,
+@@ -157,6 +158,9 @@ sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+ sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                     sandbox_policy:sandbox_between(_Low, _High, _Value)) :-
+     !.
++sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
++                    sandbox_policy:sandbox_succ(_Before, _After)) :-
++    !.
+ sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                     sandbox_policy:sandbox_atom_string(_Atom, _String)) :-
+     !.
+@@ -583,6 +587,7 @@ reserved_source_name(sandbox_format).
+ reserved_source_name(sandbox_time).
+ reserved_source_name(sandbox_sleep).
+ reserved_source_name(sandbox_between).
++reserved_source_name(sandbox_succ).
+ reserved_source_name(sandbox_atom_string).
+ reserved_source_name(sandbox_random_member).
+ reserved_source_name(sandbox_builtin_call).
+@@ -674,6 +679,8 @@ rewrite_goal_(_M,_P,_C,_A,sleep(Seconds),
+ % programs on SWI's public contract through this small compatibility bridge.
+ rewrite_goal_(_M,_P,_C,_A,between(Low,High,Value),
+               sandbox_policy:sandbox_between(Low,High,Value)).
++rewrite_goal_(_M,_P,_C,_A,succ(Before,After),
++              sandbox_policy:sandbox_succ(Before,After)).
+ % Trealla represents strings as character lists but does not provide SWI's
+ % atom_string/2 compatibility predicate.  Route it through atom_chars/2 so
+ % shared tutorial and application source retains the SWI spelling.
+@@ -1194,6 +1201,15 @@ sandbox_between(Low, High, Value) :-
+ sandbox_between(Low, High, Value) :-
+     between(Low, High, Value).
+ 
++% The engine's succ/2 lets floats pass can_be(not_less_than_zero,_), then
++% reports instantiation_error because neither direction is an integer. Check
++% instantiated arguments first, preserving variables and the original culprit;
++% retain the engine relation for valid integers, zero, domains and both variables.
++sandbox_succ(Before, After) :-
++    (nonvar(Before) -> must_be(integer, Before) ; true),
++    (nonvar(After) -> must_be(integer, After) ; true),
++    succ(Before, After).
++
+ integers_from(Value, Value).
+ integers_from(Low, Value) :-
+     Next is Low + 1,
+@@ -1212,6 +1228,8 @@ sandbox_random_member(Element, List) :-
+ % Execute a pre-validated primitive in this module, where Trealla exposes its
+ % built-ins reliably. Short-lived private modules cannot resolve every native
+ % predicate from a compound meta-call.
++sandbox_builtin_call(succ(Before,After)) :- !,
++    sandbox_succ(Before,After).
+ sandbox_builtin_call(Goal) :-
+     call(Goal).
+ 
+@@ -1261,6 +1279,8 @@ restore_clause_body(_Module, sandbox_policy:sandbox_sleep(Seconds),
+ restore_clause_body(_Module,
+                     sandbox_policy:sandbox_between(Low,High,Value),
+                     between(Low,High,Value)) :- !.
++restore_clause_body(_Module,sandbox_policy:sandbox_succ(Before,After),
++                    succ(Before,After)) :- !.
+ restore_clause_body(_Module, sandbox_policy:sandbox_atom_string(Atom,String),
+                     atom_string(Atom,String)) :- !.
+ restore_clause_body(_Module,
+diff --git a/standard_library_cases.json b/standard_library_cases.json
+index 8430269..f95a1da 100644
+--- a/standard_library_cases.json
++++ b/standard_library_cases.json
+@@ -1,10 +1,10 @@
+ {
+-  "suite": "standard-library-0.1",
+-  "baseline": "standard-library-0.1",
++  "suite": "standard-library-0.2",
++  "baseline": "standard-library-0.2",
+   "status": "draft",
+   "scope": "supporting",
+   "minimum_profile": "isobase",
+-  "contract": "Appendix B standard library: documented arities, relational modes, callback scope, binding and solution semantics; selected formal errors. No complete ISO certification.",
++  "contract": "Appendix B library forms and semantics, extended with finite relational modes and documented/common formal errors; no exhaustive ISO certification.",
+   "source": "lib_eq1(X).\nlib_eq2(X,X).\nlib_eq3(X,X,X).\nlib_eq4(X,X,X,X).\nlib_eq5(X,X,X,X,X).\nlib_eq6(X,X,X,X,X,X).\nlib_eq7(X,X,X,X,X,X,X).\nlib_choice(a,1). lib_choice(a,2). lib_choice(b,3).\nlib_fold(A,S,T):-T is S+A.\nlib_fold2(A,B,S,T):-T is S+A+B.\nlib_fold3(A,B,C,S,T):-T is S+A+B+C.\nlib_fold_choice(X,S,T):-member(T,[X,S]).\nlib_throw(X):-throw(X).\nlib_args1(a1).\nlib_args1(b1).\nlib_args2(a1,a2).\nlib_args2(b1,b2).\nlib_args3(a1,a2,a3).\nlib_args3(b1,b2,b3).\nlib_args4(a1,a2,a3,a4).\nlib_args4(b1,b2,b3,b4).\nlib_args5(a1,a2,a3,a4,a5).\nlib_args5(b1,b2,b3,b4,b5).\nlib_args6(a1,a2,a3,a4,a5,a6).\nlib_args6(b1,b2,b3,b4,b5,b6).\nlib_args7(a1,a2,a3,a4,a5,a6,a7).\nlib_args7(b1,b2,b3,b4,b5,b6,b7).\nlib_record(A,S,step(A,S)). lib_record2(A,B,S,step(A,B,S)). lib_record3(A,B,C,S,step(A,B,C,S)).\n",
+   "cases": [
+     {
+@@ -1107,6 +1107,431 @@
+       "requirements": [
+         "B-333"
+       ]
++    },
++    {
++      "id": "STDLIB-113",
++      "title": "append removes a supplied prefix or fails without a match",
++      "transport": "query",
++      "goal": "append([a],Tail,[a,b,c]),Tail==[b,c],\\+append([x],_,[a,b,c])",
++      "requirements": [
++        "B-363"
++      ],
++      "library_obligations": [
++        "LIB-005"
++      ]
++    },
++    {
++      "id": "STDLIB-114",
++      "title": "length preserves a partial prefix and creates pairwise-distinct fresh positions",
++      "transport": "query",
++      "goal": "length([X|Tail],4),Tail=[A,B,C],var(X),var(A),var(B),var(C),X\\==A,X\\==B,X\\==C,A\\==B,A\\==C,B\\==C",
++      "requirements": [
++        "B-365"
++      ],
++      "library_obligations": [
++        "LIB-007"
++      ]
++    },
++    {
++      "id": "STDLIB-115",
++      "title": "select enumerates all insertion positions in order",
++      "transport": "query",
++      "goal": "findall(L,select(x,L,[a,b]),[[x,a,b],[a,x,b],[a,b,x]])",
++      "requirements": [
++        "B-367"
++      ],
++      "library_obligations": [
++        "LIB-010"
++      ]
++    },
++    {
++      "id": "STDLIB-116",
++      "title": "select insertion preserves variable identity and remainder order",
++      "transport": "query",
++      "goal": "findall(ok,(select(X,[A,X,B],R),R=[A,B],var(A),var(B),var(X),A\\==B,A\\==X,B\\==X),[ok])",
++      "requirements": [
++        "B-367"
++      ],
++      "library_obligations": [
++        "LIB-010"
++      ]
++    },
++    {
++      "id": "STDLIB-117",
++      "title": "nth0/4 constructs every ordered insertion",
++      "transport": "query",
++      "goal": "findall(N-L,nth0(N,L,x,[a,b]),[0-[x,a,b],1-[a,x,b],2-[a,b,x]])",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-012"
++      ]
++    },
++    {
++      "id": "STDLIB-118",
++      "title": "nth1/4 enumerates ordered removals",
++      "transport": "query",
++      "goal": "findall(N-X-R,nth1(N,[a,b,a],X,R),[1-a-[b,a],2-b-[a,a],3-a-[a,b]])",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-012"
++      ]
++    },
++    {
++      "id": "STDLIB-119",
++      "title": "nth0/3 fails for an index past the finite list",
++      "transport": "query",
++      "goal": "\\+nth0(2,[a,b],X),var(X)",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-013"
++      ]
++    },
++    {
++      "id": "STDLIB-120",
++      "title": "nth0/4 fails for an index past the finite list",
++      "transport": "query",
++      "goal": "\\+nth0(2,[a,b],X,R),var(X),var(R)",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-013"
++      ]
++    },
++    {
++      "id": "STDLIB-121",
++      "title": "nth1/3 fails for an index past the finite list",
++      "transport": "query",
++      "goal": "\\+nth1(3,[a,b],X),var(X)",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-013"
++      ]
++    },
++    {
++      "id": "STDLIB-122",
++      "title": "nth1/4 fails for an index past the finite list",
++      "transport": "query",
++      "goal": "\\+nth1(3,[a,b],X,R),var(X),var(R)",
++      "requirements": [
++        "B-369"
++      ],
++      "library_obligations": [
++        "LIB-013"
++      ]
++    },
++    {
++      "id": "STDLIB-123",
++      "title": "between rejects an empty interval without binding its candidate",
++      "transport": "query",
++      "goal": "findall(N,between(2,1,N),[]),\\+between(2,1,1),\\+between(2,1,2)",
++      "requirements": [
++        "B-371"
++      ],
++      "library_obligations": [
++        "LIB-015"
++      ]
++    },
++    {
++      "id": "STDLIB-124",
++      "title": "between requires an instantiated lower bound",
++      "transport": "query",
++      "goal": "catch(between(L,3,N),E,true),nonvar(E),E=error(instantiation_error,_),var(L),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-125",
++      "title": "between requires an integer lower bound (bad)",
++      "transport": "query",
++      "goal": "catch(between(bad,3,N),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-126",
++      "title": "between requires an integer lower bound (1.5)",
++      "transport": "query",
++      "goal": "catch(between(1.5,3,N),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-127",
++      "title": "between requires an instantiated upper bound",
++      "transport": "query",
++      "goal": "catch(between(1,U,N),E,true),nonvar(E),E=error(instantiation_error,_),var(U),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-128",
++      "title": "between requires an integer upper bound (bad)",
++      "transport": "query",
++      "goal": "catch(between(1,bad,N),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-129",
++      "title": "between requires an integer upper bound (1.5)",
++      "transport": "query",
++      "goal": "catch(between(1,1.5,N),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(N)",
++      "requirements": [
++        "B-371",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-016"
++      ]
++    },
++    {
++      "id": "STDLIB-130",
++      "title": "succ checks supplied pairs with at most one answer",
++      "transport": "query",
++      "goal": "findall(ok,succ(3,4),[ok]),\\+succ(3,3),\\+succ(3,5),\\+succ(0,0)",
++      "requirements": [
++        "B-373"
++      ],
++      "library_obligations": [
++        "LIB-018"
++      ]
++    },
++    {
++      "id": "STDLIB-131",
++      "title": "zero has no nonnegative predecessor",
++      "transport": "query",
++      "goal": "\\+succ(P,0),var(P)",
++      "requirements": [
++        "B-373"
++      ],
++      "library_obligations": [
++        "LIB-018"
++      ]
++    },
++    {
++      "id": "STDLIB-132",
++      "title": "succ requires at least one instantiated argument",
++      "transport": "query",
++      "goal": "catch(succ(P,S),E,true),nonvar(E),E=error(instantiation_error,_),var(P),var(S)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-133",
++      "title": "succ requires an integer predecessor (bad)",
++      "transport": "query",
++      "goal": "catch(succ(bad,V),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-134",
++      "title": "succ requires an integer predecessor (1.5)",
++      "transport": "query",
++      "goal": "catch(succ(1.5,V),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-135",
++      "title": "succ rejects a negative predecessor",
++      "transport": "query",
++      "goal": "catch(succ(-1,V),E,true),nonvar(E),E=error(domain_error(Domain,-1),_),atom(Domain),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-136",
++      "title": "succ requires an integer successor (bad)",
++      "transport": "query",
++      "goal": "catch(succ(V,bad),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-137",
++      "title": "succ requires an integer successor (1.5)",
++      "transport": "query",
++      "goal": "catch(succ(V,1.5),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-138",
++      "title": "succ rejects a negative successor",
++      "transport": "query",
++      "goal": "catch(succ(V,-1),E,true),nonvar(E),E=error(domain_error(Domain,-1),_),atom(Domain),var(V)",
++      "requirements": [
++        "B-373",
++        "B-014"
++      ],
++      "library_obligations": [
++        "LIB-019"
++      ]
++    },
++    {
++      "id": "STDLIB-139",
++      "title": "call_nth rejects a negative index before invoking its goal",
++      "transport": "query",
++      "goal": "catch(call_nth(throw(index_goal_ran),-1),E,true),nonvar(E),E=error(domain_error(not_less_than_one,-1),_)",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-030"
++      ]
++    },
++    {
++      "id": "STDLIB-140",
++      "title": "call_nth rejects a noninteger index before invoking its goal (bad)",
++      "transport": "query",
++      "goal": "catch(call_nth(throw(index_goal_ran),bad),E,true),nonvar(E),E=error(type_error(integer,bad),_)",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-030"
++      ]
++    },
++    {
++      "id": "STDLIB-141",
++      "title": "call_nth rejects a noninteger index before invoking its goal (1.5)",
++      "transport": "query",
++      "goal": "catch(call_nth(throw(index_goal_ran),1.5),E,true),nonvar(E),E=error(type_error(integer,1.5),_)",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-030"
++      ]
++    },
++    {
++      "id": "STDLIB-142",
++      "title": "call_nth rejects a noninteger index before invoking its goal (pair(a,b))",
++      "transport": "query",
++      "goal": "catch(call_nth(throw(index_goal_ran),pair(a,b)),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_)",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-030"
++      ]
++    },
++    {
++      "id": "STDLIB-143",
++      "title": "call_nth rejects a noninteger index before invoking its goal ([a])",
++      "transport": "query",
++      "goal": "catch(call_nth(throw(index_goal_ran),[a]),E,true),nonvar(E),E=error(type_error(integer,[a]),_)",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-030"
++      ]
++    },
++    {
++      "id": "STDLIB-144",
++      "title": "call_nth selection does not evaluate later alternatives",
++      "transport": "query",
++      "goal": "findall(X,call_nth((X=a;X=b;throw(later_alternative_ran)),2),[b])",
++      "requirements": [
++        "B-379"
++      ],
++      "library_obligations": [
++        "LIB-031"
++      ]
++    },
++    {
++      "id": "STDLIB-145",
++      "title": "countall isolates a variable shared between goal and count",
++      "transport": "query",
++      "goal": "findall(N,countall((N=1;N=2),N),[2])",
++      "requirements": [
++        "B-381"
++      ],
++      "library_obligations": [
++        "LIB-034"
++      ]
++    },
++    {
++      "id": "STDLIB-146",
++      "title": "countall fails a mismatched prebound count shared with its goal",
++      "transport": "query",
++      "goal": "N=1,\\+countall((N=1;N=1),N),N==1",
++      "requirements": [
++        "B-381"
++      ],
++      "library_obligations": [
++        "LIB-034"
++      ]
+     }
+-  ]
++  ],
++  "extends": {
++    "manifest": "cases/standard-library-0.1.json",
++    "sha256": "e7a516c7c5e1837e4a23bd50c8e4656b2cabb4877a8518a10400c56206ea9b72"
++  }
+ }
+diff --git a/tools/test-standard-library.py b/tools/test-standard-library.py
+index 1d4a623..db454cf 100644
+--- a/tools/test-standard-library.py
++++ b/tools/test-standard-library.py
+@@ -20,7 +20,7 @@ for mode in ['blacklist','whitelist']:
+    def query(goal,source=''):
+     params=dict(goal='('+goal+'),LibraryCheck=passed',template='LibraryCheck',format='prolog',limit=1,src_text=source)
+     with urllib.request.urlopen(f'http://127.0.0.1:{port}/call?'+urllib.parse.urlencode(params),timeout=6) as response:return ''.join(response.read().decode().split())
+-   cases=pack['cases'] if mode=='blacklist' else [c for c in pack['cases'] if c['id'] in ['STDLIB-032','STDLIB-034','STDLIB-040','STDLIB-048','STDLIB-054']]
++   cases=pack['cases'] if mode=='blacklist' else [c for c in pack['cases'] if c['id'] in ['STDLIB-032','STDLIB-034','STDLIB-040','STDLIB-048','STDLIB-054'] or 130 <= int(c['id'].split('-')[1]) <= 138]
+    for case in cases:
+     body=query(case['goal'],pack['source']);assert body=='success([passed],false).',(mode,case['id'],body);count+=1
+     if mode=='blacklist':
+diff --git a/tools/test.sh b/tools/test.sh
+index ade9f7c..1593e34 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -126,6 +126,8 @@ run_unit() {
+         "$TPL" -g "consult('$ROOT/uri_option_tests.pl'),(catch(uri_option_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Required standard library and callback guards" \
+         python3 "$ROOT/tools/test-standard-library.py" --tpl "$TPL"
++    run_with_timeout "Successor validation and copied-source paths" \
++        "$TPL" -g "consult('$ROOT/succ_validation_tests.pl'),(catch(succ_validation_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Strict Boolean language options" \
+         "$TPL" -g "consult('$ROOT/boolean_option_tests.pl'),(catch(boolean_option_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "Canonical answer negotiation context" \

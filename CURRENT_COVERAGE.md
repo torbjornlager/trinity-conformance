@@ -2,9 +2,42 @@
 
 Updated **5 November 2026**. The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md)
 and its [machine-readable ledger](requirements/appendix-b-0.1.json) now provide
-requirement-level accounting. This first inventory has 353 manuscript source
-units, including related prose groups and signatures. Earlier test selections
-still need full clause mapping; these unit counts are not a conformance percentage.
+requirement-level accounting. The migrated inventory has 383 manuscript source
+units, preserving the original 353 IDs and adding 30 units from the revision.
+Earlier test selections still need full clause mapping; these unit counts are not a conformance percentage.
+
+The ledger now pins book revision `3edc369`, including the context clarifications
+and expanded standard-library entries, plus a reviewed layout-only refresh.
+The [migration record](reports/2026-11-05-appendix-b-ledger-migration/README.md)
+retains the previous ledger and a byte-exact manuscript snapshot. The
+[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 28
+covered within recorded five-mode evidence, and 15 needing additional shared tests.
+The broad callback paragraph returns to unverified after clause review; the new
+memberchk prose is verified against existing commitment/binding/tail cases.
+At that migration, whole-unit totals remained 11 verified per target; new
+signatures and expanded paragraphs were not automatically promoted. The migration
+itself reran no runtimes; the subsequent finite-case execution is recorded below.
+
+The [finite library test extension](reports/2026-11-05-library-finite-cases/README.md)
+adds 34 shared cases in `standard-library-0.2`, preserving the original 112 cases.
+The complete 146-case selection passes on native SWI, GNU and both real-browser
+modes. Trealla fails two float-argument succ cases in each of fresh HTTP and
+retained sessions: it returns instantiation_error instead of the integer type
+error. These four failed observations remain visible, with the initial invalid
+select fixture recorded separately. At that baseline, the clause inventory recorded 27 covered, 15 needing tests
+and one failing obligation; the Trealla succ paragraph and common error rule
+were marked failing. No runtime or public node was changed by adding the tests.
+
+The [Trealla successor repair](reports/2026-11-05-trealla-succ-repair/README.md)
+provides one validated integer relation to node calls, private actors, callbacks
+and receive code, including owner sandbox-off calls. The final 146-case selection
+passes across all five modes: 730 native observations and 294 browser observations
+(including two child controls). The earlier failures remain archived. The succ
+unit returns to verified on Trealla; the general error paragraph returns to
+unverified pending complete mapping. All five targets now have 17 verified
+source units, with no currently observed failing units in this selected ledger.
+This is a development repair; installed engine/library bytes, consumer pins and
+public nodes remain unchanged.
 
 The [cluster peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
 is committed, pushed and deployed to N0–N6. All twelve runtime/asset services run

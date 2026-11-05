@@ -195,3 +195,12 @@ timeout as a failure even if a separate diagnostic retry recovers. Use
 phase summaries. Tokens must be provisioned/revoked by the deployment owner;
 the adapter neither grants authority nor changes public policy.
 See the [N5 diagnostic](../reports/2026-11-05-public-self-route-diagnostic/README.md).
+
+
+The native standard-library adapter accepts `--manifest` for an explicitly
+versioned shared selection. Its default remains historical 0.1; select
+`cases/standard-library-0.2.json` for all 146 original/finite mode/error cases.
+The browser runner's `LIBRARY_MANIFEST` override selects that same file through
+real Chrome Worker/main engines. Exact manifest hashes are part of each report;
+[finite-case results](../reports/2026-11-05-library-finite-cases/README.md) are kept
+separate from the earlier public 112-case certificate.

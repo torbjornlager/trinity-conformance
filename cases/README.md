@@ -236,3 +236,27 @@ The [profile](../profiles/retained-context-0.1.md) defines its matrix and limits
 `runner/context_release.py` requires all four routes, exact case coverage and
 passing attachment regression controls; no policy exclusion or successful retry
 can replace a failed invocation. Historical audit reports remain unchanged.
+
+
+The [revised library clause inventory](../docs/LIBRARY_TEST_GAPS.md) initially mapped
+the 112 cases to Appendix B revision `364ee0b`; the finite extension below adds
+new execution evidence without changing historical case IDs. It distinguishes
+covered clauses, partial evidence, known failures and concrete tests still needed. Validate its target/case/source
+links with `python3 runner/library_coverage.py --check`.
+
+
+`standard-library-0.2.json` extends the unchanged 112-case 0.1 pack with 34 finite
+mode/error cases (STDLIB-113–146). It covers prefix removal, fresh constructed
+positions, select/nth insertion, out-of-range indices, reversed integer intervals,
+integer argument errors, succ boundary modes, call_nth validation/selection, and
+shared countall output variables. Run `adapters/local_standard_library.py
+--manifest cases/standard-library-0.2.json` with the usual disposable engine/root
+arguments. For real Chrome, pass its absolute path in `LIBRARY_MANIFEST` to the
+upstream `tests/wasm/swi_wasm_library_browser.cjs` runner. No pinned upstream fixture
+or runtime source is replaced. [Finite-case evidence](../reports/2026-11-05-library-finite-cases/README.md)
+retains the two Trealla succ failures per transport and the invalid initial fixture.
+
+The [successor development repair](../reports/2026-11-05-trealla-succ-repair/README.md)
+passes the same 146-case manifest without changing its assertions. The initial
+Trealla failures stay in the finite-case report; qualified source hashes, owner
+sandbox-off controls and upstream regressions are recorded separately.

@@ -1,0 +1,2557 @@
+\chapter{Manual}\label{sec:manual}
+\index{Web Prolog!manual|textbf}
+\index{API reference}
+
+\begingroup
+\setlength{\emergencystretch}{1.5em}
+
+\vspace{10mm}
+This appendix specifies the common Web Prolog language and API contract.
+The node's HTTP and WebSocket interfaces are specified separately in
+Appendix~\ref{sec:protocol-reference}. Both appendices describe a design in
+progress: the rules stated here are requirements for conforming
+implementations, rather than an inventory of current implementation behaviour.
+Deployment and implementation guides document setup, capabilities and any
+remaining conformance gaps.
+
+The classification shown beside each entry identifies the minimum public node
+profile in which the predicate is available, or another relevant execution
+context. ISOBASE provides general stateless Prolog calls, ISOTOPE adds
+persistent toplevel sessions, and ACTOR adds the full stateful actor-messaging
+model. The profiles are cumulative, so an entry marked \textsc{isotope} is
+also available in ACTOR. The classification concerns the client language, not
+predicates used internally to implement a profile. Entries additionally marked
+\textsc{owner only} are reserved for code running with node-owner authority and
+are not available to ordinary client code.
+
+\section{Common conventions}\label{sec:manual-conventions}
+The language contract is independent of the host Prolog system and execution
+mechanism. Environmental capabilities, including persistence, inbound
+connectivity, DOM access and hard termination, are reported by
+\texttt{runtime\_property/1}. They do not change predicate meanings or result
+formats.
+
+A client context groups one client interaction and its descendants. The
+hosting environment establishes the context and its lifetime, for example
+for an interactive session or a stateless request. Local and remote child
+creation retain that association. At each node, ordinary names and promises
+are scoped to this context. Sharing authentication credentials does not by itself merge
+contexts; reuse across requests requires an explicitly retained client
+context. Ending one request or replacing one toplevel within an explicitly
+retained context does not close that context. A remote descendant returning to
+a node retains its original context association there; it does not acquire a
+new context merely because its transport or execution engine changes.
+
+Closing a context ends admission to its ordinary-name and promise scopes.
+Late creation, publication or attachment cannot reopen the closed scopes.
+An attachment concurrent with closure either joins the still-open context or
+is rejected after closure; it must not join a context whose retirement has
+already been committed. Context closure and actor termination are distinct:
+closing these scopes does not by itself terminate surviving actors.
+Standalone execution has an environment-provided root context.
+
+\subsection{Operator declarations}\label{sec:manual-operator-declarations}
+Web Prolog uses the following operator declarations.
+
+\begin{verbatim}
+:- op(800, xfx, !).
+:- op(1000, xfy, if).
+:- op(200, xfx, @).
+\end{verbatim}
+
+\noindent Thus \texttt{@} binds more tightly than \texttt{!}, which binds
+more tightly than conjunction. The right-associative \texttt{if} has the
+same priority as the comma, so
+\texttt{Pattern\,if A,\,B\,->\,Body} is read as
+\texttt{(Pattern\,if\,(A,\,B))\,->\,Body}. Parentheses around a conjunctive guard
+remain useful for readability.
+
+\subsection{URI values}\label{sec:manual-uri-values}
+Every API argument or option that takes a URI or node URL requires an atom,
+for example \texttt{'https://n3.example'}. This rule applies consistently to
+RPC and promise destinations, source URIs, the \texttt{node/1} spawn option,
+and the node component of a canonical pid. Strings, character lists, code
+lists, numbers and compound terms are not accepted as URI values. Callers
+constructing URI text in another representation must convert it to an atom
+before passing it to the API.
+
+An uninstantiated URI value raises an instantiation error without binding it;
+a non-atom raises a type error with expected type \texttt{atom}. Validation
+precedes source fetching, actor creation or request dispatch, as appropriate.
+
+Requiring an atom does not introduce URI resolution, case-folding, escaping
+or fetch permissions. URI syntax, schemes, ports, relative paths, file access
+and origin restrictions remain subject to each entry's resolution and fetch
+policy. An atom need not denote an allowed or reachable URI.
+
+\subsection{Options and validation}\label{sec:manual-options}
+A Boolean option takes the atom \texttt{true} or \texttt{false}. This applies
+to \texttt{link/1}, \texttt{monitor/1}, \texttt{session/1}, \texttt{trace/1}
+and \texttt{once/1}.
+
+Option lists must be proper lists of recognised options with the documented
+arities and values. Every occurrence is validated, including later duplicates.
+The first occurrence of a scalar option determines its setting; repeated
+source options are additive. These rules apply to the creation predicates,
+toplevel calls and their synchronous wrappers,
+\texttt{first\_\allowbreak{}solution/\allowbreak{}3},
+\texttt{rpc/\allowbreak{}3}, \texttt{promise/\allowbreak{}4} and
+\texttt{yield/\allowbreak{}3}.
+
+Validation preserves shared variables and does not bind uninstantiated option
+values or execute goals or callbacks. It completes before source fetching,
+actor creation, request dispatch or promise collection, as appropriate.
+An invalid \texttt{yield/\allowbreak{}3} option leaves the promise available
+for retry.
+
+Errors have the form \texttt{error(Formal, Context)}. A required value that is
+uninstantiated raises \texttt{instantiation\_error}; a value of the wrong type
+raises \texttt{type\_error(ExpectedType, Value)}; and a value of the required
+type outside the permitted domain raises
+\texttt{domain\_error(Domain, Value)}. Boolean values have type \texttt{atom}
+and domain \texttt{boolean}. An unknown option or an option with an incorrect
+arity raises a domain error identifying the API's option family. The
+\texttt{Context} argument supplies diagnostic information and is not part of
+the portable contract. Internal implementation metadata is not a public option.
+
+Transport endpoints decode their wire representations before invoking the
+language API. Transport decoding is specified separately in
+Appendix~\ref{sec:protocol-reference}.
+
+\subsection{Source loading}\label{sec:manual-sources}
+Source options are processed from left to right in option-list order,
+regardless of source kind. Clause order is preserved within each source text,
+clause list or copied predicate. Repeated clause-source options are additive;
+repeated URIs are fetched separately at each occurrence. An entry requiring
+exactly one initial document, such as \texttt{statechart\_spawn/2}, rejects
+multiple document sources instead of combining them. All source is loaded
+before the goal runs and remains private to the receiving actor or stateless
+call. A source-loading failure prevents the goal from starting.
+
+The caller prepares source before local execution or remote dispatch. For
+URI source, the caller fetches the contents and supplies them to the
+destination in the position specified by the option list. This rule applies
+to local and remote actor creation, RPC and promises. A promise completes
+source preparation before starting its asynchronous request and returning its
+reference; preparation errors are raised by the promise call itself.
+
+The caller also fetches the initial statechart XML when it is supplied by URI
+and passes the document to the engine or node that will run the chart. The
+document's URI is preserved as the base for resolving relative references.
+Any later document fetch explicitly requested by the running chart takes
+place in that chart's execution environment.
+
+URI resolution and fetching follow the caller's access restrictions,
+including file-access permissions, origin restrictions and CORS where
+applicable. Relative source URIs are resolved in the caller's environment,
+not against the destination's public URL. Loading and execution follow the
+destination's profile and sandbox; sender module names grant no authority.
+
+Source text may be supplied as an atom or a string. Source predicates are
+identified by atom names and nonnegative integer arities.
+
+Runtime setup, source-loading machinery, journals and wire representation are
+covered by the runtime READMEs. The shared web manual is available at
+\href{https://github.com/torbjornlager/trinity-demonstrator/blob/main/web/manual.html}{the shared online reference};
+its introduction links deployment and implementation guides.
+The wire specification remains in Appendix~\ref{sec:protocol-reference}.
+
+\section{Predicates for programming with core actors}\label{sec:actor-API}
+\index{Actor!API reference|textbf}
+
+\index{self/1@\texttt{self/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{self/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+self(-Pid) is det.
+\end{verbatim}
+
+\noindent Binds \texttt{Pid} to the process identifier of the calling process.\\
+
+\smallskip
+\noindent \textbf{Note:} A pid is an actor address whose canonical global form
+is \texttt{Id@Node}, where \texttt{Id} is assigned by \texttt{Node}. This
+ordinary Prolog compound is part of the language contract: programs may copy,
+store, construct, decompose, compare, and serialise it. A shell may omit
+\texttt{@Node} when displaying a pid on the shell's own node, but this is only
+a local abbreviation. Constructing a pid does not create an actor, confirm
+that it is live, or grant access to it; an operation reaches an actor only when
+the pair designates that actor and the node authorises the operation.
+Arithmetic on a numeric \texttt{Id} has no defined actor-level meaning.
+The atom \texttt{localhost} is a local node designator. Passing such a pid
+across a node boundary requires preserving its originating routing context;
+it must not be reinterpreted as an address on the receiving node. Actor
+identifiers carry no host-engine or placement semantics.\\
+
+\index{spawn/1-3@\texttt{spawn/1-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{spawn/\allowbreak{}1-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+spawn(+Goal) is det.
+spawn(+Goal, -Pid) is det.
+spawn(+Goal, -Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Creates a new Web Prolog actor process running a copy
+of \texttt{Goal}. The new actor's pid is unified with \texttt{Pid} before
+\texttt{Goal} is copied. If the same variable occurs in \texttt{Goal} and
+the pid argument, those occurrences therefore carry the child's pid in the
+copy. Variables occurring more than once in \texttt{Goal} retain
+that sharing within the copy, but no variable identity is shared between the
+parent and child: bindings produced by the child do not bind variables in the
+parent, and subsequent parent bindings do not bind variables in the child.
+These rules are the same for local and remote spawning. Results that must
+cross the process boundary have to be returned explicitly, for example in a
+message or through a toplevel protocol. 
+
+Admission charges the principal's whole locally hosted subtree.
+At the actor or CPU quota, spawning raises
+\texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}actors),\allowbreak{}Context)} or
+\texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}cpu),\allowbreak{}Context)}. A non-owner's
+\texttt{link(\allowbreak{}false)} raises:
+\begin{verbatim}
+error(permission_error(spawn, detached_actor, link(false)),
+      Context)
+\end{verbatim}
+\noindent Loss of the transport during a remote spawn raises:
+\begin{verbatim}
+error(remote_spawn_failed(connection_closed), Context)
+\end{verbatim}
+\noindent The remote outcome is unknown, so a retry of effectful work
+requires application duplicate suppression.
+
+Valid options are:
+
+\begin{itemize}
+\item
+  \texttt{node(\allowbreak{}+URI)}\\
+  Creates the process locally or on a remote compatible node. Default is
+  \texttt{localhost}.
+\item
+  \texttt{monitor(\allowbreak{}+Boolean)}\\
+  If \texttt{true}, monitoring is installed as part of process creation.
+  Default is \texttt{false}.
+\item
+  \texttt{link(\allowbreak{}+Boolean)}\\
+  If \texttt{true}, installs directional parent-to-child link cleanup.
+  Default is \texttt{true}. Only node owners may use \texttt{false};
+  detaching rehomes the actor under the node and sends its output to the node log.
+\item
+  \texttt{src\_\allowbreak{}text(\allowbreak{}+AtomOrString)}\\
+  Loads the clauses specified by a Web Prolog source text into the actor's
+  private Prolog database before calling \texttt{Goal}.
+\item
+  \texttt{src\_\allowbreak{}list(\allowbreak{}+ListOfClauses)}\\
+  Converts the clauses to source text and loads them into the actor's private
+  Prolog database before calling \texttt{Goal}.
+\item
+  \texttt{src\_\allowbreak{}uri(\allowbreak{}+URI)}\\
+  Loads the clauses specified by a file path, file URI, or HTTP(S) URI into
+  the actor's private Prolog database before calling \texttt{Goal}.
+  The caller resolves and fetches the URI atom before creation or remote
+  dispatch; sources are loaded in option-list order. See
+  Section~\ref{sec:manual-sources}.
+\item
+  \texttt{src\_\allowbreak{}predicates(\allowbreak{}+ListOfPredicateIndicators)}\\
+  Loads the local predicates denoted by
+  \texttt{ListOfPredicateIndicators} into the actor's private Prolog database
+  before calling \texttt{Goal}.
+\end{itemize}
+
+\noindent \textbf{Note:} In \texttt{spawn(\allowbreak{}+Goal,\allowbreak{}\,\allowbreak{}-Pid,\allowbreak{}\,\allowbreak{}+Options)}, the option
+\texttt{monitor(\allowbreak{}true)} installs monitoring as part of process creation. When
+the child terminates, the parent receives a message
+\texttt{down(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Ref,\allowbreak{}\,\allowbreak{}Reason)} where \texttt{Pid} is the terminated actor,
+\texttt{Reason} is its exit reason, and \texttt{Ref} identifies the monitor
+instance. For monitoring created via \texttt{monitor(\allowbreak{}true)}, the portable
+contract is \texttt{Ref\,\allowbreak{}=\,\allowbreak{}Pid}; this lets the spawning process
+identify and remove that monitor even though \texttt{spawn/\allowbreak{}3} returns no
+separate monitor reference.\\
+
+\smallskip
+\noindent \textbf{Down-reason contract:} The third argument of
+\texttt{down(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Ref,\allowbreak{}\,\allowbreak{}Reason)} uses the following portable vocabulary:
+\texttt{true} means that the actor goal succeeded; \texttt{false} means that it
+failed; \texttt{exception(\allowbreak{}E)} carries the public representation of the
+uncaught exception; an arbitrary nonvar term may be supplied explicitly
+through \texttt{exit/\allowbreak{}1-2}; and \texttt{no\_\allowbreak{}process} means that the monitored target
+did not exist when the monitor was installed. The boundary reason
+\texttt{connection\_\allowbreak{}closed} means that observation of a remote target was lost; it
+does not assert that the target terminated. For an
+uncaught \texttt{error(\allowbreak{}Formal,\allowbreak{}Context)}, the monitor notification
+preserves \texttt{Formal} but replaces \texttt{Context} with an unbound
+variable. An undefined-procedure error also omits a private generated
+actor-module qualification. Other exit reasons are unchanged.\\
+
+\smallskip
+\noindent \textbf{Note:} The semantics of \texttt{link(\allowbreak{}true)} are directional:
+if a parent spawns a child with linking enabled, termination of the parent
+causes linked children to be terminated. The link does not imply symmetric
+bidirectional exit propagation, and the child cannot trap the termination.
+The same rule applies to local and remote children. Remote creation installs
+the link before activation, and loss of the owning connection causes the
+hosting node to request termination of its linked children. A partition may
+delay detection and cleanup; observation loss alone does not establish
+completed reclamation. See Section~\ref{sec:signals-lifetime}.
+
+
+
+Options follow the common validation rules in Section~\ref{sec:manual-options}.
+\texttt{node/\allowbreak{}1} takes an atom; \texttt{link/\allowbreak{}1} and
+\texttt{monitor/\allowbreak{}1} take \texttt{true} or \texttt{false}.
+Source options follow Section~\ref{sec:manual-sources}.
+Plain \texttt{spawn/\allowbreak{}3} does not accept \texttt{name/\allowbreak{}1};
+the specialised creation predicates provide named creation.
+
+Named creation reserves the caller's ordinary name before starting the actor and publishes it only
+after successful setup. An occupied or pending name prevents creation; pending names are invisible
+to \texttt{whereis/\allowbreak{}2} and cannot be cancelled by \texttt{unregister/\allowbreak{}1}. Failure or interruption
+releases the reservation and reclaims resources owned by that attempt. Publication guarantees
+neither continued liveness nor application readiness. A remote name is an alias in the caller's
+namespace, not a registration on the destination. Both local and remote
+named creation publish the prepared actor before activating its application
+goal. Remote creation therefore requires a preparation acknowledgement and
+an activation step after caller-side publication. A failed preparation never
+publishes a name. See register/2 for namespace and alias lifetimes.
+
+Named remote creation requires a correlated spawn acknowledgement. An uncorrelated peer is rejected
+with \texttt{remote\_\allowbreak{}spawn\_\allowbreak{}failed(\allowbreak{}uncorrelated\_\allowbreak{}spawn\_\allowbreak{}reply)}.
+Peer negotiation and compatibility adapters are specified separately from this
+language contract. Connection loss can raise \texttt{remote\_\allowbreak{}spawn\_\allowbreak{}failed(\allowbreak{}connection\_\allowbreak{}closed)} while
+leaving the remote outcome unknown. Cleanup can request termination of a known remote pid but cannot
+undo remote side effects or guarantee cancellation after connection loss.
+
+Local \texttt{target/\allowbreak{}1} and \texttt{io\_\allowbreak{}target/\allowbreak{}1} select actor I/O
+routing, with \texttt{io\_\allowbreak{}target/\allowbreak{}1} taking precedence. Public WebSocket creation
+retains the connection's control of those routes. Validation follows
+Section~\ref{sec:manual-options}, and mixed-source ordering follows
+Section~\ref{sec:manual-sources}.\\
+
+
+\index{actors/1@\texttt{actors/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{actors/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+actors(-Pids) is det.
+\end{verbatim}
+
+\noindent Binds \texttt{Pids} to the list of actor pids visible from the
+current execution context. In ordinary public client execution, this means the
+current actor or toplevel together with any actors that have been spawned on
+behalf of the same client interaction. Actors belonging to other clients are
+not included.
+
+\medskip
+\noindent \textbf{Note:} Outside public client execution, for example in
+node-owned runtime code or administrative code, \texttt{actors/\allowbreak{}1} returns the
+pids of all active local actors on the node.\\
+
+
+\index{monitor/2@\texttt{monitor/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{monitor/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+monitor(+PidOrName, -Ref) is det.
+\end{verbatim}
+
+\noindent Installs a monitor and returns a fresh reference in \texttt{Ref}. The
+first argument may be a pid or a registered local name, subject to the same
+target policy as sending. Fresh references are single-use and provide
+correlation, not sender authentication. References are opaque and must not
+be constructed or interpreted by application code. When the monitored
+process terminates, the monitoring process receives a message of the form
+\texttt{down(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Ref,\allowbreak{}\,\allowbreak{}Reason)}. If observation of a remote target is lost,
+the runtime instead delivers the same form with
+\texttt{Reason = connection\_\allowbreak{}closed}. This
+discharges the monitor without claiming that the target terminated;
+reconnection does not restore it automatically.
+
+Spawn-time monitoring and additional monitors are independent, including
+private monitors used by synchronous waits. Each active reference receives its
+own termination notification; removing a private or explicit monitor does not
+suppress notifications for other references.
+
+\medskip
+\noindent \textbf{Note:} Using \texttt{monitor(\allowbreak{}true)} in \texttt{spawn/\allowbreak{}3}
+installs monitoring before the child can terminate, so its actual exit reason
+is observed. If \texttt{monitor/\allowbreak{}2} is called after the target has already
+terminated, the runtime still discharges the monitor with
+\texttt{down(\allowbreak{}Pid,\allowbreak{}Ref,\allowbreak{}no\_\allowbreak{}process)}.\\
+
+
+\index{demonitor/1-2@\texttt{demonitor/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{demonitor/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+demonitor(+Ref) is det.
+demonitor(+Ref, +Options) is det.
+\end{verbatim}
+
+\noindent Stops the calling actor's monitor identified by \texttt{Ref}.
+An unknown reference or another actor's reference has no effect. This is idempotent.
+There is only one valid option:
+
+\begin{itemize}
+\item
+  \texttt{flush}\\
+  Non-blocking removal of all pending \texttt{down(\allowbreak{}\_\allowbreak{},\allowbreak{}\,\allowbreak{}Ref,\allowbreak{}\,\allowbreak{}\_\allowbreak{})} messages
+  from the mailbox.
+\end{itemize}
+
+\noindent For a remote monitor, removal is confirmed before the operation
+returns or applies \texttt{flush}. If confirmation times out, the operation
+raises \texttt{error(\allowbreak{}remote\_\allowbreak{}demonitor\_\allowbreak{}timeout(\allowbreak{}Pid),\allowbreak{} Context)} and retains the
+local monitor record for retry. Once the connection has been declared closed,
+local withdrawal suffices because that connection can deliver no further
+notifications. A successful removal prevents later notifications for that
+reference; already queued notifications remain unless \texttt{flush} is used.\\
+
+\index{register/2@\texttt{register/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{register/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+register(+Name, +Pid) is det.
+\end{verbatim}
+
+Registers the actor identified by \texttt{Pid} under atom \texttt{Name}. A pid may have one ordinary
+name and, independently, one service name. An occupied name or already named pid is rejected; a
+missing or terminating local pid raises \texttt{existence\_\allowbreak{}error(\allowbreak{}process,\allowbreak{}Pid)}. Registering a remote
+pid does not establish that it is alive or install a monitor.
+
+Ordinary names belong to the caller's client context and are inherited by its
+descendants. The node-wide service namespace is separate. Closing a client
+context removes its registrations and pending reservations and rejects late
+publication; removing a name does not terminate its actor.
+
+Local termination removes ordinary registrations. A remote alias is withdrawn
+on observed termination of its exact pid or closure of the connection through
+which that alias is maintained. Cleanup preserves aliases associated with
+other connections, names rebound to another pid, service names and unrelated
+monitors. Connection loss does not prove remote death. Without an observed
+event, explicit \texttt{unregister/1} may still be needed.
+
+An already named pid raises
+\texttt{process\_\allowbreak{}already\_\allowbreak{}has\_\allowbreak{}a\_\allowbreak{}name(Pid)};
+an occupied name raises \texttt{name\_\allowbreak{}is\_\allowbreak{}in\_\allowbreak{}use(\allowbreak{}Name)}. A closed context
+rejects late registration with
+\texttt{permission\_\allowbreak{}error(\allowbreak{}register,\allowbreak{} closed\_\allowbreak{}namespace,\allowbreak{} Namespace)}.\\
+
+\index{whereis/2@\texttt{whereis/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{whereis/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+whereis(+Name, -Pid) is det.
+\end{verbatim}
+
+\noindent Binds \texttt{Pid} to the value registered under \texttt{Name} in
+the caller's ordinary namespace, or to \texttt{undefined} if no such
+registration exists. Lookup does not establish that the actor is alive.\\
+
+
+\index{unregister/1@\texttt{unregister/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{unregister/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+unregister(+Name) is det.
+\end{verbatim}
+
+\noindent Removes the association in the caller's ordinary namespace. The
+actor itself is not terminated. The operation is idempotent and succeeds
+without effect if \texttt{Name} is not registered in that namespace.\\
+
+
+\index{register_service/2@\texttt{register\_service/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{register\_\allowbreak{}service/\allowbreak{}2}
+\hfill\textsc{actor, owner only}
+
+\begin{verbatim}
+register_service(+Name, +Pid) is det.
+\end{verbatim}
+
+\noindent Publishes the live local actor identified by \texttt{Pid} under
+\texttt{Name} in the node's public service namespace. \texttt{Name} must be
+an atom, \texttt{Pid} must identify an actor on the publishing node, and there
+may be at most one published service with a given name on a node. If the name
+is already published, \texttt{register\_\allowbreak{}service/\allowbreak{}2} raises
+\texttt{permission\_\allowbreak{}error(\allowbreak{}register,\allowbreak{}\,\allowbreak{}service,\allowbreak{}\,\allowbreak{}Name)}, even when the existing
+entry denotes the same actor. Replacement is therefore explicit: the owner
+must first withdraw the old mapping.
+
+The public service namespace is distinct from the ordinary registration
+namespace used by \texttt{register/\allowbreak{}2}; the same atom may occur in both without
+a collision. A qualified address \texttt{Name@Node} is resolved against the
+public service namespace of \texttt{Node}. \texttt{whereis/\allowbreak{}2} consults only
+the ordinary namespace; owner-side code may inspect the service namespace with
+\texttt{whereis\_\allowbreak{}service/\allowbreak{}2}.
+
+Publication neither changes the actor's links nor places it under
+supervision. In particular, \texttt{register\_\allowbreak{}service/\allowbreak{}2} does not detach the
+actor from its parent. When the actor terminates, the node controller removes
+the service mapping atomically, so a published name never remains bound to a
+dead pid. A supervisor that starts a replacement actor must publish that actor
+again under the stable name.
+
+Only code executing with node-owner authority may call this predicate. A
+call by any other principal raises
+\texttt{permission\_\allowbreak{}error(\allowbreak{}register,\allowbreak{}\,\allowbreak{}service,\allowbreak{}\,\allowbreak{}Name)}. A non-atom
+\texttt{Name} raises \texttt{type\_\allowbreak{}error(\allowbreak{}atom,\allowbreak{}\,\allowbreak{}Name)}; a \texttt{Pid} that
+does not identify a live actor raises
+\texttt{existence\_\allowbreak{}error(\allowbreak{}process,\allowbreak{} Pid)}; and an attempt to publish an actor
+on another node raises \texttt{permission\_\allowbreak{}error(\allowbreak{}register,\allowbreak{}\,\allowbreak{}service,\allowbreak{}\,\allowbreak{}Pid)}.\\
+
+
+\index{whereis_service/2@\texttt{whereis\_service/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{whereis\_\allowbreak{}service/\allowbreak{}2}
+\hfill\textsc{actor, owner only}
+
+\begin{verbatim}
+whereis_service(+Name, -Pid) is det.
+\end{verbatim}
+
+\noindent Binds \texttt{Pid} to the live local actor published as
+\texttt{Name}, or to \texttt{undefined} if no such service is published.
+This predicate inspects only the public service namespace. Only code executing
+with node-owner authority may call it; other callers receive:
+\begin{verbatim}
+permission_error(access, actor_service_registry,
+                 whereis_service(Name, Pid))
+\end{verbatim}
+A non-atom \texttt{Name} raises
+\texttt{type\_\allowbreak{}error(\allowbreak{}atom,\allowbreak{}\,\allowbreak{}Name)}.\\
+
+\index{unregister_service/1@\texttt{unregister\_service/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{unregister\_\allowbreak{}service/\allowbreak{}1}
+\hfill\textsc{actor, owner only}
+
+\begin{verbatim}
+unregister_service(+Name) is det.
+\end{verbatim}
+
+\noindent Withdraws \texttt{Name} from the node's public service namespace.
+This operation removes only the name; it neither terminates nor otherwise
+changes the actor that the name denoted. The operation is idempotent: if no
+published service called \texttt{Name} exists, it succeeds without effect.
+
+Only code executing with node-owner authority may call this predicate. A
+call by any other principal raises
+\texttt{permission\_\allowbreak{}error(\allowbreak{}unregister,\allowbreak{}\,\allowbreak{}service,\allowbreak{}\,\allowbreak{}Name)}, and a non-atom
+\texttt{Name} raises \texttt{type\_\allowbreak{}error(\allowbreak{}atom,\allowbreak{}\,\allowbreak{}Name)}.\\
+
+
+\index{exit/1@\texttt{exit/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{exit/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+exit(+Reason) is det.
+\end{verbatim}
+
+\noindent Terminates the calling process with \texttt{Reason}. If termination of the calling process has already been committed, the call has no effect and the original reason stands.\\
+
+
+\index{exit/2@\texttt{exit/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{exit/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+exit(+Pid, +Reason) is det.
+\end{verbatim}
+
+\noindent Sends an untrappable termination signal to the process identified by
+\texttt{Pid}, using \texttt{Reason} as its exit reason. The signal is not a
+mailbox message. The target must belong to the caller's ownership tree unless
+the caller is a node owner; otherwise the call raises
+\texttt{error(\allowbreak{}permission\_\allowbreak{}error(\allowbreak{}exit,\allowbreak{}actor,\allowbreak{}Pid),\allowbreak{}Context)}. Host thread numbers
+and aliases are not actor pids. For remote actors, the runtime routes this request through the
+remote node. Termination commits when the target first accepts a termination signal; the first reason committed is final, and later termination or abort signals have no further observable effect. The signal takes effect at the target's next safe point, which some operations can delay; see Section~\ref{sec:actor-control}.\\
+
+\index{send operator!API reference|textbf}
+
+\index{send/2-3@\texttt{send/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{!/\allowbreak{}2,\allowbreak{} send/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
++PidOrName ! +Message is det.
+send(+PidOrName, +Message) is det.
+send(+PidOrName, +Message, +Options) is det.
+\end{verbatim}
+
+\noindent Sends \texttt{Message} to the mailbox of the process identified as
+\texttt{PidOrName}. \texttt{PidOrName} may be a local pid, a local registered
+name, a global pid of the form \texttt{Id@Node}, or a published service
+address of the form \texttt{Name@Node}. A global pid may be a value returned
+by the runtime or a term constructed directly from a known identifier and node;
+the two are equivalent. Qualified service addresses are
+resolved only through the destination node's live service registry. If such a
+service is absent or the sender is not authorised to use it, the send succeeds
+without delivery and does not reveal which condition applied. By contrast, an
+unknown local registered name raises \texttt{existence\_\allowbreak{}error(\allowbreak{}actor\_\allowbreak{}name,\allowbreak{}Name)};
+a send to an unknown pid succeeds without delivery. Language-level sending
+is open subject to node policy; admission may raise
+\texttt{resource\_\allowbreak{}error(\allowbreak{}mailbox)} or \texttt{resource\_\allowbreak{}error(\allowbreak{}term\_\allowbreak{}depth)}.
+Valid options for
+\texttt{send/\allowbreak{}3} are:
+
+\begin{itemize}
+\item
+  \texttt{delay(\allowbreak{}+Number)}\\
+  Delays the sending by a specified number of seconds. Default is \texttt{0}.
+\item
+  \texttt{id(\allowbreak{}+ID)}\\
+  \texttt{ID} is a user-supplied identifier that can be used by
+  \texttt{cancel/\allowbreak{}1} to stop the sending from taking place.
+\end{itemize}
+
+\noindent Portable actor application messages are acyclic ordinary Prolog
+terms. Atoms, strings, numbers, variables, lists, and compound terms are
+portable. Each send constructs a fresh copy in the recipient: repeated
+occurrences of one variable remain shared within that copied message, but no
+variable identity is shared with the sender or with any separately sent
+message. There is consequently no distributed unification channel hidden in
+message passing. Attributed variables, streams, and other non-text blob values
+must be encoded explicitly by the application. A double-quoted literal denotes
+a string. The same message-term contract applies to local and remote
+sending; additional host-specific terms are outside the language.\\
+
+\smallskip
+\noindent \textbf{Ordering:} For one sender, messages sent repeatedly to the
+same pid are delivered in send order while one controller route remains in
+use. The same holds for one unchanged name binding during that routing epoch.
+There is no portable order across pid/name addressing, name rebinding,
+reconnects or rerouting, different senders, or messages and runtime signals.
+For delayed sends, ordering begins when the delayed operation actually emits
+the message. See Section~\ref{sec:uniform-messaging}.\\
+
+
+\index{cancel/1@\texttt{cancel/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{cancel/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+cancel(+ID) is det.
+\end{verbatim}
+
+\noindent Tries to cancel all delayed messages with the specified \texttt{ID}
+that were scheduled by the calling actor. Identifiers are actor-local:
+another actor may use the same \texttt{ID} without its delayed sends being
+affected. Cancellation is best-effort only, since a message may already have
+been sent by the time the call is made.\\
+
+
+\index{output/1-2@\texttt{output/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{output/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+output(+Data) is det.
+output(+Data, +Options) is det.
+\end{verbatim}
+
+\noindent Sends a message \texttt{output(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Data)} to the target process.
+\texttt{Pid} is the pid of the current process. Valid option:
+
+\begin{itemize}
+\item
+  \texttt{target(\allowbreak{}+Pid)}\\
+  Send the message to \texttt{Pid}. Default is the parent process.
+\end{itemize}
+
+\noindent This is a convenience predicate for ordinary actor messaging.
+Terminal writes such as \texttt{format/\allowbreak{}2} and \texttt{writeln/\allowbreak{}1} instead
+use the inherited terminal I/O target described in
+Section~\ref{sec:distributed-terminal-io}. Any actor may use \texttt{!/\allowbreak{}2}
+to send any term to any process to which it has a pid.\\
+
+
+\index{input/2-3@\texttt{input/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{input/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+input(+Prompt, -Data) is det.
+input(+Prompt, -Data, +Options) is det.
+\end{verbatim}
+
+\noindent Sends a message \texttt{prompt(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Prompt)} to the target process and
+waits for its input. \texttt{Prompt} may be any Prolog term.
+\texttt{Pid} is the pid of the current process. \texttt{Data} will be bound to
+the term that the target process sends using \texttt{respond/\allowbreak{}2}. Valid option:
+
+\begin{itemize}
+\item
+  \texttt{target(\allowbreak{}+Pid)}\\
+  Send the \texttt{prompt} message to \texttt{Pid}. Default is the current I/O
+  target when one has been installed, or otherwise the parent process.
+\end{itemize}
+
+
+\index{respond/2@\texttt{respond/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{respond/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+respond(+Pid, +Input) is det.
+\end{verbatim}
+
+\noindent Sends \texttt{Input} to \texttt{Pid} in response to a
+\texttt{prompt(\allowbreak{}Pid,\allowbreak{}Prompt)} message.\\
+
+\noindent The ACTOR badges on \texttt{output/\allowbreak{}1-2}, \texttt{input/\allowbreak{}2-3}, and
+\texttt{respond/\allowbreak{}2} describe their availability to client programs.
+ISOTOPE sessions provide standard I/O predicates such as \texttt{read/\allowbreak{}1}
+and \texttt{writeln/\allowbreak{}1}; the runtime implements session I/O through internal
+actor communication without exposing these actor predicates to ISOTOPE
+clients.\\
+
+
+\index{receive/1-2@\texttt{receive/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{receive/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+receive(+Clauses) is nondet.
+receive(+Clauses, +Options) is nondet.
+\end{verbatim}
+
+\noindent Waits for, selects, and consumes one message from the calling
+process's mailbox. A call is \emph{single-message}, but not necessarily
+single-solution. During one invocation it selects and consumes at most one
+message. Messages are considered in arrival order, and each message is tested
+against the receive clauses in textual order. The first message accepted by a
+clause is removed from the mailbox. This selection is committed: backtracking
+through the invocation never selects another message or another clause.
+
+The selected clause body is ordinary Prolog code. The call as a whole
+therefore has the determinism of the fired body: a body may fail, succeed once,
+throw an exception, or yield several solutions. Choice points left by the body
+remain available, but they enumerate solutions of that same body; they do not
+inspect the mailbox again. The selected message remains consumed if the body
+fails or throws, and is not restored on backtracking. Thus the
+\texttt{nondet} declaration concerns the possible number of logical solutions,
+not the number of messages consumed by one invocation. For example, after one
+\texttt{foo} message has arrived,
+\texttt{receive(\{foo -> member(X,\,[a,b])\})} consumes that message once but
+can yield both \texttt{X = a} and \texttt{X = b}.
+
+A cut executed in a selected clause body is scoped to that body, as if the
+body were invoked through \texttt{call/\allowbreak{}1}. It can prune choice points created
+since entry to the body, but it cannot prune choice points in the caller; nor
+does it alter the already committed message and clause selection.
+
+\texttt{Clauses} has the following form:
+
+\begin{verbatim}
+{  Pattern1 [if Guard1] ->
+         Body1 ;
+   ...
+   PatternN [if GuardN] ->
+         BodyN
+}
+\end{verbatim}
+
+\noindent A clause accepts a message if its pattern matches the message and its optional guard succeeds. Matching is one-sided: the pattern must subsume the message, so matching may bind variables in the pattern but never binds variables that occur in the message. For a ground message this is the same as unification. A guard is an ordinary goal and is not restricted in this way; a guard that checks a correlation reference or a pid should test the value, for example with \texttt{==}, rather than bind it. Candidate matching and guard evaluation use
+a tentative substitution. If matching or the guard fails, all bindings
+made while trying that candidate are discarded before the next clause or
+message is considered; the mailbox is not changed until a clause accepts.
+A guard is evaluated for its first solution only, as if by \texttt{once/\allowbreak{}1}.
+Bindings from the successful pattern and guard are in scope in the body.
+
+For portable code, a guard must be observationally free of side effects; the
+runtime is not required to enforce this restriction, and effects performed by
+a non-conforming guard are not undone when that guard fails. If a guard raises an ordinary exception, the exception and its tentative bindings are discarded and the clause does not accept the message. Control exceptions (abort, termination, and the enforced running-time limit; see Section~\ref{sec:actor-control}) are not discarded: they propagate out of \texttt{receive/\allowbreak{}1-2}, and the message being examined remains in the mailbox in its original position. This error-as-non-match rule follows the
+selection discipline of restricted actor guards, but it also means that a
+guard which calls a fallible external service should translate failures into
+explicit results when the actor needs to distinguish them from an ordinary
+non-match.
+
+Messages accepted by no clause are \emph{deferred}: they remain in the mailbox,
+without any change in their contents or relative order, and are available to
+later receive calls. \texttt{receive(\{\})} accepts no message and waits,
+subject to \texttt{Options}. Valid options for \texttt{receive/\allowbreak{}2} are:
+
+\begin{itemize}
+\item
+  \texttt{timeout(\allowbreak{}+Number)}\\
+  Bounds the wait for an accepted message, in seconds. The value \texttt{0}
+  inspects messages already in the mailbox without waiting for another. A
+  positive timeout is converted once to an absolute deadline, so messages
+  skipped during the scan do not restart the timeout. Default is no timeout.
+\item
+  \texttt{deadline(\allowbreak{}+AbsoluteTime)}\\
+  Sets an absolute deadline in the same time scale as \texttt{get\_\allowbreak{}time/\allowbreak{}1}.
+  This is useful when several operations must share one time budget. A
+  deadline that has already passed expires immediately. If both
+  \texttt{timeout/\allowbreak{}1} and \texttt{deadline/\allowbreak{}1} are present, \texttt{timeout/\allowbreak{}1}
+  takes precedence.
+\item
+  \texttt{on\_\allowbreak{}timeout(\allowbreak{}+Goal)}\\
+  Called if the relative timeout or absolute deadline expires with no message
+  accepted. Its success, failure, exception, and any choice points determine
+  the outcome of the receive on the timeout path. Default is \texttt{true}.
+  This option is only meaningful when \texttt{timeout/\allowbreak{}1} or
+  \texttt{deadline/\allowbreak{}1} is present.
+\end{itemize}
+
+\medskip
+
+\index{flush/0@\texttt{flush/0}|textbf}
+\noindent \textbf{Predicate:} \texttt{flush/\allowbreak{}0}\hfill\textsc{actor}
+
+\begin{verbatim}
+flush is det.
+\end{verbatim}
+
+\noindent Removes all messages currently pending in the mailbox of the
+calling process. Each removed message is rendered through the actor
+terminal-output path as a line of the form
+\texttt{Shell\,\allowbreak{}got\,\allowbreak{}Message}, where \texttt{Message} is the full Prolog term.
+
+\medskip
+\noindent \textbf{Note:}
+\texttt{flush/\allowbreak{}0} is primarily a shell-level inspection utility. It does
+not wait for future messages: once the mailbox is empty at the time of the
+call, it succeeds immediately.\\
+
+
+
+\index{listing/0-1@\texttt{listing/0-1}|textbf}
+\noindent \textbf{Predicate:} \texttt{listing/\allowbreak{}0-1}
+\hfill\textsc{isotope}
+
+\begin{verbatim}
+listing is det.
+listing(+What) is det.
+\end{verbatim}
+
+\noindent \texttt{listing/\allowbreak{}0} lists the content of the private database of the
+current actor process through the terminal-output path. Imported predicates
+and the injected I/O wrapper predicates are omitted.
+
+\texttt{listing/\allowbreak{}1} lists the predicates or clauses in the current process's
+private database selected by \texttt{What}, following the conventional
+Prolog meaning of \texttt{listing/\allowbreak{}1}. \texttt{What} may be a predicate
+indicator (\texttt{Name/\allowbreak{}Arity} or \texttt{Name/\allowbreak{}/\allowbreak{}Arity}), a callable head
+pattern, a clause reference, or a list of such specifications. It does not
+provide access to another actor's private database.\\
+
+\section{Predicates for programming with toplevel actors}\label{sec:toplevel-api}
+\index{Toplevel actor!API reference|textbf}
+
+
+\index{toplevel_spawn/1-2@\texttt{toplevel\_spawn/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}spawn/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_spawn(-Pid) is det.
+toplevel_spawn(-Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Spawns a toplevel actor and binds \texttt{Pid} to its pid. All options accepted by \texttt{spawn/\allowbreak{}3} are also accepted by
+\texttt{toplevel\_\allowbreak{}spawn/\allowbreak{}2}. URI fetching follows Section~\ref{sec:manual-sources},
+as for \texttt{spawn/\allowbreak{}3}. In addition, \texttt{toplevel\_\allowbreak{}spawn/\allowbreak{}2}
+accepts the following options:
+
+\begin{itemize}
+\item
+  \texttt{session(\allowbreak{}+Boolean)}\\
+  If set to \texttt{false}, the toplevel actor terminates after having run a
+  goal to completion. If \texttt{true}, further interaction is expected.
+  Default is \texttt{false} in the actor API.
+\item
+  \texttt{target(\allowbreak{}+Pid)}\\
+  Send all answer terms to \texttt{Pid}. Default is the pid of the parent.
+\item
+  \texttt{name(\allowbreak{}+Name)}\\
+  Register the toplevel actor under \texttt{Name} in the local ordinary-name
+  namespace.
+\item
+  \texttt{time\_\allowbreak{}limit(\allowbreak{}+SecondsOrInfinite)}\\
+  Bounds each continuous period spent executing a goal in PTCP state
+  \textbf{s2}. On expiry, the target receives
+  \texttt{error(\allowbreak{}Pid,\allowbreak{}error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}time),\allowbreak{}\_\allowbreak{}))}. A session toplevel remains alive
+  and returns to \textbf{s1}, ready for another call. Time spent waiting for a
+  continuation in \textbf{s3} does not count; the running time limit starts
+  again when a continuation resumes. The actor API default is
+  \texttt{infinite}; a public node may impose a finite ceiling.
+\item
+  \texttt{idle\_\allowbreak{}limit(\allowbreak{}+SecondsOrInfinite)}\\
+  Bounds inactivity while a session toplevel waits for a call in PTCP state
+  \textbf{s1} or for a continuation in \textbf{s3}. On expiry, the actor
+  terminates normally, so a monitor observes
+  \texttt{down(\allowbreak{}Pid,\allowbreak{}Ref,\allowbreak{}true)}. The actor API default is \texttt{infinite}; a
+  public node may impose a finite ceiling.
+\end{itemize}
+
+\noindent With a remote \texttt{node/1}, the caller requests a toplevel from
+the destination node. Source loading follows Section~\ref{sec:manual-sources}; requested session and lifecycle options are applied at
+the destination, subject to its owner ceilings. Answer targets, links and
+monitors retain their ordinary remote-creation semantics.
+
+\noindent Both finite lifecycle limits must be positive numbers of seconds.
+A public client may request tighter values, but cannot weaken the node
+owner's ceilings. These limits are distinct from the \texttt{timeout} on an
+ISOTOPE session HTTP request, which only bounds the wait for the next queued
+event and does not abort the goal or terminate the session.
+
+Options follow the common validation rules; \texttt{session/\allowbreak{}1} is boolean, names are atoms, and
+finite lifecycle limits are positive numbers. Source loading follows the source conventions.\\
+
+
+\index{toplevel_call/2-3@\texttt{toplevel\_call/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}call/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_call(+Pid, +Goal) is det.
+toplevel_call(+Pid, +Goal, +Options) is det.
+\end{verbatim}
+
+\noindent Asks the toplevel \texttt{Pid} for solutions to \texttt{Goal}. Valid
+options are:
+
+\begin{itemize}
+\item
+  \texttt{template(\allowbreak{}+Template)}\\
+  \texttt{Template} is a term sharing variables with \texttt{Goal}. By
+  default, the template is identical to the goal.
+\item
+  \texttt{offset(\allowbreak{}+Integer)}\\
+  Collect only the solution slice starting from \texttt{Integer}. Default
+  is \texttt{0}.
+\item
+  \texttt{limit(\allowbreak{}+Integer)}\\
+  Restrict the length of the returned list of solutions to \texttt{Integer}.
+  The integer must be positive. If omitted, all solutions are requested,
+  subject to execution-time and result-size bounds.
+\item
+  \texttt{once(\allowbreak{}+Boolean)}\\
+  When \texttt{true}, commits to the first returned slice and reports
+  \texttt{More = false}, even if \texttt{Goal} has further solutions. Default
+  is \texttt{false}. This option is useful primarily with \texttt{limit/\allowbreak{}1}.
+\item
+  \texttt{target(\allowbreak{}+Pid)}\\
+  Send the answer term to \texttt{Pid}. Default is the value of
+  \texttt{target} when passed as an option to \texttt{toplevel\_\allowbreak{}spawn/\allowbreak{}2}.
+\end{itemize}
+
+\noindent Variables in \texttt{Goal} are not bound directly in the caller.
+Instead, the outcome is reported by one of the following answer terms,
+delivered as a message to the target mailbox:
+
+\begin{itemize}
+\item
+  \texttt{success(\allowbreak{}Pid,\allowbreak{} Data,\allowbreak{} More)}\\
+  \texttt{Pid} is the pid of the toplevel process that succeeded in finding
+  solutions to \texttt{Goal}. \texttt{Data} is a solution slice: a list holding
+  instantiations of \texttt{Template}. \texttt{More} indicates whether
+  continuing with \texttt{toplevel\_\allowbreak{}next/\allowbreak{}1-2} may produce another answer
+  slice.
+\item
+  \texttt{failure(\allowbreak{}Pid)}\\
+  \texttt{Pid} is the pid of the toplevel process that found no solution or
+  no further solution.
+\item
+    \texttt{error(\allowbreak{}Pid,\allowbreak{} Error)}\\
+  \texttt{Pid} is the pid of the toplevel that raised the error.
+  \texttt{Error} is the error term.
+\end{itemize}
+
+\noindent A toplevel serves one controlling client at a time, and each call
+starts afresh: when it accepts \texttt{Goal}, it discards any
+\texttt{toplevel\_\allowbreak{}next/\allowbreak{}1-2}, \texttt{toplevel\_\allowbreak{}stop/\allowbreak{}1} or input left over
+from an earlier query, that is, sent before the call; one sent after the call
+is kept. If \texttt{Goal} raises an exception after a finite
+\texttt{limit} has already collected some solutions, those solutions are
+delivered first as \texttt{success(\allowbreak{}Pid,\allowbreak{} Data,\allowbreak{} true)}, and the error answers
+the following \texttt{toplevel\_\allowbreak{}next/\allowbreak{}1-2}; \texttt{toplevel\_\allowbreak{}stop/\allowbreak{}1} discards
+it, and so does \texttt{once(\allowbreak{}true)}.
+
+Answers are plain terms. A solution that still carries constraints,
+such as those left by \texttt{dif/\allowbreak{}2}, \texttt{freeze/\allowbreak{}2} or CLP(FD), cannot be
+represented in an answer, since printing it would drop the constraints. The
+toplevel then reports
+\texttt{error(\allowbreak{}Pid,\allowbreak{} error(\allowbreak{}representation\_\allowbreak{}error(\allowbreak{}constraints),\allowbreak{} \_\allowbreak{}))} instead of
+the page, and the query ends. This holds whether the client is local or remote.
+A goal that needs such answers can bind the constrained variables, for example
+by labelling, or return the constraints as ordinary terms.
+
+\vspace{5mm}
+
+
+
+
+\index{toplevel_next/1-2@\texttt{toplevel\_next/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}next/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_next(+Pid) is det.
+toplevel_next(+Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Asks toplevel \texttt{Pid} for more solutions. Valid options:
+
+\begin{itemize}
+\item
+  \texttt{limit(\allowbreak{}+Integer)}\\
+  An explicit limit must be a positive integer. If omitted, the actor API
+  keeps using the most recent finite limit value from the
+  previous toplevel call state.
+\item
+  \texttt{target(\allowbreak{}+Pid)}\\
+  Send the answer term to \texttt{Pid}. Default is the value of
+  \texttt{target} from the previous call state.
+\end{itemize}
+
+\noindent Delivers the same answer messages as \texttt{toplevel\_\allowbreak{}call/\allowbreak{}2-3}
+to the target mailbox.\\
+
+
+\index{toplevel_call_synch/3-4@\texttt{toplevel\_call\_synch/3-4}|textbf}
+
+\index{toplevel_next_synch/2-3@\texttt{toplevel\_next\_synch/2-3}|textbf}
+\noindent \textbf{Synchronous wrappers:}\hfill\textsc{actor}
+
+%\texttt{toplevel\_call\_synch/3-4},
+%\texttt{toplevel\_next\_synch/2-3}
+
+\begin{verbatim}
+toplevel_call_synch(+Pid, +Goal, -Answer) is semidet.
+toplevel_call_synch(+Pid, +Goal, -Answer, +Options) is semidet.
+toplevel_next_synch(+Pid, -Answer) is semidet.
+toplevel_next_synch(+Pid, -Answer, +Options) is semidet.
+\end{verbatim}
+
+\noindent Send one command and collect its answer in the calling actor. Answers retain
+\texttt{success(\allowbreak{}Pid,\allowbreak{}Data,\allowbreak{}More)}, \texttt{failure(\allowbreak{}Pid)} and \texttt{error(\allowbreak{}Pid,\allowbreak{}Error)}; goal variables
+remain independent in the caller. Query errors are returned as answer terms rather than thrown by
+the wrapper. A private request reference prevents an old answer after a timeout from satisfying a
+later wait. Ordinary asynchronous answers and I/O are preserved. An asynchronous call or next uses
+ordinary answer messages.
+
+The caller must be the answer target. An explicit \texttt{target/\allowbreak{}1} must identify that same actor.
+Call options are \texttt{template/\allowbreak{}1}, \texttt{offset/\allowbreak{}1}, \texttt{limit/\allowbreak{}1} and \texttt{once/\allowbreak{}1}; next
+accepts \texttt{limit/\allowbreak{}1}. Both accept receive options \texttt{timeout/\allowbreak{}1} and \texttt{on\_\allowbreak{}timeout/\allowbreak{}1}.
+Both wrappers also accept \texttt{io\_\allowbreak{}target(\allowbreak{}+Pid)} for terminal I/O routing;
+this is independent of their answer target and subject to the node's I/O
+policy. The wrappers accept actor pids and ordinary aliases, locally or
+remotely, under the same addressing and authorisation rules as other actor
+operations. Connection and correlation bookkeeping is internal. Timeout
+callbacks retain the caller's execution context and shared variables without
+requiring qualification of the option list. Options follow
+Section~\ref{sec:manual-options}.
+
+The default wait is unbounded. Without a callback, a receive timeout succeeds with \texttt{Answer}
+unbound. A timeout callback runs once in the caller's context, retaining its bindings, failure and
+exceptions. Timeout does not stop the query; a stale correlated answer cannot satisfy a subsequent
+wait or extend its deadline. Observed termination throws \texttt{toplevel\_\allowbreak{}down(\allowbreak{}Reason)}. An answer
+is selected before output unification, so a mismatch consumes it and fails. The wait's monitor is
+removed on every exit path, preserving unrelated monitors and messages.
+
+A remote peer must support correlated calls; otherwise the operation raises
+\texttt{permission\_\allowbreak{}error(\allowbreak{}use,\allowbreak{} toplevel\_\allowbreak{}correlation,\allowbreak{} Node)} before starting
+or advancing the query. Connection setup is outside the receive timeout.
+
+These wrappers retain the toplevel's single-client protocol. They provide neither concurrent-client
+coordination nor remote cancellation.\\
+
+
+\index{toplevel_stop/1@\texttt{toplevel\_stop/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}stop/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_stop(+Pid) is det.
+\end{verbatim}
+
+\noindent Asks toplevel \texttt{Pid} to stop searching for more solutions.\\
+
+
+\index{toplevel_abort/1@\texttt{toplevel\_abort/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}abort/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_abort(+Pid) is det.
+\end{verbatim}
+
+\noindent Tells the local toplevel \texttt{Pid} to abort the execution of the
+currently running goal. Abort runs supported cleanup, bypasses recovery in
+client \texttt{catch/\allowbreak{}3}, and returns a persistent session to PTCP state \textbf{s1}; it does not terminate a persistent toplevel actor. A toplevel spawned with \texttt{session(\allowbreak{}false)} terminates instead. An abort that arrives while the toplevel is idle in \textbf{s1} leaves a persistent toplevel idle and ends a one-shot toplevel; one that arrives in \textbf{s3} abandons the suspended solution sequence, as \texttt{toplevel\_\allowbreak{}stop/\allowbreak{}1} would. An abort that arrives after termination of the toplevel has been committed is ignored. Every other abort, including one in \textbf{s1}, is acknowledged: the toplevel sends \texttt{abort(\allowbreak{}Pid)} to its client (before any call, to its spawn target), after any answers of the aborted query. An unknown or non-local pid has no effect.\\
+
+
+\index{toplevel_halt/1-2@\texttt{toplevel\_halt/1-2}|textbf}
+\noindent \textbf{Predicate:} \texttt{toplevel\_\allowbreak{}halt/\allowbreak{}1-2}\hfill\textsc{actor}
+
+\begin{verbatim}
+toplevel_halt(+Pid) is det.
+toplevel_halt(+Pid, -Reply) is det.
+\end{verbatim}
+
+\noindent Terminates toplevel actor \texttt{Pid} from any protocol state.
+The one-argument form requests termination through the actor runtime and
+returns without waiting for confirmation. The two-argument form installs a
+private monitor, requests termination, and waits for its notification.
+An observed termination yields \texttt{Reply = true}, regardless of its
+reason. The special reason \texttt{no\_\allowbreak{}process} also yields \texttt{true}: the
+target is confirmed absent, without establishing when or why it terminated.
+For a remote target, \texttt{connection\_\allowbreak{}closed} instead yields
+\texttt{Reply = error(\allowbreak{}connection\_\allowbreak{}closed)}: observation was lost and
+termination is unconfirmed. Halt is an
+untrappable termination signal, not the interruption signal used by abort.
+
+\medskip
+\noindent \textbf{Note:} The private monitor used by
+\texttt{toplevel\_\allowbreak{}halt/\allowbreak{}2} is distinct from any existing monitor. If the
+toplevel was spawned with \texttt{monitor(\allowbreak{}true)}, the caller still receives
+its original \texttt{down(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}true)} notification.\\
+
+
+\section{Predicates for programming with server actors}\label{sec:server-api}
+\index{Server!API reference|textbf}
+
+
+\index{server_spawn/3-4@\texttt{server\_spawn/3-4}|textbf}
+\noindent \textbf{Predicate:} \texttt{server\_\allowbreak{}spawn/\allowbreak{}3-4}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_spawn(+Pred, +State, -Pid) is det.
+server_spawn(+Pred, +State, -Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Spawns a generic server actor using callback predicate
+\texttt{Pred/\allowbreak{}4} and initial state \texttt{State}. The callback receives
+\texttt{(\allowbreak{}Request,\allowbreak{} OldState,\allowbreak{} Response,\allowbreak{} NewState)}. All options are forwarded to
+\texttt{spawn/\allowbreak{}3} except:
+
+\begin{itemize}
+\item
+  \texttt{name(\allowbreak{}+Name)}\\
+  Register the server under \texttt{Name}.
+\end{itemize}
+
+Options follow the common validation rules and source conventions.
+The explicit \texttt{State} argument supplies the initial state; internal
+compatibility metadata is not a public option.\\
+
+
+\index{server_request/3-4@\texttt{server\_request/3-4}|textbf}
+\noindent \textbf{Predicate:} \texttt{server\_\allowbreak{}request/\allowbreak{}3-4}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_request(+To, +Request, -Response) is det.
+server_request(+To, +Request, -Response, +Options) is det.
+\end{verbatim}
+
+\noindent Makes a synchronous request-response call to the server
+\texttt{To}, where \texttt{To} may be a pid or a registered local name.
+\texttt{server\_\allowbreak{}request/\allowbreak{}4} accepts the options of
+\texttt{receive/\allowbreak{}2}, for example \texttt{timeout(\allowbreak{}+Seconds)}. Monitoring is
+installed automatically. If the server terminates before replying, the call
+promptly throws \texttt{server\_\allowbreak{}down(\allowbreak{}Reason)}.\\
+
+
+\index{server_promise/3-4@\texttt{server\_promise/3-4}|textbf}
+\noindent \textbf{Predicate:} \texttt{server\_\allowbreak{}promise/\allowbreak{}3-4}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_promise(+To, +Request, -Ref) is det.
+server_promise(+To, +Request, -Ref, -MonRef) is det.
+\end{verbatim}
+
+Sends \texttt{Request} to the server \texttt{To} and returns a correlation reference \texttt{Ref}.
+The reply must later be collected with \texttt{server\_\allowbreak{}yield/\allowbreak{}2-4}.
+
+The four-argument variant additionally installs a monitor and returns its reference in
+\texttt{MonRef}. If subsequent setup or sending fails or throws, that monitor and
+its pending notifications are removed, preserving the original outcome. A
+successful send retains the monitor for \texttt{server\_\allowbreak{}yield/\allowbreak{}4}.\\
+
+
+\index{server_yield/2-4@\texttt{server\_yield/2-4}|textbf}
+\noindent \textbf{Predicate:} \texttt{server\_\allowbreak{}yield/\allowbreak{}2-4}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_yield(+Ref, -Response) is det.
+server_yield(+Ref, -Response, +Options) is det.
+server_yield(+Ref, +MonRef, -Response, +Options) is det.
+\end{verbatim}
+
+Waits for the response matching \texttt{Ref}. The reply is selected before unifying
+\texttt{Response}; a conflicting output consumes that reply and fails. Replies with other references
+remain available. The three-argument variant accepts the options of \texttt{receive/\allowbreak{}2},
+preserving timeout callback bindings, failure, exceptions and alternatives.
+
+The four-argument variant uses \texttt{MonRef} to detect server termination and throws
+\texttt{server\_\allowbreak{}down(\allowbreak{}Reason)} if the server dies before replying. When the wait finishes, fails, or
+throws, it removes the monitor and flushes pending notifications for that reference. This includes
+timeout paths. Alternatives supplied by \texttt{on\_\allowbreak{}timeout/\allowbreak{}1} remain available; cleanup occurs when
+the call finishes, exhausts its alternatives, or is cut.
+
+Cleanup also covers interruption and an output mismatch. Only \texttt{MonRef} and its notifications
+are removed; unrelated monitors and messages remain available. Removing a remote monitor is best
+effort. Timeout or cleanup does not cancel the server request or discard a later reply.\\
+
+
+
+
+\index{server_upgrade/2-3@\texttt{server\_upgrade/2-3}|textbf}
+\noindent \textbf{Predicate:}
+\texttt{server\_\allowbreak{}upgrade/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_upgrade(+To, +Pred) is det.
+server_upgrade(+To, +Pred, +Options) is det.
+\end{verbatim}
+
+\noindent Replaces the callback predicate of the running server \texttt{To}
+without disturbing its current state. \texttt{Pred} must denote a callback
+predicate of arity four.
+
+The two-argument form transfers no code and therefore requires the callback
+to be already available to the server process. The three-argument
+form accepts the following source-loading options:
+
+\begin{itemize}
+\item
+  \texttt{src\_\allowbreak{}text(\allowbreak{}+Text)}\\
+  Load callback source from \texttt{Text}.
+\item
+  \texttt{src\_\allowbreak{}list(\allowbreak{}+ListOfClauses)}\\
+  Convert the clauses to source text and load them into the server.
+\item
+  \texttt{src\_\allowbreak{}predicates(\allowbreak{}+ListOfPredicateIndicators)}\\
+  Copy the caller's indicated predicates into the server's private database.
+\item
+  \texttt{src\_\allowbreak{}uri(\allowbreak{}+URI)}\\
+  The caller fetches callback source from the URI atom \texttt{URI} and
+  sends its contents to the server for loading.
+\end{itemize}
+
+\noindent Options are validated and source is prepared by the caller before
+sending the upgrade request. Sources are loaded in option-list order, following
+Section~\ref{sec:manual-sources}. The operation replies only after the callback
+has been loaded and validated. It preserves the current state value and performs no state
+migration. If installation fails, \texttt{server\_\allowbreak{}upgrade/\allowbreak{}2-3} rethrows the
+reported error and the state is unchanged. Source changes made in the server's
+private database before the error are not rolled back.\\
+
+\index{server_halt/2@\texttt{server\_halt/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{server\_\allowbreak{}halt/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+server_halt(+To, -Reply) is det.
+\end{verbatim}
+
+\noindent Asks the server \texttt{To} to stop gracefully and binds
+\texttt{Reply} to its acknowledgement. The request carries a fresh
+correlation reference, so an unrelated acknowledgement in the caller's
+mailbox cannot satisfy the operation. A private monitor is installed before
+the request; if the server terminates without acknowledging it, the operation
+throws \texttt{server\_\allowbreak{}down(\allowbreak{}Reason)}.\\
+
+
+\section{Predicates for programming with statechart actors}\label{sec:statechart-api}
+\index{Statechart actor!API reference|textbf}
+
+
+\index{statechart_spawn/2@\texttt{statechart\_spawn/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{statechart\_\allowbreak{}spawn/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+statechart_spawn(-Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Spawns a statechart actor and binds \texttt{Pid} to its pid.
+
+\medskip
+\noindent \texttt{statechart\_\allowbreak{}spawn/\allowbreak{}2} requires exactly one
+initial XML source option:
+
+\begin{itemize}
+\item
+  \texttt{src\_\allowbreak{}uri(\allowbreak{}+URI)}\\
+  The caller fetches the initial XML document from a URI or file-path atom
+  before creation or remote dispatch. The document's URI is preserved as the
+  base for relative references.
+\item
+  \texttt{src\_\allowbreak{}text(\allowbreak{}+Text)}\\
+  Load and run a statechart from an XML text string.
+\end{itemize}
+
+\noindent In addition, \texttt{statechart\_\allowbreak{}spawn/\allowbreak{}2} accepts:
+
+\begin{itemize}
+\item
+  \texttt{name(\allowbreak{}+Name)}\\
+  Register the statechart actor under \texttt{Name} in the local ordinary-name
+  namespace.
+\item
+  \texttt{trace(\allowbreak{}+Boolean)}\\
+  Set the per-actor trace mode to \texttt{true} or \texttt{false}.
+  \texttt{true} emits trace events on the terminal-output path;
+  \texttt{false} suppresses them. Every occurrence is validated and the first
+  setting takes precedence. Default is \texttt{true} for direct predicate calls; clients
+  should pass the intended value explicitly.
+\end{itemize}
+
+\noindent All remaining options are passed through to \texttt{spawn/\allowbreak{}3}.
+
+\medskip
+\noindent \texttt{src\_\allowbreak{}list/\allowbreak{}1} and \texttt{src\_\allowbreak{}predicates/\allowbreak{}1} are accepted as
+supplemental Prolog sources loaded into the statechart actor's private module.
+They do not count as the required XML source. The SXML document notation is
+specified in Appendix~\ref{sec:sxml-reference}.
+
+Options follow the common validation rules in Section~\ref{sec:manual-options}.
+Exactly one initial XML source is required: neither an absent source nor multiple
+XML source options are accepted. Supplemental Prolog source options are additive
+and processed in option-list order. Source preparation, including the initial XML
+fetch, follows Section~\ref{sec:manual-sources}.
+
+Statecharts support hierarchical and parallel states, shallow/deep history, guarded actions,
+internal/completion events, timed transitions and deferred events. Deferred events are re-offered
+from a snapshot when the net active configuration changes. A self-transition that leaves the final
+active configuration unchanged does not trigger re-offering merely because states were exited and
+re-entered. Supplemental Prolog source precedes the embedded XML datamodel. Mutable datamodel facts
+are private to the chart; empty declared predicates fail normally when called.
+
+Child invocation supports actors, toplevels, servers, supervisors and nested charts, locally or on
+compatible remote nodes. Server invocation uses \texttt{callback/\allowbreak{}1} and \texttt{state/\allowbreak{}1}; supervisor
+invocation uses \texttt{children/\allowbreak{}1}. Child entry predicates and explicit copied sources resolve in
+the parent chart at invocation time; inline source is private to the child. Source loading and
+destination checks follow the source conventions. Invocation settles immediate
+transitions and internal events before emitting the internal event
+\texttt{spawned(Pid)}. Nested supervisor child starts may name remote
+destinations under the same rules as direct child creation.
+
+State exit requests termination of invoked children, including detached
+children, without waiting for completed shutdown. Results and termination use
+ordinary messages and optional monitors. Child termination does not by itself
+synthesise a \texttt{done(State)} event; statechart completion events follow
+the chart's own final-state rules. The \texttt{trace/1} setting is fixed at
+creation. Embedded datamodel directives obey the same admitted-language and
+sandbox rules as other supplied source. Actor identifiers and engine placement
+follow ordinary creation rules for every chart.
+
+Validation and caller-side source preparation errors are reported before
+successful creation. All source must be loaded before chart execution begins;
+a loading failure prevents the chart from starting. Embedded action checks
+occur during execution, and later execution failures are observed through
+ordinary \texttt{down/\allowbreak{}3} notifications when monitoring is enabled.\\
+
+
+\index{statechart_halt/2-3@\texttt{statechart\_halt/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{statechart\_\allowbreak{}halt/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+statechart_halt(+Pid, -Reply) is det.
+statechart_halt(+Pid, -Reply, +Timeout) is det.
+\end{verbatim}
+
+\noindent Asks the statechart actor \texttt{Pid} to halt gracefully, running
+the exit actions of its active states, and waits for an acknowledgement in
+\texttt{Reply}. The two-argument form waits indefinitely.
+
+The three-argument form waits at most \texttt{Timeout} seconds. If the actor
+does not reply in time, it is killed and \texttt{Reply} becomes
+\texttt{killed}.\\
+
+
+
+\index{raise/1@\texttt{raise/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{raise/\allowbreak{}1}\hfill\textsc{statechart builtin}
+
+\begin{verbatim}
+raise(+Event) is det.
+\end{verbatim}
+
+\noindent Enqueues \texttt{Event} on the \textit{internal} event queue of the
+current statechart interpreter. It is handled after the current block of
+executable content and before a new external message.\\
+
+\noindent \textbf{Important:} \texttt{raise/\allowbreak{}1} is only meaningful inside
+executable statechart content such as \texttt{<onentry>},
+\texttt{<onexit>}, and \texttt{<go>}.\\
+
+
+
+\index{in/1@\texttt{in/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{in/\allowbreak{}1}\hfill\textsc{statechart builtin}
+
+\begin{verbatim}
+in(+Id) is semidet.
+\end{verbatim}
+
+\noindent Succeeds if the state identified by \texttt{Id} belongs to the
+current active configuration of the statechart interpreter.
+
+\medskip
+\noindent \textbf{Important:} \texttt{in/\allowbreak{}1} is only meaningful inside
+statechart guards or executable statechart content such as
+\texttt{<onentry>}, \texttt{<onexit>}, and \texttt{<go>}.\\
+
+\section{Predicates for programming with supervisor actors}\label{sec:supervisor-api}
+\index{Supervisor!API reference|textbf}
+
+
+\index{supervisor_spawn/2-3@\texttt{supervisor\_spawn/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}spawn/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_spawn(+ChildSpecs, -Pid) is det.
+supervisor_spawn(+ChildSpecs, -Pid, +Options) is det.
+\end{verbatim}
+
+\noindent Spawns a supervisor actor and starts its children. Supported options
+are:
+
+\begin{itemize}
+\item
+  \texttt{strategy(\allowbreak{}+Strategy)}\\
+  One of \texttt{one\_\allowbreak{}for\_\allowbreak{}one} (default), \texttt{one\_\allowbreak{}for\_\allowbreak{}all}, or
+  \texttt{rest\_\allowbreak{}for\_\allowbreak{}one}.
+\item
+  \texttt{intensity(\allowbreak{}+Integer)}\\
+  Maximum number of restarts permitted within one period. Must be a
+  nonnegative integer; zero permits no restarts. Default is \texttt{1}.
+\item
+  \texttt{period(\allowbreak{}+Number)}\\
+  Restart-intensity window in positive seconds; fractional values are
+  accepted. Default is \texttt{5}.
+\item
+  \texttt{name(\allowbreak{}+Name)}\\
+  Register the supervisor under \texttt{Name}.
+\end{itemize}
+
+\noindent Other options are passed through to \texttt{spawn/\allowbreak{}3}.
+
+\medskip
+\noindent Child specifications take the form \texttt{child(\allowbreak{}Id,\allowbreak{} ChildOptions)}.
+Child options are:
+
+\begin{itemize}
+\item
+  \texttt{start(\allowbreak{}+Goal)}\\
+  Required. Start goal for the child. The special form
+\begin{verbatim}
+server(Pred, ServerOptions)
+\end{verbatim}
+  starts a generic server child.
+  The default initial state is \texttt{[]}. It may be replaced with
+  \texttt{initial\_\allowbreak{}state(\allowbreak{}+State)}. All remaining \texttt{ServerOptions} are passed to
+  \texttt{server\_\allowbreak{}spawn/\allowbreak{}4}.
+\item
+  \texttt{restart(\allowbreak{}+Policy)}\\
+  One of \texttt{permanent} (default), \texttt{transient}, or
+  \texttt{temporary}.
+\item
+  \texttt{shutdown(\allowbreak{}+Shutdown)}\\
+    One of \texttt{brutal\_\allowbreak{}kill}, \texttt{infinity}, or a nonnegative timeout in seconds, including zero. The default is \texttt{5} for workers and \texttt{infinity} for supervisor children. \texttt{brutal\_\allowbreak{}kill} terminates the child at once with reason \texttt{kill}. With a timeout, a server child is first sent its ordinary stop request; if it has not exited when the timeout expires, it receives \texttt{exit(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}shutdown)}. With \texttt{infinity}, a server child is sent the stop request and the supervisor waits for it without limit. A child without a stop protocol receives \texttt{exit(\allowbreak{}Pid,\allowbreak{}\,\allowbreak{}shutdown)} at once. Since the first committed exit reason is final, a termination already in progress cannot be escalated to \texttt{kill}.
+\item
+  \texttt{type(\allowbreak{}+Type)}\\
+  \texttt{worker} (default) or \texttt{supervisor}.
+\end{itemize}
+
+Creation and child options follow the common validation rules. \texttt{intensity/\allowbreak{}1} is a nonnegative
+integer; \texttt{period/\allowbreak{}1} is a positive number, including fractional seconds. The complete initial
+child list, including recognised nested server and supervisor starts, is validated before creation.
+Specifications are acyclic, sibling ids are unique, and \texttt{start/\allowbreak{}1} is required. Missing starts
+raise \texttt{missing\_\allowbreak{}start\_\allowbreak{}option(\allowbreak{}Id)}; duplicate initial ids raise
+\texttt{permission\_\allowbreak{}error(\allowbreak{}duplicate,\allowbreak{}supervisor\_\allowbreak{}child\_\allowbreak{}id,\allowbreak{}Id)}. Validation checks callable starts
+and callbacks without executing them. Child ids are atoms in all supervisor
+operations. An uninstantiated id raises \texttt{instantiation\_error}; a
+non-atom raises \texttt{type\_\allowbreak{}error(\allowbreak{}atom,\allowbreak{} Id)}. Nested specifications need
+only be instantiated when the creation predicate is called. Admission checks
+must allow them to be constructed by preceding goals in the submitted query;
+validation still completes before any child is created.
+
+Child-specification options are \texttt{start/\allowbreak{}1},
+\texttt{restart/\allowbreak{}1}, \texttt{shutdown/\allowbreak{}1} and
+\texttt{type/\allowbreak{}1}. Spawn settings belong in the child start goal
+or the nested server/supervisor options, rather than in \texttt{ChildOptions}.
+Internal compatibility metadata is not a public option. Shared variables and
+the original restart specifications are retained.
+
+A \texttt{permanent} child restarts after any termination, a \texttt{transient} child after failure
+or abnormal termination but not success (\texttt{true}), and a \texttt{temporary} child never
+restarts. \texttt{one\_\allowbreak{}for\_\allowbreak{}one} replaces the affected child; \texttt{one\_\allowbreak{}for\_\allowbreak{}all} restarts the
+whole group; \texttt{rest\_\allowbreak{}for\_\allowbreak{}one} restarts that child and later siblings. Replacements retain
+child order, dynamic additions append, successfully completed transient children retain an inactive
+specification, and temporary children are removed.
+
+\textbf{Startup rollback:} Failed initial startup reclaims that attempt's provisional children in
+reverse start order using their shutdown policies. A failed dynamic addition reclaims only its own
+provisional child and leaves existing siblings and supervisor state unchanged, allowing retry.
+These paths preserve unrelated monitors and messages, and cleanup errors do not replace the primary
+startup failure or prevent other cleanup attempts. An \texttt{infinity} shutdown policy may delay
+completion indefinitely. Startup here means creation, preparation and admission; a child terminating
+after successful creation follows its restart policy.
+
+An ordinary initial startup failure has reason \texttt{init\_failed}; an
+initial exception retains its original error term. Dynamic additions and
+explicit respawn return \texttt{error(start\_failed)} for ordinary failure or
+\texttt{error(Error)} for an exception, leaving the supervisor available.
+Reserved runtime control transfers still propagate.
+
+\textbf{Restart failure:} A failed explicit respawn rolls back
+only that attempt, retaining existing siblings and the inactive specification for retry. If an
+automatic replacement fails, provisional replacements are reclaimed, remaining children are stopped
+in reverse start order using their shutdown policies, and the supervisor exits with
+\texttt{restart\_\allowbreak{}failed(\allowbreak{}Id,\allowbreak{}Reason)}. \texttt{Id} identifies the
+replacement that failed; \texttt{Reason} is \texttt{start\_\allowbreak{}failed} or its original
+exception. These paths preserve unrelated actors,
+monitors and messages; cleanup errors do not replace the primary failure or prevent other cleanup
+attempts.
+
+\textbf{Restart-intensity exhaustion:} The restart budget is checked before replacement startup.
+Exhaustion starts no excess replacement, stops remaining recorded children in reverse start order
+using their shutdown policies, and exits with \texttt{shutdown}. An \texttt{intensity(0)} budget
+permits no automatic restarts. Cleanup preserves unrelated monitors and messages; ordinary cleanup
+errors do not replace the shutdown reason or prevent attempts to stop other children.
+
+\textbf{Startup completion:} Creation returns successfully only after all
+initial child starts have completed creation, preparation and admission. This
+does not require their application goals to finish or establish application
+readiness. A failed initial start rolls back the provisional children and
+raises \texttt{error(\allowbreak{}supervisor\_\allowbreak{}start\_\allowbreak{}failed(\allowbreak{}Pid,\allowbreak{} Reason),\allowbreak{} Context)}, where
+\texttt{Reason} is \texttt{init\_failed} or the original exception. Failed
+named creation releases its reservation. Child application goals may run
+during supervisor setup, so rollback cannot undo their external effects.
+
+Child shutdown policies govern explicit termination, normal halt, rollback
+and group-restart stopping. \texttt{brutal\_\allowbreak{}kill} stops immediately with reason \texttt{kill}. A
+recognised server start receives a graceful stop request and is forced down with reason
+\texttt{shutdown} if its numeric timeout expires. Zero and fractional timeouts are supported. Plain
+actors and nested supervisors receive direct termination with reason \texttt{shutdown}; recursive
+cooperative shutdown is not guaranteed. A stop acknowledgement alone does not establish completed
+termination.
+
+These guarantees require the runtime to execute its cleanup paths. Hard termination can
+bypass Prolog cleanup; losing a remote connection does not prove remote death, and an unacknowledged
+remote start can have an unknown outcome. No general guarantee is made here for cleanup after
+arbitrary supervisor exits. Synchronous request waits and their errors are described below.
+
+
+\index{supervisor_spawn_child/3@\texttt{supervisor\_spawn\_child/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}spawn\_\allowbreak{}child/\allowbreak{}3}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_spawn_child(+Pid, +ChildSpec, -Reply) is det.
+\end{verbatim}
+
+Dynamically adds and starts one child. On success, \texttt{Reply} is \texttt{ok}. If a child with
+the same \texttt{Id} is already present, it is \texttt{error(\allowbreak{}already\_\allowbreak{}present)}. If startup fails,
+it is \texttt{error(\allowbreak{}start\_\allowbreak{}failed)}.
+
+The child specification is validated before sending. A startup exception
+returns \texttt{error(\allowbreak{}Error)}; failed setup rolls back only that addition and leaves existing
+children and state intact. A failed id remains available for retry. The supervisor also
+validates directly received additions before changing its state. See supervisor\_spawn/2-3 for rollback qualifications.\\
+
+
+
+
+\index{supervisor_terminate_child/3@\texttt{supervisor\_terminate\_child/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}terminate\_\allowbreak{}child/\allowbreak{}3}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_terminate_child(+Pid, +Id, -Reply) is det.
+\end{verbatim}
+
+Stops child \texttt{Id} but keeps its specification. \texttt{Reply} is \texttt{ok} or
+\texttt{error(\allowbreak{}not\_\allowbreak{}found)}.
+
+The stopped specification retains its position with pid \texttt{undefined}; terminating an already
+stopped child returns \texttt{ok}. The supervisor applies its shutdown policy and waits for
+termination before replying.\\
+
+
+
+
+\index{supervisor_delete_child/3@\texttt{supervisor\_delete\_child/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}delete\_\allowbreak{}child/\allowbreak{}3}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_delete_child(+Pid, +Id, -Reply) is det.
+\end{verbatim}
+
+\noindent Removes a non-running child specification. \texttt{Reply} is
+\texttt{ok}, \texttt{error(\allowbreak{}running)}, or \texttt{error(\allowbreak{}not\_\allowbreak{}found)}.\\
+
+
+\index{supervisor_respawn_child/3@\texttt{supervisor\_respawn\_child/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}respawn\_\allowbreak{}child/\allowbreak{}3}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_respawn_child(+Pid, +Id, -Reply) is det.
+\end{verbatim}
+
+Restarts a previously terminated child from its stored specification. \texttt{Reply} is either
+\texttt{ok(\allowbreak{}NewPid)}, \texttt{error(\allowbreak{}running)}, \texttt{error(\allowbreak{}not\_\allowbreak{}found)}, or
+\texttt{error(\allowbreak{}start\_\allowbreak{}failed)}.
+
+A startup exception returns \texttt{error(\allowbreak{}Error)}; a failed replacement retains the inactive
+specification. Success is \texttt{ok(NewPid)}. A replacement retains the
+record's original position in child order.\\
+
+
+\index{supervisor_which_children/2@\texttt{supervisor\_which\_children/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}which\_\allowbreak{}children/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_which_children(+Pid, -Children) is det.
+\end{verbatim}
+
+\noindent Returns a list in child start order, with one entry per retained specification:
+
+\begin{verbatim}
+info(Id, Pid, Type, Restart)
+\end{verbatim}
+
+\noindent Here \texttt{Pid} is \texttt{undefined} for a retained stopped
+child. The list reflects processed supervisor state rather than an independent
+instantaneous liveness check.\\
+
+\index{supervisor_count_children/2@\texttt{supervisor\_count\_children/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}count\_\allowbreak{}children/\allowbreak{}2}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_count_children(+Pid, -Counts) is det.
+\end{verbatim}
+
+\noindent Returns:
+
+\begin{verbatim}
+[specs-Specs, active-Active,
+ supervisors-Supervisors, workers-Workers]
+\end{verbatim}
+
+\noindent Each value is a nonnegative integer count for its key. \texttt{specs} counts
+retained specifications, \texttt{active} counts records whose pid is not
+\texttt{undefined}, and \texttt{supervisors} and \texttt{workers} count active
+children of each type. Counts reflect processed supervisor state.\\
+
+
+\index{supervisor_halt/1@\texttt{supervisor\_halt/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{supervisor\_\allowbreak{}halt/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+supervisor_halt(+Pid) is det.
+\end{verbatim}
+
+Stops the supervisor and shuts down children in reverse start order.
+
+The supervisor acknowledges only after its recorded children have completed
+shutdown under their policies. The acknowledgement precedes its own normal
+termination; a separate monitor observes that termination. A caller timeout
+can occur while shutdown continues and does not cancel it.
+
+The request uses the ten-second deadline described below. A matching
+acknowledgement takes precedence over a termination notification already
+queued for the wait. If normal termination is observed before the
+acknowledgement arrives, the caller continues waiting within the same deadline.
+Expiry after observed normal termination raises
+\texttt{supervisor\_\allowbreak{}down(\allowbreak{}true)}; other expiry raises
+\texttt{supervisor\_\allowbreak{}call\_\allowbreak{}timeout(\allowbreak{}Sup,\allowbreak{} stop)}. Abnormal termination without
+a matching acknowledgement raises \texttt{supervisor\_\allowbreak{}down(\allowbreak{}Reason)}.
+
+\subsubsection{Synchronous supervisor calls}\label{sec:manual-supervisor-waits}
+Child management, inspection and halt use monitored synchronous requests with a ten-second reply
+deadline starting after sending. Connection setup is outside that deadline. Timeout does not cancel
+the operation or consume a later reply. Termination or expiry may raise:
+
+\begin{itemize}
+\item \texttt{supervisor\_\allowbreak{}down(\allowbreak{}Reason)}
+\item \texttt{supervisor\_\allowbreak{}call\_\allowbreak{}timeout(\allowbreak{}Sup,\allowbreak{}Request)}
+\end{itemize}
+
+Supervisor request waits select the matching reply before unifying outputs; a mismatch consumes it
+and fails. The waits remove only their private wait monitor on success, failure, exception or
+interruption, and flush its pending termination notifications, preserving unrelated monitors and
+messages. This includes an exception while sending the request. Cleanup does not cancel the
+operation or discard a later reply. The halt wait has its own acknowledgement-ordering
+rules above.
+
+
+
+\section{Prolog-style generics}\label{sec:actor-predicate-generics}
+\index{Behaviour!predicate generics|textbf}
+\index{parallel/1@\texttt{parallel/1}!API reference|textbf}
+\noindent \textbf{Predicate:} \texttt{parallel/\allowbreak{}1}\hfill\textsc{actor}
+
+\begin{verbatim}
+parallel(+Goals) is semidet.
+\end{verbatim}
+
+\noindent Runs the proper list of independent goals \texttt{Goals}
+concurrently, using one monitored worker actor per goal. The call succeeds
+when every goal has produced its first solution and returns the resulting
+variable bindings. \texttt{parallel(\allowbreak{}[])} succeeds immediately. Further
+solutions are not enumerated on backtracking.
+
+The predicates \texttt{parallel/1} and \texttt{first\_solution/2-3} can be called directly
+in an ACTOR toplevel, with or without supplied source. Worker goals may use predicates
+supplied in the caller's source.
+
+If any goal fails, the remaining workers are terminated and the call fails.
+If any goal throws an exception, the remaining workers are terminated and
+the exception is rethrown. If a worker terminates without a result for any
+other reason, including \texttt{true}, the remaining workers are terminated
+and \texttt{worker\_\allowbreak{}exit(\allowbreak{}Pid,\allowbreak{}Reason)} is thrown. Once a worker's result has
+been accepted, its termination notification only confirms that it has stopped.
+If several workers have abnormal outcomes, the
+first failure or error notification observed by \texttt{parallel/\allowbreak{}1}
+determines the result; this selection may depend on scheduling and does not
+promise leftmost-goal precedence. Result and monitor messages belonging to the
+workers are removed before the predicate returns, fails, or throws.
+
+Worker cleanup covers partial startup failure, exceptions, caller interruption and abandonment of
+the call. Only the combinator's workers and their result/monitor messages are reclaimed; unrelated
+actors, monitors and messages are preserved. This is local cleanup and does not cancel remote
+computations already requested by a worker. A shell abort closes that shell's combinator scopes;
+ordinary actors outside those scopes follow their own lifetime rules. Forced termination that bypasses runtime
+cleanup remains a limitation.
+
+The goals must not depend on bindings or side effects produced by sibling
+goals. Actor creation and message copying add overhead, and the
+one-worker-per-goal model gives large goal lists a correspondingly large
+resource footprint.
+
+A non-list \texttt{Goals} raises \texttt{type\_\allowbreak{}error(\allowbreak{}list,\allowbreak{} Goals)}. An
+element that is not callable raises the corresponding callable type error
+from its worker, which is propagated to the caller.\\
+
+\index{first_solution/2-3@\texttt{first\_solution/2-3}!API reference|textbf}
+\noindent \textbf{Predicate:} \texttt{first\_\allowbreak{}solution/\allowbreak{}2-3}\hfill\textsc{actor}
+
+\begin{verbatim}
+first_solution(?Solution, +Goals) is semidet.
+first_solution(?Solution, +Goals, +Options) is semidet.
+\end{verbatim}
+
+\noindent Runs the proper list of alternative goals \texttt{Goals}
+concurrently in monitored worker actors and unifies \texttt{Solution} with
+the result produced by the first solver to succeed. Once a winner has been
+selected, all remaining workers are terminated and their result and monitor
+messages are removed. The predicate does not enumerate later solutions on
+backtracking, and an empty goal list fails.
+
+The two-argument form continues after an individual solver fails and stops
+on the first error. An exception retains its original term. Any other exit
+without a result, apart from ordinary failure, is reported as
+\texttt{worker\_\allowbreak{}exit(\allowbreak{}Pid,\allowbreak{}Reason)}, including an exit with reason
+\texttt{true}. These exits use the existing \texttt{on\_\allowbreak{}error} policy.
+The three-argument form accepts:
+
+\begin{itemize}
+\item
+  \texttt{on\_\allowbreak{}fail(\allowbreak{}stop|continue)}\\
+  \texttt{continue} removes the failed solver and keeps waiting while
+  alternatives remain; \texttt{stop} terminates all workers and fails
+  immediately. Default is \texttt{continue}.
+\item
+  \texttt{on\_\allowbreak{}error(\allowbreak{}stop|continue)}\\
+  \texttt{continue} removes the solver that ended with an error and keeps
+  waiting while alternatives remain; \texttt{stop} terminates all workers
+  and throws the reported error. Default is \texttt{stop}.
+\end{itemize}
+
+\noindent If all alternatives are removed under a \texttt{continue} policy,
+the predicate fails. Goals should not depend on side effects produced by
+sibling solvers.
+
+Options follow Section~\ref{sec:manual-options} and are validated before
+worker creation. An uninstantiated required list or policy value raises
+\texttt{instantiation\_error}. A non-list \texttt{Goals} or \texttt{Options}
+raises \texttt{type\_\allowbreak{}error(\allowbreak{}list,\allowbreak{}Term)}.
+Policy values must be atoms: a non-atom raises
+\texttt{type\_\allowbreak{}error(\allowbreak{}atom,\allowbreak{}Action)}, and
+an atom other than \texttt{stop} or \texttt{continue} raises
+\texttt{domain\_\allowbreak{}error(\allowbreak{}first\_\allowbreak{}solution\_\allowbreak{}policy,\allowbreak{}Action)}.
+An unknown or incorrectly aritied option raises
+\texttt{domain\_\allowbreak{}error(\allowbreak{}first\_\allowbreak{}solution\_\allowbreak{}option,\allowbreak{}Option)}.
+Every occurrence is checked and the first setting for each policy takes precedence.
+
+The parallel/1 worker-cleanup and unexpected-exit rules also apply here. \texttt{on\_\allowbreak{}error/\allowbreak{}1}
+governs unexplained worker exits as well as exceptions. A winner is selected before output
+unification; even if the caller's output does not match, remaining workers are cleaned up before the
+call fails.
+
+\section{Predicates for remote Prolog-style calls}\label{sec:synchronous-predicate-api}
+\index{RPC meta-predicate!API reference|textbf}
+\index{rpc/2-3@\texttt{rpc/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{rpc/\allowbreak{}2-3}\hfill\textsc{isobase}
+
+\begin{verbatim}
+rpc(+URI, +Goal) is nondet.
+rpc(+URI, +Goal, +Options) is nondet.
+\end{verbatim}
+
+\noindent Executes a copy of \texttt{Goal} through the stateless
+\texttt{/\allowbreak{}call} endpoint of the node identified by \texttt{URI}, then unifies
+the local goal with each returned solution on backtracking. This remains a
+stateless call even when the destination is an ACTOR node: actor-only
+predicates such as \texttt{self/\allowbreak{}1}, \texttt{spawn/\allowbreak{}1-3}, and
+\texttt{receive/\allowbreak{}1-2} are not available through \texttt{rpc/\allowbreak{}2-3}.
+
+The first argument alone selects the execution node. \texttt{localhost} means
+the node on which \texttt{rpc/\allowbreak{}2-3} is running. Source-loading options supply
+source for the call's temporary private database. For example:
+\begin{verbatim}
+rpc('http://n2.org', Goal, [
+   src_uri('http://n3.org')
+])
+\end{verbatim}
+executes \texttt{Goal} on \texttt{n2.org}. The caller fetches the source from
+\texttt{n3.org} and sends its text to \texttt{n2.org}, following
+Section~\ref{sec:manual-sources}. The options are:
+
+\begin{itemize}
+\item
+  \texttt{limit(\allowbreak{}+Integer)}\\
+  Limits the solutions retrieved per roundtrip to a positive integer.
+  If omitted, all solutions are requested. Exceeding an execution-time or
+  result-size bound produces an error, not a truncated success response;
+  the client may retry with a finite limit. Execution-time exhaustion is reported as
+\texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}time),\allowbreak{}\_\allowbreak{})}; memory or result-size exhaustion
+as \texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}space),\allowbreak{}\_\allowbreak{})}. The context argument is
+elided in normal display. RPC clients propagate the remote exception
+without an additional wrapper. A client transport timeout is a separate
+condition and does not establish that the remote computation has stopped.
+\item
+  \texttt{once(\allowbreak{}+Boolean)}\\
+  When \texttt{true}, retrieves only the first slice and does not request later
+  slices. Default is \texttt{false}.
+\item
+  \texttt{timeout(\allowbreak{}+Number)}\\
+  Requests a timeout in seconds for goal execution on the destination node.
+  The effective timeout is the minimum of this value and the node owner's
+  configured timeout.
+\item
+  \texttt{http\_\allowbreak{}timeout(\allowbreak{}+Number)}\\
+  Sets the client-side HTTP transport timeout in seconds for each request. It
+  does not change the destination node's execution timeout.
+\item
+  \texttt{src\_\allowbreak{}text(\allowbreak{}+AtomOrString)}\\
+  Loads source text into the temporary private database before calling
+  \texttt{Goal}.
+\item
+  \texttt{src\_\allowbreak{}list(\allowbreak{}+ListOfClauses)}\\
+  Converts the clauses to source text and loads them into the temporary private
+  database.
+\item
+  \texttt{src\_\allowbreak{}uri(\allowbreak{}+URI)}\\
+  Fetches source from \texttt{URI} and loads it into the temporary private
+  database in option-list order. This URI atom is a source location only.
+  The caller resolves and fetches it before dispatch, then sends source text
+  to the execution node. Relative URIs use the caller's context and
+  source-access policy.
+\item
+  \texttt{src\_\allowbreak{}predicates(\allowbreak{}+ListOfPredicateIndicators)}\\
+  Copies the caller's indicated predicates into the temporary private database.
+\end{itemize}
+
+The following HTTP transport options are also accepted. They affect the client's requests to the execution node, including
+later slice requests; they do not configure source fetching or remote goal
+execution:
+\begin{itemize}
+\item
+  \texttt{request\_\allowbreak{}header(\allowbreak{}+Name=+Value)}\\
+  Adds a request header. \texttt{Name} is an atom and \texttt{Value} an atom
+  or string. Several headers may be supplied as separate options; the first
+  occurrence for each case-insensitive header name takes precedence and every
+  occurrence is validated. Names must be nonempty HTTP field-name tokens;
+  values must not contain line breaks or other control characters except horizontal tabs.
+\item
+  \texttt{authorization(\allowbreak{}+Credentials)}\\
+  Sends HTTP credentials: \texttt{basic(\allowbreak{}User,\allowbreak{}Password)} or
+  \texttt{bearer(\allowbreak{}Token)}, with atom or string arguments.
+\item
+  \texttt{user\_\allowbreak{}agent(\allowbreak{}+Agent)}\\
+  Sets the HTTP user-agent value to the given atom or string.
+\end{itemize}
+Header values and credential arguments accept atoms, strings and proper
+lists of one-character atoms. Textual field values use UTF-8 on the wire.
+Basic credentials are encoded as UTF-8 before
+Base64 encoding. Header-name comparison also applies across option forms:
+\texttt{authorization/1} supplies the \texttt{Authorization} field and
+\texttt{user\_agent/1} supplies \texttt{User-Agent}, so the first applicable
+option in list order wins.
+
+Malformed header pairs raise \texttt{type\_error(http\_request\_header, Value)};
+unsupported credential forms raise \texttt{domain\_error(http\_authorization, Value)}.
+Text values of the wrong type raise \texttt{type\_error(atom\_or\_string, Value)}.
+Invalid field-name or field-value characters raise domain errors with domains
+\texttt{http\_header\_name} or \texttt{http\_header\_value}, respectively.
+An uninstantiated required component raises an instantiation error.
+
+Only the documented transport options are accepted. Caller access policy,
+including browser restrictions on request fields and CORS, still applies.
+Request fields do not grant authority to assert trusted proxy identity;
+reserved identity fields raise
+\texttt{permission\_error(set, proxy\_header, Name)}. An operator-bound
+credential may also prevent a caller from supplying a conflicting
+\texttt{Authorization} field.
+
+Options follow the common validation rules in Section~\ref{sec:manual-options}. \texttt{limit/\allowbreak{}1} is a positive integer; \texttt{once/\allowbreak{}1}
+is boolean. Source options follow Section~\ref{sec:manual-sources}. \texttt{template/\allowbreak{}1} and
+\texttt{offset/\allowbreak{}1} belong to \texttt{promise/\allowbreak{}4} and are rejected by \texttt{rpc/\allowbreak{}3}.
+
+For \texttt{rpc/\allowbreak{}3}, every answer in the first slice remains
+available on backtracking; \texttt{once(true)} prevents subsequent page
+requests even if the peer reports more answers. The client forwards the
+setting to the destination, which finishes the computation after that slice
+and retains no continuation. This does not provide remote cancellation.
+
+\texttt{timeout/\allowbreak{}1} requests a destination-side execution timeout;
+\texttt{http\_\allowbreak{}timeout/\allowbreak{}1} sets the caller's transport
+timeout. Both require numbers of seconds; negative values are normalised to
+zero. Omission leaves the corresponding default in effect. These are separate
+settings, each using its first occurrence, and every occurrence is validated
+before source preparation or dispatch.
+
+The HTTP timeout bounds each complete request, including response headers and
+body, and starts afresh for each later slice. It does not bound caller-side
+source preparation, which follows Section~\ref{sec:manual-sources}. Exhaustion
+raises \texttt{error(rpc\_error(http\_timeout),\_)} in \texttt{rpc/3}. A promise
+delivers the local exception as
+\texttt{error(error(rpc\_error(http\_timeout),\_))} through \texttt{yield/2-3}.
+This does not establish that the destination's computation has stopped.\\
+
+\index{promise/3-4@\texttt{promise/3-4}|textbf}
+\noindent \textbf{Predicate:} \texttt{promise/\allowbreak{}3-4}\hfill\textsc{isobase}
+
+\begin{verbatim}
+promise(+URI, +Goal, -Ref) is det.
+promise(+URI, +Goal, -Ref, +Options) is det.
+\end{verbatim}
+
+\noindent Starts one asynchronous stateless call to node \texttt{URI} with
+\texttt{Goal} and returns a local promise reference in \texttt{Ref}. As with
+\texttt{rpc/\allowbreak{}2-3}, the first argument selects the execution node and
+\texttt{localhost} denotes the current node. Source-loading options populate
+the promised call's temporary private database; they do not change its
+execution node. The caller completes source
+preparation, including any \texttt{src\_\allowbreak{}uri/\allowbreak{}1} fetch, before returning
+\texttt{Ref}; errors at this stage are raised by \texttt{promise/\allowbreak{}3-4}
+itself. The remote query runs asynchronously. It accepts the same \texttt{limit/\allowbreak{}1}, \texttt{once/\allowbreak{}1},
+\texttt{timeout/\allowbreak{}1}, \texttt{http\_\allowbreak{}timeout/\allowbreak{}1}, and \texttt{src\_\allowbreak{}*/\allowbreak{}1} options as
+\texttt{rpc/\allowbreak{}3}, together with:
+
+\begin{itemize}
+\item
+  \texttt{template(\allowbreak{}+Template)}\\
+  \texttt{Template} is a term sharing variables with the goal. By default, the
+  template is identical to the goal.
+\item
+  \texttt{offset(\allowbreak{}+Integer)}\\
+  Selects the starting offset of the single solution slice collected by the
+  promise. Default is \texttt{0}.
+\end{itemize}
+
+The reference returned in \texttt{Ref} can later be used by \texttt{yield/\allowbreak{}2-3} to collect the single
+answer term. Programs must not infer meaning from its digits or construct references themselves.
+
+A promise always collects one slice. With \texttt{once(true)}, it additionally
+asks the destination to finish the computation after that slice rather than
+retain a continuation; omission defaults to \texttt{false}. The complete peer
+answer, including its \texttt{More} flag, is returned unchanged. A local yield
+timeout does not change this setting or consume the promise.
+
+Options use the same validation rules and HTTP transport options as rpc/3, plus arbitrary
+\texttt{template/\allowbreak{}1} and nonnegative integer \texttt{offset/\allowbreak{}1}. Template variables remain shared with
+the goal, and the caller's variables are not bound by remote execution. Collection, explicit
+disposal and five-minute expiry reclaim local promise resources; pending and ready but uncollected
+promises can expire. Late completion cannot recreate a disposed reference.
+
+A promise is local to its creating node and belongs to the client context
+in which it was created. Its reference identifies it within that node and
+context independently of engine placement. Code running at that node on
+behalf of the same context may collect or dispose of it; code in another
+context cannot. Passing a reference to a remote node does not create a
+distributed promise or confer access to the originating node's promise. Authentication alone does not grant access
+to another context's promises. A client collecting across requests must retain
+its context explicitly. Ownership transfer is unsupported.
+
+For example, suppose a client at node A creates a promise there and spawns a
+child at node B. A descendant of that child returning to A may collect the
+promise while the original context remains open. A separate client at A,
+even one using the same authentication credentials, cannot collect it.
+The reference alone grants neither access at A nor collection at B.
+
+Closing the context disposes of all its pending and uncollected promises.
+This does not itself terminate surviving actors or cancel remote execution.
+Moving work between engines at the same node within a context must preserve reference identity
+and access rules. Numeric references must not be reused while an earlier
+reference could still designate a promise in that context.\\
+
+\index{yield/2-3@\texttt{yield/2-3}|textbf}
+\noindent \textbf{Predicate:} \texttt{yield/\allowbreak{}2-3}\hfill\textsc{isobase}
+
+\begin{verbatim}
+yield(+Ref, -Answer) is det.
+yield(+Ref, -Answer, +Options) is det.
+\end{verbatim}
+
+\noindent Waits for the answer term from a previous call to
+\texttt{promise/\allowbreak{}3-4}. The reference is local to its creating
+node and client context. The contract is one collection of one answer term; backtracking
+does not enumerate further results. Timeout handling must return a defined
+answer term or throw an exception.
+Remote answers are \texttt{success(\allowbreak{}Data,\allowbreak{}More)}, \texttt{failure}, or
+\texttt{error(\allowbreak{}Error)}. A local wait timeout returns \texttt{timeout} by
+default; a timeout callback may supply its own defined result. This wait
+outcome is distinct from remote logical failure or an error answer.
+\texttt{yield/\allowbreak{}2} is equivalent to \texttt{yield/\allowbreak{}3} with an empty option list.
+Valid options
+are:
+
+\begin{itemize}
+\item
+  \texttt{timeout(\allowbreak{}+Number)}\\
+  Waits at most \texttt{Number} seconds for the promised answer. Default is no
+  timeout.
+\item
+  \texttt{on\_\allowbreak{}timeout(\allowbreak{}+Goal)}\\
+  Calls \texttt{Goal} once in the caller's context if the wait expires.
+  It is not called when an answer is collected.
+  Bindings it makes to \texttt{Answer} are retained; if \texttt{Answer}
+  remains unbound, it is set to \texttt{timeout}. Callback failure throws
+  \texttt{error(\allowbreak{}timeout\_\allowbreak{}callback\_\allowbreak{}failed(\allowbreak{}Ref),\allowbreak{}\_\allowbreak{})}; an exception propagates.
+  Callback alternatives do not become additional results of \texttt{yield/\allowbreak{}3}.
+\end{itemize}
+
+Options follow the common validation rules in Section~\ref{sec:manual-options}.
+\texttt{timeout/\allowbreak{}1} requires a number and
+\texttt{on\_\allowbreak{}timeout/\allowbreak{}1} requires a callable goal. Callback context and
+sharing with \texttt{Answer} are preserved. A local producer failure is delivered as an error answer
+rather than leaving the collector blocked.
+
+Only one collector may wait on a reference at a time; a competing yield raises
+\texttt{permission\_\allowbreak{}error(\allowbreak{}collect,\allowbreak{}promise,\allowbreak{}Ref)}. Timeout, cooperative interruption or an exception
+before collection commits releases the collector and retains the promise. Collection consumes the
+selected answer before output unification; a mismatch therefore fails without making the answer
+available again. Disposal or expiry wakes a waiting collector with
+\texttt{existence\_\allowbreak{}error(\allowbreak{}promise,\allowbreak{}Ref)}, without invoking its timeout callback. Access from another
+ownership scope is treated as a missing reference.
+
+Completing one request or ending one toplevel within a retained client context
+does not dispose of that context's promises. Closing the context wakes
+collectors with a missing-reference error and closes
+further admission, while surviving actors remain alive. A collection that commits
+first returns its answer; disposal that wins invalidates the reference. Timeout
+and retry remain possible only while the reference and its owner remain valid.
+Ownership transfer and guaranteed remote cancellation remain separate work in
+Appendix~\ref{sec:proposal-to-infrastructure}.\\
+
+\index{promise_cleanup/1@\texttt{promise\_cleanup/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{promise\_\allowbreak{}cleanup/\allowbreak{}1}\hfill\textsc{isobase}
+\begin{verbatim}
+promise_cleanup(+Ref) is det.
+\end{verbatim}
+
+Disposes of the caller-accessible promise and its local resources. \texttt{Ref} must be an integer.
+Cleanup is idempotent for missing, consumed, expired, disposed or inaccessible references; a later
+yield raises \texttt{existence\_\allowbreak{}error(\allowbreak{}promise,\allowbreak{}Ref)}. The ownership boundaries under promise/3-4
+apply. Disposing of local resources does not guarantee cancellation of execution on the remote node.\\
+
+
+\index{runtime_property/1@\texttt{runtime\_property/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{runtime\_\allowbreak{}property/\allowbreak{}1}\hfill\textsc{isobase}
+
+\begin{verbatim}
+runtime_property(?Property) is nondet.
+\end{verbatim}
+
+\noindent Enumerates capabilities of the execution environment. These
+properties describe available facilities and lifetime constraints without
+changing the language contract. Defined properties are:
+
+\begin{itemize}
+\item \texttt{persistent(+Boolean)}
+\item \texttt{inbound\_\allowbreak{}addressable(\allowbreak{}+Boolean)}
+\item \texttt{dom(+Boolean)}
+\item \texttt{actor\_\allowbreak{}isolation(\allowbreak{}independent|cooperative)}
+\item \texttt{hard\_\allowbreak{}termination(\allowbreak{}+Boolean)}
+\end{itemize}
+
+\noindent Boolean property values are \texttt{true} or \texttt{false}.
+\texttt{persistent/1} reports whether the environment can outlive the client
+page or interactive connection; \texttt{inbound\_\allowbreak{}addressable/1} reports whether
+it accepts incoming node connections; \texttt{dom/1} reports access to the
+page DOM. \texttt{actor\_\allowbreak{}isolation/1} distinguishes independently scheduled
+actors from actors sharing a cooperative execution engine.
+\texttt{hard\_\allowbreak{}termination/1} reports whether an actor can be stopped without
+its cooperation. Hard termination does not guarantee execution of Prolog
+cleanup handlers. Source access may additionally be restricted by origin,
+CORS, file-access or other deployment policies.
+
+An unbound argument enumerates the properties; unsupported properties and
+non-matching values fail. Implementation identity and host-engine details
+belong in diagnostic tools and deployment guides.
+
+\section{Common error contract}\label{sec:manual-errors}
+Predicate entries above state specialised errors where they matter.  Across
+the API, the common Prolog error vocabulary has the following roles:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.38\textwidth}X@{}}
+\toprule
+Form & Meaning \\
+\midrule
+\texttt{instantiation\_\allowbreak{}error} & A required input was insufficiently instantiated. \\[0.4em]
+\texttt{type\_\allowbreak{}error/\allowbreak{}2} & The value has the wrong Prolog type; arguments identify the expected type and culprit. \\[0.4em]
+\texttt{domain\_\allowbreak{}error/\allowbreak{}2} & The type is acceptable but the value is outside the operation's domain. \\[0.4em]
+\texttt{existence\_\allowbreak{}error/\allowbreak{}2} & A required process, procedure, source, or other object does not exist. \\[0.4em]
+\texttt{permission\_\allowbreak{}error/\allowbreak{}3} & The operation is defined but not authorised in this execution context. \\[0.4em]
+\texttt{resource\_\allowbreak{}error/\allowbreak{}1} & The runtime cannot supply a required bounded resource. \\[0.4em]
+\texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}time),\allowbreak{}\_\allowbreak{})} & A configured execution limit expired. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\noindent A direct predicate call throws the error term.  PTCP reports a submitted-goal
+error as \texttt{error(\allowbreak{}Pid,\allowbreak{}E)}; stateless calls use
+\texttt{error(\allowbreak{}E)}; HTTP and WebSocket bindings place its public representation
+in a \texttt{type:"error"} envelope.  An uncaught actor exception is observed
+by a monitor as \texttt{down(\allowbreak{}Pid,\allowbreak{}Ref,\allowbreak{}exception(\allowbreak{}E))}.  Boundary sanitisation may
+remove host-private context but must preserve the portable formal error in
+Prolog-format responses and node-to-node term fields. Browser-facing JSON
+responses carry display diagnostics instead; these are not a stable
+error-classification interface. Appendix~\ref{sec:protocol-reference}
+specifies these representations and the available machine-readable error codes.
+
+
+\section{ISO predicates and related constructs}
+\index{ISO Prolog!supported predicates|textbf}
+
+Web Prolog supports the following ISO predicates and related constructs,
+including the extensions listed here. Directives and DCG rules are
+source-level items, and \texttt{read/\allowbreak{}1} and the write predicates are provided
+through the session I/O layer rather than ambient ISO stream I/O.
+
+\vspace{-4mm}
+\subsubsection*{Control and meta-call}\vspace{-2mm}
+{\raggedright \texttt{!/\allowbreak{}0,\allowbreak{} (\allowbreak{},\allowbreak{})/\allowbreak{}2,\allowbreak{} (\allowbreak{};)/\allowbreak{}2,\allowbreak{} (\allowbreak{}->)/\allowbreak{}2,\allowbreak{} (\allowbreak{}\textbackslash+)/\allowbreak{}1,\allowbreak{} call/\allowbreak{}1-8,\allowbreak{} catch/\allowbreak{}3,\allowbreak{} fail/\allowbreak{}0,\allowbreak{} false/\allowbreak{}0,\allowbreak{} once/\allowbreak{}1,\allowbreak{} repeat/\allowbreak{}0,\allowbreak{} throw/\allowbreak{}1,\allowbreak{} true/\allowbreak{}0}\par}
+\vspace{-4mm}
+\subsubsection*{Directives and DCGs}\vspace{-2mm}
+{\raggedright \texttt{-->/\allowbreak{}2,\allowbreak{} discontiguous/\allowbreak{}1,\allowbreak{} dynamic/\allowbreak{}1,\allowbreak{} multifile/\allowbreak{}1,\allowbreak{} op/\allowbreak{}3,\allowbreak{} phrase/\allowbreak{}2-3}\par}
+\noindent Operator declarations are subject to the node's admitted language;
+a restricted profile may omit \texttt{op/\allowbreak{}3}.
+An empty \texttt{dynamic/\allowbreak{}1} or \texttt{discontiguous/\allowbreak{}1} declaration establishes an existing
+predicate: calls fail normally rather than raising an undefined-procedure error. Copied source
+retains these declarations. The admitted declaration set is determined by
+the node's profile and explicit source policy, rather than by the host Prolog
+system. Admitted \texttt{multifile/1} declarations concern only the receiving
+actor's private database and confer no access to another actor's predicates.
+Embedded statechart datamodels obey the same policy. Arbitrary goal-executing
+directives require explicit admission; checked declarations do not grant
+execution authority.
+
+\vspace{-4mm}
+\subsubsection*{Term relations, comparison, and construction}\vspace{-2mm}
+{\raggedright \texttt{(\allowbreak{}=)/\allowbreak{}2,\allowbreak{} (\allowbreak{}=..)/\allowbreak{}2,\allowbreak{} (\allowbreak{}==)/\allowbreak{}2,\allowbreak{} (\allowbreak{}@<)/\allowbreak{}2,\allowbreak{} (\allowbreak{}@=<)/\allowbreak{}2,\allowbreak{} (\allowbreak{}@>)/\allowbreak{}2,\allowbreak{} (\allowbreak{}@>=)/\allowbreak{}2,\allowbreak{} (\allowbreak{}\textbackslash=)/\allowbreak{}2,\allowbreak{} (\allowbreak{}\textbackslash==)/\allowbreak{}2,\allowbreak{} arg/\allowbreak{}3,\allowbreak{} compare/\allowbreak{}3,\allowbreak{} copy\_\allowbreak{}term/\allowbreak{}2,\allowbreak{} functor/\allowbreak{}3,\allowbreak{} subsumes\_\allowbreak{}term/\allowbreak{}2,\allowbreak{} term\_\allowbreak{}variables/\allowbreak{}2,\allowbreak{} unify\_\allowbreak{}with\_\allowbreak{}occurs\_\allowbreak{}check/\allowbreak{}2}\par}
+\vspace{-4mm}
+\subsubsection*{Arithmetic predicates}\vspace{-2mm}
+{\raggedright \texttt{(\allowbreak{}<)/\allowbreak{}2,\allowbreak{} (\allowbreak{}=:=)/\allowbreak{}2,\allowbreak{} (\allowbreak{}=<)/\allowbreak{}2,\allowbreak{} (\allowbreak{}=\textbackslash=)/\allowbreak{}2,\allowbreak{} (\allowbreak{}>)/\allowbreak{}2,\allowbreak{} (\allowbreak{}>=)/\allowbreak{}2,\allowbreak{} is/\allowbreak{}2}\par}
+\vspace{-4mm}
+\subsubsection*{Arithmetic evaluable functors}\vspace{-2mm}
+The arithmetic evaluable functors specified by ISO/IEC 13211-1 are supported
+in arithmetic expressions.
+\vspace{-4mm}
+\subsubsection*{Type testing}\vspace{-2mm}
+{\raggedright \texttt{acyclic\_\allowbreak{}term/\allowbreak{}1,\allowbreak{} atom/\allowbreak{}1,\allowbreak{} atomic/\allowbreak{}1,\allowbreak{} callable/\allowbreak{}1,\allowbreak{} compound/\allowbreak{}1,\allowbreak{} float/\allowbreak{}1,\allowbreak{} ground/\allowbreak{}1,\allowbreak{} integer/\allowbreak{}1,\allowbreak{} nonvar/\allowbreak{}1,\allowbreak{} number/\allowbreak{}1,\allowbreak{} var/\allowbreak{}1}\par}
+\vspace{-4mm}
+\subsubsection*{Database and all-solutions}\vspace{-2mm}
+{\raggedright \texttt{abolish/\allowbreak{}1,\allowbreak{} assert/\allowbreak{}1,\allowbreak{} asserta/\allowbreak{}1,\allowbreak{} assertz/\allowbreak{}1,\allowbreak{} bagof/\allowbreak{}3,\allowbreak{} clause/\allowbreak{}2,\allowbreak{} findall/\allowbreak{}3,\allowbreak{} keysort/\allowbreak{}2,\allowbreak{} retract/\allowbreak{}1,\allowbreak{} retractall/\allowbreak{}1,\allowbreak{} setof/\allowbreak{}3,\allowbreak{} sort/\allowbreak{}2}\par}
+\vspace{-4mm}
+\subsubsection*{Atomic term processing}\vspace{-2mm}
+{\raggedright \texttt{atom\_\allowbreak{}chars/\allowbreak{}2,\allowbreak{} atom\_\allowbreak{}codes/\allowbreak{}2,\allowbreak{} atom\_\allowbreak{}concat/\allowbreak{}3,\allowbreak{} atom\_\allowbreak{}length/\allowbreak{}2,\allowbreak{} char\_\allowbreak{}code/\allowbreak{}2,\allowbreak{} number\_\allowbreak{}chars/\allowbreak{}2,\allowbreak{} number\_\allowbreak{}codes/\allowbreak{}2,\allowbreak{} sub\_\allowbreak{}atom/\allowbreak{}5}\par}
+\vspace{-4mm}
+\subsubsection*{Session I/O}\vspace{-2mm}
+{\raggedright \texttt{display/\allowbreak{}1,\allowbreak{} format/\allowbreak{}1-2,\allowbreak{} nl/\allowbreak{}0,\allowbreak{} print/\allowbreak{}1,\allowbreak{} read/\allowbreak{}1,\allowbreak{} time/\allowbreak{}1,\allowbreak{} write/\allowbreak{}1,\allowbreak{} write\_\allowbreak{}canonical/\allowbreak{}1,\allowbreak{} write\_\allowbreak{}term/\allowbreak{}2,\allowbreak{} writeln/\allowbreak{}1,\allowbreak{} writeq/\allowbreak{}1}\par}
+
+\noindent The goal-executing \texttt{\string~@} format directive, including
+forms with numeric arguments or a colon modifier, is rejected with
+\texttt{permission\_\allowbreak{}error(\allowbreak{}use,\allowbreak{} format\_\allowbreak{}specifier,\allowbreak{} '\string~@')}.
+An escaped tilde in \texttt{\string~\string~@} produces literal text.
+
+\section{Standard library and utility predicates}\label{sec:manual-standard-library}
+\index{Standard library|textbf}
+
+Nodes that accept general Prolog goals supply these library predicates
+without explicit loading, as described in Chapter~\ref{sec:web-prolog}:
+
+\begin{description}
+\item[List relations and indexing:]
+\texttt{member/\allowbreak{}2,\allowbreak{} memberchk/\allowbreak{}2,\allowbreak{} append/\allowbreak{}3,\allowbreak{} length/\allowbreak{}2,\allowbreak{} select/\allowbreak{}3,\allowbreak{}
+nth0/\allowbreak{}3-4,\allowbreak{} nth1/\allowbreak{}3-4}.
+\item[Integer relations:]
+\texttt{between/\allowbreak{}3,\allowbreak{} succ/\allowbreak{}2}.
+\item[Iteration and solution processing:]
+\texttt{maplist/\allowbreak{}2-8,\allowbreak{} foldl/\allowbreak{}4-6,\allowbreak{} call\_\allowbreak{}nth/\allowbreak{}2,\allowbreak{} countall/\allowbreak{}2,\allowbreak{} forall/\allowbreak{}2}.
+\end{description}
+
+\noindent Library callbacks are checked when invoked: an uninstantiated callback raises
+\texttt{instantiation\_error}; a non-callable value raises
+\texttt{type\_error(callable,\allowbreak{}Value)} with the original value as culprit.
+An empty \texttt{maplist} or \texttt{foldl}, and a vacuous \texttt{forall} test,
+do not invoke their unused callbacks. Exceptions from callbacks propagate unchanged.
+These rules do not alter the ISO \texttt{call/N} error contract.\\
+
+For background and further examples, see Ulrich Neumerkel's
+\emph{A Prologue for Prolog}, a working draft for common library predicates.\footnote{\url{https://www.complang.tuwien.ac.at/ulrich/iso-prolog/prologue}}
+The entries here specify the Web Prolog contract. A \texttt{+} argument must be
+instantiated; a \texttt{?} argument may be uninstantiated. The descriptions
+state which combinations are supported. A \texttt{semidet} call has at most
+one answer; a \texttt{nondet} call may have several, depending on its arguments.
+Callback arguments appended by \texttt{maplist} and \texttt{foldl} follow any
+arguments already present in the closure. Callbacks execute in the caller's
+source context and retain their ordinary failure, backtracking and exception
+behaviour.\\
+
+
+\index{member/2@\texttt{member/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{member/2}\hfill\textsc{isobase}
+\begin{verbatim}
+member(?Element, ?List) is nondet.
+\end{verbatim}
+\noindent Unifies \texttt{Element} with successive elements of \texttt{List},
+from left to right. Backtracking visits each position, including positions
+containing equal elements. With an uninstantiated list, it generates lists
+containing the element at successively later positions.
+\begin{verbatim}
+?- findall(X, member(X, [a,b,a]), Xs).
+Xs = [a,b,a].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{memberchk/2@\texttt{memberchk/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{memberchk/2}\hfill\textsc{isobase}
+\begin{verbatim}
+memberchk(?Element, ?List) is semidet.
+\end{verbatim}
+\noindent Searches from the start of the list and commits to the first element
+that unifies with \texttt{Element}. That unification may bind variables.
+Backtracking does not try another position. A successful match does not require
+inspection of the remaining tail; use \texttt{member/2} to enumerate matches.
+\begin{verbatim}
+?- memberchk(X, [a,b,a]).
+X = a.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{append/3@\texttt{append/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{append/3}\hfill\textsc{isobase}
+\begin{verbatim}
+append(?Prefix, ?Suffix, ?Whole) is nondet.
+\end{verbatim}
+\noindent Relates a list prefix, its following suffix and their concatenation.
+It joins two supplied lists, removes a supplied prefix from a list, or splits a
+supplied list at successive positions on backtracking, starting with an empty
+prefix. The order within both parts is preserved.
+\begin{verbatim}
+?- findall(P-S, append(P, S, [a,b]), Splits).
+Splits = [[]-[a,b], [a]-[b], [a,b]-[]].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{length/2@\texttt{length/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{length/2}\hfill\textsc{isobase}
+\begin{verbatim}
+length(?List, ?Length) is nondet.
+\end{verbatim}
+\noindent Relates a proper list to its non-negative integer length. It counts a
+supplied list or constructs a list of a supplied length, filling unknown
+positions with distinct fresh variables. With a partial list and an
+uninstantiated length, it enumerates proper completions in increasing length.
+In particular, two fresh arguments enumerate lengths zero, one, two and so on.
+\begin{verbatim}
+?- length([a|Tail], 3).
+Tail = [_A,_B].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{select/3@\texttt{select/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{select/3}\hfill\textsc{isobase}
+\begin{verbatim}
+select(?Element, ?List, ?Rest) is nondet.
+\end{verbatim}
+\noindent Removes one occurrence unifying with \texttt{Element}, leaving
+\texttt{Rest} in its original order. Backtracking tries successive positions.
+It can also insert an element into a supplied remainder at successive positions.
+Equal elements at different positions remain distinct choices.
+\begin{verbatim}
+?- findall(R, select(a, [a,b,a], R), Rs).
+Rs = [[b,a], [a,b]].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{nth0/3@\texttt{nth0/3}|textbf}
+\index{nth0/4@\texttt{nth0/4}|textbf}
+\index{nth1/3@\texttt{nth1/3}|textbf}
+\index{nth1/4@\texttt{nth1/4}|textbf}
+\noindent \textbf{Predicate:} \texttt{nth0/3-4}, \texttt{nth1/3-4}\hfill\textsc{isobase}
+\begin{verbatim}
+nth0(?Index, ?List, ?Element) is nondet.
+nth1(?Index, ?List, ?Element) is nondet.
+nth0(?Index, ?List, ?Element, ?Rest) is nondet.
+nth1(?Index, ?List, ?Element, ?Rest) is nondet.
+\end{verbatim}
+\noindent Relates an element to its position in a list, counting from zero for
+\texttt{nth0} and from one for \texttt{nth1}. An uninstantiated index enumerates
+positions in ascending order. The four-argument forms additionally relate
+\texttt{Rest} to the list with that occurrence removed. They also construct a
+list by inserting \texttt{Element} into a supplied remainder. An index beyond
+the end of a supplied finite list fails.
+\begin{verbatim}
+?- nth0(1, [a,b,c], E, Rest).
+E = b, Rest = [a,c].
+?- nth1(2, List, b, [a,c]).
+List = [a,b,c].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{between/3@\texttt{between/3}|textbf}
+\noindent \textbf{Predicate:} \texttt{between/3}\hfill\textsc{isobase}
+\begin{verbatim}
+between(+Lower, +Upper, ?Integer) is nondet.
+\end{verbatim}
+\noindent The bounds are integers. With an uninstantiated third argument,
+enumerates every integer from \texttt{Lower} through \texttt{Upper}, in
+ascending order and including both bounds. With a supplied integer, tests
+membership in that interval. An interval whose lower bound exceeds its upper
+bound has no solutions.
+\begin{verbatim}
+?- findall(N, between(-1, 2, N), Ns).
+Ns = [-1,0,1,2].
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{succ/2@\texttt{succ/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{succ/2}\hfill\textsc{isobase}
+\begin{verbatim}
+succ(?Predecessor, ?Successor) is semidet.
+\end{verbatim}
+\noindent Relates non-negative integers differing by one. At least one argument
+must be supplied. It computes a successor from its predecessor, computes the
+predecessor of a positive successor, or checks a supplied pair. Zero has no
+non-negative predecessor.
+\begin{verbatim}
+?- succ(4, S).
+S = 5.
+?- succ(P, 4).
+P = 3.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{maplist/2-8@\texttt{maplist/2-8}|textbf}
+\noindent \textbf{Predicate:} \texttt{maplist/2-8}\hfill\textsc{isobase}
+\begin{verbatim}
+maplist(?Closure, ?L1) is nondet.
+maplist(?Closure, ?L1, ?L2) is nondet.
+maplist(?Closure, ?L1, ?L2, ?L3) is nondet.
+maplist(?Closure, ?L1, ?L2, ?L3, ?L4) is nondet.
+maplist(?Closure, ?L1, ?L2, ?L3, ?L4, ?L5) is nondet.
+maplist(?Closure, ?L1, ?L2, ?L3, ?L4, ?L5, ?L6) is nondet.
+maplist(?Closure, ?L1, ?L2, ?L3, ?L4, ?L5, ?L6, ?L7) is nondet.
+\end{verbatim}
+\noindent Traverses one to seven lists together, from left to right. For each
+position, appends the corresponding elements to \texttt{Closure}'s existing
+arguments and calls the resulting goal, in list-argument order. The lists have
+the same length in every successful answer. Variables in any list may be bound
+by the callback, whose alternatives remain available on backtracking. Empty
+lists succeed without invoking the closure.
+\begin{verbatim}
+?- maplist(=, Xs, [same,same]).
+Xs = [same,same].
+?- maplist(=(same), [A,B]).
+A = same, B = same.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{foldl/4-6@\texttt{foldl/4-6}|textbf}
+\noindent \textbf{Predicate:} \texttt{foldl/4-6}\hfill\textsc{isobase}
+\begin{verbatim}
+foldl(?Closure, ?L1, ?State0, ?State) is nondet.
+foldl(?Closure, ?L1, ?L2, ?State0, ?State) is nondet.
+foldl(?Closure, ?L1, ?L2, ?L3, ?State0, ?State) is nondet.
+\end{verbatim}
+\noindent Traverses one to three lists from left to right, threading an
+accumulator. At each position, the callback receives the corresponding list
+elements in list-argument order, followed by the incoming and outgoing
+accumulators. Thus the one-list form calls \texttt{call(Closure,Element,S0,S1)};
+the next position receives \texttt{S1} as its incoming accumulator. The last
+outgoing accumulator unifies with \texttt{State}. All lists have the same
+length in a successful answer. Callback alternatives are preserved. Empty
+lists unify \texttt{State0} with \texttt{State} without invoking the closure.
+For example, with this callback:
+\begin{verbatim}
+add_to_sum(X, S0, S) :- S is S0+X.
+
+?- foldl(add_to_sum, [2,3,4], 0, Sum).
+Sum = 9.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{call_nth/2@\texttt{call\_nth/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{call\_nth/2}\hfill\textsc{isobase}
+\begin{verbatim}
+call_nth(+Goal, ?Nth) is nondet.
+\end{verbatim}
+\noindent Executes \texttt{Goal} and numbers its successive answers from one,
+including equal answers reached by different alternatives. With an
+uninstantiated \texttt{Nth}, returns the goal's bindings together with each
+answer number. A supplied positive integer selects that answer only; it does
+not enumerate later answers on backtracking. Selection past the final answer
+fails. A non-integer \texttt{Nth} raises \texttt{type\_error(integer,Nth)};
+zero or a negative integer raises
+\texttt{domain\_error(not\_less\_than\_one,Nth)}.
+\begin{verbatim}
+?- findall(X-N, call_nth(member(X, [a,b,a]), N), Pairs).
+Pairs = [a-1,b-2,a-3].
+?- call_nth(member(X, [a,b,a]), 2).
+X = b.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{countall/2@\texttt{countall/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{countall/2}\hfill\textsc{isobase}
+\begin{verbatim}
+countall(+Goal, ?Count) is semidet.
+\end{verbatim}
+\noindent Exhausts \texttt{Goal} and unifies \texttt{Count} with its number of
+answers, counting duplicates separately. A supplied non-negative integer
+count succeeds exactly when it equals that number. A failing goal has count
+zero. Bindings made while enumerating the goal do not escape; variables shared
+with \texttt{Count} are bound only by unification with the final count.
+Backtracking does not produce another count. An exception propagates without
+returning a partial count. A goal with infinitely many answers does not yield
+a completed count.
+\begin{verbatim}
+?- countall(member(X, [a,b,a]), N), var(X).
+N = 3.
+?- countall(fail, N).
+N = 0.
+\end{verbatim}
+
+\par\needspace{6\baselineskip}
+\index{forall/2@\texttt{forall/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{forall/2}\hfill\textsc{isobase}
+\begin{verbatim}
+forall(+Generate, ?Test) is semidet.
+\end{verbatim}
+\noindent Requires \texttt{Test} to succeed for every answer of
+\texttt{Generate}. Each generator answer supplies bindings to its test; one
+successful test alternative is enough for that answer. The predicate fails
+as soon as a test has no successful alternative. Bindings made by either
+callback do not escape. If the generator has no answers, \texttt{forall/2}
+succeeds without invoking the test. These rules also apply inside other
+meta-predicates. It has the same success and binding behaviour as:
+\begin{verbatim}
+\+ (call(Generate), \+ call(Test))
+\end{verbatim}
+\noindent For example:
+\begin{verbatim}
+?- forall(member(X, [1,2,3]), X > 0), var(X).
+true.
+?- forall(fail, Unused), var(Unused).
+true.
+\end{verbatim}
+
+\index{make_ref/1@\texttt{make\_ref/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{make\_\allowbreak{}ref/\allowbreak{}1}\hfill\textsc{actor}
+\begin{verbatim}
+make_ref(-Ref) is det.
+\end{verbatim}
+\noindent Produces a fresh opaque correlation reference suitable for
+transport in messages. Programs compare references with \texttt{==} and
+must not depend on their representation. This is distinct from installing
+a monitor: no process is monitored and no notification is requested.\\
+
+\index{sleep/1@\texttt{sleep/1}|textbf}
+\noindent \textbf{Predicate:} \texttt{sleep/\allowbreak{}1}\hfill\textsc{isobase}
+\begin{verbatim}
+sleep(+Seconds) is det.
+\end{verbatim}
+\noindent Suspends execution for a non-negative number of seconds,
+which may be fractional. It does not consume mailbox messages and may be
+interrupted by control signals or an execution limit. Chapter~\ref{sec:web-prolog}
+shows how an actor can express the delay using a timed \texttt{receive/\allowbreak{}2}.
+
+\section{Node introspection}\label{sec:manual-node-introspection}
+
+\index{node_setting/2@\texttt{node\_setting/2}|textbf}
+\noindent \textbf{Predicate:} \texttt{node\_\allowbreak{}setting/\allowbreak{}2}
+\hfill\textsc{all public profiles}
+
+\begin{verbatim}
+node_setting(?Key, ?Value) is nondet.
+\end{verbatim}
+
+\noindent Enumerates publicly visible settings of the node servicing the
+current request. With \texttt{Key} bound, succeeds for its visible current
+value; an unknown or unavailable key fails. Shared-database source,
+credentials, and principal policies are not exposed. The public keys are:
+
+\begin{description}
+\raggedright
+\item[General settings:] \texttt{url}, \texttt{profile}, \texttt{sandbox},
+  \texttt{auth}, \texttt{timeout}, and \texttt{rate\_\allowbreak{}window\_\allowbreak{}seconds}.
+\item[Stateless API:] \texttt{max\_\allowbreak{}inflight\_\allowbreak{}calls},
+  \texttt{max\_\allowbreak{}term\_\allowbreak{}text\_\allowbreak{}bytes}, and
+  \texttt{max\_\allowbreak{}call\_\allowbreak{}requests\_\allowbreak{}per\_\allowbreak{}window}.
+\item[Private database:] \texttt{max\_\allowbreak{}load\_\allowbreak{}text\_\allowbreak{}bytes} and
+  \texttt{load\_\allowbreak{}uri\_\allowbreak{}allowed\_\allowbreak{}origins}.
+\item[Session API:] \texttt{max\_\allowbreak{}sessions\_\allowbreak{}per\_\allowbreak{}principal} and
+  \texttt{max\_\allowbreak{}session\_\allowbreak{}spawns\_\allowbreak{}per\_\allowbreak{}window}.
+\item[Actor API:] \texttt{max\_\allowbreak{}ws\_\allowbreak{}actors\_\allowbreak{}per\_\allowbreak{}principal},
+  \texttt{max\_\allowbreak{}ws\_\allowbreak{}frame\_\allowbreak{}bytes}, and
+  \texttt{max\_\allowbreak{}ws\_\allowbreak{}commands\_\allowbreak{}per\_\allowbreak{}window}.
+\end{description}
+
+\noindent API-specific keys are visible only when their corresponding
+built-in family is enabled for the node's current profile. The predicate
+reports settings; it does not change them.\par
+
+\section{Remote execution and compatibility}\label{sec:manual-remote-compatibility}
+A defined remote operation remains subject to the caller's source-access
+policy, permission to use the destination, and the destination's admission
+and execution policy. These are separate requirements: permission to fetch
+source does not grant permission to create an actor at that origin, and an
+allowed destination does not supply transport credentials. Retaining a client
+context across nodes does not widen any of these permissions. A deployment
+may restrict permitted peers without changing the operation's language meaning.
+
+Remote execution-time exhaustion is reported as \texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}time),\allowbreak{} \_\allowbreak{})}, and
+memory exhaustion as \texttt{error(\allowbreak{}resource\_\allowbreak{}error(\allowbreak{}space),\allowbreak{} \_\allowbreak{})}. RPC clients propagate these
+exceptions. A client transport timeout does not establish that the remote computation has stopped.
+
+Compatible peers preserve complete ordinary Prolog answer terms, variable
+sharing, quoted atoms, strings and exceptions. Public asynchronous answers
+remain \texttt{success(Pid, Slice, More)}, \texttt{failure(Pid)} and
+\texttt{error(Pid, Error)}. Missing or invalid term payloads raise
+\texttt{remote\_\allowbreak{}answer\_\allowbreak{}protocol\_\allowbreak{}error(\allowbreak{}missing\_\allowbreak{}term)} or
+\texttt{remote\_\allowbreak{}answer\_\allowbreak{}protocol\_\allowbreak{}error(\allowbreak{}invalid\_\allowbreak{}term)}. Display text is not
+a substitute for a structured answer. Protocol negotiation and adapters for
+older peers are specified outside the language reference. This does not relax
+the message-term contract described under send/2-3.
+
+Monitor references retain their complete value, independently of pid display abbreviation.
+Correlated synchronous operations require peer support and fail explicitly when unavailable;
+peer compatibility is checked before dispatching operations that require it. A timeout or connection loss is not
+remote cancellation.
+
+Page sizes are caller-controlled: HTTP requests, persistent-toplevel calls and
+\texttt{next} honour \texttt{limit(N)} without silently reducing it to an owner solution-count cap.
+A finite goal may finish with fewer answers; applicable resource limits still apply.
+
+HTTP paging offsets advance by the number of answers actually returned, rather than the requested
+limit. A short non-final page therefore does not skip answers or a pending error.
+
+Execution and memory limits are deployment policies. Exhaustion uses the
+common formal errors stated above, independently of the host engine. If a
+failure prevents a usable protocol response, the connection may close; this
+does not establish whether remote work completed. Per-request budgets,
+continuation retention and cleanup after transport failure must not silently
+alter the documented paging or answer contract.
+
+Deployment guides document resource accounting, source-fetch machinery,
+continuation storage and cleanup mechanisms. Protocol negotiation, wire
+envelopes, terminal acknowledgements and session replay are specified with
+the transport interfaces rather than as additional language predicates.
+
+The complete wire specification remains in Appendix~\ref{sec:protocol-reference}.
+
+\endgroup

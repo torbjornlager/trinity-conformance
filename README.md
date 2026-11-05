@@ -13,9 +13,12 @@ without exclusions. Intermediate context and browser CI failures remain recorded
 alongside passing reruns; no repair is claimed for those intermittent observations.
 
 The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
-51-case matrix and deterministic attachment controls as a strict selection.
+51-case matrix, six controlled promise cases and deterministic attachment
+controls as a strict selection.
 The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
-full obligation mapping and external ISO coverage remain open. See the
+[Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
+and the development repair of the Trealla succ float-error failure found by
+the new 146-case selection. Full obligation mapping and external ISO coverage remain open. See the
 [coverage overview](CURRENT_COVERAGE.md) for dated release boundaries and counts.
 These selections do not establish a language-conformance percentage.
 

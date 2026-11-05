@@ -1,0 +1,745 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/torbjornlager/boken.git",
+    "revision": "364ee0bd73095a1e9e42610c52eab926ab796272",
+    "path": "author/appendix-B-current-manual.tex",
+    "sha256": "6d350248020b84789cf899f799a0c3790cc46f1710f3a25797d5b7f9d77214d5",
+    "line_count": 2557
+  },
+  "scope": "Clause-level mapping of the revised library prose to the shared 112-case pack. Existing dated observations, no new runtime execution. Covered is local to the stated assertion; neither a whole-unit nor full ISO certificate.",
+  "manifest": "cases/standard-library-0.1.json",
+  "manifest_sha256": "e7a516c7c5e1837e4a23bd50c8e4656b2cabb4877a8518a10400c56206ea9b72",
+  "evidence": {
+    "swi": {
+      "report": "reports/2026-11-05-standard-library-release/native.json",
+      "candidate": "swi"
+    },
+    "trealla": {
+      "report": "reports/2026-11-05-standard-library-release/native.json",
+      "candidate": "trealla"
+    },
+    "gnu": {
+      "report": "reports/2026-11-05-standard-library-release/native.json",
+      "candidate": "gnu"
+    },
+    "wasm_worker": {
+      "report": "reports/2026-11-05-standard-library-release/browser.json",
+      "candidate": "swi-wasm-worker"
+    },
+    "wasm_main": {
+      "report": "reports/2026-11-05-standard-library-release/browser.json",
+      "candidate": "swi-wasm-main"
+    }
+  },
+  "obligations": [
+    {
+      "id": "LIB-001",
+      "family": "member/2",
+      "requirements": [
+        "B-359"
+      ],
+      "statement": "Enumerate supplied-list positions left to right, including duplicate values and variable sharing",
+      "existing_cases": [
+        "STDLIB-001",
+        "STDLIB-002"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-002",
+      "family": "member/2",
+      "requirements": [
+        "B-359"
+      ],
+      "statement": "Generate lists when List is uninstantiated",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Collect a bounded prefix of fresh-list answers and check increasing occurrence positions and sharing."
+      ]
+    },
+    {
+      "id": "LIB-003",
+      "family": "memberchk/2",
+      "requirements": [
+        "B-361"
+      ],
+      "statement": "Commit to the first unifying position, preserve bindings, fail on no match and ignore an unused improper tail",
+      "existing_cases": [
+        "STDLIB-001",
+        "STDLIB-003",
+        "STDLIB-004",
+        "STDLIB-005",
+        "STDLIB-060"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-004",
+      "family": "append/3",
+      "requirements": [
+        "B-363"
+      ],
+      "statement": "Construct concatenations and enumerate every split from the empty prefix in order",
+      "existing_cases": [
+        "STDLIB-007",
+        "STDLIB-008"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-005",
+      "family": "append/3",
+      "requirements": [
+        "B-363"
+      ],
+      "statement": "Remove a supplied prefix in the bound-prefix mode",
+      "existing_cases": [
+        "STDLIB-007"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Call append([a],Tail,[a,b,c]) and check Tail=[b,c], plus a nonmatching-prefix failure."
+      ]
+    },
+    {
+      "id": "LIB-006",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Measure a proper list and construct a supplied length",
+      "existing_cases": [
+        "STDLIB-009",
+        "STDLIB-010"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-007",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Every constructed unknown position is a distinct fresh variable",
+      "existing_cases": [
+        "STDLIB-009"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Check all pairwise inequalities, including first versus third, and freshness relative to supplied prefix variables."
+      ]
+    },
+    {
+      "id": "LIB-008",
+      "family": "length/2",
+      "requirements": [
+        "B-365"
+      ],
+      "statement": "Enumerate proper completions of partial lists and fresh lists in increasing length",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use bounded external answer collection for partial-tail and two-fresh-argument generation; check answer order without exhausting an infinite relation."
+      ]
+    },
+    {
+      "id": "LIB-009",
+      "family": "select/3",
+      "requirements": [
+        "B-367"
+      ],
+      "statement": "Enumerate removals in position order and preserve the remainder",
+      "existing_cases": [
+        "STDLIB-011"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-010",
+      "family": "select/3",
+      "requirements": [
+        "B-367"
+      ],
+      "statement": "Insert into a supplied remainder in successive positions",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Enumerate select(x,List,[a,b]) and check all three ordered insertions, including shared variables."
+      ]
+    },
+    {
+      "id": "LIB-011",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "Enumerate zero- and one-based three-argument positions",
+      "existing_cases": [
+        "STDLIB-012",
+        "STDLIB-013"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-012",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "Remove and construct through the four-argument forms",
+      "existing_cases": [
+        "STDLIB-014",
+        "STDLIB-015",
+        "STDLIB-016"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Add nth1/4 ordered removal/enumeration and nth0/4 insertion; existing cases exercise only the opposite mode in each family."
+      ]
+    },
+    {
+      "id": "LIB-013",
+      "family": "nth0/3-4, nth1/3-4",
+      "requirements": [
+        "B-369"
+      ],
+      "statement": "A supplied index beyond a finite list fails",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Cover out-of-range indices for both bases and both arities."
+      ]
+    },
+    {
+      "id": "LIB-014",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "Enumerate inclusive bounds in order and test interval membership",
+      "existing_cases": [
+        "STDLIB-017",
+        "STDLIB-018"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-015",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "A reversed interval has no answers",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Check between(2,1,N) fails with N unbound and when a candidate is supplied."
+      ]
+    },
+    {
+      "id": "LIB-016",
+      "family": "between/3",
+      "requirements": [
+        "B-371"
+      ],
+      "statement": "Bounds are instantiated integers under the common validation rules",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Exercise uninstantiated and non-integer lower and upper bounds with exact common formal errors and unchanged variables."
+      ]
+    },
+    {
+      "id": "LIB-017",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "Compute in both integer directions",
+      "existing_cases": [
+        "STDLIB-019"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-018",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "Check supplied pairs and reject a predecessor of zero",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Test true and false supplied pairs and succ(_,0), including deterministic answer count."
+      ]
+    },
+    {
+      "id": "LIB-019",
+      "family": "succ/2",
+      "requirements": [
+        "B-373"
+      ],
+      "statement": "At least one nonnegative integer argument is supplied",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Test two variables and invalid type/domain inputs against the common error rules; check variables remain unbound."
+      ]
+    },
+    {
+      "id": "LIB-020",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Every arity calls private callbacks with list arguments in the documented order",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-021",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Preserve callback alternatives and partial application",
+      "existing_cases": [
+        "STDLIB-034",
+        "STDLIB-035"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Extend nondeterministic and pre-applied-closure cases across the remaining arities."
+      ]
+    },
+    {
+      "id": "LIB-022",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Traverse positions left to right and bind unknown lists from known lists",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032",
+        "STDLIB-034",
+        "STDLIB-035"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Observe effect order at every arity; use nonsymmetric data and generate unknown input/output lists where another list fixes length."
+      ]
+    },
+    {
+      "id": "LIB-023",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Successful lists have equal length; mismatches fail",
+      "existing_cases": [
+        "STDLIB-036"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Cover unequal lengths at arities 4 through 8, with each argument shorter in turn."
+      ]
+    },
+    {
+      "id": "LIB-024",
+      "family": "maplist/2-8",
+      "requirements": [
+        "B-375"
+      ],
+      "statement": "Empty inputs succeed without invoking invalid closures",
+      "existing_cases": [
+        "STDLIB-021",
+        "STDLIB-023",
+        "STDLIB-025",
+        "STDLIB-027",
+        "STDLIB-029",
+        "STDLIB-031",
+        "STDLIB-033",
+        "STDLIB-058",
+        "STDLIB-059",
+        "STDLIB-069",
+        "STDLIB-073",
+        "STDLIB-077",
+        "STDLIB-081",
+        "STDLIB-085",
+        "STDLIB-089",
+        "STDLIB-093"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-025",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Thread ordered elements and incoming/outgoing accumulators at every arity",
+      "existing_cases": [
+        "STDLIB-039",
+        "STDLIB-040",
+        "STDLIB-041"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-026",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Preserve callback alternatives and empty accumulator identity",
+      "existing_cases": [
+        "STDLIB-042",
+        "STDLIB-043",
+        "STDLIB-062",
+        "STDLIB-097",
+        "STDLIB-101",
+        "STDLIB-105"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Exercise alternatives for foldl/5-6 and variable/aliased accumulator identity for the two- and three-list empty forms."
+      ]
+    },
+    {
+      "id": "LIB-027",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "All supplied lists have the same length on success",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Check unequal-length failure for foldl/5-6, with each list shorter in turn."
+      ]
+    },
+    {
+      "id": "LIB-028",
+      "family": "foldl/4-6",
+      "requirements": [
+        "B-377"
+      ],
+      "statement": "Callbacks append arguments after pre-applied closure arguments",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Add private partial-application closures to every foldl arity."
+      ]
+    },
+    {
+      "id": "LIB-029",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Number duplicate answers from one and select one bound position or fail past the end",
+      "existing_cases": [
+        "STDLIB-044",
+        "STDLIB-045",
+        "STDLIB-046"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-030",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Reject zero, negative and non-integer positions with the documented errors",
+      "existing_cases": [
+        "STDLIB-047"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Test negative integers and non-integer Nth values, exact culprit, and validation before goal effects."
+      ]
+    },
+    {
+      "id": "LIB-031",
+      "family": "call_nth/2",
+      "requirements": [
+        "B-379"
+      ],
+      "statement": "Bound selection does not enumerate later alternatives on backtracking",
+      "existing_cases": [
+        "STDLIB-045"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Put an observable effect or exception after the selected answer and prove it is not reached."
+      ]
+    },
+    {
+      "id": "LIB-032",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Count duplicates, failure and one final result; check prebound outputs",
+      "existing_cases": [
+        "STDLIB-048",
+        "STDLIB-049",
+        "STDLIB-050",
+        "STDLIB-051"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-033",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Discard generator bindings/cuts and preserve independent nested counters",
+      "existing_cases": [
+        "STDLIB-048",
+        "STDLIB-052",
+        "STDLIB-053",
+        "STDLIB-063"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-034",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "Shared Goal/Count variables receive only final-count unification",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use a variable shared between Goal and Count; test both a final match and mismatch without exporting generator bindings."
+      ]
+    },
+    {
+      "id": "LIB-035",
+      "family": "countall/2",
+      "requirements": [
+        "B-381"
+      ],
+      "statement": "An infinite generator cannot return a completed count",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process."
+      ]
+    },
+    {
+      "id": "LIB-036",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "Fail on a counterexample, export no generator/test bindings and handle vacuous generators",
+      "existing_cases": [
+        "STDLIB-054",
+        "STDLIB-055",
+        "STDLIB-056",
+        "STDLIB-057",
+        "STDLIB-061",
+        "STDLIB-110"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-037",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "One successful nondeterministic test alternative is enough for each generator answer",
+      "existing_cases": [],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use a failing first test alternative followed by success; check no duplicate overall answers and no exported bindings."
+      ]
+    },
+    {
+      "id": "LIB-038",
+      "family": "forall/2",
+      "requirements": [
+        "B-383"
+      ],
+      "statement": "Preserve double-negation behavior inside other meta-predicates",
+      "existing_cases": [
+        "STDLIB-054",
+        "STDLIB-055",
+        "STDLIB-061"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Promote the Trealla nested-meta regression into the common manifest for all five modes; include nested success, failure and binding isolation."
+      ]
+    },
+    {
+      "id": "LIB-039",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Non-callable invoked callbacks have exact callable type errors and original culprits",
+      "existing_cases": [
+        "STDLIB-064",
+        "STDLIB-065",
+        "STDLIB-066",
+        "STDLIB-067",
+        "STDLIB-070",
+        "STDLIB-071",
+        "STDLIB-074",
+        "STDLIB-075",
+        "STDLIB-078",
+        "STDLIB-079",
+        "STDLIB-082",
+        "STDLIB-083",
+        "STDLIB-086",
+        "STDLIB-087",
+        "STDLIB-090",
+        "STDLIB-091",
+        "STDLIB-094",
+        "STDLIB-095",
+        "STDLIB-098",
+        "STDLIB-099",
+        "STDLIB-102",
+        "STDLIB-103",
+        "STDLIB-106",
+        "STDLIB-107",
+        "STDLIB-108",
+        "STDLIB-109",
+        "STDLIB-112"
+      ],
+      "status": "covered",
+      "tests_needed": []
+    },
+    {
+      "id": "LIB-040",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Uninstantiated invoked callbacks raise instantiation_error without binding them",
+      "existing_cases": [
+        "STDLIB-038",
+        "STDLIB-068",
+        "STDLIB-072",
+        "STDLIB-076",
+        "STDLIB-080",
+        "STDLIB-084",
+        "STDLIB-088",
+        "STDLIB-092",
+        "STDLIB-096",
+        "STDLIB-100",
+        "STDLIB-104"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Add invoked uninstantiated goals for countall, call_nth and both forall callback positions."
+      ]
+    },
+    {
+      "id": "LIB-041",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Unused callback variables remain untouched",
+      "existing_cases": [
+        "STDLIB-058",
+        "STDLIB-062"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Extend uninstantiated unused closures to maplist/3-8, foldl/5-6 and vacuous forall; current invalid-number controls do not assert variable preservation."
+      ]
+    },
+    {
+      "id": "LIB-042",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Application exceptions retain their original terms",
+      "existing_cases": [
+        "STDLIB-037",
+        "STDLIB-052",
+        "STDLIB-057",
+        "STDLIB-111"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Test application exceptions through foldl at every arity and call_nth, including nested forms."
+      ]
+    },
+    {
+      "id": "LIB-043",
+      "family": "common callbacks",
+      "requirements": [
+        "B-334",
+        "B-357"
+      ],
+      "statement": "Callbacks retain the caller source context",
+      "existing_cases": [
+        "STDLIB-020",
+        "STDLIB-022",
+        "STDLIB-024",
+        "STDLIB-026",
+        "STDLIB-028",
+        "STDLIB-030",
+        "STDLIB-032",
+        "STDLIB-039",
+        "STDLIB-040",
+        "STDLIB-041"
+      ],
+      "status": "needs_tests",
+      "tests_needed": [
+        "Use private named goals through call_nth, countall and both forall positions; existing private-source cases cover maplist and foldl."
+      ]
+    }
+  ],
+  "deferred_semantic_decisions": [
+    "Do not import Neumerkel draft expectations for call_nth(true,0), invalid countall outputs or malformed length lists as new Web Prolog requirements. The committed manual and common error contract remain authoritative.",
+    "External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability."
+  ]
+}

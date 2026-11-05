@@ -16,9 +16,10 @@ def main():
     p.add_argument('--swipl',required=True);p.add_argument('--tpl',required=True)
     p.add_argument('--swi-root',type=Path,required=True);p.add_argument('--trealla-root',type=Path,required=True)
     p.add_argument('--gnu-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--manifest',type=Path,default=ROOT/'cases/standard-library-0.1.json')
     p.add_argument('--only',nargs='+',choices=['swi','trealla','gnu'],default=['swi','trealla','gnu'])
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
-    pack=json.loads((ROOT/'cases/standard-library-0.1.json').read_text());rows=[];sources={}
+    pack=json.loads(a.manifest.read_text());rows=[];sources={}
     for name in a.only:
       root=getattr(a,name+'_root');n=port();url=f'http://127.0.0.1:{n}';env=os.environ.copy()
       for key in ['WP_CONFIG_FILE','SWI_HOME_DIR','SWIPL_HOME_DIR','WP_NATIVE_STATE','WP_NATIVE_MODE']:env.pop(key,None)
@@ -66,7 +67,7 @@ def main():
           node.terminate()
           try:node.wait(timeout=5)
           except subprocess.TimeoutExpired:node.kill();node.wait()
-    report=dict(suite=pack['suite'],scope='Shared source and goals through fresh native HTTP workers; development source snapshots',manifest_sha256=sha(ROOT/'cases/standard-library-0.1.json'),adapter_sha256=sha(__file__),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail']})
+    report=dict(suite=pack['suite'],scope='Shared source and goals through fresh native HTTP workers; development source snapshots',manifest_sha256=sha(a.manifest),adapter_sha256=sha(__file__),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail']})
     (a.output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     return int(report['counts']['fail']>0)
 if __name__=='__main__':raise SystemExit(main())
