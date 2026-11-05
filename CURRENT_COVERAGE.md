@@ -6,13 +6,20 @@ requirement-level accounting. This first inventory has 353 manuscript source
 units, including related prose groups and signatures. Earlier test selections
 still need full clause mapping; these unit counts are not a conformance percentage.
 
-The [native retained-context release](reports/2026-11-05-native-context-release/README.md)
+The [cluster peer-policy release](reports/2026-11-05-cluster-peer-policy/README.md)
 is committed, pushed and deployed to N0–N6. All twelve runtime/asset services run
-consumer image revision `3c8702a`, with the qualified native and browser pins.
-All 38 pinned consumer CI groups and **2,421 selected public checks** pass. Nine
-context cases are explicitly excluded by unchanged spawn destination policy.
-N5's persistent self-route credential is owner-only and mounted read-only; the
-existing private-Docker N3/N4 transport boundary is preserved.
+consumer image revision `1581acc`, with unchanged qualified runtime pins.
+N3/N4 now permit N5; N5 now permits N3. All **51 public context checks pass,
+with no policy exclusions**. External spawn/source destinations remain denied
+in six controls. All 38 consumer CI groups qualify after a complete WASM rerun;
+the initial browser failure and one intermediate N5 context timeout remain recorded.
+The report distinguishes successful reruns from unresolved intermittent behavior.
+N5's persistent self-route credential remains owner-only and mounted read-only.
+
+The [previous native context release](reports/2026-11-05-native-context-release/README.md)
+retains its historical `3c8702a` image record, 2,421 selected public checks and
+nine policy exclusions. Broader library and browser selections were not repeated
+for this policy-only change; their dated evidence is retained.
 
 The [previous standard-library release](reports/2026-11-05-standard-library-release/README.md)
 retains its historical `1b04f27` image record, 36-group CI and 2,379 public checks.

@@ -20,7 +20,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 ## Priorities
 
-1. **Native retained contexts:** the development repair passes all 51 scoped probes across both native runtimes and all four directed routes. Original failures and blocked source-export cases are resolved. Atomic last-attachment retirement also passes both orderings and negative controls. The public release verifies permitted routes and records nine unchanged-policy exclusions. Complete remaining lifetime/transport obligation mapping.
+1. **Native retained contexts:** the development repair passes all 51 scoped probes across both native runtimes and all four directed routes. Original failures and blocked source-export cases are resolved. Atomic last-attachment retirement also passes both orderings and negative controls. The latest public peer-policy release passes all 51 scoped probes without exclusions; external destinations remain denied. Intermediate timeout and CI failures are retained alongside successful reruns. Complete remaining lifetime/transport obligation mapping.
 2. **Standard library:** the required forms, described binding/solution semantics and exact callback errors are deployed across all five runtime modes. Complete the remaining external ISO mode/error inventory; see the standard-library release record.
 3. **Coverage mapping:** review remote lifecycle and monitor barriers, statechart invocation combinations, node settings, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.
 
@@ -28,7 +28,7 @@ The five columns describe runtime language modes. A local API result does not ce
 
 Manuscript revision: `8c808f8e90500003b8c1c3216e2f6bcbe0d4d730`; SHA-256: `df2b4615c289a0049c93d0734ed185907e2ae10c3c8c554d16377a369745719a`.
 
-[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Standard-library repair](../reports/2026-11-05-standard-library/README.md) · [Native retained-context audit](../reports/2026-11-05-native-retained-context/README.md) · [Native retained-context repair](../reports/2026-11-05-native-retained-context-repair/README.md) · [Attachment repair qualification](../reports/2026-11-05-native-context-attachment-repair/README.md) · [Current public release](../reports/2026-11-05-native-context-release/README.md)
+[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Standard-library repair](../reports/2026-11-05-standard-library/README.md) · [Native retained-context audit](../reports/2026-11-05-native-retained-context/README.md) · [Native retained-context repair](../reports/2026-11-05-native-retained-context-repair/README.md) · [Attachment repair qualification](../reports/2026-11-05-native-context-attachment-repair/README.md) · [Current public release](../reports/2026-11-05-cluster-peer-policy/README.md)
 
 The validator checks manuscript drift, complete target accounting, applicable profiles, exact case IDs, candidate identity and outcomes. A whole-unit “verified” annotation still requires review that those assertions cover the complete statement.
 

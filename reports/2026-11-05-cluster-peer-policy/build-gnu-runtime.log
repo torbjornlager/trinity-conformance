@@ -1,0 +1,90 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.gprolog
+#1 transferring dockerfile: 2.95kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 33B
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [build  1/12] FROM docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#6 resolve docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 3.69kB done
+#7 DONE 0.0s
+
+#8 [build 10/12] RUN make -C /src/gprolog-port/isobase CC=clang all     && /src/gprolog-port/install/bin/gprolog --version 2>&1 | grep -F '1.6.0'
+#8 CACHED
+
+#9 [stage-1 6/7] COPY --from=build /build/build-toolchain.json /usr/share/doc/gprolog/build-toolchain.json
+#9 CACHED
+
+#10 [build  5/12] COPY tools/fetch_gprolog.py tools/
+#10 CACHED
+
+#11 [build 12/12] RUN python3 - <<'PY'
+#11 CACHED
+
+#12 [stage-1 2/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates libcurl4     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 webprolog     && useradd --uid 10001 --gid webprolog --create-home webprolog
+#12 CACHED
+
+#13 [stage-1 3/7] COPY --from=build /src/gprolog-port/isobase/isobase-node /src/gprolog-port/isobase/query-worker /src/gprolog-port/isobase/query-supervisor /app/isobase/
+#13 CACHED
+
+#14 [stage-1 5/7] COPY --from=build /build/dependencies/gprolog-port.json /usr/share/doc/gprolog/runtime-pins.json
+#14 CACHED
+
+#15 [build  2/12] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates git python3 build-essential libcurl4-openssl-dev     && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [build  8/12] RUN make -C /src/gprolog/src check
+#16 CACHED
+
+#17 [build  4/12] COPY dependencies/gprolog-port.json dependencies/gprolog-port.json
+#17 CACHED
+
+#18 [build  7/12] RUN cd /src/gprolog/src && ./configure --with-install-dir=/src/gprolog-port/install       --without-links-dir --without-doc-dir --without-html-dir --without-examples-dir     && make && make install
+#18 CACHED
+
+#19 [build 11/12] RUN apt-get update && apt-get install -y --no-install-recommends procps     && rm -rf /var/lib/apt/lists/*
+#19 CACHED
+
+#20 [build  3/12] WORKDIR /build
+#20 CACHED
+
+#21 [build  9/12] RUN apt-get update && apt-get install -y --no-install-recommends clang     && rm -rf /var/lib/apt/lists/*
+#21 CACHED
+
+#22 [build  6/12] RUN --mount=type=secret,id=github_token     python3 tools/fetch_gprolog.py --port-destination /src/gprolog-port --engine-destination /src/gprolog --token-file /run/secrets/github_token
+#22 CACHED
+
+#23 [stage-1 4/7] COPY --from=build /src/gprolog/COPYING /usr/share/doc/gprolog/COPYING
+#23 CACHED
+
+#24 [stage-1 7/7] WORKDIR /app/isobase
+#24 CACHED
+
+#25 exporting to image
+#25 exporting layers done
+#25 exporting manifest sha256:220574aa67c79a685afa7f526bcca6c36ada135d729cc3059dd12a5d76418f4e done
+#25 exporting config sha256:d9e50506a495f70ccb8286548d484f9ea2a8f19b040f4e0a1e6bee04765b5642 done
+#25 exporting attestation manifest sha256:2c423bd339d27d08b6ea67ecbd2ad970f93cd4a4831573b9bb4859fe840670c0 done
+#25 exporting manifest list sha256:1190c84e15e83550bdeb765c95c46cd9de2f92d198893d72fed67c30878440b5
+#25 exporting manifest list sha256:1190c84e15e83550bdeb765c95c46cd9de2f92d198893d72fed67c30878440b5 done
+#25 naming to docker.io/library/trinity-cluster-policy-gnu-runtime:20261105-cluster done
+#25 unpacking to docker.io/library/trinity-cluster-policy-gnu-runtime:20261105-cluster done
+#25 DONE 0.1s
