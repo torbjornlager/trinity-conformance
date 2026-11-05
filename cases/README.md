@@ -190,3 +190,17 @@ raise `type_error(atom,Value)`. The initial supervisor-failure check requires
 a wrapped caller exception, an unbound output and completed sibling rollback
 before checking the surviving conflicting actor. The earlier asynchronous
 startup-notification expectation is superseded by that common contract.
+
+`runtime-introspection-0.1.json` checks the five language capabilities, Boolean
+values, portable isolation values, enumeration and failed matching. It accepts
+host differences in capability values. Use the local API adapter's explicit
+`--suite runtime-introspection-0.1` selection or `wasm.cjs` in either mode.
+`appendix-library-probes-0.1.json` is a separate supporting availability check;
+its GNU failures remain visible and do not become introspection failures.
+The opt-in `adapters/wasm_promise_context.cjs` scenario
+`appendix_promise_context_parent_child` repeats the original context-wide
+lookup diagnostic using real parent/child WASM actors and a mocked HTTP answer.
+It passes on the 5 November development repair. Upstream runtime tests now also
+include coordinator claim controls and real Chrome/HTTP ownership/lifetime
+checks in both execution modes; see `reports/2026-11-05-promise-context/README.md`.
+The requirement ledger and renderer are linked from `docs/APPENDIX_B_COVERAGE.md`.

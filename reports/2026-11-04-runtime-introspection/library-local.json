@@ -1,0 +1,118 @@
+{
+  "scope": "supporting",
+  "execution": "standalone local APIs; no public-node certification",
+  "contracts": {
+    "appendix-library-probes-0.1": "35f05e5c7b8d4c8cbd5a16388f1f88f37a9b244b26a65a5d6912b8e1fa31ad80"
+  },
+  "adapter_sha256": "49202dabe52d2b451871c08effc221f7113fb3aef5f3eb54fcf0e32b4e364673",
+  "sources": {
+    "swi": {
+      "root": "/Users/lager/swi-prolog-node",
+      "revision": "a982e464dd5087637fd412569b54917d6db807b8",
+      "dirty": true,
+      "changed_files": {
+        "docs/WEB_PROLOG_BUILTINS.md": "f2ecf08cc8ba516787564a2204c24ec6a9a086011dc53aa3a3f133196512e81b",
+        "prolog/web_prolog/rpc.pl": "a1a972402b369348ad3771e3e3b9da8034467836f2042ba23fdd6daa4b958acc",
+        "tests/tiers/node/node_tests.pl": "7a3867030b190bf49eb6c421a9719e280ea2517cbdd67d5247df83c58d49be9c"
+      },
+      "executable": "/usr/local/bin/swipl",
+      "executable_sha256": "7d00f0cc81b6b4a07612a45fdbf1510e801465a78a25ce8d625a82b168937b36"
+    },
+    "trealla": {
+      "root": "/Users/lager/trealla-port",
+      "revision": "a1e80a6258259286b6fe577b267cd941eda5434a",
+      "dirty": true,
+      "changed_files": {
+        "README.md": "712c89185a64ebb77d1adb007d9ffd76ade70f33519db5f282c5bf380d5e80ea",
+        "rpc.pl": "096bd827fd6cf1dc3bbda06e199740173a45ba16406f87d251352767ae03384d",
+        "runtime_property_tests.pl": "6b332d5705d9bc18068bacc6e47c189c73ffc5e5db1f20338eaea975d9355c58",
+        "tools/test.sh": "5267fa011e30976579526c0ac590459e76e73c61b576bb71a9bef227b2d49f32"
+      },
+      "executable": "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+      "executable_sha256": "7ec2aadedf60101520a58edcb0d1dd03f882fabc2480dddb2b4b0b8ffc317242"
+    },
+    "gnu": {
+      "root": "/Users/lager/gprolog-port",
+      "revision": "8dff4798b7d8f06f6f89fc471431fe5af0511682",
+      "dirty": true,
+      "changed_files": {
+        "isobase/conformance_tests.py": "febf0aae6af270d5f1f7692f721dbddbe2f8f3e96e4a3bba0b8c95e31e6868e6",
+        "isobase/prologue.pl": "4f25d43e8c0aa53471e494e37e742991a969d1c9dd5db3562ccadac07c0bcc8a"
+      },
+      "executable": "/Users/lager/gprolog-port/isobase/query-worker",
+      "executable_sha256": "444816dc07a2d36da0673d4cd60cb961204094784f437171553eb700dbd31778"
+    }
+  },
+  "counts": {
+    "pass": 4,
+    "fail": 2
+  },
+  "results": [
+    {
+      "candidate": "swi",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-001",
+      "title": "memberchk is available and commits to the first match",
+      "status": "pass",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration_ms": 236
+    },
+    {
+      "candidate": "swi",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-002",
+      "title": "forall is available, preserves bindings, and detects a failing instance",
+      "status": "pass",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration_ms": 162
+    },
+    {
+      "candidate": "trealla",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-001",
+      "title": "memberchk is available and commits to the first match",
+      "status": "pass",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration_ms": 357
+    },
+    {
+      "candidate": "trealla",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-002",
+      "title": "forall is available, preserves bindings, and detects a failing instance",
+      "status": "pass",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration_ms": 317
+    },
+    {
+      "candidate": "gnu",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-001",
+      "title": "memberchk is available and commits to the first match",
+      "status": "fail",
+      "exit_code": 0,
+      "stdout": "{\"type\":\"error\",\"term\":\"error(permission_error(execute,isobase,/(memberchk,2)),/(iso_execute,1))\"}\n",
+      "stderr": "",
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-002",
+      "title": "forall is available, preserves bindings, and detects a failing instance",
+      "status": "fail",
+      "exit_code": 0,
+      "stdout": "{\"type\":\"error\",\"term\":\"error(permission_error(execute,isobase,/(forall,2)),/(iso_execute,1))\"}\n",
+      "stderr": "",
+      "duration_ms": 7
+    }
+  ]
+}

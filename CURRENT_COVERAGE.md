@@ -1,5 +1,31 @@
 # Current Web Prolog conformance coverage
 
+Updated **5 November 2026**. The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md)
+and its [machine-readable ledger](requirements/appendix-b-0.1.json) now provide
+requirement-level accounting. This first inventory has 353 manuscript source
+units, including related prose groups and signatures. Earlier test selections
+still need full clause mapping; these unit counts are not a conformance percentage.
+
+The [4 November public deployment](reports/2026-11-04-appendix-b-public-deployment/README.md)
+records N0–N6, 456 selected live assertions (including 354 shared HTTP-field
+assertions), 34 consumer CI groups and 107 browser/runtime scenarios. It retains
+exact image/source pins and earlier failed attempts. It does not certify all
+Appendix B clauses.
+
+The [current development introspection batch](reports/2026-11-04-runtime-introspection/README.md)
+passes all 25 shared capability assertions and the full native and upstream browser suites.
+It is not deployed. The audit retains two GNU library failures. The subsequent
+[browser promise ownership repair](reports/2026-11-05-promise-context/README.md)
+resolves the same-context finding in development and exercises main/Worker
+sharing, creator exit, interruption, closure and separate-context denial in real
+Chrome. Full paragraph coverage still requires further evidence mapping. GNU
+ISOBASE is not required to provide ACTOR APIs.
+
+The checkpoint below is historical. Its N5 SSO topology, revisions and case
+counts do not describe the latest public deployment; its evidence remains intact.
+
+# Historical 1 November checkpoint
+
 Updated **1 November 2026**. The deployed ACTOR selection passes **44/44 on
 N3, N4 and N5 (132/132)**. The isolated release checkpoint passes **44/44 per
 engine (88/88)**. The latest demonstrator CI also passes both jobs.

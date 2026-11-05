@@ -7,23 +7,24 @@ another runtime.
 
 ## Current consolidated results
 
-The [1 November native reliability checkpoint](reports/2026-11-01-native-reliability/REPORT.txt)
-records 88/88 passing cases in the expanded `actor-release-0.2` gate, both
-complete native scripts, and the targeted regression evidence. The previous
-40-case gate remains available with `--profile profiles/actor-release-0.1.json`.
+The [4 November public rollout](reports/2026-11-04-appendix-b-public-deployment/README.md)
+records 456 selected live assertions on the exact deployed pins, including 354
+shared HTTP-field assertions across N1–N6, and the complete consumer CI checks.
+The [5 November Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) inventories the
+manuscript's source units and separates verified requirements, unverified
+coverage, missing facilities, observed failures and profile exclusions.
 
-The [current coverage matrix](CURRENT_COVERAGE.md) identifies the running nodes,
-the 132/132 deployed ACTOR case executions, the isolated 88/88 release result
-and the latest successful implementation/browser CI. Live source hashes tie
-the deployment to tested revisions. N1/N2 metadata checks, N5's protected public
-route and its execution-only backend checks retain their separate scopes.
-Broader GNU, browser-language and interoperability results are linked as dated
-historical selections. The sections below retain the sequence of repairs.
+The [development introspection repair](reports/2026-11-04-runtime-introspection/README.md)
+passes 25 shared capability assertions across five runtime modes and the full
+native/upstream-browser regressions. It is not deployed. The audit retains GNU library-policy failures. The
+[context-wide browser promise repair](reports/2026-11-05-promise-context/README.md)
+now resolves the earlier parent/child finding in development, with real-browser
+ownership, lifetime and foreign-context checks in both execution modes.
+The [coverage overview](CURRENT_COVERAGE.md) links these distinct scopes without
+adding execution counts into a language-conformance percentage.
 
-The separate [26 October text checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
-compares the selected character-list configurations in native SWI, Trealla and
-both browser UI modes. It retains JSON, URI-policy, CORS and public term-reader
-diagnostics separately; it does not promote the experimental text profile.
+Earlier ACTOR release and historical matrices remain available below with their
+original sources, dates and failures. They do not silently certify new requirements.
 
 ## Scoped interoperability baseline
 

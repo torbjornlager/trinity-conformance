@@ -1,0 +1,22 @@
+{
+  "suite": "appendix-library-probes-0.1",
+  "baseline": "appendix-library-probes-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Focused Appendix B standard-library availability probes; not complete mode coverage",
+  "cases": [
+    {
+      "id": "LIB-001",
+      "title": "memberchk is available and commits to the first match",
+      "transport": "query",
+      "goal": "findall(X,memberchk(X,[a,b]),[a])"
+    },
+    {
+      "id": "LIB-002",
+      "title": "forall is available, preserves bindings, and detects a failing instance",
+      "transport": "query",
+      "goal": "forall(member(X,[a,b]),nonvar(X)),var(X),\\+forall(member(Y,[a,b]),Y==a),var(Y)"
+    }
+  ]
+}

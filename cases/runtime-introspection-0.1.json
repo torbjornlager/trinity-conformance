@@ -1,0 +1,40 @@
+{
+  "suite": "runtime-introspection-0.1",
+  "baseline": "runtime-introspection-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Appendix B language capability enumeration and matching; host values may differ",
+  "cases": [
+    {
+      "id": "RT-001",
+      "title": "Enumerates exactly the five defined ground properties without duplicates",
+      "transport": "query",
+      "goal": "findall(P,runtime_property(P),Ps),ground(Ps),length(Ps,5),sort(Ps,Unique),length(Unique,5),findall(K,(member(P,Ps),functor(P,K,1)),Keys),sort(Keys,[actor_isolation,dom,hard_termination,inbound_addressable,persistent])"
+    },
+    {
+      "id": "RT-002",
+      "title": "Boolean capabilities each have one value and matching values succeed",
+      "transport": "query",
+      "goal": "findall(B1,runtime_property(persistent(B1)),[V1]),(V1==true->Other1=false;V1==false,Other1=true),runtime_property(persistent(V1)),\\+runtime_property(persistent(Other1)),findall(B2,runtime_property(inbound_addressable(B2)),[V2]),(V2==true->Other2=false;V2==false,Other2=true),runtime_property(inbound_addressable(V2)),\\+runtime_property(inbound_addressable(Other2)),findall(B3,runtime_property(dom(B3)),[V3]),(V3==true->Other3=false;V3==false,Other3=true),runtime_property(dom(V3)),\\+runtime_property(dom(Other3)),findall(B4,runtime_property(hard_termination(B4)),[V4]),(V4==true->Other4=false;V4==false,Other4=true),runtime_property(hard_termination(V4)),\\+runtime_property(hard_termination(Other4))"
+    },
+    {
+      "id": "RT-003",
+      "title": "Isolation uses the portable independent/cooperative domain",
+      "transport": "query",
+      "goal": "findall(I,runtime_property(actor_isolation(I)),[Value]),(Value==independent->true;Value==cooperative),runtime_property(actor_isolation(Value)),\\+runtime_property(actor_isolation(unsupported_isolation))"
+    },
+    {
+      "id": "RT-004",
+      "title": "Implementation identity is not a language capability and failed matching preserves variables",
+      "transport": "query",
+      "goal": "\\+runtime_property(implementation(I)),var(I)"
+    },
+    {
+      "id": "RT-005",
+      "title": "Unknown, malformed and nonmatching properties fail without raising or binding",
+      "transport": "query",
+      "goal": "\\+runtime_property(unknown(V)),var(V),\\+runtime_property(42),\\+runtime_property(persistent),\\+runtime_property(dom(false,true)),\\+runtime_property(dom(maybe)),\\+runtime_property(runtime_property(A,B)),var(A),var(B)"
+    }
+  ]
+}

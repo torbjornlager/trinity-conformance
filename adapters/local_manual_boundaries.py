@@ -58,7 +58,7 @@ def main():
     parser.add_argument('--gnu-worker', type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--timeout', type=float, default=30)
-    parser.add_argument('--suite', action='append', choices=SUITES + ('supervisor-common-0.1','statechart-document-0.1','rpc-timeout-0.1','http-transport-options-0.1'),
+    parser.add_argument('--suite', action='append', choices=SUITES + ('supervisor-common-0.1','statechart-document-0.1','rpc-timeout-0.1','http-transport-options-0.1','runtime-introspection-0.1','appendix-library-probes-0.1'),
                         help='select a draft pack; default retains the original boundary packs')
     args = parser.parse_args()
     suites = args.suite or SUITES
