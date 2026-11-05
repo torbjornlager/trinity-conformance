@@ -1,0 +1,56 @@
+diff --git a/README.md b/README.md
+index bfc0e6c..a1244c5 100644
+--- a/README.md
++++ b/README.md
+@@ -111,3 +111,13 @@ Our runtime is MIT licensed. SWI-Prolog's bundled copyright/redistribution terms
+ are retained in [third_party/LICENSE.txt](third_party/LICENSE.txt), copied from the
+ integrity-verified npm tarball. The engine package, source commit and integrity
+ are pinned in `dependencies/swi-wasm.json`.
++
++
++The development runtime supplies Appendix B's `maplist/6-8` and `countall/2`
++in both execution modes and their spawned actors, without explicit user imports.
++Private-source callbacks keep their calling module. The real-browser library
++regression runs the mirrored shared fixture in `tests/fixtures/standard-library.json`
++and a copied-source child control. It is included when `tools/test.py` selects
++`--browser-executable`; an external shared fixture may be supplied using
++`LIBRARY_MANIFEST`. Development packages require `--allow-dirty` and must not be
++used as release pins.
+diff --git a/tools/test.py b/tools/test.py
+index 1bca68b..4af81bc 100644
+--- a/tools/test.py
++++ b/tools/test.py
+@@ -50,6 +50,8 @@ def main():
+         try:
+             env['CHROME_PATH']=str(a.browser_executable.resolve())
+             env['RUNTIME_URL']='http://127.0.0.1:'+str(server.server_port)+'/'
++            env['LIBRARY_REPORT']=str(a.report/'standard-library-browser.json')
++            rows.append(run('standard-library-browser',[node,'tests/wasm/swi_wasm_library_browser.cjs'],env,root,a.report))
+             rows.append(run('session-api-browser',[node,'tests/wasm/swi_wasm_sessions_browser.cjs'],env,root,a.report))
+             (a.report/'results.json').write_text(json.dumps(dict(source=manifest['source'],native_integration=bool(a.native_root),host_integration=bool(env.get('SWI_WASM_TEST_HOST')),runs=rows),indent=2)+'\n')
+         finally:server.shutdown();server.server_close();thread.join()
+diff --git a/web/vendor/swi-wasm-node.js b/web/vendor/swi-wasm-node.js
+index 2a8b500..fa3f41e 100644
+--- a/web/vendor/swi-wasm-node.js
++++ b/web/vendor/swi-wasm-node.js
+@@ -2581,6 +2581,20 @@
+           },
+           swiWasmBehaviourProlog: function() {
+             return [
++              ":- export(maplist/6).",
++              ":- export(maplist/7).",
++              ":- export(maplist/8).",
++              ":- export(countall/2).",
++              ":- use_module(library(aggregate),[aggregate_all/3]).",
++              ":- meta_predicate maplist(5,?,?,?,?,?),maplist(6,?,?,?,?,?,?),maplist(7,?,?,?,?,?,?,?),countall(0,?).",
++              "maplist(_,[],[],[],[],[]).",
++              "maplist(G,[A|As],[B|Bs],[C|Cs],[D|Ds],[E|Es]):-call(G,A,B,C,D,E),maplist(G,As,Bs,Cs,Ds,Es).",
++              "maplist(_,[],[],[],[],[],[]).",
++              "maplist(G,[A|As],[B|Bs],[C|Cs],[D|Ds],[E|Es],[F|Fs]):-call(G,A,B,C,D,E,F),maplist(G,As,Bs,Cs,Ds,Es,Fs).",
++              "maplist(_,[],[],[],[],[],[],[]).",
++              "maplist(G,[A|As],[B|Bs],[C|Cs],[D|Ds],[E|Es],[F|Fs],[H|Hs]):-call(G,A,B,C,D,E,F,H),maplist(G,As,Bs,Cs,Ds,Es,Fs,Hs).",
++              "countall(Goal,Count):-aggregate_all(count,Goal,Actual),Count=Actual.",
++
+               "% Browser-worker implementation of generic servers and supervisors.",
+               ":- meta_predicate server_spawn(:, +, -), server_spawn(:, +, -, +), server_upgrade(+, :), server_upgrade(+, :, +), supervisor_spawn(:, -), supervisor_spawn(:, -, +), supervisor_spawn_child(+, :, -), wasm_startup_scope(0), browser_named_creation(+, -, +, -, 0).",
+               "browser_statechart_source(Options,Kind,Source) :-",

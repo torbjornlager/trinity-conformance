@@ -1,0 +1,106 @@
+diff --git a/DEVIATIONS.md b/DEVIATIONS.md
+index 04bfb9c..974a284 100644
+--- a/DEVIATIONS.md
++++ b/DEVIATIONS.md
+@@ -20,6 +20,7 @@ diagnostic and node metadata additions preserve every pre-existing wire field.
+ 
+ | date | deviation | rationale |
+ |------|-----------|-----------|
++| 2026-11-05 | Supply `maplist/6-8` and `countall/2` automatically in private actor/query modules. | Implements the Appendix B standard-library forms beyond the host library imports. Meta-predicate declarations retain private callback scope and existing runtime/sandbox guards; counting does not export generator bindings and uses constant-space aggregation. Development sources only. |
+ | 2026-09-11 | Browser actor transport negotiates structural import of qualified browser-local pids in spawn goals, messages and toplevel calls. | Fixes mixed browser/native actor protocols where a browser pid is supplied at spawn time: the remote node must route it through the originating browser connection rather than interpret localhost as itself. Bare values and source strings remain unchanged. Local WASM spawn completion compares decoded pid values across the synchronous/asynchronous JavaScript boundary. |
+ | 2026-09-11 | SWI-WASM remote terminal writes negotiate browser acknowledgements. Actors wait until the shared browser terminal accepts each output event, including when output is inherited by a remote descendant. | Completes the native acknowledgement fix for browser-hosted terminals: separate peer WebSocket queues cannot establish an order at the common browser sink. Both browser execution models use the same bridge; replies are connection-scoped, disconnects release waiting writers, and unsupported peers fail negotiation instead of silently weakening output semantics. |
+ | 2026-09-11 | Native distributed terminal I/O waits for a correlated acknowledgement after the home terminal queue accepts each write or prompt. Revoked endpoints, lost connections, and missing acknowledgements raise I/O errors rather than silently dropping output. | Author-directed causal ordering fix, following request/reply I/O semantics. Previously a write returned after sending to a socket, so subsequent actor messages could overtake output across connections. Ordinary actor sends and spawn completion semantics are unchanged. All participating nodes need acknowledgement support; old senders remain accepted but cannot provide the new guarantee. |
+diff --git a/README.md b/README.md
+index af86f5b..ecfa04b 100644
+--- a/README.md
++++ b/README.md
+@@ -254,3 +254,13 @@ Every occurrence is validated before source work; the first field with a given
+ case-insensitive name wins across all option forms. Field values use UTF-8 bytes. Basic credentials use UTF-8
+ then Base64. RPC fields apply to every page and never to source downloads.
+ Reserved proxy identity fields are rejected. Caller access policy still applies.
++
++
++The Appendix B library extension in `standard_library.pl` supplies
++`maplist/6-8` and `countall/2` to isolated actor and stateless query modules.
++Callbacks retain the caller's private source module and the node's normal
++sandbox checks. T1 tests the lower-layer private-source path; T4 tests both
++sandbox modes through real HTTP calls. The shared conformance selection also
++covers list/index relations, integer relations, `maplist/2-8`, `foldl/4-6`,
++`call_nth/2`, `countall/2` and `forall/2`. This is development qualification;
++consumer pins and public nodes are unchanged.
+diff --git a/prolog/web_prolog/isolation.pl b/prolog/web_prolog/isolation.pl
+index 4f7cd9d..2466388 100644
+--- a/prolog/web_prolog/isolation.pl
++++ b/prolog/web_prolog/isolation.pl
+@@ -102,6 +102,7 @@ actor-coupled.
+     append_source_text/3
+ ]).
+ :- use_module(control_guard, []).
++:- use_module(standard_library, []).
+ 
+ :- multifile
+     prepare_module/3,
+@@ -380,6 +381,7 @@ shadowing_empty_dynamic(Module, SharedModule, Name, Arity) :-
+ 
+ 
+ import_actor_api(Module) :-
++    add_import_module(Module, standard_library, end),
+     ActorModule = actors,
+     (   current_module(ActorModule)
+     ->  add_import_module(Module, ActorModule, start)
+diff --git a/tests/tiers/node/node_tests.pl b/tests/tiers/node/node_tests.pl
+index b76b6ea..63c6ed2 100644
+--- a/tests/tiers/node/node_tests.pl
++++ b/tests/tiers/node/node_tests.pl
+@@ -8098,6 +8098,19 @@ test(isobase_yield_timeout_callback_is_sandboxed) :-
+          with_mutex(promise_lifecycle,
+              assertion(\+ rpc:promise_state(_,_,_,_,_,_,http_client(node_port(Port),_)))))).
+ 
++test(standard_library_closures_retain_sandbox_checks,
++     [forall(member(Mode,[blacklist,whitelist]))]) :-
++    with_node_server_options([profile(actor),sandbox(Mode)], URI,
++        ( json_call_url_with_load_text(URI,
++              'maplist(eq7,[a],[a],[a],[a],[a],[a],[a]),countall(member(X,[a,b]),N),N==2,var(X)',
++              "eq7(X,X,X,X,X,X,X).",Positive),
++          read_json_answer(Positive,Good), assertion(Good.type=="success"),
++          forall(member(Goal,
++              ['maplist(open,[no_such_file],[read],[_])',
++               'countall(open(no_such_file,read,_),_)']),
++              (call_url(URI,Goal,true,0,1,'',none,URL),read_answer(URL,Error),
++               assertion(Error=error(error(permission_error(_,_,_),_))))) )).
++
+ test(whitelist_yield_inspects_timeout_callback) :-
+     with_sandbox_mode(whitelist,
+         (sandbox_check_goal_in_module(isobase,test_node,
+diff --git a/tests/tiers/t1_isolation.pl b/tests/tiers/t1_isolation.pl
+index 37cc88a..621e990 100644
+--- a/tests/tiers/t1_isolation.pl
++++ b/tests/tiers/t1_isolation.pl
+@@ -127,6 +127,15 @@ test(src_list, Msg == ready) :-
+        on_timeout(fail)
+    ]).
+ 
++% The required library remains available below the node layer, and callbacks
++% resolve in the actor's private source rather than in the library module.
++test(required_library_private_callbacks) :-
++   self(Self),
++   spawn(run(Self), Pid, [monitor(true),src_text(
++       "eq7(X,X,X,X,X,X,X). run(P):-maplist(eq7,[a,b],[a,b],[a,b],[a,b],[a,b],[a,b],[a,b]),countall(member(X,[a,b,a]),N),var(X),send(P,library_count(N)).")]),
++   receive({library_count(N) -> assertion(N==3)},[timeout(2),on_timeout(fail)]),
++   receive({down(Pid,Pid,true) -> true},[timeout(2),on_timeout(fail)]).
++
+ test(src_text, Msg == hello_from_text) :-
+    self(Self),
+    spawn(run(Self), _Pid, [
+diff --git a/tools/generate_dependency_graph.py b/tools/generate_dependency_graph.py
+index 3fee776..e940a23 100644
+--- a/tools/generate_dependency_graph.py
++++ b/tools/generate_dependency_graph.py
+@@ -287,6 +287,7 @@ LAYERS = {
+     _WP + "actors.pl": 0,
+     _WP + "wire_text.pl": 0,
+     _WP + "text_config.pl": 0,
++    _WP + "standard_library.pl": 0,
+     # layer 1 — isolation
+     _WP + "source_utils.pl": 1,
+     _WP + "actor_io_support.pl": 1,

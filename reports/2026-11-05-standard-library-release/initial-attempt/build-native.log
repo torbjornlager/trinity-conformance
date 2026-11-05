@@ -1,0 +1,85 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.30kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.9s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8
+#4 DONE 0.7s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [stage-0 1/5] FROM docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8
+#6 resolve docker.io/library/swipl:10.1.19@sha256:ede678fbecbd4a3da8e9e210c2290b02011fe21a0fac30de283e099ad3d925d8 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 7.04MB 0.1s done
+#7 DONE 0.1s
+
+#8 [stage-0 2/5] RUN apt-get update && apt-get install -y --no-install-recommends python3 git     && rm -rf /var/lib/apt/lists/*     && groupadd -r webprolog     && useradd -r -g webprolog -d /app -s /usr/sbin/nologin webprolog
+#8 CACHED
+
+#9 [stage-0 3/5] WORKDIR /app
+#9 CACHED
+
+#10 [stage-0 4/5] COPY . /app/
+#10 DONE 0.1s
+
+#11 [stage-0 5/5] RUN --mount=type=secret,id=github_token     python3 tools/fetch_swi.py --destination /opt/swi-prolog-node --token-file /run/secrets/github_token     && git config --system --add safe.directory /opt/swi-prolog-node     && python3 tools/fetch_browser.py --destination /opt/swi-wasm-node --token-file /run/secrets/github_token     && python3 tools/setup_swi.py --native-root /opt/swi-prolog-node --browser-root /opt/swi-wasm-node     && WP_CHECK=1 swipl -f none -q -s Deployment/start_node.pl     && mkdir -p /var/log/webprolog     && chown -R webprolog:webprolog /app/.trinity /var/log/webprolog
+#11 3.163 {
+#11 3.163   "repository": "https://github.com/torbjornlager/swi-prolog-node.git",
+#11 3.163   "revision": "d1b11fb5e4d963a7fca1249642b39d012db19dfa",
+#11 3.163   "native_root": "/opt/swi-prolog-node",
+#11 3.163   "pack": "web_prolog",
+#11 3.163   "asset_root": "/app",
+#11 3.163   "wasm_root": "/app/.trinity/browser-prolog-3cff711496b7f711",
+#11 3.163   "browser_package": "/app/.trinity/browser-runtime/6b47feba602b90ce5b7bd83b57f1ed86c714236c"
+#11 3.163 }
+#11 3.392 web-prolog node configuration
+#11 3.392   config file: none (env vars + defaults)
+#11 3.392   port:        3060
+#11 3.392   sandbox: [blacklist]
+#11 3.392   profile: [actor]
+#11 3.392   auth: [private]
+#11 3.392   timeout: [10]
+#11 3.392   max_inflight_calls: [3]
+#11 3.392   rate_window_seconds: [60]
+#11 3.392   max_call_requests_per_window: [120]
+#11 3.392   max_term_text_bytes: [32768]
+#11 3.392   max_load_text_bytes: [131072]
+#11 3.392   max_actor_stack_bytes: [268435456]
+#11 3.392   max_call_inferences: [1000000000]
+#11 3.392   max_actors: [10000]
+#11 3.392   max_interaction_log_bytes: [52428800]
+#11 3.392   max_interaction_log_backups: [5]
+#11 3.392   tutorial_sections: [[all]]
+#11 3.392   tokens_file: (none; bearer tokens are in-memory only)
+#11 3.392   authenticated_default_caps: (none; unconfigured authenticated principals are denied)
+#11 3.392   ip access control: (none)
+#11 3.392   anon_per_ip: off (shared anonymous principal)
+#11 3.392   auto_ban: off
+#11 3.392 
+#11 3.392 Configuration OK (WP_CHECK set; not binding a port).
+#11 DONE 3.5s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.7s done
+#12 exporting manifest sha256:e5631cc8321c21aa7457457494c7aaeee84fe17f82c46fbe9fc270056f07cd3a 0.0s done
+#12 exporting config sha256:84c99fa588544c9d951508742890ebde56ea77ca1e95e6562cdacea20855f2c0 0.0s done
+#12 exporting attestation manifest sha256:651c8b155452c32b8159c8bfe6acae2a89a867abdfb5b72c886eb9569fa37b96 0.0s done
+#12 exporting manifest list sha256:b66754d5ed905be7f99dbf7d39d5fcc147dc97badc5e4ac7c88a6e3cf2346d35 0.0s done
+#12 naming to docker.io/library/trinity-standard-library-native:20261105 done
+#12 unpacking to docker.io/library/trinity-standard-library-native:20261105
+#12 unpacking to docker.io/library/trinity-standard-library-native:20261105 0.3s done
+#12 DONE 1.1s

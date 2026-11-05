@@ -1,0 +1,354 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.trealla
+#1 transferring dockerfile: 2.85kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#4 DONE 0.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [trealla-build 1/7] FROM docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#6 resolve docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 194B done
+#7 DONE 0.0s
+
+#8 [trealla-build 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends ca-certificates git python3 make gcc libc6-dev libssl-dev     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [trealla-build 3/7] WORKDIR /build
+#9 CACHED
+
+#10 [trealla-build 4/7] COPY dependencies/trealla-port.json dependencies/trealla-port.json
+#10 DONE 0.0s
+
+#11 [trealla-build 5/7] COPY tools/pinned_trealla.py tools/fetch_trealla.py tools/
+#11 DONE 0.0s
+
+#12 [trealla-build 6/7] RUN --mount=type=secret,id=github_token     python3 tools/fetch_trealla.py       --port-destination /src/trealla-port --engine-destination /src/trealla       --token-file /run/secrets/github_token
+#12 2.636 {
+#12 2.636   "repository": "https://github.com/torbjornlager/trealla-port.git",
+#12 2.636   "revision": "1359f9827d689a3e74580b3b91bd836112f0b48a",
+#12 2.636   "mode": "required for optional Trealla N5 builds",
+#12 2.636   "engine": {
+#12 2.636     "repository": "https://github.com/trealla-prolog/trealla.git",
+#12 2.636     "revision": "841f819c7dbd462d053a8e0cafb51cd168c9cf7c",
+#12 2.636     "version": "3.14.20"
+#12 2.636   }
+#12 2.636 }
+#12 DONE 2.8s
+
+#13 [trealla-build 7/7] RUN make -C /src/trealla -j"$(nproc)" NOFFI=1 NOTTY=1     && python3 tools/pinned_trealla.py --engine-binary /src/trealla/tpl     && git -C /src/trealla-port archive HEAD --output=/port-source.tar     && mkdir /port-app     && tar -xf /port-source.tar -C /port-app
+#13 0.082 make: Entering directory '/src/trealla'
+#13 0.116 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o tpl.o tpl.c
+#13 0.116 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/allocator.o src/allocator.c
+#13 0.116 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/base64.o src/base64.c
+#13 0.117 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_atts.o src/bif_atts.c
+#13 0.117 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_bboard.o src/bif_bboard.c
+#13 0.118 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_control.o src/bif_control.c
+#13 0.118 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_csv.o src/bif_csv.c
+#13 0.119 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_database.o src/bif_database.c
+#13 0.188 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_ffi_none.o src/bif_ffi_none.c
+#13 0.188 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_format.o src/bif_format.c
+#13 0.241 src/bif_format.c: In function 'do_format':
+#13 0.241 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_functions.o src/bif_functions.c
+#13 0.241 src/bif_format.c:740:27: warning: this statement may fall through [-Wimplicit-fallthrough=]
+#13 0.241   740 |                 case 'p': {
+#13 0.241       |                           ^
+#13 0.241 src/bif_format.c:767:17: note: here
+#13 0.241   767 |                 case 'k':
+#13 0.241       |                 ^~~~
+#13 0.272 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_misc.o src/bif_misc.c
+#13 0.545 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_net.o src/bif_net.c
+#13 0.614 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_os.o src/bif_os.c
+#13 0.622 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/port_bifs_none.o src/port_bifs_none.c
+#13 0.651 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_posix.o src/bif_posix.c
+#13 0.699 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_predicates.o src/bif_predicates.c
+#13 0.831 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_sort.o src/bif_sort.c
+#13 0.887 src/bif_predicates.c:5564:1: warning: 'unsigned-integer-overflow' attribute directive ignored [-Wattributes]
+#13 0.887  5564 | {
+#13 0.887       | ^
+#13 1.132 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_sregex.o src/bif_sregex.c
+#13 1.271 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_streams.o src/bif_streams.c
+#13 1.382 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_dcgs.o src/bif_dcgs.c
+#13 1.452 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_tabling.o src/bif_tabling.c
+#13 1.475 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_tasks.o src/bif_tasks.c
+#13 1.713 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_threads.o src/bif_threads.c
+#13 1.763 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/bif_uri.o src/bif_uri.c
+#13 2.045 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/compile.o src/compile.c
+#13 2.081 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/files.o src/files.c
+#13 2.113 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/heap.o src/heap.c
+#13 2.297 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/history_none.o src/history_none.c
+#13 2.315 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/library.o src/library.c
+#13 2.333 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/list.o src/list.c
+#13 2.357 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/module.o src/module.c
+#13 2.500 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/network.o src/network.c
+#13 2.521 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/parser.o src/parser.c
+#13 2.566 src/parser.c: In function 'list_head':
+#13 2.567 src/parser.c:62:27: warning: operand of '?:' changes signedness from 'int' to 'size_t' {aka 'long unsigned int'} due to unsignedness of other operand [-Wsign-compare]
+#13 2.567    62 |                         ? put_char_utf8(tmp->val_chr, (unsigned char)*src)
+#13 2.567       |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#13 2.612 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/print.o src/print.c
+#13 2.910 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/prolog.o src/prolog.c
+#13 3.228 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/query.o src/query.c
+#13 3.247 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/skiplist.o src/skiplist.c
+#13 3.311 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/terms.o src/terms.c
+#13 3.452 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/toplevel.o src/toplevel.c
+#13 3.562 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/unify.o src/unify.c
+#13 3.664 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/utf8.o src/utf8.c
+#13 3.670 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/version.o src/version.c
+#13 3.678 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/imath/imath.o src/imath/imath.c
+#13 3.715 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/imath/imrat.o src/imath/imrat.c
+#13 3.844 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o src/sre/re.o src/sre/re.c
+#13 3.929 cc -o util/bin2c util/bin2c.c
+#13 3.982 echo '#include <stddef.h>' > library/abnf.c
+#13 3.982 ./util/bin2c library/abnf.pl >> library/abnf.c
+#13 3.983 echo '#include <stddef.h>' > library/aggregate.c
+#13 3.983 ./util/bin2c library/aggregate.pl >> library/aggregate.c
+#13 3.984 echo '#include <stddef.h>' > library/arithmetic.c
+#13 3.984 ./util/bin2c library/arithmetic.pl >> library/arithmetic.c
+#13 3.985 echo '#include <stddef.h>' > library/assoc.c
+#13 3.985 ./util/bin2c library/assoc.pl >> library/assoc.c
+#13 3.986 echo '#include <stddef.h>' > library/atts.c
+#13 3.986 ./util/bin2c library/atts.pl >> library/atts.c
+#13 3.987 echo '#include <stddef.h>' > library/builtins.c
+#13 3.987 ./util/bin2c library/builtins.pl >> library/builtins.c
+#13 3.989 echo '#include <stddef.h>' > library/charsio.c
+#13 3.990 ./util/bin2c library/charsio.pl >> library/charsio.c
+#13 3.992 echo '#include <stddef.h>' > library/actors/threads.c
+#13 3.993 ./util/bin2c library/actors/threads.pl >> library/actors/threads.c
+#13 3.996 echo '#include <stddef.h>' > library/actors/tasks.c
+#13 3.996 ./util/bin2c library/actors/tasks.pl >> library/actors/tasks.c
+#13 3.997 echo '#include <stddef.h>' > library/concurrent.c
+#13 3.998 ./util/bin2c library/concurrent.pl >> library/concurrent.c
+#13 3.998 echo '#include <stddef.h>' > library/clpb.c
+#13 3.999 ./util/bin2c library/clpb.pl >> library/clpb.c
+#13 4.001 echo '#include <stddef.h>' > library/clpz.c
+#13 4.002 ./util/bin2c library/clpz.pl >> library/clpz.c
+#13 4.015 echo '#include <stddef.h>' > library/curl.c
+#13 4.015 ./util/bin2c library/curl.pl >> library/curl.c
+#13 4.017 echo '#include <stddef.h>' > library/debug.c
+#13 4.017 ./util/bin2c library/debug.pl >> library/debug.c
+#13 4.019 echo '#include <stddef.h>' > library/dif.c
+#13 4.020 ./util/bin2c library/dif.pl >> library/dif.c
+#13 4.021 echo '#include <stddef.h>' > library/error.c
+#13 4.022 ./util/bin2c library/error.pl >> library/error.c
+#13 4.024 echo '#include <stddef.h>' > library/format.c
+#13 4.024 ./util/bin2c library/format.pl >> library/format.c
+#13 4.027 echo '#include <stddef.h>' > library/freeze.c
+#13 4.027 ./util/bin2c library/freeze.pl >> library/freeze.c
+#13 4.028 echo '#include <stddef.h>' > library/gensym.c
+#13 4.028 ./util/bin2c library/gensym.pl >> library/gensym.c
+#13 4.029 echo '#include <stddef.h>' > library/gsl.c
+#13 4.029 ./util/bin2c library/gsl.pl >> library/gsl.c
+#13 4.030 echo '#include <stddef.h>' > library/http.c
+#13 4.030 ./util/bin2c library/http.pl >> library/http.c
+#13 4.031 echo '#include <stddef.h>' > library/http/http_open.c
+#13 4.031 ./util/bin2c library/http/http_open.pl >> library/http/http_open.c
+#13 4.032 echo '#include <stddef.h>' > library/http/http_client.c
+#13 4.032 ./util/bin2c library/http/http_client.pl >> library/http/http_client.c
+#13 4.040 echo '#include <stddef.h>' > library/http/thread_httpd.c
+#13 4.041 ./util/bin2c library/http/thread_httpd.pl >> library/http/thread_httpd.c
+#13 4.042 echo '#include <stddef.h>' > library/http/http_dispatch.c
+#13 4.043 ./util/bin2c library/http/http_dispatch.pl >> library/http/http_dispatch.c
+#13 4.043 echo '#include <stddef.h>' > library/http/http_server.c
+#13 4.044 ./util/bin2c library/http/http_server.pl >> library/http/http_server.c
+#13 4.044 echo '#include <stddef.h>' > library/iso_ext.c
+#13 4.044 ./util/bin2c library/iso_ext.pl >> library/iso_ext.c
+#13 4.045 echo '#include <stddef.h>' > library/json.c
+#13 4.045 ./util/bin2c library/json.pl >> library/json.c
+#13 4.046 echo '#include <stddef.h>' > library/lambda.c
+#13 4.047 ./util/bin2c library/lambda.pl >> library/lambda.c
+#13 4.048 echo '#include <stddef.h>' > library/lists.c
+#13 4.048 ./util/bin2c library/lists.pl >> library/lists.c
+#13 4.049 echo '#include <stddef.h>' > library/ordsets.c
+#13 4.049 ./util/bin2c library/ordsets.pl >> library/ordsets.c
+#13 4.050 echo '#include <stddef.h>' > library/pairs.c
+#13 4.051 ./util/bin2c library/pairs.pl >> library/pairs.c
+#13 4.051 echo '#include <stddef.h>' > library/pio.c
+#13 4.052 ./util/bin2c library/pio.pl >> library/pio.c
+#13 4.052 echo '#include <stddef.h>' > library/plplot.c
+#13 4.053 ./util/bin2c library/plplot.pl >> library/plplot.c
+#13 4.054 echo '#include <stddef.h>' > library/random.c
+#13 4.054 ./util/bin2c library/random.pl >> library/random.c
+#13 4.056 echo '#include <stddef.h>' > library/raylib.c
+#13 4.057 ./util/bin2c library/raylib.pl >> library/raylib.c
+#13 4.067 echo '#include <stddef.h>' > library/rbtrees.c
+#13 4.068 ./util/bin2c library/rbtrees.pl >> library/rbtrees.c
+#13 4.069 echo '#include <stddef.h>' > library/quads.c
+#13 4.070 ./util/bin2c library/quads.pl >> library/quads.c
+#13 4.072 echo '#include <stddef.h>' > library/reif.c
+#13 4.072 ./util/bin2c library/reif.pl >> library/reif.c
+#13 4.072 echo '#include <stddef.h>' > library/si.c
+#13 4.073 ./util/bin2c library/si.pl >> library/si.c
+#13 4.073 echo '#include <stddef.h>' > library/tabling.c
+#13 4.074 ./util/bin2c library/tabling.pl >> library/tabling.c
+#13 4.077 echo '#include <stddef.h>' > library/tftp.c
+#13 4.078 ./util/bin2c library/tftp.pl >> library/tftp.c
+#13 4.079 echo '#include <stddef.h>' > library/sqlite3.c
+#13 4.080 ./util/bin2c library/sqlite3.pl >> library/sqlite3.c
+#13 4.080 echo '#include <stddef.h>' > library/socket.c
+#13 4.081 ./util/bin2c library/socket.pl >> library/socket.c
+#13 4.082 echo '#include <stddef.h>' > library/sockets.c
+#13 4.082 ./util/bin2c library/sockets.pl >> library/sockets.c
+#13 4.083 echo '#include <stddef.h>' > library/syslog.c
+#13 4.083 ./util/bin2c library/syslog.pl >> library/syslog.c
+#13 4.084 echo '#include <stddef.h>' > library/filesex.c
+#13 4.084 ./util/bin2c library/filesex.pl >> library/filesex.c
+#13 4.085 echo '#include <stddef.h>' > library/time.c
+#13 4.086 ./util/bin2c library/time.pl >> library/time.c
+#13 4.086 echo '#include <stddef.h>' > library/tty.c
+#13 4.087 ./util/bin2c library/tty.pl >> library/tty.c
+#13 4.087 echo '#include <stddef.h>' > library/prolog_format.c
+#13 4.088 ./util/bin2c library/prolog_format.pl >> library/prolog_format.c
+#13 4.088 echo '#include <stddef.h>' > library/sandbox.c
+#13 4.090 ./util/bin2c library/sandbox.pl >> library/sandbox.c
+#13 4.095 echo '#include <stddef.h>' > library/ugraphs.c
+#13 4.097 ./util/bin2c library/ugraphs.pl >> library/ugraphs.c
+#13 4.100 echo '#include <stddef.h>' > library/uri.c
+#13 4.101 ./util/bin2c library/uri.pl >> library/uri.c
+#13 4.102 echo '#include <stddef.h>' > library/url.c
+#13 4.103 ./util/bin2c library/url.pl >> library/url.c
+#13 4.103 echo '#include <stddef.h>' > library/uuid.c
+#13 4.103 ./util/bin2c library/uuid.pl >> library/uuid.c
+#13 4.104 echo '#include <stddef.h>' > library/when.c
+#13 4.104 ./util/bin2c library/when.pl >> library/when.c
+#13 4.105 echo '#include <stddef.h>' > library/yall.c
+#13 4.105 ./util/bin2c library/yall.pl >> library/yall.c
+#13 4.106 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/abnf.o library/abnf.c
+#13 4.117 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/aggregate.o library/aggregate.c
+#13 4.131 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/arithmetic.o library/arithmetic.c
+#13 4.142 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/assoc.o library/assoc.c
+#13 4.152 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/atts.o library/atts.c
+#13 4.158 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/builtins.o library/builtins.c
+#13 4.161 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/charsio.o library/charsio.c
+#13 4.176 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/actors/threads.o library/actors/threads.c
+#13 4.183 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/actors/tasks.o library/actors/tasks.c
+#13 4.197 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/concurrent.o library/concurrent.c
+#13 4.202 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/clpb.o library/clpb.c
+#13 4.205 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/clpz.o library/clpz.c
+#13 4.243 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/curl.o library/curl.c
+#13 4.274 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/debug.o library/debug.c
+#13 4.281 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/dif.o library/dif.c
+#13 4.288 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/error.o library/error.c
+#13 4.301 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/format.o library/format.c
+#13 4.327 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/freeze.o library/freeze.c
+#13 4.339 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/gensym.o library/gensym.c
+#13 4.352 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/gsl.o library/gsl.c
+#13 4.364 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http.o library/http.c
+#13 4.372 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http/http_open.o library/http/http_open.c
+#13 4.379 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http/http_client.o library/http/http_client.c
+#13 4.391 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http/thread_httpd.o library/http/thread_httpd.c
+#13 4.392 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http/http_dispatch.o library/http/http_dispatch.c
+#13 4.405 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/http/http_server.o library/http/http_server.c
+#13 4.409 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/iso_ext.o library/iso_ext.c
+#13 4.419 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/json.o library/json.c
+#13 4.426 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/lambda.o library/lambda.c
+#13 4.433 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/lists.o library/lists.c
+#13 4.435 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/ordsets.o library/ordsets.c
+#13 4.436 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/pairs.o library/pairs.c
+#13 4.442 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/pio.o library/pio.c
+#13 4.450 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/plplot.o library/plplot.c
+#13 4.455 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/random.o library/random.c
+#13 4.457 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/raylib.o library/raylib.c
+#13 4.468 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/rbtrees.o library/rbtrees.c
+#13 4.469 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/quads.o library/quads.c
+#13 4.483 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/reif.o library/reif.c
+#13 4.491 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/si.o library/si.c
+#13 4.498 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/tabling.o library/tabling.c
+#13 4.501 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/tftp.o library/tftp.c
+#13 4.504 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/sqlite3.o library/sqlite3.c
+#13 4.513 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/socket.o library/socket.c
+#13 4.520 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/sockets.o library/sockets.c
+#13 4.522 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/syslog.o library/syslog.c
+#13 4.532 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/filesex.o library/filesex.c
+#13 4.532 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/time.o library/time.c
+#13 4.539 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/tty.o library/tty.c
+#13 4.547 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/prolog_format.o library/prolog_format.c
+#13 4.552 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/sandbox.o library/sandbox.c
+#13 4.556 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/ugraphs.o library/ugraphs.c
+#13 4.561 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/uri.o library/uri.c
+#13 4.570 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/url.o library/url.c
+#13 4.573 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/uuid.o library/uuid.c
+#13 4.575 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/when.o library/when.c
+#13 4.577 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread   -c -o library/yall.o library/yall.c
+#13 6.998 rm src/version.o
+#13 6.998 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread -o src/version.o -c src/version.c
+#13 7.004 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread -o tpl tpl.o src/allocator.o src/base64.o src/bif_atts.o src/bif_bboard.o src/bif_control.o src/bif_csv.o src/bif_database.o src/bif_ffi_none.o src/bif_format.o src/bif_functions.o src/bif_misc.o src/bif_net.o src/bif_os.o src/port_bifs_none.o src/bif_posix.o src/bif_predicates.o src/bif_sort.o src/bif_sregex.o src/bif_streams.o src/bif_dcgs.o src/bif_tabling.o src/bif_tasks.o src/bif_threads.o src/bif_uri.o src/compile.o src/files.o src/heap.o src/history_none.o src/library.o src/list.o src/module.o src/network.o src/parser.o src/print.o src/prolog.o src/query.o src/skiplist.o src/terms.o src/toplevel.o src/unify.o src/utf8.o src/version.o src/imath/imath.o src/imath/imrat.o src/sre/re.o library/abnf.o library/aggregate.o library/arithmetic.o library/assoc.o library/atts.o library/builtins.o library/charsio.o library/actors/threads.o library/actors/tasks.o library/concurrent.o library/clpb.o library/clpz.o library/curl.o library/debug.o library/dif.o library/error.o library/format.o library/freeze.o library/gensym.o library/gsl.o library/http.o library/http/http_open.o library/http/http_client.o library/http/thread_httpd.o library/http/http_dispatch.o library/http/http_server.o library/iso_ext.o library/json.o library/lambda.o library/lists.o library/ordsets.o library/pairs.o library/pio.o library/plplot.o library/random.o library/raylib.o library/rbtrees.o library/quads.o library/reif.o library/si.o library/tabling.o library/tftp.o library/sqlite3.o library/socket.o library/sockets.o library/syslog.o library/filesex.o library/time.o library/tty.o library/prolog_format.o library/sandbox.o library/ugraphs.o library/uri.o library/url.o library/uuid.o library/when.o library/yall.o   -L/usr/local/lib -lm -lssl -lcrypto -pthread /usr/lib/gcc/aarch64-linux-gnu/12/libatomic.a
+#13 7.044 rm -f libtrealla.a
+#13 7.045 ar rcs libtrealla.a src/allocator.o src/base64.o src/bif_atts.o src/bif_bboard.o src/bif_control.o src/bif_csv.o src/bif_database.o src/bif_ffi_none.o src/bif_format.o src/bif_functions.o src/bif_misc.o src/bif_net.o src/bif_os.o src/port_bifs_none.o src/bif_posix.o src/bif_predicates.o src/bif_sort.o src/bif_sregex.o src/bif_streams.o src/bif_dcgs.o src/bif_tabling.o src/bif_tasks.o src/bif_threads.o src/bif_uri.o src/compile.o src/files.o src/heap.o src/history_none.o src/library.o src/list.o src/module.o src/network.o src/parser.o src/print.o src/prolog.o src/query.o src/skiplist.o src/terms.o src/toplevel.o src/unify.o src/utf8.o src/version.o src/imath/imath.o src/imath/imrat.o src/sre/re.o library/abnf.o library/aggregate.o library/arithmetic.o library/assoc.o library/atts.o library/builtins.o library/charsio.o library/actors/threads.o library/actors/tasks.o library/concurrent.o library/clpb.o library/clpz.o library/curl.o library/debug.o library/dif.o library/error.o library/format.o library/freeze.o library/gensym.o library/gsl.o library/http.o library/http/http_open.o library/http/http_client.o library/http/thread_httpd.o library/http/http_dispatch.o library/http/http_server.o library/iso_ext.o library/json.o library/lambda.o library/lists.o library/ordsets.o library/pairs.o library/pio.o library/plplot.o library/random.o library/raylib.o library/rbtrees.o library/quads.o library/reif.o library/si.o library/tabling.o library/tftp.o library/sqlite3.o library/socket.o library/sockets.o library/syslog.o library/filesex.o library/time.o library/tty.o library/prolog_format.o library/sandbox.o library/ugraphs.o library/uri.o library/url.o library/uuid.o library/when.o library/yall.o
+#13 7.058 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread -o samples/embed samples/embed.c libtrealla.a  -L/usr/local/lib -lm -lssl -lcrypto -pthread /usr/lib/gcc/aarch64-linux-gnu/12/libatomic.a
+#13 7.058 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread -o samples/allocator samples/allocator.c libtrealla.a  -L/usr/local/lib -lm -lssl -lcrypto -pthread /usr/lib/gcc/aarch64-linux-gnu/12/libatomic.a
+#13 7.059 cc -MMD -MP -Isrc -I/usr/local/include -DVERSION='"v3.14.20"' -DDEFAULT_LIBRARY_PATH='"/usr/local/share/trealla/library"' -O3  -Wall -Wextra -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DEMBED=1 -fPIC -DUSE_OPENSSL=1 -DUSE_THREADS=1 -pthread -o samples/oom samples/oom.c libtrealla.a  -L/usr/local/lib -lm -lssl -lcrypto -pthread /usr/lib/gcc/aarch64-linux-gnu/12/libatomic.a
+#13 7.180 rm library/sockets.c library/concurrent.c library/builtins.c library/rbtrees.c library/clpz.c library/atts.c library/uri.c library/tty.c library/uuid.c library/http/http_client.c library/error.c library/quads.c library/abnf.c library/tabling.c library/tftp.c library/http/http_server.c library/raylib.c library/http/http_open.c library/aggregate.c library/debug.c library/format.c library/actors/tasks.c library/sqlite3.c library/charsio.c library/json.c library/http.c library/arithmetic.c library/freeze.c library/iso_ext.c library/lambda.c library/filesex.c library/yall.c library/lists.c library/socket.c library/ugraphs.c library/syslog.c library/gensym.c library/clpb.c library/assoc.c library/pio.c library/ordsets.c library/plplot.c library/random.c library/curl.c library/gsl.c library/url.c library/reif.c library/dif.c library/http/thread_httpd.c library/time.c library/when.c library/actors/threads.c library/prolog_format.c library/http/http_dispatch.c library/si.c library/sandbox.c library/pairs.c
+#13 7.183 make: Leaving directory '/src/trealla'
+#13 7.217 {
+#13 7.217   "repository": "https://github.com/torbjornlager/trealla-port.git",
+#13 7.217   "revision": "1359f9827d689a3e74580b3b91bd836112f0b48a",
+#13 7.217   "mode": "required for optional Trealla N5 builds",
+#13 7.217   "engine": {
+#13 7.217     "repository": "https://github.com/trealla-prolog/trealla.git",
+#13 7.217     "revision": "841f819c7dbd462d053a8e0cafb51cd168c9cf7c",
+#13 7.217     "version": "3.14.20"
+#13 7.217   }
+#13 7.217 }
+#13 DONE 7.7s
+
+#14 [stage-1 2/9] RUN apt-get update     && apt-get install -y --no-install-recommends ca-certificates libssl3     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 webprolog     && useradd --uid 10001 --gid webprolog --create-home webprolog     && mkdir -p /app /opt/trealla/library /state     && chown webprolog:webprolog /state
+#14 CACHED
+
+#15 [stage-1 3/9] COPY --from=trealla-build /src/trealla/tpl /opt/trealla/tpl
+#15 DONE 0.0s
+
+#16 [stage-1 4/9] COPY --from=trealla-build /src/trealla/library/ /opt/trealla/library/
+#16 DONE 0.1s
+
+#17 [stage-1 5/9] COPY --from=trealla-build /src/trealla/LICENSE /src/trealla/ATTRIBUTION /usr/share/doc/trealla/
+#17 DONE 0.0s
+
+#18 [stage-1 6/9] COPY --from=trealla-build /build/dependencies/trealla-port.json /usr/share/doc/trealla/runtime-pins.json
+#18 DONE 0.0s
+
+#19 [stage-1 7/9] COPY --from=trealla-build --chown=webprolog:webprolog /port-app/ /app/
+#19 DONE 0.3s
+
+#20 [stage-1 8/9] WORKDIR /app
+#20 DONE 0.0s
+
+#21 [stage-1 9/9] RUN chmod 0755 /app/Deployment/entrypoint.sh     && WP_ADMIN_TOKEN=build-check-token-000000000000 /opt/trealla/tpl -g        "(catch((use_module('/app/Deployment/start_node.pl'),deployment_start:check_config),E,(writeq(E),nl,fail))->halt(0);halt(1))"
+#21 0.299 Trealla Web Prolog deployment configuration:
+#21 0.299   port: 3060
+#21 0.299   public_url: http://localhost:8080
+#21 0.299   profile: actor
+#21 0.299   sandbox: whitelist
+#21 0.299   auth: private
+#21 0.299   max_actors: 128
+#21 0.299   max_inflight_calls: 4
+#21 0.299   admin token: configured (redacted)
+#21 0.299 Configuration OK (listener not started).
+#21 DONE 0.3s
+
+#22 exporting to image
+#22 exporting layers
+#22 exporting layers 0.4s done
+#22 exporting manifest sha256:71533c308b8c6eb8cd7c3c780c5c51b5776dd94e56114db00e8dae620f06545b done
+#22 exporting config sha256:d78869723e7da0893ae7f40beb2b95ae9654cff0f021e96754d3f9be859ffad6 done
+#22 exporting attestation manifest sha256:80bf074affb91f50a2c21dfbeefa067316023395718f6ac3cfc469f2c5431760 done
+#22 exporting manifest list sha256:3f957ab99c1f2e5f361c8bdf9f152555f5537a5c6fd5b9e25ad7c4b5e884244d done
+#22 naming to docker.io/library/trinity-standard-library-trealla-runtime:20261105-nested done
+#22 unpacking to docker.io/library/trinity-standard-library-trealla-runtime:20261105-nested
+#22 unpacking to docker.io/library/trinity-standard-library-trealla-runtime:20261105-nested 0.3s done
+#22 DONE 0.7s

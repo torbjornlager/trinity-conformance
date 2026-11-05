@@ -216,3 +216,15 @@ listeners and a source fixture; it records source and executable hashes. It
 never changes a live node or owner egress policy. The [5 November development
 repair evidence](../reports/2026-11-05-localhost-rpc/README.md) also covers the
 actual contained GNU broker path and the reported N2-source example.
+
+
+`standard-library-0.1.json` supplies 112 common goals and one private-source
+fixture for the Appendix B list/index, integer, iteration and solution-processing
+forms. `adapters/local_standard_library.py` runs fresh SWI/Trealla/GNU HTTP
+workers and retained SWI/Trealla sessions, recording runtime source and binary
+hashes. The upstream browser real-session runner accepts the same file through
+`LIBRARY_MANIFEST`; upstream fixture copies must remain byte-identical.
+[The development repair](../reports/2026-11-05-standard-library/README.md) retains
+the earlier baseline. [The public release](../reports/2026-11-05-standard-library-release/README.md)
+records exact callback errors, the nested Trealla follow-up and deployed pins. This selection does not
+expand every external ISO mode or error refinement into a complete contract.

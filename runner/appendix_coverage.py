@@ -60,11 +60,11 @@ def render(data,counts):
     out+=['','The five columns describe runtime language modes. A local API result does not certify every public admission path, browser network policy, or lower-profile endpoint. GNU ISOBASE is not required to provide ACTOR APIs.',
           '', '## Priorities','',
           '1. **Promise coverage:** browser context-wide ownership is repaired and deployed, including real-browser lifetime and isolation checks. Complete the remaining clause mapping and audit native retained-context propagation; the repaired browser finding is no longer a current failure.',
-          '2. **GNU standard library:** shared probes reject `memberchk/2` and `forall/2` at execution policy. Higher `maplist` arities and the remaining library modes need audit.',
+          '2. **Standard library:** the required forms, described binding/solution semantics and exact callback errors are deployed across all five runtime modes. Complete the remaining external ISO mode/error inventory; see the standard-library release record.',
           '3. **Coverage mapping:** review remote lifecycle and monitor barriers, statechart invocation combinations, node settings, numeric/ISO semantics and real-browser lifetime/network behavior. Unverified is not a claim that these are broken.',
           '', '## Source and evidence','',
           f"Manuscript revision: `{data['source']['revision']}`; SHA-256: `{data['source']['sha256']}`.",
-          '', '[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Current public release](../reports/2026-11-05-public-promise-release/README.md)',
+          '', '[Machine-readable ledger](../requirements/appendix-b-0.1.json) · [Introspection and diagnostic evidence](../reports/2026-11-04-runtime-introspection/README.md) · [Promise ownership repair](../reports/2026-11-05-promise-context/README.md) · [Standard-library repair](../reports/2026-11-05-standard-library/README.md) · [Current public release](../reports/2026-11-05-standard-library-release/README.md)',
           '', 'The validator checks manuscript drift, complete target accounting, applicable profiles, exact case IDs, candidate identity and outcomes. A whole-unit “verified” annotation still requires review that those assertions cover the complete statement.',
           '', '## Source-unit matrix','']
     last=None

@@ -6,14 +6,24 @@ requirement-level accounting. This first inventory has 353 manuscript source
 units, including related prose groups and signatures. Earlier test selections
 still need full clause mapping; these unit counts are not a conformance percentage.
 
-The [latest 5 November runtime repair release](reports/2026-11-05-public-runtime-repair-release/README.md)
-is committed, pushed and deployed to N0–N6. All 36 pinned consumer CI groups
-pass, along with 21 shared committed-source localhost assertions and the
-contained N6 public, broker and Linux containment checks. Live checks cover
-readiness/assets and cross-node RPC, localhost RPC/promises on N1–N6, real-browser
-ownership on every public host in both execution modes, and the repaired N5–N4
-remote ping-pong tutorial. The retained `localhost` designator now works in
-Trealla and GNU; the exact reported N2-source query returns six pairs on N5/N6.
+The [latest standard-library release](reports/2026-11-05-standard-library-release/README.md)
+is committed, pushed and deployed to N0–N6. All twelve services have exact checked
+pins. Its 112-case shared selection passes 786 committed-source observations;
+all 36 pinned consumer CI groups and 2,379 selected public checks pass.
+
+The required library forms and described semantics work across all five runtime
+modes. Library callback errors require exact callable types and original culprits
+at invocation, with lazy unused callbacks and unchanged application exceptions.
+The final Trealla repair also preserves this behaviour inside nested meta-calls.
+The report retains the initial failed nested probe and the repeated final gates.
+Full external ISO mode/error coverage and native retained-context propagation
+remain open; these checks do not certify the complete language.
+
+The [preceding runtime repair release](reports/2026-11-05-public-runtime-repair-release/README.md)
+records the earlier localhost, remote output and N5–N4 ping-pong fixes. The
+[standard-library development snapshot](reports/2026-11-05-standard-library/README.md)
+retains the original 57-case baseline and 65-case qualification, with its own
+historical manifests and scope.
 
 The [preceding promise release](reports/2026-11-05-public-promise-release/README.md)
 records the full browser package qualification, 34 earlier consumer CI groups
@@ -28,7 +38,8 @@ Those counts are not added to the new release's live checks.
 The [introspection audit](reports/2026-11-04-runtime-introspection/README.md)
 and [promise repair evidence](reports/2026-11-05-promise-context/README.md)
 record development findings before promotion. The browser ownership failure is
-resolved; GNU library-policy failures and full clause mapping remain open.
+resolved; the required GNU library forms are deployed, while
+full ISO mode/error coverage and full clause mapping remain open.
 Native retained-context propagation still needs its own audit. GNU ISOBASE is
 not required to provide ACTOR APIs.
 
