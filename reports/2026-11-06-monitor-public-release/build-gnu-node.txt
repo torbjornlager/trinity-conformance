@@ -1,0 +1,62 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.n6
+#1 transferring dockerfile: 823B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#3 CACHED
+
+#4 [context gprolog_runtime] load metadata for trinity-monitor-public-gnu-runtime:20261106
+#4 DONE 1.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [context gprolog_runtime] trinity-monitor-public-gnu-runtime:20261106
+#7 resolve docker.io/library/trinity-monitor-public-gnu-runtime:20261106
+#7 resolve docker.io/library/trinity-monitor-public-gnu-runtime:20261106 0.7s done
+#7 DONE 0.7s
+
+#7 [context gprolog_runtime] trinity-monitor-public-gnu-runtime:20261106
+#7 DONE 0.7s
+
+#6 [internal] load build context
+#6 transferring context: 43.76kB done
+#6 DONE 0.0s
+
+#8 [4/7] COPY Deployment/shared_db_common.pl Deployment/shared_db_n6.pl /app/n6/
+#8 CACHED
+
+#9 [1/7] COPY Deployment/n6_adapter.py /app/n6/adapter.py
+#9 CACHED
+
+#10 [2/7] COPY Deployment/n6_contained.py Deployment/n6_egress.py /app/n6/
+#10 CACHED
+
+#11 [3/7] COPY tools/prepare_n6_jail.py /tmp/prepare_n6_jail.py
+#11 CACHED
+
+#12 [5/7] RUN cat /app/n6/shared_db_common.pl /app/n6/shared_db_n6.pl > /app/n6/shared_db.pl
+#12 CACHED
+
+#13 [6/7] RUN python3 /tmp/prepare_n6_jail.py && rm /tmp/prepare_n6_jail.py
+#13 CACHED
+
+#14 exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:eaf14a1f4339745b64755745c83cebd42c4040074aa9543e809136fc02f3764c done
+#14 exporting config sha256:2521e525e5d684974ee37338c1437a49a901cec0cdceae4614cce03ccb26eeff done
+#14 exporting attestation manifest sha256:e1bddef64bad7be76b624655e094d1d1860551efb4010d8fde4ba2290f334d77 done
+#14 exporting manifest list sha256:5139fad0fca8d5d5bd140619b95896139fa5024669f69ac89cf82ff031839d01 done
+#14 naming to docker.io/library/trinity-monitor-public-n6:20261106 done
+#14 unpacking to docker.io/library/trinity-monitor-public-n6:20261106 done
+#14 DONE 0.0s

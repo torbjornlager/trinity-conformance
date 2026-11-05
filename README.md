@@ -7,7 +7,13 @@ another runtime.
 
 ## Current consolidated results
 
-The [latest public successor release](reports/2026-11-05-successor-public-release/README.md)
+The [6 November public rollout](reports/2026-11-06-monitor-public-release/README.md)
+updates all twelve N0–N6 runtime/asset services. All 147 public monitor assertions
+pass; 302 of 303 selected public observations pass. One N5 self-route context
+probe returns HTTP 502 and remains an explicit transport follow-up. All services
+are ready, and configuration, controls and state mounts are preserved.
+
+The [5 November public successor release](reports/2026-11-05-successor-public-release/README.md)
 commits, pushes and deploys Trealla's successor validation repair to N5. All
 38 consumer CI groups and 268 selected public assertions pass, including all
 146 library cases and 51 context cases without exclusions. Peer policy and
