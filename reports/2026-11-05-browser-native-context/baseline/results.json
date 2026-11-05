@@ -1,0 +1,243 @@
+{
+  "suite": "browser-native-context-0.1",
+  "adapter_sha256": "d04595f40f6ec2d1c80b073aa6ebe60a91611b2a5f49d747710e972e7334be91",
+  "runtime_manifest_sha256": "8c325eb5835349b55b53e8e6f0b220be31c186413598ea20f1a81e8c2c4749d6",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-001-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:61641')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"success\",\"pid\":3380094036,\"data\":[{\"S\":\"3380094036@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-002-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:61641')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"success\",\"pid\":8384952873,\"data\":[{\"R\":\"3029909581\",\"S\":\"8384952873@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-003-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61641')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"success\",\"pid\":6626677252,\"data\":[{\"Ref\":\"1739944872\",\"S\":\"6626677252@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "native reference returned",
+        "query catch(yield(1739944872,_,[timeout(0)]),error(existence_error(promise,1739944872),_),Missing=true),Missing==true,self(S),spawn((yield(1739944872,A),send(S,collected(A))),_,[node('http://127.0.0.1:61641')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_native_collection))]) {\"type\":\"success\",\"pid\":6626677252,\"data\":[{\"S\":\"6626677252@localhost\",\"ContextCheck\":\"passed\",\"Missing\":\"true\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-004-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:61641')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"pid\":5902740799,\"data\":[{\"R\":\"4186065828\",\"S\":\"5902740799@localhost\",\"Local\":\"8486890426@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-005-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61641')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"success\",\"pid\":3702117377,\"data\":[{\"Ref\":\"5544583199\",\"S\":\"3702117377@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query self(S),spawn((catch(yield(5544583199,_,[timeout(0)]),E,true),promise_cleanup(5544583199),send(S,denied(E))),_,[node('http://127.0.0.1:61641')]),receive({denied(error(existence_error(promise,5544583199),_))->true},[timeout(3),on_timeout(throw(no_foreign_denial))]) {\"type\":\"success\",\"pid\":3165808451,\"data\":[{\"S\":\"3165808451@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query self(S),spawn((yield(5544583199,A),send(S,collected(A))),_,[node('http://127.0.0.1:61641')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_owner_retry))]) {\"type\":\"success\",\"pid\":3702117377,\"data\":[{\"S\":\"3702117377@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-006-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(T,[node('http://127.0.0.1:61641'),session(true)]),assertz(saved_remote(T)),toplevel_call_synch(T,(self(Me),register(held_name,Me),promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),assertz(saved_promise(R))),success(T,[R],false),[template(R),timeout(3)]) {\"type\":\"success\",\"pid\":7936225645,\"data\":[{\"T\":\"6320239875@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query saved_remote(T),toplevel_call_synch(T,true,success(T,[true],false),[template(true),timeout(3)]) {\"type\":\"success\",\"pid\":7936225645,\"data\":[{\"T\":\"6320239875@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query saved_remote(T),toplevel_call_synch(T,(whereis(held_name,undefined),saved_promise(R),catch(yield(R,_,[timeout(0)]),error(existence_error(promise,R),_),Gone=true),Gone==true,catch((self(Me),register(late,Me)),error(permission_error(register,_,_),_),Denied=true),Denied==true),success(T,[ok],false),[template(ok),timeout(3)]) {\"type\":\"success\",\"pid\":7936225645,\"data\":[{\"T\":\"6320239875@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-007-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: late raw creation rejected by native admission {\"pid\":6002261755,\"request_id\":\"late-context-spawn\",\"type\":\"spawned\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at eval (eval at evaluate (:370:30), <anonymous>:34:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-001-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:61642')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"error\",\"pid\":1150835811,\"data\":\"<js>(5,'Error')\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:10:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-002-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:61642')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"error\",\"pid\":1845567627,\"data\":\"<js>(7,'Error')\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:11:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-003-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61642')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"pid\":2552044880,\"data\":\"<js>(5,'Error')\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:13:15)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-004-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:61642')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"error\",\"pid\":4704530292,\"data\":\"<js>(13,'Error')\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:17:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-005-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61642')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"pid\":4027251377,\"data\":\"<js>(5,'Error')\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:20:15)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-006-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query toplevel_spawn(T,[node('http://127.0.0.1:61642'),session(true)]),assertz(saved_remote(T)),toplevel_call_synch(T,(self(Me),register(held_name,Me),promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),assertz(saved_promise(R))),success(T,[R],false),[template(R),timeout(3)]) {\"type\":\"failure\",\"pid\":2023828855}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:25:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-007-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: late raw creation rejected by native admission {\"type\":\"spawned\",\"pid\":2983433269,\"request_id\":\"late-context-spawn\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at eval (eval at evaluate (:370:30), <anonymous>:34:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-001-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:61641')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-002-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:61641')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"4600354307\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-003-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61641')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"success\",\"data\":[{\"Ref\":\"7314656032\",\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "native reference returned",
+        "query catch(yield(7314656032,_,[timeout(0)]),error(existence_error(promise,7314656032),_),Missing=true),Missing==true,self(S),spawn((yield(7314656032,A),send(S,collected(A))),_,[node('http://127.0.0.1:61641')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_native_collection))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"Missing\":\"true\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-004-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:61641')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"7209719682\",\"Local\":\"7814343205@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-005-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61641')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"success\",\"data\":[{\"Ref\":\"1777324394\",\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query self(S),spawn((catch(yield(1777324394,_,[timeout(0)]),E,true),promise_cleanup(1777324394),send(S,denied(E))),_,[node('http://127.0.0.1:61641')]),receive({denied(error(existence_error(promise,1777324394),_))->true},[timeout(3),on_timeout(throw(no_foreign_denial))]) {\"type\":\"success\",\"pid\":7784478079,\"data\":[{\"S\":\"7784478079@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query self(S),spawn((yield(1777324394,A),send(S,collected(A))),_,[node('http://127.0.0.1:61641')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_owner_retry))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-006-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(T,[node('http://127.0.0.1:61641'),session(true)]),assertz(saved_remote(T)),toplevel_call_synch(T,(self(Me),register(held_name,Me),promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),assertz(saved_promise(R))),success(T,[R],false),[template(R),timeout(3)]) {\"type\":\"success\",\"data\":[{\"T\":\"9625120853@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query saved_remote(T),toplevel_call_synch(T,true,success(T,[true],false),[template(true),timeout(3)]) {\"type\":\"success\",\"data\":[{\"T\":\"9625120853@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}",
+        "query saved_remote(T),toplevel_call_synch(T,(whereis(held_name,undefined),saved_promise(R),catch(yield(R,_,[timeout(0)]),error(existence_error(promise,R),_),Gone=true),Gone==true,catch((self(Me),register(late,Me)),error(permission_error(register,_,_),_),Denied=true),Denied==true),success(T,[ok],false),[template(ok),timeout(3)]) {\"type\":\"success\",\"data\":[{\"T\":\"9625120853@'http://127.0.0.1:61641'\",\"ContextCheck\":\"passed\"}],\"more\":false}"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-007-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: late raw creation rejected by native admission {\"pid\":4688486371,\"request_id\":\"late-context-spawn\",\"type\":\"spawned\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at eval (eval at evaluate (:370:30), <anonymous>:34:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-001-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:61642')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"error\",\"data\":\"<js>(2,'Error')\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:10:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-002-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:61642')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"error\",\"data\":\"<js>(2,'Error')\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:11:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-003-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61642')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"data\":\"<js>(2,'Error')\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:13:15)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-004-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:61642')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"error\",\"data\":\"<js>(3,'Error')\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:17:23)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-005-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:61642')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"data\":\"<js>(2,'Error')\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:20:15)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-006-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query toplevel_spawn(T,[node('http://127.0.0.1:61642'),session(true)]),assertz(saved_remote(T)),toplevel_call_synch(T,(self(Me),register(held_name,Me),promise('http://127.0.0.1:61643/answer',true,R,[template(mark)]),assertz(saved_promise(R))),success(T,[R],false),[template(R),timeout(3)]) {\"type\":\"failure\",\"more\":false}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:25:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-007-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: late raw creation rejected by native admission {\"type\":\"spawned\",\"pid\":2332161760,\"request_id\":\"late-context-spawn\"}\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at eval (eval at evaluate (:370:30), <anonymous>:34:7)\n    at async <anonymous>:396:30\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:25:40"
+    }
+  ],
+  "counts": {
+    "pass": 12,
+    "fail": 16
+  }
+}

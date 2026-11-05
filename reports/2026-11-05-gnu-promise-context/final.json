@@ -1,0 +1,108 @@
+{
+  "suite": "gnu-promise-context-0.1",
+  "results": [
+    {
+      "candidate": "gnu",
+      "id": "GCTX-001",
+      "title": "Anonymous fresh requests cannot collect/dispose retained-context promises",
+      "status": "pass",
+      "observation": {
+        "auth": "anonymous",
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "foreign_denial": "success([ok],false).",
+        "foreign_cleanup": "success([ok],false).",
+        "foreign_own_answer": "success([1000000000],false).",
+        "numeric_reference_collision": true,
+        "origin_collection": "success([v(1000000000,barrier),v(1000000000,success([first],false))],false).",
+        "origin_requests": 1,
+        "execution_processes_reaped": true
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-002",
+      "title": "Equal authentication alone does not retain ownership across HTTP requests",
+      "status": "pass",
+      "observation": {
+        "auth": "same bearer",
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "foreign_denial": "success([ok],false).",
+        "foreign_cleanup": "success([ok],false).",
+        "foreign_own_answer": "success([1000000000],false).",
+        "numeric_reference_collision": true,
+        "origin_collection": "success([v(1000000000,barrier),v(1000000000,success([first],false))],false).",
+        "origin_requests": 1,
+        "execution_processes_reaped": true
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-003",
+      "title": "Idle request retirement closes pending transport before forced late completion",
+      "status": "pass",
+      "observation": {
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "peer_closed_before_release": true,
+        "late_response_attempted": true,
+        "fresh_request_denied": "success([ok],false).",
+        "capacity_recovered": true
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-004",
+      "title": "Standalone root stop retires pending transport",
+      "status": "pass",
+      "observation": {
+        "first": {
+          "type": "success",
+          "answers": [
+            "created"
+          ],
+          "more": true
+        },
+        "explicit_cleanup": false,
+        "transport_closed_before_late_response": true,
+        "exit_code": 0
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-005",
+      "title": "Standalone root cleanup preserves a later promise and retires the old transport",
+      "status": "pass",
+      "observation": {
+        "first": {
+          "type": "success",
+          "answers": [
+            "created"
+          ],
+          "more": true
+        },
+        "explicit_cleanup": true,
+        "transport_closed_before_late_response": true,
+        "exit_code": 0
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-006",
+      "title": "Forwarding a reference through real RPC grants no access at another GNU node",
+      "status": "pass",
+      "observation": {
+        "reference": "1000000000",
+        "remote_collection_denied": "success([ok],false).",
+        "remote_cleanup_harmless": "success([ok],false).",
+        "origin_collection": "success([v(1000000000,barrier),v(1000000000,success([first],false))],false).",
+        "origin_requests": 1
+      }
+    }
+  ],
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  }
+}

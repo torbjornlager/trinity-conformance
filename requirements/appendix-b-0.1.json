@@ -228,15 +228,61 @@
         },
         "gnu": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-gnu-promise-context/final.json",
+              "candidate": "gnu",
+              "cases": [
+                "GCTX-001",
+                "GCTX-002",
+                "GCTX-003",
+                "GCTX-004",
+                "GCTX-005",
+                "GCTX-006"
+              ]
+            }
+          ],
+          "note": "GNU ISOBASE and standalone execution: anonymous/same-auth fresh-request denial, harmless foreign cleanup, explicitly retained continuation ownership, root cleanup/stop, idle retirement before late response, and actual GNU-to-GNU reference forwarding. No runtime repair was needed; other promise modes/errors and Linux/public deployment are not certified."
         },
         "wasm_worker": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-001-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-009-swi",
+                "BN-001-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-009-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-001-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-009-swi",
+                "BN-001-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-009-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [
@@ -468,7 +514,7 @@
           "note": "All selected public routes pass without policy exclusions on consumer 1581acc. An intermediate N5 timeout is retained separately; whole-unit obligations remain unverified."
         }
       ],
-      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
+      "audit_note": "B-296 has scoped ownership evidence in all five targets. Native SWI/Trealla B-004/B-354 remain verified within prior boundaries; new browser/native and GNU cases add partial evidence for those units. Broader attachment topology and profile-conditioned mapping remain open. See docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "B-354",
@@ -532,7 +578,21 @@
         },
         "gnu": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-gnu-promise-context/final.json",
+              "candidate": "gnu",
+              "cases": [
+                "GCTX-001",
+                "GCTX-002",
+                "GCTX-003",
+                "GCTX-004",
+                "GCTX-005",
+                "GCTX-006"
+              ]
+            }
+          ],
+          "note": "GNU ISOBASE and standalone execution: anonymous/same-auth fresh-request denial, harmless foreign cleanup, explicitly retained continuation ownership, root cleanup/stop, idle retirement before late response, and actual GNU-to-GNU reference forwarding. No runtime repair was needed; other promise modes/errors and Linux/public deployment are not certified."
         },
         "wasm_worker": {
           "status": "unverified",
@@ -550,9 +610,25 @@
                 "BC-007",
                 "BC-008"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-005-swi",
+                "BN-006-swi",
+                "BN-007-swi",
+                "BN-010-swi",
+                "BN-011-swi",
+                "BN-005-trealla",
+                "BN-006-trealla",
+                "BN-007-trealla",
+                "BN-010-trealla",
+                "BN-011-trealla"
+              ]
             }
           ],
-          "note": "Ordinary-name/promise scope closure, pending startup retirement, late URI-source completion without child leaks, late publication/commit denial, committed-actor survival, independent contexts and dispose admission pass in real Chrome. Deliberately unsafe variants fail the targeted assertions. Browser/native context attachment and closure propagation still require transport controls; no whole-unit or public release certificate."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
           "status": "unverified",
@@ -570,13 +646,29 @@
                 "BC-007",
                 "BC-008"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-005-swi",
+                "BN-006-swi",
+                "BN-007-swi",
+                "BN-010-swi",
+                "BN-011-swi",
+                "BN-005-trealla",
+                "BN-006-trealla",
+                "BN-007-trealla",
+                "BN-010-trealla",
+                "BN-011-trealla"
+              ]
             }
           ],
-          "note": "Ordinary-name/promise scope closure, pending startup retirement, late URI-source completion without child leaks, late publication/commit denial, committed-actor survival, independent contexts and dispose admission pass in real Chrome. Deliberately unsafe variants fail the targeted assertions. Browser/native context attachment and closure propagation still require transport controls; no whole-unit or public release certificate."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [],
-      "audit_note": "Native SWI/Trealla clause mapping is complete within the qualified boundaries. Browser ordinary-name closure repaired and covered by BC-001\u2013008 in each mode; remote attachment/closure propagation and GNU retirement remain unverified. See docs/CONTEXT_LIFETIME_AUDIT.md."
+      "audit_note": "B-296 has scoped ownership evidence in all five targets. Native SWI/Trealla B-004/B-354 remain verified within prior boundaries; new browser/native and GNU cases add partial evidence for those units. Broader attachment topology and profile-conditioned mapping remain open. See docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "B-005",
@@ -13045,11 +13137,25 @@
           "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-gnu-promise-context/final.json",
+              "candidate": "gnu",
+              "cases": [
+                "GCTX-001",
+                "GCTX-002",
+                "GCTX-003",
+                "GCTX-004",
+                "GCTX-005",
+                "GCTX-006"
+              ]
+            }
+          ],
+          "note": "GNU ISOBASE and standalone execution: anonymous/same-auth fresh-request denial, harmless foreign cleanup, explicitly retained continuation ownership, root cleanup/stop, idle retirement before late response, and actual GNU-to-GNU reference forwarding. No runtime repair was needed; other promise modes/errors and Linux/public deployment are not certified."
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-promise-context/worker.json",
@@ -13057,12 +13163,30 @@
               "cases": [
                 "PC-001"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-002-swi",
+                "BN-003-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-008-swi",
+                "BN-009-swi",
+                "BN-002-trealla",
+                "BN-003-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-008-trealla",
+                "BN-009-trealla"
+              ]
             }
           ],
-          "note": "The browser context-wide ownership gap is repaired in development. Same-context access, separate-context denial and engine transitions pass. This whole grouped paragraph is not yet certified for every transport/admission/authentication boundary."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-promise-context/browser-main.json",
@@ -13070,9 +13194,27 @@
               "cases": [
                 "PC-001"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-browser-native-context/final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-002-swi",
+                "BN-003-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-008-swi",
+                "BN-009-swi",
+                "BN-002-trealla",
+                "BN-003-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-008-trealla",
+                "BN-009-trealla"
+              ]
             }
           ],
-          "note": "The browser context-wide ownership gap is repaired in development. Same-context access, separate-context denial and engine transitions pass. This whole grouped paragraph is not yet certified for every transport/admission/authentication boundary."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [
@@ -13249,7 +13391,7 @@
           "note": "Controlled HTTP producer verifies pending timeout, foreign denial before/after release, owner retry and consumption on native peers/self routes. Does not diagnose the historical public timeout; whole-unit obligations remain unverified."
         }
       ],
-      "audit_note": "Clause-level mapping: docs/CONTEXT_LIFETIME_AUDIT.md. Native SWI/Trealla verified within the named execution boundaries; browser/native transport and browser ordinary-name closure evidence, and GNU request/root retirement evidence, remain open. Historical failures and intermediate fixture errors are retained."
+      "audit_note": "B-296 has scoped ownership evidence in all five targets. Native SWI/Trealla B-004/B-354 remain verified within prior boundaries; new browser/native and GNU cases add partial evidence for those units. Broader attachment topology and profile-conditioned mapping remain open. See docs/CONTEXT_LIFETIME_AUDIT.md."
     },
     {
       "id": "B-355",
@@ -23774,7 +23916,7 @@
       "requirements": [
         "B-296"
       ],
-      "next_step": "Native B-004/B-354/B-296 mapping complete; browser ordinary-name closure repaired with real-Chrome publication/commit barriers. Add browser/native reference-forwarding, context-return and attachment/closure propagation controls, and GNU request/root ownership and late-completion controls; see docs/CONTEXT_LIFETIME_AUDIT.md."
+      "next_step": "B-296 ownership now has scoped five-target evidence, including 44 browser/native transport observations and six GNU request/root groups. Continue browser-origin native-to-native attachment/return topologies and GNU retirement/continuation attachment race controls before promoting B-004/B-354 for those targets."
     },
     {
       "id": "AUDIT-LIBRARY-MODES",

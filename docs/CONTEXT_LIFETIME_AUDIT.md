@@ -40,46 +40,47 @@ These assertions support whole-source-unit verification for **native SWI and
 Trealla within these execution boundaries**. Tests check selected deterministic
 orderings; they do not prove absence of every possible concurrency defect.
 
-## Browser evidence and remaining tests
+## Browser/native transport qualification
 
-The maintained real-Chrome promise selection exercises both modes: parent/child
-and sibling access, creator exit, collector interruption, replacement queries,
-foreign contexts with equal numeric references, harmless foreign cleanup,
-closure cancellation/wakeup, rejected late creation and surviving actors. The
-new completion barrier resolves a request after closure has committed and checks
-that neither state nor a claim reappears.
+The [browser/native report](../reports/2026-11-05-browser-native-context/README.md)
+adds 44 passing real-Chrome observations: eleven cases in each browser mode
+against both native runtimes. BN-002/003/005 check forwarding in both directions,
+same-context collection and foreign cleanup/closure isolation. BN-004 returns a
+native request to an existing browser child, which resolves its original name
+and collects its original context's promise in that engine. BN-008 exercises
+actual native HTTP RPC/promise values and sharing through a fixture proxy.
+BN-006/007/009/010/011 cover acknowledged scope closure, actor survival, raw late
+creation, forged lineage, reconnect denial and delayed-handshake admission.
 
-That evidence does not yet close these complete source units:
+Together with the maintained local browser ownership selection, this maps every
+B-296 clause within the named browser/native execution boundaries. The scope
+close hook now confirms retirement at connected peers without terminating their
+existing actors. Unsupported peers or connection loss reject confirmation.
 
-- B-004: directly combine ordinary-name isolation, retained shell replacement,
-  and remote descendant return with browser/native transports. Establish which
-  return paths are possible under the advertised inbound-connectivity capability.
-- B-354: the [browser name-closure repair](../reports/2026-11-05-browser-name-closure/README.md) now qualifies ordinary-name retirement, pending
-  startup rollback, late publication/commit denial, committed-actor survival,
-  isolation, late URI-source completion without child leaks, and synchronous disposal admission. Browser/native context
-  attachment and closure propagation still need direct transport controls;
-  coordinator-only barriers do not certify those remote paths.
-- B-296: qualify browser/native reference forwarding in both directions and the
-  remote authentication boundary. Two local runtime instances and a simple HTTP
-  answer fixture do not establish every remote context-admission rule.
+Browsers have no advertised inbound node endpoint. A callback over an established
+connection is tested; arbitrary native spawning of a new browser actor is not a
+supported return path. Broader browser-origin native-to-native attachment and
+return topologies still require direct mapping/tests before B-004/B-354 whole-unit
+promotion. Their current unverified status is retained.
 
-Both browser whole-unit statuses remain unverified. The ordinary-name lifecycle
-gap found in this audit is repaired; the remaining transport items are concrete
-missing evidence, not observed implementation failures.
+## GNU ISOBASE request/root qualification
 
-## GNU ISOBASE evidence and remaining tests
+The [GNU report](../reports/2026-11-05-gnu-promise-context/README.md) adds six passing
+maintained groups without a runtime change. Fresh anonymous requests and requests
+sharing bearer authentication cannot collect/dispose a retained query's promise.
+Only its explicit paging continuation resumes that worker's ownership. A separate
+worker can collect its own answer even if reference numbers coincide. Actual
+GNU-to-GNU RPC forwarding grants no access to the originating promise.
 
-GNU provides outgoing promises within an ISOBASE worker. Its actor/session APIs
-are outside its profile; native ACTOR test results cannot certify its request
-boundaries. These three common units remain unverified pending direct tests of:
+Idle retirement and standalone stop close pending transport before a forced late
+response. Execution processes remain reaped, later fresh requests cannot collect
+the old promise, and capacity recovers. Explicit root cleanup also permits a
+later promise to complete. These assertions map B-296 within GNU's ISOBASE,
+standalone and retained-page boundaries; they do not certify every promise/yield
+mode or formal error.
 
-- authenticated and anonymous fresh HTTP requests attempting to collect and
-  dispose of a reference from another request;
-- worker/request retirement while an outgoing promise is pending, followed by
-  a forced late completion and confirmation that resources remain reclaimed;
-- standalone root ownership and forwarding an originating reference to another
-  GNU/native node without granting access.
-
-No new manuscript rule is needed for these findings. Appendix B already separates
-context closure from actor termination and requires ownership to survive engine
-placement and permitted transport changes.
+B-004/B-354 retain partial evidence for GNU until the remaining profile-conditioned
+clause mapping and retirement/continuation attachment race controls are complete.
+ACTOR child/name APIs are outside GNU's advertised profile. No new manuscript
+rule was required: Appendix B already separates context closure, actor termination
+and reference possession from ownership.
