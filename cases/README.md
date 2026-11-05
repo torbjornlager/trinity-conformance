@@ -260,3 +260,15 @@ The [successor development repair](../reports/2026-11-05-trealla-succ-repair/REA
 passes the same 146-case manifest without changing its assertions. The initial
 Trealla failures stay in the finite-case report; qualified source hashes, owner
 sandbox-off controls and upstream regressions are recorded separately.
+
+
+`standard-library-0.3.json` preserves the 146 earlier cases and adds 143 finite
+callback assertions (STDLIB-147–289). It covers all maplist/foldl arities, caller
+source/closure sharing, argument/position order, mismatched lengths, unused
+closures, error preservation and nested forall. Logical flags make order and
+repeated invocation observable without database writes in ISOBASE. All 289 goals
+are finite and exhaust their answers; bounded/infinite-generation fixtures remain
+separate. Select this file explicitly with the native adapter's `--manifest` or
+the browser runner's `LIBRARY_MANIFEST`. Earlier pinned upstream defaults retain
+their separately versioned selections. [Evidence](../reports/2026-11-05-library-callback-cases/README.md)
+records every case on five modes and both native session surfaces.

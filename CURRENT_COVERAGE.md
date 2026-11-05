@@ -18,13 +18,24 @@ The ledger now pins book revision `3edc369`, including the context clarification
 and expanded standard-library entries, plus a reviewed layout-only refresh.
 The [migration record](reports/2026-11-05-appendix-b-ledger-migration/README.md)
 retains the previous ledger and a byte-exact manuscript snapshot. The
-[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 28
-covered within recorded five-mode evidence, and 15 needing additional shared tests.
+[library clause inventory](docs/LIBRARY_TEST_GAPS.md) now maps 43 obligations: 40
+covered within recorded five-mode evidence, and three needing bounded fixtures.
 The broad callback paragraph returns to unverified after clause review; the new
 memberchk prose is verified against existing commitment/binding/tail cases.
 At that migration, whole-unit totals remained 11 verified per target; new
 signatures and expanded paragraphs were not automatically promoted. The migration
 itself reran no runtimes; the subsequent finite-case execution is recorded below.
+
+The [finite callback extension](reports/2026-11-05-library-callback-cases/README.md)
+adds 143 common assertions in `standard-library-0.3`. All 289 cases pass in all
+five modes, through native HTTP/retained sessions and real Chrome Worker/main.
+The original 146 definitions remain unchanged. The maplist, foldl and forall
+prose units are now verified, bringing every target to 20 verified source units.
+Signatures, external ISO contracts and other source units retain their previous
+limits. No runtime, pin or public deployment changes were needed. The original
+profile-invalid database-write trace and passing intermediate selections remain
+recorded separately. The three selected gaps left need bounded observation of
+member/length generation and infinite countall noncompletion.
 
 The [finite library test extension](reports/2026-11-05-library-finite-cases/README.md)
 adds 34 shared cases in `standard-library-0.2`, preserving the original 112 cases.

@@ -17,6 +17,9 @@ intermittent observations remain recorded without a fix claim.
 The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
 51-case matrix, six controlled promise cases and deterministic attachment
 controls as a strict selection.
+The [289-case callback selection](reports/2026-11-05-library-callback-cases/README.md)
+passes across all five modes without runtime changes. The clause inventory now
+has 40 covered obligations and three bounded-fixture gaps.
 The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
 [Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
 and the repair of the Trealla succ float-error failure found by

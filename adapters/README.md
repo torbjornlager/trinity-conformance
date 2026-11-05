@@ -204,3 +204,9 @@ The browser runner's `LIBRARY_MANIFEST` override selects that same file through
 real Chrome Worker/main engines. Exact manifest hashes are part of each report;
 [finite-case results](../reports/2026-11-05-library-finite-cases/README.md) are kept
 separate from the earlier public 112-case certificate.
+
+
+Select `cases/standard-library-0.3.json` for the full 289-case finite callback
+selection; use the same file for both native `--manifest` and browser
+`LIBRARY_MANIFEST` runs. This adds only submitted source/goals, not runtime API
+or sandbox requirements. All five modes pass the [recorded selection](../reports/2026-11-05-library-callback-cases/README.md).

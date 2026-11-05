@@ -16,6 +16,18 @@ def validate(audit, ledger, root=ROOT):
     if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != audit['manifest_sha256']:
         raise ValueError('library manifest changed; reassess clause coverage')
     manifest = json.loads(manifest_path.read_text())
+    if manifest.get('extends'):
+        parent_path = root / manifest['extends']['manifest']
+        if not parent_path.resolve().is_relative_to(root.resolve()):
+            raise ValueError('escaping parent library manifest')
+        parent_raw = parent_path.read_bytes()
+        if hashlib.sha256(parent_raw).hexdigest() != manifest['extends']['sha256']:
+            raise ValueError('parent library manifest changed')
+        parent = json.loads(parent_raw)
+        if manifest['cases'][:len(parent['cases'])] != parent['cases']:
+            raise ValueError('extended library cases changed their parent assertions')
+        if not manifest.get('source', '').startswith(parent.get('source', '')):
+            raise ValueError('extended library source changed its parent prefix')
     cases = {r['id'] for r in manifest['cases']}
     if audit.get('case_count', len(cases)) != len(cases):
         raise ValueError('library case count mismatch')
@@ -99,8 +111,8 @@ def render(audit, counts):
             out.append('| ' + r['id'] + ' / ' + ', '.join(r['requirements']) + ' | `' + r['family'] + '` — ' + r['statement'] + ' | ' + ', '.join(r['existing_cases']) + ' |')
     out += ['', '## Separate decisions and limits', '']
     out += ['- ' + note for note in audit['deferred_semantic_decisions']]
-    out += ['', 'The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Existing nested Trealla regressions are useful supporting observations, but do not substitute for a common nested-meta case on every target. Infinite generators require bounded observation and cleanup, never an unbounded conformance process.', '',
-            'New source-unit signatures remain unverified pending full supported-mode mapping. The revised callback paragraph is also unverified because its general rule extends beyond the currently mapped callback cases. Unverified does not mean an implementation has failed.', '']
+    out += ['', 'The nineteen manuscript examples checked on native SWI do not supply five-target evidence. The formerly native-only nested forall controls are now shared cases passing in all five recorded modes. Fresh-list generation and infinite generators still require bounded observation and cleanup, never an unbounded conformance process.', '',
+            'New source-unit signatures remain unverified pending full supported-mode mapping. Finite callback assertions pass, but the common paragraph incorporates the broader ISO call/N contract, which remains unexpanded; it is not promoted wholesale. Unverified does not mean an implementation has failed.', '']
     return '\n'.join(out)
 
 

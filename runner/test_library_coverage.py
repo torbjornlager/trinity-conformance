@@ -80,6 +80,42 @@ class LibraryCoverageTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 validate(audit, self.ledger, self.root)
 
+    def extension(self):
+        parent = dict(cases=[dict(id='EARLIER', goal='true')], source='earlier_source.\n')
+        raw = json.dumps(parent).encode()
+        (self.root / 'parent.json').write_bytes(raw)
+        child = dict(cases=parent['cases'] + [dict(id='STDLIB-001')],
+                     source=parent['source'] + 'added_source.\n',
+                     extends=dict(manifest='parent.json', sha256=hashlib.sha256(raw).hexdigest()))
+        return child
+
+    def save_manifest(self, manifest):
+        raw = json.dumps(manifest).encode()
+        (self.root / 'cases.json').write_bytes(raw)
+        self.audit['manifest_sha256'] = hashlib.sha256(raw).hexdigest()
+        self.report['manifest_sha256'] = self.audit['manifest_sha256']
+        self.save()
+
+    def test_parent_case_or_source_rewrite_cannot_qualify(self):
+        child = self.extension()
+        self.save_manifest(child)
+        self.assertEqual(validate(self.audit, self.ledger, self.root), dict(covered=1))
+        for mutation in ['case', 'source']:
+            changed = copy.deepcopy(child)
+            if mutation == 'case':
+                changed['cases'][0]['goal'] = 'fail'
+            else:
+                changed['source'] = 'replaced_source.\n'
+            self.save_manifest(changed)
+            with self.assertRaisesRegex(ValueError, 'changed.*parent'):
+                validate(self.audit, self.ledger, self.root)
+
+    def test_parent_hash_drift_cannot_qualify(self):
+        self.save_manifest(self.extension())
+        (self.root / 'parent.json').write_text('{}')
+        with self.assertRaisesRegex(ValueError, 'parent library manifest changed'):
+            validate(self.audit, self.ledger, self.root)
+
 
 if __name__ == '__main__':
     unittest.main()

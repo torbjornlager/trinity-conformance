@@ -1,8 +1,8 @@
 # Library requirement test gaps
 
-Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **28 covered** within existing evidence and **15 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
+Pinned Appendix B: `3edc3698774258f71b11bf9998955d273ee26220`. The expanded prose is mapped into **43 testable obligations**: **40 covered** within existing evidence and **3 needing additional tests**, and **0 with an observed failure**. These are clause counts, not a conformance percentage.
 
-The 146-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
+The 289-case shared manifest supplies recorded native SWI, Trealla, GNU and both browser-mode observations. This audit checks every cited case against all five recorded targets. It does not certify current public deployments. A partial row can contain passing cases while still needing tests; a known failure is recorded separately.
 
 [Source-unit matrix](APPENDIX_B_COVERAGE.md) · [Machine-readable clause inventory](../requirements/library-obligations-0.1.json) · [Shared test goals](../cases/standard-library-0.1.json)
 
@@ -20,19 +20,7 @@ No failures in the current selected development evidence. The [earlier Trealla f
 |---|---|---|---|
 | LIB-002 / B-359 | `member/2` | None for this clause | Collect a bounded prefix of fresh-list answers and check increasing occurrence positions and sharing. |
 | LIB-008 / B-365 | `length/2` | None for this clause | Use bounded external answer collection for partial-tail and two-fresh-argument generation; check answer order without exhausting an infinite relation. |
-| LIB-021 / B-375 | `maplist/2-8` | STDLIB-034, STDLIB-035 | Extend nondeterministic and pre-applied-closure cases across the remaining arities. |
-| LIB-022 / B-375 | `maplist/2-8` | STDLIB-020, STDLIB-022, STDLIB-024, STDLIB-026, STDLIB-028, STDLIB-030, STDLIB-032, STDLIB-034, STDLIB-035 | Observe effect order at every arity; use nonsymmetric data and generate unknown input/output lists where another list fixes length. |
-| LIB-023 / B-375 | `maplist/2-8` | STDLIB-036 | Cover unequal lengths at arities 4 through 8, with each argument shorter in turn. |
-| LIB-026 / B-377 | `foldl/4-6` | STDLIB-042, STDLIB-043, STDLIB-062, STDLIB-097, STDLIB-101, STDLIB-105 | Exercise alternatives for foldl/5-6 and variable/aliased accumulator identity for the two- and three-list empty forms. |
-| LIB-027 / B-377 | `foldl/4-6` | None for this clause | Check unequal-length failure for foldl/5-6, with each list shorter in turn. |
-| LIB-028 / B-377 | `foldl/4-6` | None for this clause | Add private partial-application closures to every foldl arity. |
 | LIB-035 / B-381 | `countall/2` | None for this clause | Use a bounded cancellable fixture to observe noncompletion and then stop it; do not run an unbounded test process. |
-| LIB-037 / B-383 | `forall/2` | None for this clause | Use a failing first test alternative followed by success; check no duplicate overall answers and no exported bindings. |
-| LIB-038 / B-383 | `forall/2` | STDLIB-054, STDLIB-055, STDLIB-061 | Promote the Trealla nested-meta regression into the common manifest for all five modes; include nested success, failure and binding isolation. |
-| LIB-040 / B-334, B-357 | `common callbacks` | STDLIB-038, STDLIB-068, STDLIB-072, STDLIB-076, STDLIB-080, STDLIB-084, STDLIB-088, STDLIB-092, STDLIB-096, STDLIB-100, STDLIB-104 | Add invoked uninstantiated goals for countall, call_nth and both forall callback positions. |
-| LIB-041 / B-334, B-357 | `common callbacks` | STDLIB-058, STDLIB-062 | Extend uninstantiated unused closures to maplist/3-8, foldl/5-6 and vacuous forall; current invalid-number controls do not assert variable preservation. |
-| LIB-042 / B-334, B-357 | `common callbacks` | STDLIB-037, STDLIB-052, STDLIB-057, STDLIB-111 | Test application exceptions through foldl at every arity and call_nth, including nested forms. |
-| LIB-043 / B-334, B-357 | `common callbacks` | STDLIB-020, STDLIB-022, STDLIB-024, STDLIB-026, STDLIB-028, STDLIB-030, STDLIB-032, STDLIB-039, STDLIB-040, STDLIB-041 | Use private named goals through call_nth, countall and both forall positions; existing private-source cases cover maplist and foldl. |
 
 ## Covered clauses within the recorded selection
 
@@ -56,8 +44,14 @@ No failures in the current selected development evidence. The [earlier Trealla f
 | LIB-018 / B-373 | `succ/2` — Check supplied pairs and reject a predecessor of zero | STDLIB-130, STDLIB-131 |
 | LIB-019 / B-373 | `succ/2` — At least one nonnegative integer argument is supplied | STDLIB-132, STDLIB-133, STDLIB-134, STDLIB-135, STDLIB-136, STDLIB-137, STDLIB-138 |
 | LIB-020 / B-375 | `maplist/2-8` — Every arity calls private callbacks with list arguments in the documented order | STDLIB-020, STDLIB-022, STDLIB-024, STDLIB-026, STDLIB-028, STDLIB-030, STDLIB-032 |
+| LIB-021 / B-375 | `maplist/2-8` — Preserve callback alternatives and partial application | STDLIB-034, STDLIB-035, STDLIB-147, STDLIB-148, STDLIB-151, STDLIB-152, STDLIB-157, STDLIB-158, STDLIB-167, STDLIB-168, STDLIB-179, STDLIB-180, STDLIB-193, STDLIB-194, STDLIB-209, STDLIB-210 |
+| LIB-022 / B-375 | `maplist/2-8` — Traverse positions left to right and bind unknown lists from known lists | STDLIB-020, STDLIB-022, STDLIB-024, STDLIB-026, STDLIB-028, STDLIB-030, STDLIB-032, STDLIB-034, STDLIB-035, STDLIB-149, STDLIB-153, STDLIB-154, STDLIB-155, STDLIB-159, STDLIB-160, STDLIB-161, STDLIB-162, STDLIB-169, STDLIB-170, STDLIB-171, STDLIB-172, STDLIB-173, STDLIB-181, STDLIB-182, STDLIB-183, STDLIB-184, STDLIB-185, STDLIB-186, STDLIB-195, STDLIB-196, STDLIB-197, STDLIB-198, STDLIB-199, STDLIB-200, STDLIB-201, STDLIB-211, STDLIB-212, STDLIB-213, STDLIB-214, STDLIB-215, STDLIB-216, STDLIB-217, STDLIB-218 |
+| LIB-023 / B-375 | `maplist/2-8` — Successful lists have equal length; mismatches fail | STDLIB-036, STDLIB-163, STDLIB-164, STDLIB-165, STDLIB-174, STDLIB-175, STDLIB-176, STDLIB-177, STDLIB-187, STDLIB-188, STDLIB-189, STDLIB-190, STDLIB-191, STDLIB-202, STDLIB-203, STDLIB-204, STDLIB-205, STDLIB-206, STDLIB-207, STDLIB-219, STDLIB-220, STDLIB-221, STDLIB-222, STDLIB-223, STDLIB-224, STDLIB-225, STDLIB-261 |
 | LIB-024 / B-375 | `maplist/2-8` — Empty inputs succeed without invoking invalid closures | STDLIB-021, STDLIB-023, STDLIB-025, STDLIB-027, STDLIB-029, STDLIB-031, STDLIB-033, STDLIB-058, STDLIB-059, STDLIB-069, STDLIB-073, STDLIB-077, STDLIB-081, STDLIB-085, STDLIB-089, STDLIB-093 |
 | LIB-025 / B-377 | `foldl/4-6` — Thread ordered elements and incoming/outgoing accumulators at every arity | STDLIB-039, STDLIB-040, STDLIB-041 |
+| LIB-026 / B-377 | `foldl/4-6` — Preserve callback alternatives and empty accumulator identity | STDLIB-042, STDLIB-043, STDLIB-062, STDLIB-097, STDLIB-101, STDLIB-105, STDLIB-228, STDLIB-229, STDLIB-233, STDLIB-234, STDLIB-240, STDLIB-241 |
+| LIB-027 / B-377 | `foldl/4-6` — All supplied lists have the same length on success | STDLIB-235, STDLIB-236, STDLIB-242, STDLIB-243, STDLIB-244 |
+| LIB-028 / B-377 | `foldl/4-6` — Callbacks append arguments after pre-applied closure arguments | STDLIB-227, STDLIB-232, STDLIB-239 |
 | LIB-029 / B-379 | `call_nth/2` — Number duplicate answers from one and select one bound position or fail past the end | STDLIB-044, STDLIB-045, STDLIB-046 |
 | LIB-030 / B-379 | `call_nth/2` — Reject zero, negative and non-integer positions with the documented errors | STDLIB-047, STDLIB-139, STDLIB-140, STDLIB-141, STDLIB-142, STDLIB-143 |
 | LIB-031 / B-379 | `call_nth/2` — Bound selection does not enumerate later alternatives on backtracking | STDLIB-045, STDLIB-144 |
@@ -65,13 +59,19 @@ No failures in the current selected development evidence. The [earlier Trealla f
 | LIB-033 / B-381 | `countall/2` — Discard generator bindings/cuts and preserve independent nested counters | STDLIB-048, STDLIB-052, STDLIB-053, STDLIB-063 |
 | LIB-034 / B-381 | `countall/2` — Shared Goal/Count variables receive only final-count unification | STDLIB-145, STDLIB-146 |
 | LIB-036 / B-383 | `forall/2` — Fail on a counterexample, export no generator/test bindings and handle vacuous generators | STDLIB-054, STDLIB-055, STDLIB-056, STDLIB-057, STDLIB-061, STDLIB-110 |
+| LIB-037 / B-383 | `forall/2` — One successful nondeterministic test alternative is enough for each generator answer | STDLIB-247 |
+| LIB-038 / B-383 | `forall/2` — Preserve double-negation behavior inside other meta-predicates | STDLIB-054, STDLIB-055, STDLIB-061, STDLIB-248, STDLIB-249, STDLIB-250 |
 | LIB-039 / B-334, B-357 | `common callbacks` — Non-callable invoked callbacks have exact callable type errors and original culprits | STDLIB-064, STDLIB-065, STDLIB-066, STDLIB-067, STDLIB-070, STDLIB-071, STDLIB-074, STDLIB-075, STDLIB-078, STDLIB-079, STDLIB-082, STDLIB-083, STDLIB-086, STDLIB-087, STDLIB-090, STDLIB-091, STDLIB-094, STDLIB-095, STDLIB-098, STDLIB-099, STDLIB-102, STDLIB-103, STDLIB-106, STDLIB-107, STDLIB-108, STDLIB-109, STDLIB-112 |
+| LIB-040 / B-334, B-357 | `common callbacks` — Uninstantiated invoked callbacks raise instantiation_error without binding them | STDLIB-038, STDLIB-068, STDLIB-072, STDLIB-076, STDLIB-080, STDLIB-084, STDLIB-088, STDLIB-092, STDLIB-096, STDLIB-100, STDLIB-104, STDLIB-251, STDLIB-252, STDLIB-253, STDLIB-254 |
+| LIB-041 / B-334, B-357 | `common callbacks` — Unused callback variables remain untouched | STDLIB-058, STDLIB-062, STDLIB-150, STDLIB-156, STDLIB-166, STDLIB-178, STDLIB-192, STDLIB-208, STDLIB-226, STDLIB-229, STDLIB-234, STDLIB-241, STDLIB-255, STDLIB-280, STDLIB-281, STDLIB-282, STDLIB-283, STDLIB-284, STDLIB-285, STDLIB-286, STDLIB-287, STDLIB-288, STDLIB-289 |
+| LIB-042 / B-334, B-357 | `common callbacks` — Application exceptions retain their original terms | STDLIB-037, STDLIB-052, STDLIB-057, STDLIB-111, STDLIB-230, STDLIB-231, STDLIB-237, STDLIB-238, STDLIB-245, STDLIB-246, STDLIB-256, STDLIB-257, STDLIB-262, STDLIB-263, STDLIB-264, STDLIB-265, STDLIB-266, STDLIB-267, STDLIB-268, STDLIB-269, STDLIB-270, STDLIB-271, STDLIB-272, STDLIB-273, STDLIB-274, STDLIB-275, STDLIB-276, STDLIB-277, STDLIB-278, STDLIB-279 |
+| LIB-043 / B-334, B-357 | `common callbacks` — Callbacks retain the caller source context | STDLIB-020, STDLIB-022, STDLIB-024, STDLIB-026, STDLIB-028, STDLIB-030, STDLIB-032, STDLIB-039, STDLIB-040, STDLIB-041, STDLIB-250, STDLIB-258, STDLIB-259, STDLIB-260 |
 
 ## Separate decisions and limits
 
 - Do not import Neumerkel draft expectations for call_nth(true,0), invalid countall outputs or malformed length lists as new Web Prolog requirements. The committed manual and common error contract remain authoritative.
 - External ISO mode/error combinations, cyclic terms and occurs-check-dependent or freeze-dependent comparisons require a separate inventory and explicit applicability.
 
-The nineteen manuscript examples checked on native SWI do not supply five-target evidence. Existing nested Trealla regressions are useful supporting observations, but do not substitute for a common nested-meta case on every target. Infinite generators require bounded observation and cleanup, never an unbounded conformance process.
+The nineteen manuscript examples checked on native SWI do not supply five-target evidence. The formerly native-only nested forall controls are now shared cases passing in all five recorded modes. Fresh-list generation and infinite generators still require bounded observation and cleanup, never an unbounded conformance process.
 
-New source-unit signatures remain unverified pending full supported-mode mapping. The revised callback paragraph is also unverified because its general rule extends beyond the currently mapped callback cases. Unverified does not mean an implementation has failed.
+New source-unit signatures remain unverified pending full supported-mode mapping. Finite callback assertions pass, but the common paragraph incorporates the broader ISO call/N contract, which remains unexpanded; it is not promoted wholesale. Unverified does not mean an implementation has failed.
