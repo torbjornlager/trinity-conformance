@@ -1,0 +1,1053 @@
+{
+  "suite": "selective-receive-0.2",
+  "manifest_sha256": "a3d05016115d1a38f07429916d5ce4b0233b6780cbdad81e52abb9addd64c8da",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "862aa3edeeea27a0953e82e8ed7aef8252e625555ea0ca3ce2d1bca48f53626b",
+    "web/swi_wasm_actor_worker.js": "59cdb8fc169c4acb2729260e9fc3e649f6ab129471cb25f0a41288ba85d7d68d",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "19455fb020b7d7b6865a910706a48e9dacd2389ee824cddd9ddc6d0738501c09",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-001",
+      "title": "One-sided matching preserves message variables and sharing",
+      "observation": {
+        "type": "success",
+        "pid": 6681143992,
+        "data": [
+          {
+            "A": "accepted",
+            "B": "accepted",
+            "S": "6681143992@localhost",
+            "Shared": "retained",
+            "Distinct": "retained",
+            "U": "left",
+            "V": "right",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-002",
+      "title": "Deferred messages retain order across deferred and native queues",
+      "observation": {
+        "type": "success",
+        "pid": 8368449134,
+        "data": [
+          {
+            "C": "sr_a(3)",
+            "D": "sr_b(4)",
+            "A": "sr_a(1)",
+            "B": "sr_b(2)",
+            "S": "8368449134@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-003",
+      "title": "Failing and ordinarily throwing guards retain messages and roll back bindings",
+      "observation": {
+        "type": "success",
+        "pid": 8975220047,
+        "data": [
+          {
+            "Value": "1",
+            "Outcome": "retained",
+            "S": "8975220047@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-004",
+      "title": "A guard uses only its first solution and shares bindings with the body",
+      "observation": {
+        "type": "success",
+        "pid": 3440228206,
+        "data": [
+          {
+            "S": "3440228206@localhost",
+            "Results": "[one-one]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-005",
+      "title": "Selected body failure and exception consume only their selected messages",
+      "observation": {
+        "type": "success",
+        "pid": 3803413405,
+        "data": [
+          {
+            "Error": "sr_body",
+            "S": "3803413405@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-006",
+      "title": "A selected body cut cannot prune caller alternatives",
+      "observation": {
+        "type": "success",
+        "pid": 8883407851,
+        "data": [
+          {
+            "Choices": "[one,two]",
+            "Me": "8883407851@localhost",
+            "Fallback": "kept",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-007",
+      "title": "One selection exposes all body alternatives without selecting a second message or clause",
+      "observation": {
+        "type": "success",
+        "pid": 1809763055,
+        "data": [
+          {
+            "S": "1809763055@localhost",
+            "Xs": "[a,b]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-008",
+      "title": "Message arrival order takes priority over clause textual order",
+      "observation": {
+        "type": "success",
+        "pid": 5812058887,
+        "data": [
+          {
+            "S": "5812058887@localhost",
+            "Selected": "older",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-009",
+      "title": "First accepting clause commits even when its body fails",
+      "observation": {
+        "type": "success",
+        "pid": 8647276428,
+        "data": [
+          {
+            "S": "8647276428@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-010",
+      "title": "Exception from the first accepting body cannot select a later clause or message",
+      "observation": {
+        "type": "success",
+        "pid": 9769550819,
+        "data": [
+          {
+            "E": "sr_selected_error",
+            "S": "9769550819@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-011",
+      "title": "Failed partial pattern matching is rolled back before the next clause",
+      "observation": {
+        "type": "success",
+        "pid": 2817218524,
+        "data": [
+          {
+            "A": "a",
+            "B": "b",
+            "S": "2817218524@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-012",
+      "title": "An ordinary throwing guard rolls back before another clause accepts the same message",
+      "observation": {
+        "type": "success",
+        "pid": 5069478877,
+        "data": [
+          {
+            "B": "7",
+            "S": "5069478877@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-013",
+      "title": "A successful guard may bind the received variable and shares that binding with its body",
+      "observation": {
+        "type": "success",
+        "pid": 9210997224,
+        "data": [
+          {
+            "Y": "bound",
+            "S": "9210997224@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-014",
+      "title": "Guard alternatives after its first success are never invoked",
+      "observation": {
+        "type": "success",
+        "pid": 3785404157,
+        "data": [
+          {
+            "S": "3785404157@localhost",
+            "Gs": "[first]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-015",
+      "title": "Body cut prunes its own alternatives while preserving caller choices",
+      "observation": {
+        "type": "success",
+        "pid": 6158508320,
+        "data": [
+          {
+            "Xs": "[one-a,two-a]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-016",
+      "title": "Empty clauses accept nothing and preserve queued message order",
+      "observation": {
+        "type": "success",
+        "pid": 5613107163,
+        "data": [
+          {
+            "M": "sr_empty(1)",
+            "S": "5613107163@localhost",
+            "Expired": "yes",
+            "M2": "sr_empty(2)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-017",
+      "title": "Timeout zero inspects queued messages and default timeout action succeeds",
+      "observation": {
+        "type": "success",
+        "pid": 4964516052,
+        "data": [
+          {
+            "S": "4964516052@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-018",
+      "title": "Timeout callback retains every alternative and its variable bindings",
+      "observation": {
+        "type": "success",
+        "pid": 5630072082,
+        "data": [
+          {
+            "Xs": "[a,b]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-019",
+      "title": "Timeout callback failure determines the receive outcome",
+      "observation": {
+        "type": "success",
+        "pid": 3324107741,
+        "data": [
+          {
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-020",
+      "title": "Timeout callback exception is propagated with its original payload",
+      "observation": {
+        "type": "success",
+        "pid": 7384734692,
+        "data": [
+          {
+            "E": "error(sr_timeout,application)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-021",
+      "title": "An expired absolute deadline uses the timeout callback and preserves skipped messages",
+      "observation": {
+        "type": "success",
+        "pid": 7371291717,
+        "data": [
+          {
+            "Now": "1793917724.127",
+            "S": "7371291717@localhost",
+            "Past": "1793917723.127",
+            "Expired": "yes",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-022",
+      "title": "Relative zero timeout takes precedence over a future absolute deadline",
+      "observation": {
+        "type": "success",
+        "pid": 5008124383,
+        "data": [
+          {
+            "Now": "1793917724.385",
+            "S": "5008124383@localhost",
+            "Future": "1793917726.385",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-023",
+      "title": "Relative positive timeout takes precedence over an expired absolute deadline",
+      "observation": {
+        "type": "success",
+        "pid": 3511911968,
+        "data": [
+          {
+            "Now": "1793917724.697",
+            "S": "3511911968@localhost",
+            "Past": "1793917723.697",
+            "Selected": "message",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-024",
+      "title": "Default receive and on_timeout without a deadline accept a supplied message",
+      "observation": {
+        "type": "success",
+        "pid": 1128544108,
+        "data": [
+          {
+            "S": "1128544108@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-025",
+      "title": "Unmatched arrival traffic does not restart a positive receive timeout",
+      "observation": {
+        "type": "success",
+        "pid": 4832330511,
+        "data": [
+          {
+            "P": "5929055271@localhost",
+            "S": "4832330511@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-026",
+      "title": "Delayed send with a supplied identifier returns and delivers",
+      "observation": {
+        "type": "success",
+        "pid": 3056862189,
+        "data": [
+          {
+            "S": "3056862189@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-027",
+      "title": "Cancel acknowledges a scheduled identifier and prevents its delivery",
+      "observation": {
+        "type": "success",
+        "pid": 9702913644,
+        "data": [
+          {
+            "S": "9702913644@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-028",
+      "title": "A future absolute deadline accepts a later arriving message",
+      "observation": {
+        "type": "success",
+        "pid": 5632765959,
+        "data": [
+          {
+            "Now": "1793917726.44",
+            "S": "5632765959@localhost",
+            "End": "1793917728.44",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SR-029",
+      "title": "Unmatched arrival traffic does not extend an absolute receive deadline",
+      "observation": {
+        "type": "success",
+        "pid": 1625267139,
+        "data": [
+          {
+            "Now": "1793917726.822",
+            "P": "4258267087@localhost",
+            "S": "1625267139@localhost",
+            "End": "1793917726.922",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-001",
+      "title": "One-sided matching preserves message variables and sharing",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "A": "accepted",
+            "B": "accepted",
+            "Shared": "retained",
+            "Distinct": "retained",
+            "U": "left",
+            "V": "right",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-002",
+      "title": "Deferred messages retain order across deferred and native queues",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "C": "sr_a(3)",
+            "D": "sr_b(4)",
+            "S": "main@localhost",
+            "A": "sr_a(1)",
+            "B": "sr_b(2)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-003",
+      "title": "Failing and ordinarily throwing guards retain messages and roll back bindings",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Value": "1",
+            "S": "main@localhost",
+            "Outcome": "retained",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-004",
+      "title": "A guard uses only its first solution and shares bindings with the body",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "Results": "[one-one]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-005",
+      "title": "Selected body failure and exception consume only their selected messages",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Error": "sr_body",
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-006",
+      "title": "A selected body cut cannot prune caller alternatives",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Choices": "[one,two]",
+            "Me": "main@localhost",
+            "Fallback": "kept",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-007",
+      "title": "One selection exposes all body alternatives without selecting a second message or clause",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "Xs": "[a,b]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-008",
+      "title": "Message arrival order takes priority over clause textual order",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "Selected": "older",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-009",
+      "title": "First accepting clause commits even when its body fails",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-010",
+      "title": "Exception from the first accepting body cannot select a later clause or message",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "E": "sr_selected_error",
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-011",
+      "title": "Failed partial pattern matching is rolled back before the next clause",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "A": "a",
+            "B": "b",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-012",
+      "title": "An ordinary throwing guard rolls back before another clause accepts the same message",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "B": "7",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-013",
+      "title": "A successful guard may bind the received variable and shares that binding with its body",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "Y": "bound",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-014",
+      "title": "Guard alternatives after its first success are never invoked",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "Gs": "[first]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-015",
+      "title": "Body cut prunes its own alternatives while preserving caller choices",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Xs": "[one-a,two-a]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-016",
+      "title": "Empty clauses accept nothing and preserve queued message order",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "M": "sr_empty(1)",
+            "S": "main@localhost",
+            "Expired": "yes",
+            "M2": "sr_empty(2)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-017",
+      "title": "Timeout zero inspects queued messages and default timeout action succeeds",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-018",
+      "title": "Timeout callback retains every alternative and its variable bindings",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Xs": "[a,b]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-019",
+      "title": "Timeout callback failure determines the receive outcome",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-020",
+      "title": "Timeout callback exception is propagated with its original payload",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "E": "error(sr_timeout,application)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-021",
+      "title": "An expired absolute deadline uses the timeout callback and preserves skipped messages",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Now": "1793917733.645",
+            "S": "main@localhost",
+            "Past": "1793917732.645",
+            "Expired": "yes",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-022",
+      "title": "Relative zero timeout takes precedence over a future absolute deadline",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Now": "1793917733.967",
+            "S": "main@localhost",
+            "Future": "1793917735.967",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-023",
+      "title": "Relative positive timeout takes precedence over an expired absolute deadline",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Now": "1793917734.335",
+            "S": "main@localhost",
+            "Selected": "message",
+            "Past": "1793917733.335",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-024",
+      "title": "Default receive and on_timeout without a deadline accept a supplied message",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-025",
+      "title": "Unmatched arrival traffic does not restart a positive receive timeout",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "1096033441@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-026",
+      "title": "Delayed send with a supplied identifier returns and delivers",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-027",
+      "title": "Cancel acknowledges a scheduled identifier and prevents its delivery",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-028",
+      "title": "A future absolute deadline accepts a later arriving message",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Now": "1793917736.3779998",
+            "S": "main@localhost",
+            "End": "1793917738.3779998",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SR-029",
+      "title": "Unmatched arrival traffic does not extend an absolute receive deadline",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Now": "1793917736.8140001",
+            "S": "main@localhost",
+            "P": "5672692107@localhost",
+            "End": "1793917736.914",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 58,
+    "fail": 0
+  }
+}

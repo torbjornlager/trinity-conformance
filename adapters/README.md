@@ -249,3 +249,16 @@ to monitored children. Ordinary errors are a contrast control. All actors/pages,
 HTTP handlers and owned nodes/browsers have bounded cleanup. The [report](../reports/2026-11-05-receive-controls/README.md)
 records exact execution backends, rather than inferring main-engine lifecycle
 support from its Worker children.
+
+`local_browser_context.py --return-barriers` adds deterministic native return
+admission gates in disposable copies to the real-Chrome context selection.
+The full selection has 64 observations across both browser modes and native
+peers, including multi-hop returns, closed-origin rejection and monitor
+loss/confirmation/timeout/retry. Omitting that flag selects 60 observations.
+Both selections enforce their complete expected inventories.
+
+`local_monitor_barriers.py` runs the maintained SWI selected-down/withdrawal
+orderings and Trealla writer-confirmation/timeout/retry controls in the full
+native compositions, with source fingerprints and a bounded process deadline.
+The GNU counterpart is maintained in `gprolog-port/isobase` as
+`make promise-context-race-test` and as part of `make local-test`.

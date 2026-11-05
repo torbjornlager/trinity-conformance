@@ -227,7 +227,7 @@
           "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-gnu-promise-context/final.json",
@@ -240,13 +240,28 @@
                 "GCTX-005",
                 "GCTX-006"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/gnu-races-final.json",
+              "candidate": "gnu",
+              "cases": [
+                "GRACE-RESUME-FIRST",
+                "GRACE-RETIRE-FIRST"
+              ]
             }
           ],
-          "note": "GNU ISOBASE and standalone execution: anonymous/same-auth fresh-request denial, harmless foreign cleanup, explicitly retained continuation ownership, root cleanup/stop, idle retirement before late response, and actual GNU-to-GNU reference forwarding. No runtime repair was needed; other promise modes/errors and Linux/public deployment are not certified."
+          "note": "Profile-conditioned ISOBASE request/retained-query and standalone-root mapping. ACTOR child/name APIs are not advertised; RPC starts a new interaction. Explicit continuation resumes its existing execution before retirement or starts fresh after retirement. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
+            {
+              "report": "reports/2026-11-05-promise-context/worker.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "PC-001"
+              ]
+            },
             {
               "report": "reports/2026-11-05-browser-native-context/final/results.json",
               "candidate": "swi-wasm-worker",
@@ -260,13 +275,40 @@
                 "BN-005-trealla",
                 "BN-009-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-001-swi",
+                "BN-002-swi",
+                "BN-003-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-009-swi",
+                "BN-012-swi",
+                "BN-001-trealla",
+                "BN-002-trealla",
+                "BN-003-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-009-trealla",
+                "BN-012-trealla"
+              ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Scoped real-Chrome local/retained-session and native-to-native return mapping; late origin admission is held across committed closure. Browser callbacks use existing actors/connections, not an unadvertised inbound endpoint. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
+            {
+              "report": "reports/2026-11-05-promise-context/browser-main.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "PC-001"
+              ]
+            },
             {
               "report": "reports/2026-11-05-browser-native-context/final/results.json",
               "candidate": "swi-wasm-main",
@@ -280,9 +322,29 @@
                 "BN-005-trealla",
                 "BN-009-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-001-swi",
+                "BN-002-swi",
+                "BN-003-swi",
+                "BN-004-swi",
+                "BN-005-swi",
+                "BN-009-swi",
+                "BN-012-swi",
+                "BN-001-trealla",
+                "BN-002-trealla",
+                "BN-003-trealla",
+                "BN-004-trealla",
+                "BN-005-trealla",
+                "BN-009-trealla",
+                "BN-012-trealla"
+              ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Scoped real-Chrome local/retained-session and native-to-native return mapping; late origin admission is held across committed closure. Browser callbacks use existing actors/connections, not an unadvertised inbound endpoint. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [
@@ -577,7 +639,7 @@
           "note": "Clause-by-clause development-source review in docs/CONTEXT_LIFETIME_AUDIT.md. Native public HTTP/WebSocket ownership, four directed peer routes, origin reentry, standalone scope, closed admission, late publication/completion, surviving actors and attachment barriers are covered by the selected cases and implementation regressions. No public deployment or exhaustive concurrency claim."
         },
         "gnu": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-gnu-promise-context/final.json",
@@ -590,12 +652,20 @@
                 "GCTX-005",
                 "GCTX-006"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/gnu-races-final.json",
+              "candidate": "gnu",
+              "cases": [
+                "GRACE-RESUME-FIRST",
+                "GRACE-RETIRE-FIRST"
+              ]
             }
           ],
-          "note": "GNU ISOBASE and standalone execution: anonymous/same-auth fresh-request denial, harmless foreign cleanup, explicitly retained continuation ownership, root cleanup/stop, idle retirement before late response, and actual GNU-to-GNU reference forwarding. No runtime repair was needed; other promise modes/errors and Linux/public deployment are not certified."
+          "note": "Profile-conditioned ISOBASE request/retained-query and standalone-root mapping. ACTOR child/name APIs are not advertised; RPC starts a new interaction. Explicit continuation resumes its existing execution before retirement or starts fresh after retirement. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_worker": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-browser-name-closure/final.json",
@@ -626,12 +696,32 @@
                 "BN-010-trealla",
                 "BN-011-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-005-swi",
+                "BN-006-swi",
+                "BN-007-swi",
+                "BN-010-swi",
+                "BN-011-swi",
+                "BN-012-swi",
+                "BN-013-swi",
+                "BN-005-trealla",
+                "BN-006-trealla",
+                "BN-007-trealla",
+                "BN-010-trealla",
+                "BN-011-trealla",
+                "BN-012-trealla",
+                "BN-013-trealla"
+              ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Scoped real-Chrome local/retained-session and native-to-native return mapping; late origin admission is held across committed closure. Browser callbacks use existing actors/connections, not an unadvertised inbound endpoint. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
-          "status": "unverified",
+          "status": "verified",
           "evidence": [
             {
               "report": "reports/2026-11-05-browser-name-closure/final.json",
@@ -662,9 +752,29 @@
                 "BN-010-trealla",
                 "BN-011-trealla"
               ]
+            },
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-005-swi",
+                "BN-006-swi",
+                "BN-007-swi",
+                "BN-010-swi",
+                "BN-011-swi",
+                "BN-012-swi",
+                "BN-013-swi",
+                "BN-005-trealla",
+                "BN-006-trealla",
+                "BN-007-trealla",
+                "BN-010-trealla",
+                "BN-011-trealla",
+                "BN-012-trealla",
+                "BN-013-trealla"
+              ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Scoped real-Chrome local/retained-session and native-to-native return mapping; late origin admission is held across committed closure. Browser callbacks use existing actors/connections, not an unadvertised inbound endpoint. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [],
@@ -2565,11 +2675,39 @@
         },
         "wasm_worker": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
         },
         "wasm_main": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
         }
       },
       "evidence_candidates": []
@@ -2602,11 +2740,39 @@
         },
         "wasm_worker": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
         },
         "wasm_main": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate remote independence/loss evidence; complete local-name/fresh-reference and private-wait clause mapping remains."
         }
       },
       "evidence_candidates": []
@@ -2701,11 +2867,29 @@
       "targets": {
         "swi": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MON-SELECTED-DOWN"
+              ]
+            }
+          ],
+          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
         },
         "trealla": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MON-WRITER-RETRY"
+              ]
+            }
+          ],
+          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
         },
         "gnu": {
           "status": "not_applicable",
@@ -2713,11 +2897,39 @@
         },
         "wasm_worker": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
         },
         "wasm_main": {
           "status": "unverified",
-          "evidence": []
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Candidate evidence demonstrates owner-only withdrawal, foreign/unknown references and idempotence. Complete demonitor option/value/error mapping is still required before whole-source-unit verification."
         }
       },
       "evidence_candidates": []
@@ -2737,24 +2949,70 @@
       "statement": "flush Non-blocking removal of all pending down(_, Ref, _) messages from the mailbox.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MON-SELECTED-DOWN"
+              ]
+            }
+          ],
+          "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MON-WRITER-RETRY"
+              ]
+            }
+          ],
+          "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": []
@@ -2774,24 +3032,70 @@
       "statement": "For a remote monitor, removal is confirmed before the operation returns or applies flush. If confirmation times out, the operation raises error(remote_demonitor_timeout(Pid), Context) and retains the local monitor record for retry. Once the connection has been declared closed, local withdrawal suffices because that connection can deliver no further notifications. A successful removal prevents later notifications for that reference; already queued notifications remain unless flush is used.",
       "targets": {
         "swi": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "swi",
+              "cases": [
+                "MON-SELECTED-DOWN"
+              ]
+            }
+          ],
+          "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "trealla": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/native-monitors/results.json",
+              "candidate": "trealla",
+              "cases": [
+                "MON-WRITER-RETRY"
+              ]
+            }
+          ],
+          "note": "Native observation-owner controls: lifecycle-locked delivery/withdrawal in SWI; serialized writer acknowledgement, stopped/unresponsive writer and retry in Trealla. Queued notifications remain without flush; matching flush preserves unrelated state. SWI has no asynchronous peer-confirmation timeout branch. See monitor mapping in docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "gnu": {
           "status": "not_applicable",
           "evidence": []
         },
         "wasm_worker": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-worker",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
-          "status": "unverified",
-          "evidence": []
+          "status": "verified",
+          "evidence": [
+            {
+              "report": "reports/2026-11-05-context-races-and-monitors/browser-final/results.json",
+              "candidate": "swi-wasm-main",
+              "cases": [
+                "BN-014-swi",
+                "BN-015-swi",
+                "BN-016-swi",
+                "BN-014-trealla",
+                "BN-015-trealla",
+                "BN-016-trealla"
+              ]
+            }
+          ],
+          "note": "Real Chrome against both native peers: owner-only/idempotent withdrawal, queued messages with/without flush, declared socket loss, bounded confirmation error, retained retry state and cancellation of late timed-out withdrawal. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": []
@@ -13183,7 +13487,7 @@
               ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Browser-origin native-to-native returns and closed-origin admission are additionally mapped in the context-races-and-monitors report for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         },
         "wasm_main": {
           "status": "verified",
@@ -13214,7 +13518,7 @@
               ]
             }
           ],
-          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Broader browser-origin native-to-native attachment topologies remain unverified for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
+          "note": "Real Chrome in both modes against clean native SWI/Trealla: permitted callback return, reference forwarding/isolation, native scope retirement, raw late-admission denial, forged-lineage denial and delayed-handshake/reconnect controls. Arbitrary inbound browser actor spawning is outside the advertised capability. Browser-origin native-to-native returns and closed-origin admission are additionally mapped in the context-races-and-monitors report for B-004/B-354. See docs/CONTEXT_LIFETIME_AUDIT.md."
         }
       },
       "evidence_candidates": [

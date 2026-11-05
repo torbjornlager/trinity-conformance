@@ -59,9 +59,24 @@ existing actors. Unsupported peers or connection loss reject confirmation.
 
 Browsers have no advertised inbound node endpoint. A callback over an established
 connection is tested; arbitrary native spawning of a new browser actor is not a
-supported return path. Broader browser-origin native-to-native attachment and
-return topologies still require direct mapping/tests before B-004/B-354 whole-unit
-promotion. Their current unverified status is retained.
+supported return path. The [extended qualification](../reports/2026-11-05-context-races-and-monitors/README.md)
+adds BN-012 and BN-013 in all four browser/native combinations. BN-012 traverses
+both native runtimes and returns to the original native scope before replying
+to an existing browser child; each returning engine resolves its original name
+and collects its original promise. BN-013 holds the real returning frame before
+admission, commits origin closure, then checks rejection and absent state.
+
+The complete browser B-004 mapping uses local child/name/promise ownership from
+the maintained browser ownership selection, BN-002/003/004 for engine boundaries,
+BN-005 for equal-authority client separation, the retained session API for
+request/toplevel replacement, and BN-012 for native-to-native attachment/return.
+B-354 uses BC-001–008 for local publication/admission barriers, BN-006/007/010/011
+for acknowledged peer closure, surviving actors and delayed admission, and
+BN-012/013 for return before versus after committed closure. The same native
+admission locks have independent join-first/retire-first controls above. Browser
+standalone initialization supplies its local root; no new inbound browser-node
+facility is assumed. These assertions support scoped whole-unit verification
+for B-004/B-354 in both browser modes.
 
 ## GNU ISOBASE request/root qualification
 
@@ -79,8 +94,49 @@ later promise to complete. These assertions map B-296 within GNU's ISOBASE,
 standalone and retained-page boundaries; they do not certify every promise/yield
 mode or formal error.
 
-B-004/B-354 retain partial evidence for GNU until the remaining profile-conditioned
-clause mapping and retirement/continuation attachment race controls are complete.
-ACTOR child/name APIs are outside GNU's advertised profile. No new manuscript
+The [GNU continuation controls](../reports/2026-11-05-context-races-and-monitors/gnu-races-final.json)
+complete the applicable retirement ordering: continuation-first preserves the
+original worker and pending producer; retirement-first closes the old producer
+and a later request starts a new execution. The unsafe busy-guard mutation must
+fail to preserve the active execution.
+
+For B-004, GCTX-001/002/003 establish fresh anonymous/authenticated requests and
+explicit retained-page ownership; GCTX-004 supplies independent-worker roots;
+GCTX-006 verifies that RPC reference forwarding grants no origin ownership.
+Only the explicit continuation resumes the original execution and promise state;
+ending one page request leaves that retained execution open. For B-354,
+GCTX-003/004/005 check idle/root retirement, late completion, absent old state,
+transport teardown and resource recovery; the two GRACE orderings check that
+continuation cannot reattach after committed retirement. Standalone cleanup
+closes its promise root and later execution creates fresh state.
+
+GNU advertises ISOBASE, so ACTOR child creation, ordinary-name registration and
+surviving actor APIs are outside this target's public profile. Its HTTP RPC is a
+new query interaction, not ACTOR descendant attachment. The mapping verifies
+B-004/B-354 within GNU's request, retained-query and standalone execution model;
+it does not certify an unadvertised ACTOR lineage facility. No new manuscript
 rule was required: Appendix B already separates context closure, actor termination
 and reference possession from ownership.
+
+
+## Monitor observation ownership
+
+The [monitor qualification](../reports/2026-11-05-context-races-and-monitors/README.md)
+adds browser BN-014–016 and native deterministic controls. B-053 gains candidate evidence for owner-only
+withdrawal, harmless foreign/unknown references and idempotence; its full
+option/value/error mapping is still required. B-054 maps all
+matching queued notifications, nonblocking flush and unrelated mailbox state.
+B-055 maps the observation-owner confirmation barrier, queued-message retention
+without flush, suppression after successful withdrawal, and declared connection
+loss. Browser and Trealla timeout controls additionally require the exact formal
+error, retained local record, no timeout flush and successful retry. The browser
+control releases an old timed-out operation before retry and proves that it is
+cancelled; it cannot erase the retained observation.
+
+SWI's synchronous lifecycle mutex covers remote monitor selection, delivery and
+withdrawal, so it has no asynchronous peer-confirmation timeout branch. Trealla
+uses its serialized connection writer; the browser uses its coordinator's
+observation filter and ordered engine channel. These are reviewed implementation
+boundaries for the same public rule, not language exceptions. Remote loss and
+additional/private-reference clauses B-049/B-050 gain candidate evidence, but
+remain unverified until their complete clause inventories are mapped.

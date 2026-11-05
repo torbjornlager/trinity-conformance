@@ -1,0 +1,66 @@
+{
+  "suite": "gnu-context-race-0.1",
+  "scope": "Implementation regression barriers on disposable controllers, not three additional portable language cases",
+  "results": [
+    {
+      "candidate": "gnu",
+      "id": "GRACE-RESUME-FIRST",
+      "negative_control": false,
+      "status": "pass",
+      "observation": {
+        "mode": "resume",
+        "negative_control": false,
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "continuation": "success([v(1000000000,barrier),v(1000000000,success([first],false))],false).",
+        "producer_requests": 1,
+        "original_survived_admission": true,
+        "hashes": {
+          "source_sha256": "eff2f34e01c5848a61c4404db2638e0f7d78daf9086779882ab7755dc35747be",
+          "instrumented_sha256": "3b522fb3de58271aaa098a1958c8d1ec3be55ef24d96dc77518fee5b1ebe1e6d",
+          "binary_sha256": "3af51bcd0d6e5cf3619db38f99cedea0c1c72a51e4540388a95a6da11144b9d6"
+        }
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GRACE-RETIRE-FIRST",
+      "negative_control": false,
+      "status": "pass",
+      "observation": {
+        "mode": "retire",
+        "negative_control": false,
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "continuation": "success([v(1000000000,barrier),v(1000000000,success([first],false))],false).",
+        "producer_requests": 2,
+        "original_survived_admission": false,
+        "hashes": {
+          "source_sha256": "eff2f34e01c5848a61c4404db2638e0f7d78daf9086779882ab7755dc35747be",
+          "instrumented_sha256": "3b522fb3de58271aaa098a1958c8d1ec3be55ef24d96dc77518fee5b1ebe1e6d",
+          "binary_sha256": "3af51bcd0d6e5cf3619db38f99cedea0c1c72a51e4540388a95a6da11144b9d6"
+        }
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GRACE-NEGATIVE-ACTIVE",
+      "negative_control": true,
+      "status": "pass",
+      "observation": {
+        "mode": "resume",
+        "negative_control": true,
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "continuation": "error(timeout_or_worker_failure).",
+        "producer_requests": 1,
+        "original_survived_admission": false,
+        "hashes": {
+          "source_sha256": "eff2f34e01c5848a61c4404db2638e0f7d78daf9086779882ab7755dc35747be",
+          "instrumented_sha256": "dc391da7398909eef36b71817541a32599a2df19dafd893012e56b00dcee85b3",
+          "binary_sha256": "fcf694b82ba0a7a965e14f1f85e0e652cf4f209dc34acacbd84038847e83ba8d"
+        }
+      }
+    }
+  ]
+}
