@@ -758,3 +758,8 @@ an inline worker with explicitly copied generator definitions, matching named
 controls, and copied receive timeout options. These combinations were missing
 from the earlier separate guard and isolation packs. Historical packs/reports
 remain unchanged.
+
+The `node-uri-io-0.1` selection runs the same trailing-slash, public-source I/O,
+source-less output and ping-pong assertions in both native directions. See its
+[profile](profiles/node-uri-io-0.1.md) and
+[development qualification](reports/2026-11-06-node-uri-io/README.md).

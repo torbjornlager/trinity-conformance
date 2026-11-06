@@ -1,0 +1,101 @@
+{
+  "suite": "node-uri-io-0.1",
+  "status": "draft",
+  "scope": "Identical public ACTOR assertions for native SWI and Trealla in both peer directions",
+  "source_file": "fixtures/node-uri-io/program.pl",
+  "cases": [
+    {
+      "id": "NU-001",
+      "title": "Own node URI without trailing slash",
+      "goal": "actors(B),spawn(receive({stop->true}),P,[node($SELF),monitor(true)]),nu_canonical(P,$SELF),actors(Live),nu_visible(P,Live),send(P,stop),nu_done(P),nu_baseline(B)"
+    },
+    {
+      "id": "NU-002",
+      "title": "Own node URI with trailing slash",
+      "goal": "actors(B),spawn(receive({stop->true}),P,[node($SELF_SLASH),monitor(true)]),nu_canonical(P,$SELF),actors(Live),nu_visible(P,Live),send(P,stop),nu_done(P),nu_baseline(B)"
+    },
+    {
+      "id": "NU-003",
+      "title": "Qualified local destination with trailing slash",
+      "goal": "actors(B),spawn(receive({stop->true}),P,[monitor(true)]),nu_id(P,I),send(I@$SELF_SLASH,stop),nu_done(P),nu_baseline(B)"
+    },
+    {
+      "id": "NU-004",
+      "title": "Own node URI alias for a retained toplevel",
+      "goal": "actors(B),toplevel_spawn(P,[node($SELF_SLASH),session(true),monitor(true)]),nu_canonical(P,$SELF),actors(Live),nu_visible(P,Live),toplevel_call_synch(P,X=ready,R,[template(X),timeout(2)]),R=success(P,[ready],false),toplevel_halt(P,true),nu_done(P),nu_baseline(B)"
+    },
+    {
+      "id": "NU-005",
+      "title": "Copied writeln/1 across the node boundary",
+      "goal": "actors(B),spawn(nu_emit(probe),P,[node($PEER),src_predicates([nu_emit/1]),monitor(true)]),P=_@Location,Location==$PEER,nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "probe"
+      ]
+    },
+    {
+      "id": "NU-006",
+      "title": "Copied writeln/1 with peer URI alias",
+      "goal": "actors(B),spawn(nu_emit(probe),P,[node($PEER_SLASH),src_predicates([nu_emit/1]),monitor(true)]),P=_@Location,Location==$PEER,nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "probe"
+      ]
+    },
+    {
+      "id": "NU-007",
+      "title": "Copied write/1 preserves the public operation",
+      "goal": "actors(B),spawn(nu_write(probe),P,[node($PEER),src_predicates([nu_write/1]),monitor(true)]),nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "probe"
+      ]
+    },
+    {
+      "id": "NU-008",
+      "title": "Copied writeln/1 survives a second source transfer back to the origin",
+      "goal": "actors(B),self(Me),spawn(nu_parent(Me,$SELF_SLASH),P,[node($PEER),src_predicates([nu_parent/2,nu_emit/1,nu_done/1]),monitor(true)]),receive({nested_done->true},[timeout(4),on_timeout(throw(missing_nested_reply))]),nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "nested"
+      ]
+    },
+    {
+      "id": "NU-009",
+      "title": "Local ponger and remote copied pinger with writeln(Self) and URI alias",
+      "goal": "actors(B),spawn(nu_pong,Pong,[src_predicates([nu_pong/0]),monitor(true)]),spawn(nu_ping(3,Pong),Ping,[node($PEER_SLASH),src_predicates([nu_ping/2]),monitor(true)]),nu_done(Pong),nu_done(Ping),nu_baseline(B)",
+      "output_count": 11,
+      "output_counts": {
+        "Ping received pong.": 3,
+        "Pong received ping.": 3,
+        "Ping finished.": 1,
+        "Pong finished.": 1
+      }
+    },
+    {
+      "id": "NU-010",
+      "title": "Copied format/1 remains a working control",
+      "goal": "actors(B),spawn(nu_format,P,[node($PEER),src_predicates([nu_format/0]),monitor(true)]),nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "format probe."
+      ]
+    },
+    {
+      "id": "NU-011",
+      "title": "Public clause bodies preserve write/writeln and variable sharing",
+      "goal": "clause(nu_emit(X),Body),Body=writeln(Y),X==Y,var(X),clause(nu_write(A),WriteBody),WriteBody=write(B),A==B,var(A)"
+    },
+    {
+      "id": "NU-012",
+      "title": "Source-less remote writeln/1 uses the terminal protocol",
+      "goal": "actors(B),spawn(writeln(bare),P,[node($PEER_SLASH),monitor(true)]),nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "bare"
+      ]
+    },
+    {
+      "id": "NU-013",
+      "title": "Source-less remote call(writeln/1) uses the terminal protocol",
+      "goal": "actors(B),spawn(call(writeln(meta)),P,[node($PEER_SLASH),monitor(true)]),nu_done(P),nu_baseline(B)",
+      "outputs": [
+        "meta"
+      ]
+    }
+  ]
+}

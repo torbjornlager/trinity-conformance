@@ -1,10 +1,18 @@
 # Current Web Prolog conformance coverage
 
-Updated **5 November 2026**. The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md)
+Updated **6 November 2026**. The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md)
 and its [machine-readable ledger](requirements/appendix-b-0.1.json) now provide
 requirement-level accounting. The migrated inventory has 383 manuscript source
 units, preserving the original 353 IDs and adding 30 units from the revision.
 Earlier test selections still need full clause mapping; these unit counts are not a conformance percentage.
+
+The [native node URI and copied-I/O repair](reports/2026-11-06-node-uri-io/README.md)
+adds 13 shared cases, all passing on native SWI and Trealla: 26 observations.
+It covers trailing-slash node identities, copied public I/O source, source-less
+remote output and the reported ping-pong pattern, including actor reclamation
+and a fresh query. Source/document URI paths are preserved. This is development
+qualification with runtime source fingerprints; no public rollout or whole-unit
+ledger promotion is implied.
 
 The [latest public successor release](reports/2026-11-05-successor-public-release/README.md)
 is committed, pushed and deployed to N5: consumer image `a44c23d`, Trealla
