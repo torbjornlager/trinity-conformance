@@ -51,4 +51,5 @@ qualifies the selected native behavior; it does not certify all Appendix B,
 SWI-WASM, arbitrary URI equivalence or every network failure schedule.
 
 The subsequent [committed revisions](committed-runtime-revisions.json) preserve
-these qualified runtime sources. Public rollout evidence is recorded separately.
+these qualified runtime sources. The [public rollout and UI evidence](../2026-11-06-node-uri-io-public-release/README.md)
+records the subsequent deployment.

@@ -6,6 +6,14 @@ requirement-level accounting. The migrated inventory has 383 manuscript source
 units, preserving the original 353 IDs and adding 30 units from the revision.
 Earlier test selections still need full clause mapping; these unit counts are not a conformance percentage.
 
+The [public node URI/I/O release](reports/2026-11-06-node-uri-io-public-release/README.md)
+deploys the qualified native repair. All 12 editor checks, six native tutorial
+rounds and six browser tutorial combinations pass, alongside 45 public readiness,
+asset and RPC checks. Both committed runtimes pass the 44-case ACTOR release gate.
+Exact image pins, configuration preservation and the initial corrected test-harness
+artifact are recorded. This is affected-example verification, not a complete
+catalogue rerun or whole-unit ledger promotion.
+
 The [native node URI and copied-I/O repair](reports/2026-11-06-node-uri-io/README.md)
 adds 13 shared cases, all passing on native SWI and Trealla: 26 observations.
 It covers trailing-slash node identities, copied public I/O source, source-less
