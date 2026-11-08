@@ -1,0 +1,130 @@
+{
+  "advertised_profile": "isotope",
+  "baseline": "0.1",
+  "candidate": "n7-packaged",
+  "counts": {
+    "diagnostic_error": 0,
+    "fail": 3,
+    "observed": 0,
+    "pass": 7,
+    "unsupported": 0
+  },
+  "duration_ms": 14,
+  "endpoint": "http://127.0.0.1:56239",
+  "peer": null,
+  "results": [
+    {
+      "duration_ms": 3,
+      "id": "IB-001",
+      "observation": [
+        {
+          "body": "success([ok], false).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Deterministic success"
+    },
+    {
+      "duration_ms": 2,
+      "id": "IB-002",
+      "observation": [
+        {
+          "body": "failure.\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Logical failure"
+    },
+    {
+      "duration_ms": 3,
+      "id": "IB-003",
+      "observation": [
+        {
+          "body": "success([a, b], true).\n",
+          "http_status": 200
+        },
+        {
+          "body": "success([c], false).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Paged enumeration and final-page state"
+    },
+    {
+      "duration_ms": 1,
+      "id": "IB-004",
+      "observation": [
+        {
+          "body": "success([b], false).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Offset and once stop at the requested slice"
+    },
+    {
+      "duration_ms": 1,
+      "id": "IB-005",
+      "observation": [
+        {
+          "body": "error(baseline_probe).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Uncaught exception is an error answer"
+    },
+    {
+      "detail": "ConformanceFailure: HTTP outcome {'http_status': 400, 'body': '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\\n        \"http://www.w3.org/TR/html4/strict.dtd\">\\n<html>\\n    <head>\\n        <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">\\n        <title>Error response</title>\\n    </head>\\n    <body>\\n        <h1>Error response</h1>\\n        <p>Error code: 400</p>\\n        <p>Message: Unsupported stateless query parameter.</p>\\n        <p>Error code explanation: 400 - Bad request syntax or unsupported method.</p>\\n    </body>\\n</html>\\n'}",
+      "duration_ms": 0,
+      "id": "IB-006",
+      "status": "fail",
+      "title": "Supplied source executes in the request"
+    },
+    {
+      "duration_ms": 1,
+      "id": "IB-007",
+      "observation": [
+        {
+          "body": "success([pair(X, X)], false).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Prolog template preserves variable sharing"
+    },
+    {
+      "duration_ms": 2,
+      "id": "IB-008",
+      "observation": [
+        {
+          "body": "success([pair(X, Y)], false).\n",
+          "http_status": 200
+        }
+      ],
+      "status": "pass",
+      "title": "Distinct template variables stay distinct"
+    },
+    {
+      "detail": "ConformanceFailure: HTTP outcome {'http_status': 400, 'body': '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\\n        \"http://www.w3.org/TR/html4/strict.dtd\">\\n<html>\\n    <head>\\n        <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">\\n        <title>Error response</title>\\n    </head>\\n    <body>\\n        <h1>Error response</h1>\\n        <p>Error code: 400</p>\\n        <p>Message: Expected format=prolog.</p>\\n        <p>Error code explanation: 400 - Bad request syntax or unsupported method.</p>\\n    </body>\\n</html>\\n'}",
+      "duration_ms": 0,
+      "id": "IB-009",
+      "status": "fail",
+      "title": "JSON response exposes query bindings"
+    },
+    {
+      "detail": "ConformanceFailure: HTTP outcome {'http_status': 400, 'body': '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\\n        \"http://www.w3.org/TR/html4/strict.dtd\">\\n<html>\\n    <head>\\n        <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">\\n        <title>Error response</title>\\n    </head>\\n    <body>\\n        <h1>Error response</h1>\\n        <p>Error code: 400</p>\\n        <p>Message: Unsupported stateless query parameter.</p>\\n        <p>Error code explanation: 400 - Bad request syntax or unsupported method.</p>\\n    </body>\\n</html>\\n'}",
+      "duration_ms": 0,
+      "id": "IB-010",
+      "status": "fail",
+      "title": "Request source does not leak into the next request"
+    }
+  ],
+  "schema_version": 2,
+  "scope": "required",
+  "started_at": "2026-11-08T15:15:17.100819+00:00",
+  "suite": "isobase-http-0.1"
+}
