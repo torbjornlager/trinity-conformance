@@ -110,6 +110,51 @@
           "expect_prolog": "success([verified],false)."
         }
       ]
+    },
+    {
+      "id": "ER-011",
+      "title": "Zero divisor in truncating integer division raises an evaluation error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is 0 // (1-1),fail),error(evaluation_error(zero_divisor),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-012",
+      "title": "Zero divisor in floored integer division raises an evaluation error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is 0 div (1-1),fail),error(evaluation_error(zero_divisor),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-013",
+      "title": "Zero divisor in modulo raises an evaluation error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is 0 mod (1-1),fail),error(evaluation_error(zero_divisor),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
     }
   ]
 }
