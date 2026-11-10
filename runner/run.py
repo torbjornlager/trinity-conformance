@@ -405,7 +405,10 @@ def case_ac_006(candidate: Candidate) -> None:
         prompt = harness.recv("prompt")
         require(prompt.get("pid") == pid and prompt.get("data") == "Input",
                 f"unexpected browser prompt: {prompt!r}")
-        harness.send({"command": "toplevel_respond", "pid": pid, "input": "hello"})
+        reply = {"command": "toplevel_respond", "pid": pid, "input": "hello"}
+        if "prompt_ref" in prompt:
+            reply["prompt_ref"] = prompt["prompt_ref"]
+        harness.send(reply)
         responded = False
         success: dict[str, Any] | None = None
         for _ in range(2):
@@ -429,16 +432,18 @@ def case_ac_007(candidate: Candidate) -> None:
         spawned = harness.recv("success")
         child = row_value(spawned, "Pid")
         harness.call(
-            f"toplevel_call({child},input('Input',X)),receive({{Answer->true}})",
+            f"toplevel_call({child},input('Input',X)),"
+            "receive({prompt(P,prompt_ref(Ref,'Input')) -> Answer=prompt(P,'Input'); "
+            "prompt(P,'Input') -> Ref=legacy,Answer=prompt(P,'Input')})",
             "[limit(1)]",
         )
         prompt_answer = harness.recv("success")
         prompt_text = row_value(prompt_answer, "Answer")
         require(prompt_text.startswith("prompt("),
                 f"nested input bypassed its protocol caller: {prompt_text!r}")
-        harness.call(
-            f"respond({child},hello),receive({{Answer->true}})", "[limit(1)]"
-        )
+        ref = row_value(prompt_answer, "Ref")
+        reply = f"respond({child},hello)" if ref == "legacy" else f"respond({child},{ref},hello)"
+        harness.call(f"{reply},receive({{Answer->true}})", "[limit(1)]")
         completed = harness.recv("success")
         answer = row_value(completed, "Answer")
         require(answer.startswith("success(") and "input('Input',hello)" in answer,
