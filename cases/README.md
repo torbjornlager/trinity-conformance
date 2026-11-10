@@ -35,6 +35,24 @@ topology-dependent regressions extracted from the published tutorials. These
 are black-box browser-protocol tests, but they are not profile requirements:
 for example, `DEMO-019` intentionally contacts the demonstrator's N3 and N4.
 
+[`error-contract-0.1.json`](error-contract-0.1.json) is a supporting draft for
+`runner/baseline.py`. It checks formal exceptions independently of native
+context, and checks that application exceptions survive the Prolog response
+envelope. Run it on an execution surface that admits the submitted goals.
+In particular, an admission denial in ER-007 is separate from the question
+of what the runtime throws for an admitted undefined call. The manifest
+does not compare JSON diagnostic strings. The demonstrator tests the prose
+it renders from equivalent error frames separately.
+[`actor-error-contract-0.1.json`](actor-error-contract-0.1.json) uses the same
+runner with a WebSocket URL and tests the exception for an unregistered
+local actor name.
+
+[`relation-error-admission-0.1.json`](relation-error-admission-0.1.json) and
+[`isobase-error-admission-0.1.json`](isobase-error-admission-0.1.json) are
+separate fixtures for the N0 RELATION and N6 ISOBASE execution policies.
+They check the formal term returned at admission. Use them on those nodes
+or an equivalent policy fixture.
+
 ## RELATION
 
 - accepted advertised relation

@@ -53,6 +53,13 @@ def http_case(case: dict, url: str, timeout: float, token: str | None, diagnosti
         if 'expect_prolog' in request:
             actor.require(variant_tokens(body)==variant_tokens(request['expect_prolog']),
                           f"expected {request['expect_prolog']!r}, got {body!r}")
+        elif 'expect_prolog_error_formal' in request:
+            formal = request['expect_prolog_error_formal']
+            prefix = variant_tokens(f'error(error({formal},')
+            tokens = variant_tokens(body)
+            actor.require(tokens[:len(prefix)] == prefix and
+                          tokens[-3:] == [')', ')', '.'] and len(tokens) > len(prefix) + 3,
+                          f"expected formal error {formal!r}, got {body!r}")
         else:
             decoded=json.loads(body)
             if 'expect_json' in request:
@@ -128,7 +135,7 @@ def main() -> int:
     for case in pack['cases']:
         row=dict(id=case['id'],title=case['title']);before=time.monotonic()
         if case.get('issue'): row['issue']=case['issue']
-        minimum='isobase' if case['transport']=='http' else 'actor'
+        minimum=case.get('minimum_profile', 'isobase' if case['transport']=='http' else 'actor')
         if actor.PROFILE_ORDER[args.profile]<actor.PROFILE_ORDER[minimum]:
             row.update(status='unsupported',detail=f'requires {minimum}')
         else:
