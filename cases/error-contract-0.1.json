@@ -1,0 +1,115 @@
+{
+  "suite": "error-contract-0.1",
+  "baseline": "error-contract-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Run on an execution surface that admits these submitted goals. Relation-only and sandbox rejections are separate admission observations. Formal errors are matched independently of implementation context except when the goal explicitly throws an application term.",
+  "cases": [
+    {
+      "id": "ER-001",
+      "title": "An insufficiently instantiated arithmetic operand raises an instantiation error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is Y,fail),error(instantiation_error,_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-002",
+      "title": "between/3 identifies its noninteger input",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((between(a,3,X),fail),error(type_error(integer,a),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-003",
+      "title": "An unknown arithmetic functor is an evaluable type error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is a+1,fail),error(type_error(evaluable,a/0),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-004",
+      "title": "Arithmetic division by zero raises an evaluation error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((X is 1/0,fail),error(evaluation_error(zero_divisor),_),true)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-005",
+      "title": "An application exception is the payload of the stateless error answer",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(example_exception(a))",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "error(example_exception(a))."
+        }
+      ]
+    },
+    {
+      "id": "ER-006",
+      "title": "An explicitly thrown error retains its application-supplied context in Prolog format",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(error(type_error(integer,a),example_context))",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "error(error(type_error(integer,a),example_context))."
+        }
+      ]
+    },
+    {
+      "id": "ER-007",
+      "title": "An undefined procedure is an existence error in a context that admits the call",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((error_conformance_missing_43(x),fail),error(existence_error(procedure,PI),_),(PI==error_conformance_missing_43/1;PI=(_:error_conformance_missing_43/1)))",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    }
+  ]
+}
