@@ -21,6 +21,12 @@
       "title": "Remote calls preserve an unrelated local monitor and message",
       "transport": "query",
       "goal": "self(S),S!baseline_kept,spawn(receive({stop->true}),Other,[monitor(true)]),toplevel_spawn(P,[node('__PEER__'),session(true),monitor(true)]),toplevel_call_synch(P,true,A,[timeout(3)]),A==success(P,[true],false),toplevel_halt(P),receive({down(P,P,_)->true},[timeout(3),on_timeout(fail)]),Other!stop,receive({down(Other,Other,_)->true},[timeout(3),on_timeout(fail)]),receive({baseline_kept->true})"
+    },
+    {
+      "id": "IX-004",
+      "title": "A late synchronous reply cannot answer the next request or its asynchronous page",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[node('__PEER__'),session(true),monitor(true)]),toplevel_call_synch(P,(sleep(0.15),X=old),Early,[template(X),timeout(0)]),var(Early),var(X),toplevel_call_synch(P,member(Y,[a,b]),First,[template(Y),limit(1),timeout(3)]),First==success(P,[a],true),var(Y),toplevel_next(P),receive({success(P,[b],false)->true},[timeout(3),on_timeout(fail)]),toplevel_halt(P),receive({down(P,P,_)->true},[timeout(3),on_timeout(fail)])"
     }
   ]
 }
