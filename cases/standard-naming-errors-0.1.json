@@ -1,0 +1,70 @@
+{
+  "suite": "standard-naming-errors-0.1",
+  "baseline": "standard-naming-errors-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Appendix B.9 standard registry and required-option errors; explicit application throws unchanged",
+  "cases": [
+    {
+      "id": "STDERR-APPLICATION-BARE",
+      "title": "User legacy-shaped exception remains an application term",
+      "transport": "query",
+      "goal": "catch(throw(name_is_in_use(application_token)),E,true),nonvar(E),E==name_is_in_use(application_token)"
+    },
+    {
+      "id": "STDERR-APPLICATION-WRAPPED",
+      "title": "User error formal and context are preserved",
+      "transport": "query",
+      "goal": "catch(throw(error(process_already_has_a_name(application_token),application_context)),E,true),nonvar(E),E==error(process_already_has_a_name(application_token),application_context)"
+    },
+    {
+      "id": "STDERR-NAMED-TOPLEVEL",
+      "title": "Unknown named synchronous target has common existence error",
+      "transport": "query",
+      "goal": "catch(toplevel_call_synch(standard_error_missing_name,true,Answer),E,true),nonvar(E),E=error(existence_error(actor_name,standard_error_missing_name),_),var(Answer)"
+    },
+    {
+      "id": "STDERR-MISSING-START",
+      "title": "Missing start option preserves child identity and output",
+      "transport": "query",
+      "goal": "catch(supervisor_spawn([child(standard_error_child,[])],Pid),E,true),nonvar(E),E=error(existence_error(option,start(standard_error_child)),_),var(Pid)"
+    },
+    {
+      "id": "STDERR-REGISTRY",
+      "title": "Registration conflicts preserve the winner and use common formals",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P,[monitor(true)]),spawn(receive({stop->true}),Q,[monitor(true)]),register(standard_error_taken,P),catch(register(standard_error_taken,Q),Taken,true),nonvar(Taken),Taken=error(permission_error(register,actor_name,standard_error_taken),_),catch(register(standard_error_other,P),Named,true),nonvar(Named),Named=error(permission_error(register,process,P),_),whereis(standard_error_taken,Found),Found==P,whereis(standard_error_other,undefined),unregister(standard_error_taken),P!stop,Q!stop,receive({down(P,P,_)->true},[timeout(2),on_timeout(throw(missing_owner_down))]),receive({down(Q,Q,_)->true},[timeout(2),on_timeout(throw(missing_loser_down))])"
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-BARE",
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(name_is_in_use(application_token))",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "error(name_is_in_use(application_token))."
+        }
+      ]
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-WRAPPED",
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(error(process_already_has_a_name(application_token),application_context))",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "error(error(process_already_has_a_name(application_token),application_context))."
+        }
+      ]
+    }
+  ]
+}
