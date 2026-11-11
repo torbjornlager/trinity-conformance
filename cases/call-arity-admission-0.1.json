@@ -1,0 +1,126 @@
+{
+  "suite": "call-arity-admission-0.1",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "CA-001",
+      "title": "Literal builtin closure retains argument sharing",
+      "transport": "query",
+      "goal": "call(=,A,B),A=kept,B==kept"
+    },
+    {
+      "id": "CA-002",
+      "title": "Closure prefix arguments precede appended arguments",
+      "transport": "query",
+      "goal": "call(atom_concat(left),right,V),V==leftright"
+    },
+    {
+      "id": "CA-003",
+      "title": "Private closure receives 1 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca1,V),var(V)"
+    },
+    {
+      "id": "CA-004",
+      "title": "Private closure receives 2 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca2,a,V),V==a"
+    },
+    {
+      "id": "CA-005",
+      "title": "Private closure receives 3 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca3,a,a,V),V==a"
+    },
+    {
+      "id": "CA-006",
+      "title": "Private closure receives 4 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca4,a,a,a,V),V==a"
+    },
+    {
+      "id": "CA-007",
+      "title": "Private closure receives 5 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca5,a,a,a,a,V),V==a"
+    },
+    {
+      "id": "CA-008",
+      "title": "Private closure receives 6 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca6,a,a,a,a,a,V),V==a"
+    },
+    {
+      "id": "CA-009",
+      "title": "Private closure receives 7 appended arguments",
+      "transport": "query",
+      "source": "ca1(X).\nca2(X,X).\nca3(X,X,X).\nca4(X,X,X,X).\nca5(X,X,X,X,X).\nca6(X,X,X,X,X,X).\nca7(X,X,X,X,X,X,X).",
+      "goal": "call(ca7,a,a,a,a,a,a,V),V==a"
+    },
+    {
+      "id": "CA-010",
+      "title": "A failing completed builtin call preserves caller variables",
+      "transport": "query",
+      "goal": "(call(=,A,b),fail;var(A))"
+    },
+    {
+      "id": "CA-011",
+      "title": "Whitelist rejection preserves the session",
+      "transport": "query_rejection",
+      "goal": "call(ca_unknown,V)",
+      "only_sandbox_modes": [
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "existence_error"
+      ]
+    },
+    {
+      "id": "CA-012",
+      "title": "Whitelist rejection preserves the session",
+      "transport": "query_rejection",
+      "goal": "call(C,A,B)",
+      "only_sandbox_modes": [
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "CA-013",
+      "title": "Whitelist rejection preserves the session",
+      "transport": "query_rejection",
+      "goal": "call(halt)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    },
+    {
+      "id": "CA-014",
+      "title": "Nested module-qualified callbacks retain module denial",
+      "transport": "query_rejection",
+      "goal": "call(call(system:shell),a,b,c,d)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "existence_error"
+      ]
+    }
+  ]
+}

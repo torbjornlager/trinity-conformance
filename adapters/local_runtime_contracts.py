@@ -43,6 +43,26 @@ def reference_profile_case(case, name, root, args, env):
                 expected=case['expected'], exit_code=result.returncode)
 
 
+def query_rejection_case(case, url):
+    candidate = baseline.actor.Candidate(url, 'actor', 8, None, None, False, ())
+    with baseline.actor.Harness(candidate) as harness:
+        options = '[session(true)]'
+        if case.get('source'):
+            options = '[session(true),src_text(' + baseline.actor.prolog_quote_atom(case['source']) + ')]'
+        harness.spawn_shell(options)
+        harness.call(case['goal'], '[limit(1)]')
+        rejected = harness.recv_type('error', limit=64)
+        formal = baseline.variant_tokens(rejected.get('details') or rejected.get('data', ''))
+        baseline.actor.require(len(formal) > 3 and formal[:2] == ['error', '(']
+                               and formal[2] in case['expected_error_names'], repr(rejected))
+        harness.call('RejectionRecovery=ok', '[limit(1)]')
+        recovered = harness.recv_type('success', limit=64)
+        baseline.actor.require(baseline.actor.row_value(recovered, 'RejectionRecovery') == 'ok'
+                               and recovered.get('more') is False, repr(recovered))
+        harness.halt()
+        return dict(rejection=rejected, recovery=recovered)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest', type=Path, required=True)
@@ -93,6 +113,10 @@ def main():
                     if pack.get('source'):
                         case['source'] = pack['source']
                     row = dict(candidate=name, mode=args.mode, id=case['id'])
+                    if args.mode not in case.get('only_sandbox_modes', ['blacklist', 'whitelist', 'off']):
+                        row.update(status='not_applicable', detail='policy check for other sandbox modes')
+                        rows.append(row)
+                        continue
                     if args.mode not in case.get('sandbox_modes', ['blacklist', 'whitelist', 'off']):
                         row.update(status='deferred', detail=case['deferred_reason'])
                         rows.append(row)
@@ -103,6 +127,8 @@ def main():
                             observed = baseline.http_case(case, url, 8, None, False)
                         elif case['transport'] == 'query':
                             observed = baseline.query_case(case, url.replace('http:', 'ws:') + '/ws', 8, None)
+                        elif case['transport'] == 'query_rejection':
+                            observed = query_rejection_case(case, url.replace('http:', 'ws:') + '/ws')
                         elif case['transport'] == 'profile_policy':
                             observed = reference_profile_case(case, name, root, args, env)
                         else:

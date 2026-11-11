@@ -8,8 +8,9 @@ throwing deadlines. HA-011 (a maplist closure) remains in the prerequisite libra
 batch and is not counted as passing here.
 
 The Trealla runtime admission fix is required before enabling this selection.
-SU-020 in the successor pack is now checked in whitelist too; literal call/N
-admission remains explicitly deferred in SU-019 and SU-HTTP-019.
+SU-020 in the successor pack is checked in whitelist too. Completed call/N
+arity admission also enables SU-019 and SU-HTTP-019 there; no successor rows
+remain deferred. HA-011 remains with the separate library batch.
 
 `adapters/trealla_helper_transport.py --tpl /path/to/tpl --root /path/to/trealla-port
 --output /tmp/helper-transport` additionally checks the actual Trealla WebSocket
