@@ -1,0 +1,144 @@
+{
+  "suite": "native-supervisor-lifecycle-0.1",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SUP-001",
+      "title": "Empty supervisor has common inspection and count formats",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),supervisor_which_children(Sup,[]),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-002",
+      "title": "Inspection exposes type and restart policy in start order",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true})),restart(transient)]),child(b,[start(receive({stop->true})),restart(permanent)])],Sup),supervisor_which_children(Sup,[info(a,A,worker,transient),info(b,B,worker,permanent)]),A\\==B,supervisor_count_children(Sup,[specs-2,active-2,supervisors-0,workers-2]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-004",
+      "title": "Respawn returns its new pid and retains child order",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true}))]),child(b,[start(receive({stop->true}))])],Sup),supervisor_which_children(Sup,[info(a,Old,worker,permanent),info(b,B,worker,permanent)]),supervisor_terminate_child(Sup,a,ok),supervisor_respawn_child(Sup,a,ok(New)),New\\==Old,supervisor_which_children(Sup,[info(a,New,worker,permanent),info(b,B,worker,permanent)]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-009",
+      "title": "Creation waits for child setup but not the application goal",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(idle,[start(receive({never->true}))])],Sup),supervisor_which_children(Sup,[info(idle,Pid,worker,permanent)]),Pid\\==undefined,supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-010",
+      "title": "Halt waits for a busy child to finish shutdown",
+      "transport": "query",
+      "goal": "self(Parent),Source='manual_hold(hold(Observer),State,done,State) :- self(Me), send(Observer,manual_holding(Me)), receive({release -> true}).',supervisor_spawn([child(manual_busy,[start(server(manual_hold,[src_text(Source)])),shutdown(infinity)])],Sup),supervisor_which_children(Sup,[info(manual_busy,Child,worker,permanent)]),server_promise(Child,hold(Parent),Request),receive({manual_holding(Child)->true},[timeout(3),on_timeout(throw(child_did_not_enter))]),spawn((supervisor_halt(Sup),send(Parent,manual_halted)),Waiter,[monitor(true)]),receive({manual_halted->throw(early_halt_ack)},[timeout(0.03)]),send(Child,release),receive({Request-done->true},[timeout(3),on_timeout(throw(missing_server_reply))]),receive({manual_halted->true},[timeout(3),on_timeout(throw(missing_halt_ack))]),receive({down(Waiter,Waiter,true)->true},[timeout(3),on_timeout(throw(missing_waiter_down))])"
+    },
+    {
+      "id": "SUP-001-PRIVATE",
+      "title": "Empty supervisor has common inspection and count formats with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),supervisor_which_children(Sup,[]),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)",
+      "source": "supervisor_probe_marker."
+    },
+    {
+      "id": "SUP-002-PRIVATE",
+      "title": "Inspection exposes type and restart policy in start order with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true})),restart(transient)]),child(b,[start(receive({stop->true})),restart(permanent)])],Sup),supervisor_which_children(Sup,[info(a,A,worker,transient),info(b,B,worker,permanent)]),A\\==B,supervisor_count_children(Sup,[specs-2,active-2,supervisors-0,workers-2]),supervisor_halt(Sup)",
+      "source": "supervisor_probe_marker."
+    },
+    {
+      "id": "SUP-004-PRIVATE",
+      "title": "Respawn returns its new pid and retains child order with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true}))]),child(b,[start(receive({stop->true}))])],Sup),supervisor_which_children(Sup,[info(a,Old,worker,permanent),info(b,B,worker,permanent)]),supervisor_terminate_child(Sup,a,ok),supervisor_respawn_child(Sup,a,ok(New)),New\\==Old,supervisor_which_children(Sup,[info(a,New,worker,permanent),info(b,B,worker,permanent)]),supervisor_halt(Sup)",
+      "source": "supervisor_probe_marker."
+    },
+    {
+      "id": "SUP-009-PRIVATE",
+      "title": "Creation waits for child setup but not the application goal with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(idle,[start(receive({never->true}))])],Sup),supervisor_which_children(Sup,[info(idle,Pid,worker,permanent)]),Pid\\==undefined,supervisor_halt(Sup)",
+      "source": "supervisor_probe_marker."
+    },
+    {
+      "id": "SUP-010-PRIVATE",
+      "title": "Halt waits for a busy child to finish shutdown with private source",
+      "transport": "query",
+      "goal": "self(Parent),Source='manual_hold(hold(Observer),State,done,State) :- self(Me), send(Observer,manual_holding(Me)), receive({release -> true}).',supervisor_spawn([child(manual_busy,[start(server(manual_hold,[src_text(Source)])),shutdown(infinity)])],Sup),supervisor_which_children(Sup,[info(manual_busy,Child,worker,permanent)]),server_promise(Child,hold(Parent),Request),receive({manual_holding(Child)->true},[timeout(3),on_timeout(throw(child_did_not_enter))]),spawn((supervisor_halt(Sup),send(Parent,manual_halted)),Waiter,[monitor(true)]),receive({manual_halted->throw(early_halt_ack)},[timeout(0.03)]),send(Child,release),receive({Request-done->true},[timeout(3),on_timeout(throw(missing_server_reply))]),receive({manual_halted->true},[timeout(3),on_timeout(throw(missing_halt_ack))]),receive({down(Waiter,Waiter,true)->true},[timeout(3),on_timeout(throw(missing_waiter_down))])",
+      "source": "supervisor_probe_marker."
+    },
+    {
+      "id": "SL-011",
+      "title": "Copied supervisor code keeps its private helper context",
+      "transport": "query",
+      "goal": "self(Me),spawn(run(Me),P,[src_predicates([run/1,child/1]),monitor(true)]),receive({copied_supervisor_done->true},[timeout(3),on_timeout(throw(copied_supervisor_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(copied_supervisor_down_missing))])",
+      "source": "child(To):-send(To,child_ready),receive({finish->true}). run(To):-self(Me),supervisor_spawn([child(worker,[start(child(Me))])],Sup),receive({child_ready->true},[timeout(2),on_timeout(throw(child_ready_missing))]),supervisor_halt(Sup),send(To,copied_supervisor_done)."
+    },
+    {
+      "id": "SL-012",
+      "title": "Halt preserves an independently owned monitor",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),monitor(Sup,Own),supervisor_halt(Sup),receive({down(Sup,Own,true)->true},[timeout(3),on_timeout(throw(owned_down_missing))]),demonitor(Own,[flush])"
+    },
+    {
+      "id": "SL-013",
+      "title": "Child source preparation failure publishes neither supervisor nor child",
+      "transport": "query",
+      "goal": "Text='broken(',catch(supervisor_spawn([child(failed_sup_child,[start(server(callback,[src_text(Text)]))])],Sup,[name(failed_sup_name)]),E,true),nonvar(E),var(Sup),whereis(failed_sup_name,undefined),whereis(failed_sup_child,undefined)"
+    },
+    {
+      "id": "SL-014",
+      "title": "Private supervisor entry stays outside the public API",
+      "transport": "query_rejection",
+      "goal": "spawn(supervisor_actor:sup_init([],sup(one_for_one,1,5,[],[])),_)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "existence_error"
+      ]
+    },
+    {
+      "id": "SL-015",
+      "title": "Private supervisor entry stays outside the public API",
+      "transport": "query_rejection",
+      "goal": "G=supervisor_actor:sup_init([],sup(one_for_one,1,5,[],[])),spawn(G,_)",
+      "only_sandbox_modes": [
+        "blacklist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "existence_error",
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "SL-016",
+      "title": "Known forbidden start is rejected during admission",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([child(forbidden,[start(open('/tmp/forbidden-supervisor-probe',read,_))])],_)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    },
+    {
+      "id": "SL-017",
+      "title": "Known forbidden start is rejected during admission",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([child(forbidden,[start((true,open('/tmp/forbidden-supervisor-probe',read,_)))])],_)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    }
+  ]
+}
