@@ -1,0 +1,26 @@
+{
+  "suite": "interop-successor-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SI-001",
+      "title": "Remote successor directions and determinism",
+      "transport": "query",
+      "goal": "rpc('__PEER__',(succ(2,S),succ(B,3),findall(ok,succ(2,3),Rows))),S==3,B==2,Rows==[ok]"
+    },
+    {
+      "id": "SI-002",
+      "title": "Remote float validation preserves culprit and unbound peer",
+      "transport": "query",
+      "goal": "rpc('__PEER__',(catch((succ(1,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),catch((succ(1.5,V),fail),E2,true),nonvar(E2),E2=error(type_error(integer,1.5),_),var(V))),var(V)"
+    },
+    {
+      "id": "SI-003",
+      "title": "Remote private source uses the same successor contract",
+      "transport": "query",
+      "goal": "rpc('__PEER__',(catch((si_private(1,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_)),[src_text('si_private(A,B):-succ(A,B).')])"
+    }
+  ]
+}

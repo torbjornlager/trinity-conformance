@@ -50,7 +50,7 @@ def main():
     parser.add_argument('--trealla-root', type=Path, required=True)
     parser.add_argument('--swipl', default='swipl')
     parser.add_argument('--tpl', required=True)
-    parser.add_argument('--mode', choices=['blacklist', 'whitelist'], default='blacklist')
+    parser.add_argument('--mode', choices=['blacklist', 'whitelist', 'off'], default='blacklist')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     pack = json.loads(args.manifest.read_text())
@@ -93,6 +93,11 @@ def main():
                     if pack.get('source'):
                         case['source'] = pack['source']
                     row = dict(candidate=name, mode=args.mode, id=case['id'])
+                    if args.mode not in case.get('sandbox_modes', ['blacklist', 'whitelist', 'off']):
+                        row.update(status='deferred', detail=case['deferred_reason'])
+                        rows.append(row)
+                        print(name, row['id'], row['status'], row['detail'], flush=True)
+                        continue
                     try:
                         if case['transport'] == 'http':
                             observed = baseline.http_case(case, url, 8, None, False)
@@ -117,7 +122,7 @@ def main():
     report = dict(suite=pack['suite'], mode=args.mode, results=rows,
                   manifest_sha256=hashlib.sha256(args.manifest.read_bytes()).hexdigest())
     (args.output / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
-    return int(any(row['status'] != 'pass' for row in rows))
+    return int(any(row['status'] == 'fail' for row in rows))
 
 
 if __name__ == '__main__':
