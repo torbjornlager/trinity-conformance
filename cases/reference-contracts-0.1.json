@@ -1,0 +1,84 @@
+{
+  "suite": "reference-contracts-0.1",
+  "scope": "required",
+  "status": "draft",
+  "contract": "Appendix B make_ref/1: deterministic fresh opaque references, admitted only in ACTOR. Wire checks cover implemented surfaces; all four profiles share host policy assertions.",
+  "cases": [
+    {
+      "id": "RF-001",
+      "title": "A reference call is deterministic and two calls return distinct opaque references",
+      "transport": "query",
+      "goal": "findall(R,make_ref(R),[A]),make_ref(B),nonvar(A),nonvar(B),A\\==B"
+    },
+    {
+      "id": "RF-002",
+      "title": "An opaque reference retains identity through an application message",
+      "transport": "query",
+      "goal": "self(S),make_ref(R),send(S,reference_value(R)),receive({reference_value(C)->C==R},[timeout(0),on_timeout(throw(reference_missing))])"
+    },
+    {
+      "id": "RF-003",
+      "title": "A bounded series of reference calls contains no duplicate values",
+      "transport": "query",
+      "goal": "findall(R,(between(1,32,_),make_ref(R)),Refs),length(Refs,32),sort(Refs,Unique),length(Unique,32)"
+    },
+    {
+      "id": "RF-004",
+      "title": "Stateless HTTP rejects the ACTOR primitive and remains usable",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "true",
+            "template": "healthy",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([healthy],false)."
+        },
+        {
+          "params": {
+            "goal": "make_ref(R)",
+            "format": "json"
+          },
+          "expect_json_type": "error"
+        },
+        {
+          "params": {
+            "goal": "true",
+            "template": "healthy",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([healthy],false)."
+        }
+      ]
+    },
+    {
+      "id": "RF-005",
+      "title": "relation profile policy rejects reference creation without binding its argument",
+      "transport": "profile_policy",
+      "profile": "relation",
+      "expected": "denied"
+    },
+    {
+      "id": "RF-006",
+      "title": "isobase profile policy rejects reference creation without binding its argument",
+      "transport": "profile_policy",
+      "profile": "isobase",
+      "expected": "denied"
+    },
+    {
+      "id": "RF-007",
+      "title": "isotope profile policy rejects reference creation without binding its argument",
+      "transport": "profile_policy",
+      "profile": "isotope",
+      "expected": "denied"
+    },
+    {
+      "id": "RF-008",
+      "title": "actor profile policy admits reference creation without binding its argument",
+      "transport": "profile_policy",
+      "profile": "actor",
+      "expected": "admitted"
+    }
+  ]
+}
