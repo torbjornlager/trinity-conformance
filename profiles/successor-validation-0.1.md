@@ -28,14 +28,12 @@ The prerequisite maplist callback case requires separate whitelist library
 admission work. It remains with that batch and is not silently counted as a pass
 or used to justify widening this extraction's permissions.
 
-The runner reports three explicitly deferred rows per runtime in whitelist mode:
-SU-019, SU-HTTP-019 (literal call/N admission), and SU-020 (a direct query of a
-loaded private helper). They remain active in blacklist and owner-off modes.
-This keeps the same selection on both runtimes and does not count admission
-deferrals as passing successor semantics. Whitelist private-source execution is
-still covered by HTTP, receive, and copied-source cases. Maplist also remains
-with the pending library-admission batch. The SWI successor companion fix must
-land alongside the Trealla runtime fix before this selection becomes required.
+The runner reports two explicitly deferred rows per runtime in whitelist mode:
+SU-019 and SU-HTTP-019 (literal call/N admission). They remain active in blacklist
+and owner-off modes. SU-020 now runs in every mode with validated private-helper
+session admission. These cases are checked on both runtimes with the same
+selection; deferrals are not counted as passing successor semantics. Maplist
+remains with the pending library-admission batch.
 
 `cases/interop-successor-0.1.json` runs the valid relation, float validation,
 and private-source contract across both native peer directions. Use the standard
