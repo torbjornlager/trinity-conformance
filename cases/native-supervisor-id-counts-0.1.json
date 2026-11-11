@@ -1,0 +1,255 @@
+{
+  "suite": "native-supervisor-id-counts-0.1",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SI-001",
+      "title": "initial rejects integer ID without binding it",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(42,[start(receive({finish->true}))])],Sup),supervisor_halt(Sup)),E,true),nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-002",
+      "title": "dynamic rejects integer ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child(42,[start(receive({finish->true}))]),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-003",
+      "title": "terminate rejects integer ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,42,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-004",
+      "title": "delete rejects integer ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,42,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-005",
+      "title": "respawn rejects integer ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,42,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-006",
+      "title": "initial rejects float ID without binding it",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(1.5,[start(receive({finish->true}))])],Sup),supervisor_halt(Sup)),E,true),nonvar(E),E=error(type_error(atom,1.5),_)"
+    },
+    {
+      "id": "SI-007",
+      "title": "dynamic rejects float ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child(1.5,[start(receive({finish->true}))]),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,1.5),_)"
+    },
+    {
+      "id": "SI-008",
+      "title": "terminate rejects float ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,1.5,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,1.5),_)"
+    },
+    {
+      "id": "SI-009",
+      "title": "delete rejects float ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,1.5,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,1.5),_)"
+    },
+    {
+      "id": "SI-010",
+      "title": "respawn rejects float ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,1.5,_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,1.5),_)"
+    },
+    {
+      "id": "SI-011",
+      "title": "initial rejects compound ID without binding it",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(worker(1),[start(receive({finish->true}))])],Sup),supervisor_halt(Sup)),E,true),nonvar(E),E=error(type_error(atom,worker(1)),_)"
+    },
+    {
+      "id": "SI-012",
+      "title": "dynamic rejects compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child(worker(1),[start(receive({finish->true}))]),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(1)),_)"
+    },
+    {
+      "id": "SI-013",
+      "title": "terminate rejects compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,worker(1),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(1)),_)"
+    },
+    {
+      "id": "SI-014",
+      "title": "delete rejects compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,worker(1),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(1)),_)"
+    },
+    {
+      "id": "SI-015",
+      "title": "respawn rejects compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,worker(1),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(1)),_)"
+    },
+    {
+      "id": "SI-016",
+      "title": "initial rejects nonground compound ID without binding it",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(worker(X),[start(receive({finish->true}))])],Sup),supervisor_halt(Sup)),E,true),nonvar(E),E=error(type_error(atom,worker(X)),_),var(X)"
+    },
+    {
+      "id": "SI-017",
+      "title": "dynamic rejects nonground compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child(worker(X),[start(receive({finish->true}))]),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(X)),_),var(X)"
+    },
+    {
+      "id": "SI-018",
+      "title": "terminate rejects nonground compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,worker(X),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(X)),_),var(X)"
+    },
+    {
+      "id": "SI-019",
+      "title": "delete rejects nonground compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,worker(X),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(X)),_),var(X)"
+    },
+    {
+      "id": "SI-020",
+      "title": "respawn rejects nonground compound ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,worker(X),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,worker(X)),_),var(X)"
+    },
+    {
+      "id": "SI-021",
+      "title": "initial rejects list ID without binding it",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child([worker],[start(receive({finish->true}))])],Sup),supervisor_halt(Sup)),E,true),nonvar(E),E=error(type_error(atom,[worker]),_)"
+    },
+    {
+      "id": "SI-022",
+      "title": "dynamic rejects list ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child([worker],[start(receive({finish->true}))]),_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,[worker]),_)"
+    },
+    {
+      "id": "SI-023",
+      "title": "terminate rejects list ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,[worker],_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,[worker]),_)"
+    },
+    {
+      "id": "SI-024",
+      "title": "delete rejects list ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,[worker],_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,[worker]),_)"
+    },
+    {
+      "id": "SI-025",
+      "title": "respawn rejects list ID without binding it",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,[worker],_),E,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),Children==[],nonvar(E),E=error(type_error(atom,[worker]),_)"
+    },
+    {
+      "id": "SI-026",
+      "title": "initial rejects an unbound ID",
+      "transport": "query",
+      "goal": "catch(supervisor_spawn([child(Id,[start(true)])],Sup),E,true),nonvar(E),E=error(instantiation_error,_),var(Id),var(Sup)"
+    },
+    {
+      "id": "SI-027",
+      "title": "dynamic rejects an unbound ID",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_spawn_child(Sup,child(Id,[start(true)]),_),E,true),supervisor_halt(Sup),nonvar(E),E=error(instantiation_error,_),var(Id)"
+    },
+    {
+      "id": "SI-028",
+      "title": "terminate rejects an unbound ID",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_terminate_child(Sup,Id,_),E,true),supervisor_halt(Sup),nonvar(E),E=error(instantiation_error,_),var(Id)"
+    },
+    {
+      "id": "SI-029",
+      "title": "delete rejects an unbound ID",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_delete_child(Sup,Id,_),E,true),supervisor_halt(Sup),nonvar(E),E=error(instantiation_error,_),var(Id)"
+    },
+    {
+      "id": "SI-030",
+      "title": "respawn rejects an unbound ID",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),catch(supervisor_respawn_child(Sup,Id,_),E,true),supervisor_halt(Sup),nonvar(E),E=error(instantiation_error,_),var(Id)"
+    },
+    {
+      "id": "SI-031",
+      "title": "All initial IDs are validated before child creation",
+      "transport": "query",
+      "goal": "catch(supervisor_spawn([child(should_not_start,[start(receive({finish->true}))]),child(42,[start(true)])],Sup,[name(invalid_id_supervisor)]),E,true),nonvar(E),E=error(type_error(atom,42),_),var(Sup),whereis(invalid_id_supervisor,undefined)"
+    },
+    {
+      "id": "SI-032",
+      "title": "terminate ID validation precedes supervisor contact",
+      "transport": "query",
+      "goal": "catch(supervisor_terminate_child(nonexistent_supervisor,42,_),E,true),nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-033",
+      "title": "delete ID validation precedes supervisor contact",
+      "transport": "query",
+      "goal": "catch(supervisor_delete_child(nonexistent_supervisor,42,_),E,true),nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-034",
+      "title": "respawn ID validation precedes supervisor contact",
+      "transport": "query",
+      "goal": "catch(supervisor_respawn_child(nonexistent_supervisor,42,_),E,true),nonvar(E),E=error(type_error(atom,42),_)"
+    },
+    {
+      "id": "SI-035",
+      "title": "Duplicate valid atom IDs preserve duplicate validation",
+      "transport": "query",
+      "goal": "catch(supervisor_spawn([child(worker_1,[start(receive({finish->true}))]),child(worker_1,[start(true)])],Sup),E,true),nonvar(E),E=error(permission_error(duplicate,supervisor_child_id,worker_1),_),var(Sup)"
+    },
+    {
+      "id": "SI-036",
+      "title": "Stopped nested supervisor has zero active subtype counts",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(nested,[start(start_sub_supervisor([],[])),type(supervisor)])],Sup),supervisor_count_children(Sup,[specs-1,active-1,supervisors-1,workers-0]),supervisor_terminate_child(Sup,nested,ok),supervisor_which_children(Sup,[info(nested,undefined,supervisor,permanent)]),supervisor_count_children(Sup,C),supervisor_halt(Sup),C==[specs-1,active-0,supervisors-0,workers-0]"
+    },
+    {
+      "id": "SI-037",
+      "title": "Counts follow nested supervisor stop respawn and deletion",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(nested,[start(start_sub_supervisor([],[])),type(supervisor)]),child(worker,[start(receive({finish->true}))])],Sup),supervisor_count_children(Sup,[specs-2,active-2,supervisors-1,workers-1]),supervisor_terminate_child(Sup,nested,ok),supervisor_count_children(Sup,[specs-2,active-1,supervisors-0,workers-1]),supervisor_respawn_child(Sup,nested,ok(New)),New\\==undefined,supervisor_count_children(Sup,[specs-2,active-2,supervisors-1,workers-1]),supervisor_terminate_child(Sup,nested,ok),supervisor_delete_child(Sup,nested,ok),supervisor_count_children(Sup,[specs-1,active-1,supervisors-0,workers-1]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SI-038",
+      "title": "Ordinary worker counts follow termination and deletion",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(worker,[start(receive({finish->true}))])],Sup),supervisor_terminate_child(Sup,worker,ok),supervisor_count_children(Sup,[specs-1,active-0,supervisors-0,workers-0]),supervisor_delete_child(Sup,worker,ok),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SI-039",
+      "title": "Stopped nested supervisor has zero active subtype counts with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(nested,[start(start_sub_supervisor([],[])),type(supervisor)])],Sup),supervisor_count_children(Sup,[specs-1,active-1,supervisors-1,workers-0]),supervisor_terminate_child(Sup,nested,ok),supervisor_which_children(Sup,[info(nested,undefined,supervisor,permanent)]),supervisor_count_children(Sup,C),supervisor_halt(Sup),C==[specs-1,active-0,supervisors-0,workers-0]",
+      "source": "supervisor_count_probe."
+    },
+    {
+      "id": "SI-040",
+      "title": "Counts follow nested supervisor stop respawn and deletion with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(nested,[start(start_sub_supervisor([],[])),type(supervisor)]),child(worker,[start(receive({finish->true}))])],Sup),supervisor_count_children(Sup,[specs-2,active-2,supervisors-1,workers-1]),supervisor_terminate_child(Sup,nested,ok),supervisor_count_children(Sup,[specs-2,active-1,supervisors-0,workers-1]),supervisor_respawn_child(Sup,nested,ok(New)),New\\==undefined,supervisor_count_children(Sup,[specs-2,active-2,supervisors-1,workers-1]),supervisor_terminate_child(Sup,nested,ok),supervisor_delete_child(Sup,nested,ok),supervisor_count_children(Sup,[specs-1,active-1,supervisors-0,workers-1]),supervisor_halt(Sup)",
+      "source": "supervisor_count_probe."
+    },
+    {
+      "id": "SI-041",
+      "title": "Ordinary worker counts follow termination and deletion with private source",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(worker,[start(receive({finish->true}))])],Sup),supervisor_terminate_child(Sup,worker,ok),supervisor_count_children(Sup,[specs-1,active-0,supervisors-0,workers-0]),supervisor_delete_child(Sup,worker,ok),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)",
+      "source": "supervisor_count_probe."
+    }
+  ]
+}
