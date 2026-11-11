@@ -1,0 +1,153 @@
+{
+  "suite": "monitor-preflight-0.1",
+  "status": "draft",
+  "scope": "required",
+  "source": "",
+  "cases": [
+    {
+      "id": "MC-001",
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "transport": "query",
+      "goal": "spawn(receive({stop->true}),P),register(mc_named,P),findall(R,monitor(mc_named,R),Rs),Rs=[A],monitor(P,B),A\\==B,P!stop,receive({down(P,A,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,B,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),monitor(P,C),C\\==A,C\\==B,receive({down(P,C,no_process)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Extra,Why)->throw(duplicate_notification(Extra,Why))},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-002",
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,R),spawn(send(S,down(P,R,application_supplied)),F,[monitor(true)]),receive({down(F,F,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,R,application_supplied)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!stop,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,R,_)->throw(duplicate_runtime_down)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-003",
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P,[monitor(true)]),monitor(P,R),S!down(P,R,queued),findall(ok,demonitor(R),One),One==[ok],receive({down(P,R,queued)->true},[timeout(0),on_timeout(throw(mc_missing_message))]),S!down(P,R,again),findall(ok,demonitor(R,[flush,flush]),Two),Two==[ok],findall(ok,demonitor(R,[]),Three),Three==[ok],P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,R,_)->throw(removed_reference_not_flushed)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-004",
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,R),spawn((demonitor(R,[flush]),send(S,foreign_removed)),F,[monitor(true)]),receive({foreign_removed->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(F,F,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!stop,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(R),demonitor(R,[flush])"
+    },
+    {
+      "id": "MC-005",
+      "title": "An uninstantiated monitor target is rejected even when a local name exists",
+      "transport": "query",
+      "goal": "setup_call_cleanup((spawn(receive({finish->true}),MCNamedPid),register(mc_preflight_target,MCNamedPid)),((catch(((monitor(P,R)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error)),var(P),var(R)),(unregister(mc_preflight_target),exit(MCNamedPid,kill)))"
+    },
+    {
+      "id": "MC-006",
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "transport": "query",
+      "goal": "self(S),spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),S!down(P,P,queued),(catch(((demonitor(R,[flush])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error)),var(R),receive({down(P,P,queued)->true},[timeout(0),on_timeout(throw(mc_missing_message))])"
+    },
+    {
+      "id": "MC-007",
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var((O))->MC1Variable=true;MC1Variable=false,copy_term((O),MC1Before)),catch((demonitor(MC1Ref,(O)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var((O));(O)=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),var(O)"
+    },
+    {
+      "id": "MC-008",
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush|Tail]))->MC1Variable=true;MC1Variable=false,copy_term(([flush|Tail]),MC1Before)),catch((demonitor(MC1Ref,([flush|Tail])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush|Tail]));([flush|Tail])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),var(Tail)"
+    },
+    {
+      "id": "MC-009",
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([O]))->MC1Variable=true;MC1Variable=false,copy_term(([O]),MC1Before)),catch((demonitor(MC1Ref,([O])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([O]));([O])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),var(O)"
+    },
+    {
+      "id": "MC-010",
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush,O]))->MC1Variable=true;MC1Variable=false,copy_term(([flush,O]),MC1Before)),catch((demonitor(MC1Ref,([flush,O])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush,O]));([flush,O])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),var(O)"
+    },
+    {
+      "id": "MC-011",
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var((bad))->MC1Variable=true;MC1Variable=false,copy_term((bad),MC1Before)),catch((demonitor(MC1Ref,(bad)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var((bad));(bad)=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(type_error(list,bad)),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-012",
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush|bad]))->MC1Variable=true;MC1Variable=false,copy_term(([flush|bad]),MC1Before)),catch((demonitor(MC1Ref,([flush|bad])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush|bad]));([flush|bad])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(type_error(list,[flush|bad])),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-013",
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([unknown]))->MC1Variable=true;MC1Variable=false,copy_term(([unknown]),MC1Before)),catch((demonitor(MC1Ref,([unknown])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([unknown]));([unknown])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,unknown)),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-014",
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush(true)]))->MC1Variable=true;MC1Variable=false,copy_term(([flush(true)]),MC1Before)),catch((demonitor(MC1Ref,([flush(true)])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush(true)]));([flush(true)])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,flush(true))),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-015",
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush(a,b)]))->MC1Variable=true;MC1Variable=false,copy_term(([flush(a,b)]),MC1Before)),catch((demonitor(MC1Ref,([flush(a,b)])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush(a,b)]));([flush(a,b)])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,flush(a,b))),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-016",
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush,unknown]))->MC1Variable=true;MC1Variable=false,copy_term(([flush,unknown]),MC1Before)),catch((demonitor(MC1Ref,([flush,unknown])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush,unknown]));([flush,unknown])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,unknown)),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-017",
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush,flush(false)]))->MC1Variable=true;MC1Variable=false,copy_term(([flush,flush(false)]),MC1Before)),catch((demonitor(MC1Ref,([flush,flush(false)])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush,flush(false)]));([flush,flush(false)])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,flush(false))),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-018",
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([7]))->MC1Variable=true;MC1Variable=false,copy_term(([7]),MC1Before)),catch((demonitor(MC1Ref,([7])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([7]));([7])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,7)),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),true"
+    },
+    {
+      "id": "MC-026",
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "transport": "query",
+      "goal": "(catch(((demonitor(R)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error)),var(R),(catch(((demonitor(wrapper(X),[])),MC2Outcome=returned),error(MC2E,_),MC2Outcome=raised(MC2E)),nonvar(MC2Outcome),MC2Outcome=raised(MC2Actual),MC2Actual=@=(instantiation_error)),var(X)"
+    },
+    {
+      "id": "MC-027",
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "(catch(((monitor(1@Node,R)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(instantiation_error)),var(Node),var(R)"
+    },
+    {
+      "id": "MC-028",
+      "title": "Double-quoted URI text in monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "(catch(((monitor(1@\"https://example.test\",R)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(type_error(atom,\"https://example.test\"))),var(R)"
+    },
+    {
+      "id": "MC-029",
+      "title": "List node in monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "(catch(((monitor(1@[104,116,116,112],R)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(type_error(atom,[104,116,116,112]))),var(R)"
+    },
+    {
+      "id": "MC-030",
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "transport": "query",
+      "goal": "(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var(([flush,flush(X)]))->MC1Variable=true;MC1Variable=false,copy_term(([flush,flush(X)]),MC1Before)),catch((demonitor(MC1Ref,([flush,flush(X)])),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var(([flush,flush(X)]));([flush,flush(X)])=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(domain_error(demonitor_option,flush(X))),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))])),var(X)"
+    },
+    {
+      "id": "MC-031",
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "transport": "query",
+      "goal": "Options=[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad],(self(MC1Self),spawn(receive({finish->true}),MC1Pid,[monitor(true)]),monitor(MC1Pid,MC1Ref),MC1Self!down(MC1Pid,MC1Ref,queued),(var((Options))->MC1Variable=true;MC1Variable=false,copy_term((Options),MC1Before)),catch((demonitor(MC1Ref,(Options)),MC1Outcome=returned),error(MC1E,_),MC1Outcome=raised(MC1E)),(MC1Variable==true->var((Options));(Options)=@=MC1Before),nonvar(MC1Outcome),MC1Outcome=raised(MC1Actual),MC1Actual=@=(type_error(list,Options)),receive({down(MC1Pid,MC1Ref,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),MC1Pid!finish,receive({down(MC1Pid,MC1Ref,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(MC1Pid,MC1Pid,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))]))"
+    }
+  ],
+  "contract": "Appendix B monitor and demonitor preflight: reject malformed inputs without binding outputs, changing observations or flushing queued messages. Literal goals avoid opaque private-helper admission dependencies."
+}
