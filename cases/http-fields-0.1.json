@@ -1,0 +1,376 @@
+{
+  "suite": "http-fields-0.1",
+  "baseline": "http-fields-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Appendix B shared HTTP field validation before I/O",
+  "cases": [
+    {
+      "id": "HTTP-FIELD-001",
+      "title": "rpc rejects [request_header(H)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(H)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-002",
+      "title": "rpc rejects [request_header(bad)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(http_request_header,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-003",
+      "title": "rpc rejects [request_header(N=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(N=value)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-004",
+      "title": "rpc rejects [request_header(42=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(42=value)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-005",
+      "title": "rpc rejects [request_header('bad name'=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header('bad name'=value)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(domain_error(http_header_name,'bad name'),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-006",
+      "title": "rpc rejects [request_header(''=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(''=value)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(domain_error(http_header_name,''),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-007",
+      "title": "rpc rejects [request_header(x=V)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-008",
+      "title": "rpc rejects [request_header(x=42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=42)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-009",
+      "title": "rpc rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[118,97,108])],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,[118,97,108]),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-010",
+      "title": "rpc rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[a|Tail])],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-011",
+      "title": "rpc rejects [request_header(x=[ab])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[ab])],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,[ab]),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-012",
+      "title": "rpc rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[98,97,100,10,118,97,108,117,101]),Options=[request_header(x=Bad)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-013",
+      "title": "rpc rejects [authorization(A)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(A)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-014",
+      "title": "rpc rejects [authorization(digest(u,p))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(digest(u,p))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(domain_error(http_authorization,digest(u,p)),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-015",
+      "title": "rpc rejects [authorization(basic(u,P))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(basic(u,P))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-016",
+      "title": "rpc rejects [authorization(basic(u,42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(basic(u,42))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-017",
+      "title": "rpc rejects [authorization(bearer(T))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(T))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-018",
+      "title": "rpc rejects [authorization(bearer(42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(42))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-019",
+      "title": "rpc rejects [user_agent(A)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(A)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-020",
+      "title": "rpc rejects [user_agent(42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(42)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-021",
+      "title": "rpc rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=ok),request_header(x=42)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-022",
+      "title": "rpc rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(ok)),authorization(bearer(42))],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-023",
+      "title": "rpc rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(ok),user_agent(42)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-027",
+      "title": "rpc rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header('X_Forwarded_For'=spoof)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',same(X,X),Options),fail),error(permission_error(set,proxy_header,'X_Forwarded_For'),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-028",
+      "title": "promise rejects [request_header(H)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(H)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-029",
+      "title": "promise rejects [request_header(bad)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(http_request_header,bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-030",
+      "title": "promise rejects [request_header(N=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(N=value)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-031",
+      "title": "promise rejects [request_header(42=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(42=value)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-032",
+      "title": "promise rejects [request_header('bad name'=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header('bad name'=value)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(domain_error(http_header_name,'bad name'),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-033",
+      "title": "promise rejects [request_header(''=value)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(''=value)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(domain_error(http_header_name,''),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-034",
+      "title": "promise rejects [request_header(x=V)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-035",
+      "title": "promise rejects [request_header(x=42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=42)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-036",
+      "title": "promise rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[118,97,108])],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,[118,97,108]),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-037",
+      "title": "promise rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[a|Tail])],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-038",
+      "title": "promise rejects [request_header(x=[ab])] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=[ab])],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,[ab]),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-039",
+      "title": "promise rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[98,97,100,10,118,97,108,117,101]),Options=[request_header(x=Bad)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-040",
+      "title": "promise rejects [authorization(A)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(A)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-041",
+      "title": "promise rejects [authorization(digest(u,p))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(digest(u,p))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(domain_error(http_authorization,digest(u,p)),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-042",
+      "title": "promise rejects [authorization(basic(u,P))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(basic(u,P))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-043",
+      "title": "promise rejects [authorization(basic(u,42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(basic(u,42))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-044",
+      "title": "promise rejects [authorization(bearer(T))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(T))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-045",
+      "title": "promise rejects [authorization(bearer(42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(42))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-046",
+      "title": "promise rejects [user_agent(A)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(A)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-047",
+      "title": "promise rejects [user_agent(42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(42)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-048",
+      "title": "promise rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header(x=ok),request_header(x=42)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-049",
+      "title": "promise rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[authorization(bearer(ok)),authorization(bearer(42))],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-050",
+      "title": "promise rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[user_agent(ok),user_agent(42)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(type_error(atom_or_string,42),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-054",
+      "title": "promise rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "transport": "query",
+      "goal": "Options=[request_header('X_Forwarded_For'=spoof)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',same(X,X),Ref,Options),fail),error(permission_error(set,proxy_header,'X_Forwarded_For'),_),Caught=true),Caught==true,maplist(var,Vars),var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-055",
+      "title": "yield rejects request_header(x=value)",
+      "transport": "query",
+      "goal": "catch((yield(42,_,[request_header(x=value)]),fail),error(domain_error(yield_option,request_header(x=value)),_),Caught=true),Caught==true"
+    },
+    {
+      "id": "HTTP-FIELD-056",
+      "title": "yield rejects authorization(bearer(token))",
+      "transport": "query",
+      "goal": "catch((yield(42,_,[authorization(bearer(token))]),fail),error(domain_error(yield_option,authorization(bearer(token))),_),Caught=true),Caught==true"
+    },
+    {
+      "id": "HTTP-FIELD-057",
+      "title": "yield rejects user_agent(agent)",
+      "transport": "query",
+      "goal": "catch((yield(42,_,[user_agent(agent)]),fail),error(domain_error(yield_option,user_agent(agent)),_),Caught=true),Caught==true"
+    },
+    {
+      "id": "HTTP-FIELD-058",
+      "title": "rpc rejects empty-list field name consistently",
+      "transport": "query",
+      "goal": "Options=[request_header([]=value)],catch((rpc('http://127.0.0.1:1',true,Options),fail),error(type_error(atom,[]),_),Caught=true),Caught==true,var(Ref)"
+    },
+    {
+      "id": "HTTP-FIELD-059",
+      "title": "promise rejects empty-list field name consistently",
+      "transport": "query",
+      "goal": "Options=[request_header([]=value)],catch((promise('http://127.0.0.1:1',true,Ref,Options),fail),error(type_error(atom,[]),_),Caught=true),Caught==true,var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-rpc-0",
+      "title": "rpc validates shadowed field containing control 0",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,0,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((rpc('http://127.0.0.1:1',X=ok,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-rpc-13",
+      "title": "rpc validates shadowed field containing control 13",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,13,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((rpc('http://127.0.0.1:1',X=ok,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-rpc-31",
+      "title": "rpc validates shadowed field containing control 31",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,31,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((rpc('http://127.0.0.1:1',X=ok,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-rpc-127",
+      "title": "rpc validates shadowed field containing control 127",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,127,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((rpc('http://127.0.0.1:1',X=ok,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-promise-0",
+      "title": "promise validates shadowed field containing control 0",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,0,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((promise('http://127.0.0.1:1',X=ok,Ref,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-promise-13",
+      "title": "promise validates shadowed field containing control 13",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,13,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((promise('http://127.0.0.1:1',X=ok,Ref,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-promise-31",
+      "title": "promise validates shadowed field containing control 31",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,31,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((promise('http://127.0.0.1:1',X=ok,Ref,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    },
+    {
+      "id": "HTTP-CTL-promise-127",
+      "title": "promise validates shadowed field containing control 127",
+      "transport": "query",
+      "goal": "atom_codes(Bad,[97,127,98]),Options=[request_header('X-Probe'=first),request_header('x-probe'=Bad)],catch((promise('http://127.0.0.1:1',X=ok,Ref,Options),fail),error(domain_error(http_header_value,Bad),_),Caught=true),Caught==true,var(X),var(Ref)"
+    }
+  ]
+}
