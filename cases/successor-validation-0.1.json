@@ -1,0 +1,464 @@
+{
+  "suite": "successor-validation-0.1",
+  "status": "draft",
+  "scope": "required",
+  "contract": "Appendix B successor relation: validate supplied non-negative integer arguments before choosing direction; preserve culprits and unbound peers across admitted HTTP, actor, private source, receive and copied-source paths. Maplist admission belongs to the separate library batch.",
+  "cases": [
+    {
+      "id": "SU-001",
+      "title": "Integer directions, pair determinism and zero preserve ordinary behavior",
+      "transport": "query",
+      "goal": "succ(2,S),S==3,succ(B,3),B==2,findall(ok,succ(2,3),[ok]),\\+succ(2,4),\\+succ(Z,0),var(Z)"
+    },
+    {
+      "id": "SU-HTTP-001",
+      "title": "Integer directions, pair determinism and zero preserve ordinary behavior through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "succ(2,S),S==3,succ(B,3),B==2,findall(ok,succ(2,3),[ok]),\\+succ(2,4),\\+succ(Z,0),var(Z)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-002",
+      "title": "Both-variable calls raise instantiation error without binding either argument",
+      "transport": "query",
+      "goal": "catch((succ(A,B),fail),E,true),nonvar(E),E=error(instantiation_error,_),var(A),var(B)"
+    },
+    {
+      "id": "SU-HTTP-002",
+      "title": "Both-variable calls raise instantiation error without binding either argument through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(A,B),fail),E,true),nonvar(E),E=error(instantiation_error,_),var(A),var(B)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-003",
+      "title": "Noninteger before argument 1.5 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-003",
+      "title": "Noninteger before argument 1.5 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-004",
+      "title": "Noninteger after argument 1.5 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-004",
+      "title": "Noninteger after argument 1.5 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-005",
+      "title": "Noninteger before argument 0.0 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(0.0,V),fail),E,true),nonvar(E),E=error(type_error(integer,0.0),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-005",
+      "title": "Noninteger before argument 0.0 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(0.0,V),fail),E,true),nonvar(E),E=error(type_error(integer,0.0),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-006",
+      "title": "Noninteger after argument 0.0 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,0.0),fail),E,true),nonvar(E),E=error(type_error(integer,0.0),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-006",
+      "title": "Noninteger after argument 0.0 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,0.0),fail),E,true),nonvar(E),E=error(type_error(integer,0.0),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-007",
+      "title": "Noninteger before argument -1.0 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(-1.0,V),fail),E,true),nonvar(E),E=error(type_error(integer,-1.0),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-007",
+      "title": "Noninteger before argument -1.0 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(-1.0,V),fail),E,true),nonvar(E),E=error(type_error(integer,-1.0),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-008",
+      "title": "Noninteger after argument -1.0 retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,-1.0),fail),E,true),nonvar(E),E=error(type_error(integer,-1.0),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-008",
+      "title": "Noninteger after argument -1.0 retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,-1.0),fail),E,true),nonvar(E),E=error(type_error(integer,-1.0),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-009",
+      "title": "Noninteger before argument bad retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(bad,V),fail),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-009",
+      "title": "Noninteger before argument bad retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(bad,V),fail),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-010",
+      "title": "Noninteger after argument bad retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,bad),fail),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-010",
+      "title": "Noninteger after argument bad retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,bad),fail),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-011",
+      "title": "Noninteger before argument [a] retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ([a],V),fail),E,true),nonvar(E),E=error(type_error(integer,[a]),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-011",
+      "title": "Noninteger before argument [a] retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ([a],V),fail),E,true),nonvar(E),E=error(type_error(integer,[a]),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-012",
+      "title": "Noninteger after argument [a] retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,[a]),fail),E,true),nonvar(E),E=error(type_error(integer,[a]),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-012",
+      "title": "Noninteger after argument [a] retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,[a]),fail),E,true),nonvar(E),E=error(type_error(integer,[a]),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-013",
+      "title": "Noninteger before argument pair(a,b) retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(pair(a,b),V),fail),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-013",
+      "title": "Noninteger before argument pair(a,b) retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(pair(a,b),V),fail),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-014",
+      "title": "Noninteger after argument pair(a,b) retains its integer type-error culprit",
+      "transport": "query",
+      "goal": "catch((succ(V,pair(a,b)),fail),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-014",
+      "title": "Noninteger after argument pair(a,b) retains its integer type-error culprit through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,pair(a,b)),fail),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-015",
+      "title": "A bound mixed float/integer pair raises its required type error",
+      "transport": "query",
+      "goal": "catch((succ(1.5,2),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_)"
+    },
+    {
+      "id": "SU-HTTP-015",
+      "title": "A bound mixed float/integer pair raises its required type error through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(1.5,2),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-016",
+      "title": "A bound mixed float/integer pair raises its required type error",
+      "transport": "query",
+      "goal": "catch((succ(1,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_)"
+    },
+    {
+      "id": "SU-HTTP-016",
+      "title": "A bound mixed float/integer pair raises its required type error through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(1,1.5),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-017",
+      "title": "Negative integer arguments retain their domain error and unbound peer",
+      "transport": "query",
+      "goal": "catch((succ(-1,V),fail),E,true),nonvar(E),E=error(domain_error(not_less_than_zero,-1),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-017",
+      "title": "Negative integer arguments retain their domain error and unbound peer through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(-1,V),fail),E,true),nonvar(E),E=error(domain_error(not_less_than_zero,-1),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-018",
+      "title": "Negative integer arguments retain their domain error and unbound peer",
+      "transport": "query",
+      "goal": "catch((succ(V,-1),fail),E,true),nonvar(E),E=error(domain_error(not_less_than_zero,-1),_),var(V)"
+    },
+    {
+      "id": "SU-HTTP-018",
+      "title": "Negative integer arguments retain their domain error and unbound peer through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((succ(V,-1),fail),E,true),nonvar(E),E=error(domain_error(not_less_than_zero,-1),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-019",
+      "title": "A statically known higher-order successor uses the same relation",
+      "transport": "query",
+      "goal": "catch((call(succ,1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "Trealla whitelist call/N or loaded-private-helper admission belongs to the pending admission batch; this semantic case runs unchanged on both runtimes in blacklist and owner-off."
+    },
+    {
+      "id": "SU-HTTP-019",
+      "title": "A statically known higher-order successor uses the same relation through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((call(succ,1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ],
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "Trealla whitelist call/N or loaded-private-helper admission belongs to the pending admission batch; this semantic case runs unchanged on both runtimes in blacklist and owner-off."
+    },
+    {
+      "id": "SU-020",
+      "title": "Private source calls retain the same type and binding behavior",
+      "transport": "query",
+      "goal": "catch((sv_private(1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+      "source": "sv_private(A,B) :- succ(A,B).",
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "Trealla whitelist call/N or loaded-private-helper admission belongs to the pending admission batch; this semantic case runs unchanged on both runtimes in blacklist and owner-off."
+    },
+    {
+      "id": "SU-HTTP-020",
+      "title": "Private source calls retain the same type and binding behavior through HTTP",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((sv_private(1.5,V),fail),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+            "template": "verified",
+            "format": "prolog",
+            "src_text": "sv_private(A,B) :- succ(A,B)."
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "SU-021",
+      "title": "A receive guard can catch the successor error without binding its output",
+      "transport": "query",
+      "goal": "self(Me),send(Me,sv_guard),receive({sv_guard if catch(succ(1.5,V),error(type_error(integer,1.5),_),Caught=true)->Caught==true},[timeout(2),on_timeout(throw(succ_guard_missing))]),var(V)"
+    },
+    {
+      "id": "SU-022",
+      "title": "A receive body propagates the successor error without binding its output",
+      "transport": "query",
+      "goal": "self(Me),send(Me,sv_body),catch(receive({sv_body->succ(V,1.5)}),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)"
+    },
+    {
+      "id": "SU-023",
+      "title": "Copied private source retains public successor behavior",
+      "transport": "query",
+      "goal": "self(Me),spawn((catch((sv_private(1.5,V),Outcome=returned),error(Type,_),Outcome=raised(Type)),var(V),send(Me,sv_status(Outcome))),P,[src_predicates([sv_private/2]),monitor(true)]),receive({sv_status(raised(type_error(integer,1.5)))->true},[timeout(3),on_timeout(throw(copied_successor_missing))]),receive({down(P,_,true)->true},[timeout(3),on_timeout(throw(copied_successor_down_missing))])",
+      "source": "sv_private(A,B) :- succ(A,B)."
+    }
+  ]
+}
