@@ -2,6 +2,8 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
 from contextlib import ExitStack, contextmanager
+from functools import lru_cache
+from http.cookiejar import CookieJar
 import json
 from itertools import permutations
 from pathlib import Path
@@ -9,7 +11,7 @@ from threading import Barrier
 from time import monotonic, sleep
 from urllib.error import HTTPError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import HTTPCookieProcessor, Request, build_opener
 
 MANIFEST = Path(__file__).resolve().parents[1] / "cases/prompt-http-0.1.json"
 
@@ -19,7 +21,13 @@ def require(condition, message):
         raise AssertionError(message)
 
 
-def post_response(base, command, fields):
+@lru_cache(maxsize=None)
+def endpoint_client(base):
+    # Each endpoint has its own visitor, even if two fixtures share a host.
+    return build_opener(HTTPCookieProcessor(CookieJar()))
+
+
+def post_response(base, command, fields, *, client=None):
     if command == "spawn":
         body = json.dumps(fields).encode()
         content_type = "application/json"
@@ -29,7 +37,7 @@ def post_response(base, command, fields):
     request = Request(f"{base.rstrip('/')}/toplevel_{command}", body,
                       {"Content-Type": content_type})
     try:
-        response = urlopen(request, timeout=8)
+        response = (client or endpoint_client(base)).open(request, timeout=8)
     except HTTPError as error:
         response = error
     except OSError as error:
@@ -117,10 +125,11 @@ def answer(base, fields, value, ref=None):
             f"wrong prompt answer: {event!r}")
 
 
-def check(base, default_legacy=False):
+def check(base, require_by_default=False):
     with ExitStack() as stack:
-        main = stack.enter_context(session(base, True))
-        other = stack.enter_context(session(base, True))
+        correlation = None if require_by_default else True
+        main = stack.enter_context(session(base, correlation))
+        other = stack.enter_context(session(base, correlation))
         old_ref = open_prompt(base, main)
         expect_event(post(base, "abort", main), main, "abort")
         new_ref = open_prompt(base, main)
@@ -136,13 +145,14 @@ def check(base, default_legacy=False):
         answer(base, main, "fresh", new_ref)
         reject(base, main, new_ref)
         answer(base, other, "independent", other_ref)
-        legacy = stack.enter_context(session(base, False))
-        open_prompt(base, legacy, correlated=False)
-        answer(base, legacy, "legacy")
-        if default_legacy:
-            default = stack.enter_context(session(base, None))
-            open_prompt(base, default, correlated=False)
-            answer(base, default, "legacy_default")
+        old_client = stack.enter_context(session(base, False))
+        if require_by_default:
+            ref = open_prompt(base, old_client)
+            reject(base, old_client)
+            answer(base, old_client, "still_correlated", ref)
+        else:
+            open_prompt(base, old_client, correlated=False)
+            answer(base, old_client, "legacy")
 
 
 def interrupt_wait(base, fields, command, **params):
@@ -548,12 +558,58 @@ def check_reply_abort_halt_race(base, lost_status, reply_kind="valid"):
 
 
 
+def check_visitor_ownership(base):
+    owner_jar = CookieJar()
+    owner = build_opener(HTTPCookieProcessor(owner_jar))
+    stranger = build_opener(HTTPCookieProcessor(CookieJar()))
+    code, spawned = post_response(base, "spawn", {"options": "[session(true)]"}, client=owner)
+    require(code == 200 and spawned.get("type") == "spawned", repr(spawned))
+    fields = {"pid": spawned["pid"], "format": "json"}
+    try:
+        code, prompt = post_response(base, "call", {**fields, "goal": "read(X)"}, client=owner)
+        require(code == 200, repr(prompt))
+        ref = prompt_ref(prompt, fields)
+        cookie = next((item for item in owner_jar
+                       if item.name in ("wp_visitor", "__Host-wp_visitor")), None)
+        require(cookie is not None, "the server did not issue a visitor cookie")
+        require("httponly" in {name.lower() for name in cookie._rest},
+                "the visitor cookie is missing HttpOnly")
+        if base.startswith("https://"):
+            require(cookie.name.startswith("__Host-") and cookie.secure,
+                    "HTTPS visitor identity requires a secure host-only cookie")
+        forged = build_opener()
+        changed = cookie.value[:-1] + ("0" if cookie.value[-1] != "0" else "1")
+        forged.addheaders.append(("Cookie", f"{cookie.name}={changed}"))
+        for client in (stranger, forged):
+            for command, params in (
+                ("respond", {**fields, "input": "wrong.", "prompt_ref": ref}),
+                ("halt", fields),
+            ):
+                _, denied = post_response(base, command, params, client=client)
+                require(denied.get("type") == "error",
+                        f"another visitor could {command} on the owner's session")
+        code, event = post_response(base, "respond",
+                                    {**fields, "input": "owned.", "prompt_ref": ref},
+                                    client=owner)
+        require(code == 200, repr(event))
+        expect_event(event, fields, "responded")
+        code, answer = post_response(base, "poll", fields, client=owner)
+        require(code == 200 and answer.get("data") == [{"X": "owned"}], repr(answer))
+        expect_event(answer, fields, "success")
+    finally:
+        code, halted = post_response(base, "halt", fields, client=owner)
+        require(code == 200, repr(halted))
+        expect_event(halted, fields, "halted")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--swi")
     parser.add_argument("--eclipse")
     parser.add_argument("--trealla")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--visitor-ownership", action="store_true",
+                        help="also check anonymous cookie isolation on endpoints configured for it")
     args = parser.parse_args()
     endpoints = [(engine, getattr(args, engine)) for engine in ("swi", "eclipse", "trealla")
                  if getattr(args, engine)]
@@ -566,7 +622,7 @@ def main():
             result = {"id": case["id"], "engine": engine}
             try:
                 if case["id"] == "PT-004":
-                    check(endpoint, default_legacy=engine in ("swi", "trealla"))
+                    check(endpoint, require_by_default=engine in ("swi", "trealla"))
                 elif case["id"] == "PT-005":
                     check_running_abort(endpoint)
                 elif case["id"] == "PT-006":
@@ -604,6 +660,15 @@ def main():
                                                 reply_kind="missing-reference")
                 else:
                     raise ValueError(f"unknown case {case['id']}")
+            except (AssertionError, KeyError, ValueError, OSError) as error:
+                result.update(status="fail", detail=str(error))
+            else:
+                result["status"] = "pass"
+            results.append(result)
+        if args.visitor_ownership:
+            result = {"id": "visitor-ownership", "engine": engine}
+            try:
+                check_visitor_ownership(endpoint)
             except (AssertionError, KeyError, ValueError, OSError) as error:
                 result.update(status="fail", detail=str(error))
             else:
