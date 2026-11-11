@@ -1,0 +1,675 @@
+{
+  "suite": "native-library-callbacks-0.1",
+  "scope": "required",
+  "status": "draft",
+  "contract": "Appendix B library callbacks are validated when invoked; admission policy remains separate from execution semantics. Native qualification only.",
+  "cases": [
+    {
+      "id": "LC-001",
+      "title": "maplist/2 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b])",
+      "source": "eq(X)."
+    },
+    {
+      "id": "LC-002",
+      "title": "maplist/2 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b])",
+      "source": "eq(tag,X)."
+    },
+    {
+      "id": "LC-003",
+      "title": "maplist/2 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[])"
+    },
+    {
+      "id": "LC-004",
+      "title": "maplist/2 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-005",
+      "title": "maplist/2 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-006",
+      "title": "maplist/2 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-007",
+      "title": "maplist/2 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[V]),Values),Values==[one,two]",
+      "source": "choice(V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-008",
+      "title": "maplist/3 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b])",
+      "source": "eq(X,X)."
+    },
+    {
+      "id": "LC-009",
+      "title": "maplist/3 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b])",
+      "source": "eq(tag,X,X)."
+    },
+    {
+      "id": "LC-010",
+      "title": "maplist/3 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[])"
+    },
+    {
+      "id": "LC-011",
+      "title": "maplist/3 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-012",
+      "title": "maplist/3 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-013",
+      "title": "maplist/3 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-014",
+      "title": "maplist/3 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-015",
+      "title": "maplist/4 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b],[a,b])",
+      "source": "eq(X,X,X)."
+    },
+    {
+      "id": "LC-016",
+      "title": "maplist/4 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b],[a,b])",
+      "source": "eq(tag,X,X,X)."
+    },
+    {
+      "id": "LC-017",
+      "title": "maplist/4 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[])"
+    },
+    {
+      "id": "LC-018",
+      "title": "maplist/4 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-019",
+      "title": "maplist/4 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-020",
+      "title": "maplist/4 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-021",
+      "title": "maplist/4 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-022",
+      "title": "maplist/5 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(X,X,X,X)."
+    },
+    {
+      "id": "LC-023",
+      "title": "maplist/5 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(tag,X,X,X,X)."
+    },
+    {
+      "id": "LC-024",
+      "title": "maplist/5 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[])"
+    },
+    {
+      "id": "LC-025",
+      "title": "maplist/5 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a],[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-026",
+      "title": "maplist/5 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a],[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-027",
+      "title": "maplist/5 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a],[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_,_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-028",
+      "title": "maplist/5 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[a],[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,_,_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-029",
+      "title": "maplist/6 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(X,X,X,X,X)."
+    },
+    {
+      "id": "LC-030",
+      "title": "maplist/6 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(tag,X,X,X,X,X)."
+    },
+    {
+      "id": "LC-031",
+      "title": "maplist/6 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[])"
+    },
+    {
+      "id": "LC-032",
+      "title": "maplist/6 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a],[a],[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-033",
+      "title": "maplist/6 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a],[a],[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-034",
+      "title": "maplist/6 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a],[a],[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_,_,_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-035",
+      "title": "maplist/6 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[a],[a],[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,_,_,_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-036",
+      "title": "maplist/7 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(X,X,X,X,X,X)."
+    },
+    {
+      "id": "LC-037",
+      "title": "maplist/7 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(tag,X,X,X,X,X,X)."
+    },
+    {
+      "id": "LC-038",
+      "title": "maplist/7 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[],[])"
+    },
+    {
+      "id": "LC-039",
+      "title": "maplist/7 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a],[a],[a],[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-040",
+      "title": "maplist/7 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a],[a],[a],[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-041",
+      "title": "maplist/7 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a],[a],[a],[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_,_,_,_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-042",
+      "title": "maplist/7 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[a],[a],[a],[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,_,_,_,_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-043",
+      "title": "maplist/8 invokes a private closure with all arguments",
+      "transport": "query",
+      "goal": "maplist(eq,[a,b],[a,b],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(X,X,X,X,X,X,X)."
+    },
+    {
+      "id": "LC-044",
+      "title": "maplist/8 preserves prefixed arguments",
+      "transport": "query",
+      "goal": "maplist(eq(tag),[a,b],[a,b],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "source": "eq(tag,X,X,X,X,X,X,X)."
+    },
+    {
+      "id": "LC-045",
+      "title": "maplist/8 does not invoke an unused numeric callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[],[],[])"
+    },
+    {
+      "id": "LC-046",
+      "title": "maplist/8 reports the original scalar callback",
+      "transport": "query",
+      "goal": "catch((maplist(7,[a],[a],[a],[a],[a],[a],[a])),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-047",
+      "title": "maplist/8 reports an invoked uninstantiated callback",
+      "transport": "query",
+      "goal": "catch((maplist(Unknown,[a],[a],[a],[a],[a],[a],[a])),error(instantiation_error,_),Caught=yes),Caught==yes,var(Unknown)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-048",
+      "title": "maplist/8 preserves callback exceptions",
+      "transport": "query",
+      "goal": "catch((maplist(boom,[a],[a],[a],[a],[a],[a],[a])),review_boom,Caught=yes),Caught==yes",
+      "source": "boom(_,_,_,_,_,_,_):-throw(review_boom)."
+    },
+    {
+      "id": "LC-049",
+      "title": "maplist/8 preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(V,maplist(choice,[a],[a],[a],[a],[a],[a],[V]),Values),Values==[one,two]",
+      "source": "choice(_,_,_,_,_,_,V):-member(V,[one,two])."
+    },
+    {
+      "id": "LC-050",
+      "title": "foldl/4 threads state and argument order",
+      "transport": "query",
+      "goal": "foldl(step,[a,b],seed,S),S==step(b,step(a,seed))",
+      "source": "step(A0,S,step(A0,S))."
+    },
+    {
+      "id": "LC-051",
+      "title": "foldl/4 leaves unused callback untouched",
+      "transport": "query",
+      "goal": "foldl(7,[],seed,S),S==seed"
+    },
+    {
+      "id": "LC-052",
+      "title": "foldl/4 reports original scalar callback",
+      "transport": "query",
+      "goal": "catch((foldl(7,[a],seed,_)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-053",
+      "title": "foldl/4 validates an invoked variable",
+      "transport": "query",
+      "goal": "catch((foldl(Unknown,[a],seed,_)),error(instantiation_error,_),Caught=yes),Caught==yes",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-054",
+      "title": "foldl/5 threads state and argument order",
+      "transport": "query",
+      "goal": "foldl(step,[a,b],[a,b],seed,S),S==step(b,b,step(a,a,seed))",
+      "source": "step(A0,A1,S,step(A0,A1,S))."
+    },
+    {
+      "id": "LC-055",
+      "title": "foldl/5 leaves unused callback untouched",
+      "transport": "query",
+      "goal": "foldl(7,[],[],seed,S),S==seed"
+    },
+    {
+      "id": "LC-056",
+      "title": "foldl/5 reports original scalar callback",
+      "transport": "query",
+      "goal": "catch((foldl(7,[a],[a],seed,_)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-057",
+      "title": "foldl/5 validates an invoked variable",
+      "transport": "query",
+      "goal": "catch((foldl(Unknown,[a],[a],seed,_)),error(instantiation_error,_),Caught=yes),Caught==yes",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-058",
+      "title": "foldl/6 threads state and argument order",
+      "transport": "query",
+      "goal": "foldl(step,[a,b],[a,b],[a,b],seed,S),S==step(b,b,b,step(a,a,a,seed))",
+      "source": "step(A0,A1,A2,S,step(A0,A1,A2,S))."
+    },
+    {
+      "id": "LC-059",
+      "title": "foldl/6 leaves unused callback untouched",
+      "transport": "query",
+      "goal": "foldl(7,[],[],[],seed,S),S==seed"
+    },
+    {
+      "id": "LC-060",
+      "title": "foldl/6 reports original scalar callback",
+      "transport": "query",
+      "goal": "catch((foldl(7,[a],[a],[a],seed,_)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-061",
+      "title": "foldl/6 validates an invoked variable",
+      "transport": "query",
+      "goal": "catch((foldl(Unknown,[a],[a],[a],seed,_)),error(instantiation_error,_),Caught=yes),Caught==yes",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-062",
+      "title": "countall counts duplicates without binding the generator",
+      "transport": "query",
+      "goal": "countall(member(X,[a,b,a]),N),N==3,var(X)"
+    },
+    {
+      "id": "LC-063",
+      "title": "countall on failure is zero",
+      "transport": "query",
+      "goal": "countall(fail,0)"
+    },
+    {
+      "id": "LC-064",
+      "title": "countall rejects mismatching bound counts",
+      "transport": "query",
+      "goal": "\\+countall(member(_,[a,b]),1)"
+    },
+    {
+      "id": "LC-065",
+      "title": "countall preserves a scalar culprit",
+      "transport": "query",
+      "goal": "catch((countall(7,_)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-066",
+      "title": "countall propagates exceptions",
+      "transport": "query",
+      "goal": "catch((countall(throw(review_boom),_)),review_boom,Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-067",
+      "title": "call_nth preserves answer numbering",
+      "transport": "query",
+      "goal": "findall(X-N,call_nth(member(X,[a,b,a]),N),Pairs),Pairs==[a-1,b-2,a-3]"
+    },
+    {
+      "id": "LC-068",
+      "title": "call_nth selects the requested answer",
+      "transport": "query",
+      "goal": "findall(X,call_nth(member(X,[a,b,a]),2),Values),Values==[b]"
+    },
+    {
+      "id": "LC-069",
+      "title": "call_nth rejects nonpositive indices",
+      "transport": "query",
+      "goal": "catch((call_nth(true,0)),error(domain_error(not_less_than_one,0),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-070",
+      "title": "call_nth preserves scalar culprit",
+      "transport": "query",
+      "goal": "catch((call_nth(7,1)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-071",
+      "title": "forall does not invoke an unused numeric test",
+      "transport": "query",
+      "goal": "forall(fail,7)"
+    },
+    {
+      "id": "LC-072",
+      "title": "forall does not invoke an unused variable test",
+      "transport": "query",
+      "goal": "forall(fail,Unused),var(Unused)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "off"
+      ]
+    },
+    {
+      "id": "LC-073",
+      "title": "forall reports an invoked numeric test",
+      "transport": "query",
+      "goal": "catch((forall(true,7)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-074",
+      "title": "forall reports an invoked numeric generator",
+      "transport": "query",
+      "goal": "catch((forall(7,true)),error(type_error(callable,7),_),Caught=yes),Caught==yes"
+    },
+    {
+      "id": "LC-075",
+      "title": "forall bindings do not escape",
+      "transport": "query",
+      "goal": "forall(member(X,[a,b]),memberchk(X,[a,b])),var(X)"
+    },
+    {
+      "id": "LC-076",
+      "title": "nested library callback preserves vacuous forall",
+      "transport": "query",
+      "goal": "maplist(vacuous,[a,b])",
+      "source": "vacuous(_):-forall(fail,7)."
+    },
+    {
+      "id": "LC-077",
+      "title": "literal nested forall preserves laziness",
+      "transport": "query",
+      "goal": "maplist(forall(fail),[7])"
+    },
+    {
+      "id": "LC-078",
+      "title": "library failure rolls back caller bindings",
+      "transport": "query",
+      "goal": "((maplist(eq,[a],[X]),X=b);var(X))",
+      "source": "eq(X,X)."
+    },
+    {
+      "id": "LC-079",
+      "title": "Sandboxed clause reflection restores public library source",
+      "transport": "query",
+      "goal": "clause(run,Body),Body==maplist(eq,[a],[a]),run",
+      "source": "eq(X,X). run:-maplist(eq,[a],[a]).",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ]
+    },
+    {
+      "id": "LC-080",
+      "title": "copying a private callback carries public source",
+      "transport": "query",
+      "goal": "self(Me),spawn((run,Me!library_ok),P,[src_predicates([run/0,eq/2]),monitor(true)]),receive({library_ok->true},[timeout(2),on_timeout(throw(library_message_missing))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(library_down_missing))])",
+      "source": "eq(X,X). run:-maplist(eq,[a],[a]),forall(fail,7)."
+    },
+    {
+      "id": "LC-081",
+      "title": "nested copied private closures preserve their origin",
+      "transport": "query",
+      "goal": "maplist(nested,[a])",
+      "source": "eq(X,X). nested(X):-maplist(eq,[X],[X])."
+    },
+    {
+      "id": "LC-082",
+      "title": "forbidden library callback",
+      "transport": "query_rejection",
+      "goal": "maplist(halt,[0])",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    },
+    {
+      "id": "LC-083",
+      "title": "qualified nested callback",
+      "transport": "query_rejection",
+      "goal": "maplist(call(system:shell),[a])",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    },
+    {
+      "id": "LC-084",
+      "title": "HTTP larger maplist",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "maplist(=,[a,b],[a,b])",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "LC-085",
+      "title": "HTTP countall",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "countall(member(_,[a,b,a]),3)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "LC-086",
+      "title": "HTTP vacuous forall",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "forall(fail,7)",
+            "template": "verified",
+            "format": "prolog"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "LC-087",
+      "title": "Private callback guard is not a user entry point",
+      "transport": "query_rejection",
+      "goal": "control_guard:'$library_call'(user,halt,0)",
+      "only_sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "expected_error_names": [
+        "permission_error",
+        "existence_error"
+      ]
+    },
+    {
+      "id": "LC-088",
+      "title": "Computed private guard remains denied at callback invocation",
+      "transport": "query_rejection",
+      "goal": "G=control_guard:'$library_call'(user,=,a,a),call(G)",
+      "only_sandbox_modes": [
+        "blacklist"
+      ],
+      "expected_error_names": [
+        "permission_error"
+      ]
+    }
+  ]
+}
