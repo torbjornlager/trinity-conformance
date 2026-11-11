@@ -1,0 +1,79 @@
+{
+  "suite": "prompt-http-0.1",
+  "status": "draft",
+  "scope": "opt-in",
+  "cases": [
+    {
+      "id": "PT-004",
+      "title": "HTTP Abort invalidates a prompt reference without changing the session PID"
+    },
+    {
+      "id": "PT-005",
+      "title": "HTTP Abort interrupts an in-flight call and leaves the same session usable"
+    },
+    {
+      "id": "PT-006",
+      "title": "HTTP Abort interrupts Next and Poll and leaves the same session usable"
+    },
+    {
+      "id": "PT-007",
+      "title": "HTTP Abort discards unread prompts and answers only for the aborted session"
+    },
+    {
+      "id": "PT-008",
+      "title": "HTTP Halt retires a session with a pending prompt without affecting another session"
+    },
+    {
+      "id": "PT-009",
+      "title": "Only one concurrent HTTP reply can consume a prompt reference"
+    },
+    {
+      "id": "PT-010",
+      "title": "HTTP Abort racing a prompt reply leaves a clean session"
+    },
+    {
+      "id": "PT-011",
+      "title": "HTTP Halt racing a prompt reply retires the session without affecting another session"
+    },
+    {
+      "id": "PT-012",
+      "title": "HTTP Halt releases in-flight Call, Next and Poll requests and leaves another session usable"
+    },
+    {
+      "id": "PT-013",
+      "title": "HTTP Abort and Halt racing during a call all finish and the halted PID stays retired"
+    },
+    {
+      "id": "PT-014",
+      "title": "HTTP Abort and Halt racing during Next or Poll all finish and the halted PID stays retired"
+    },
+    {
+      "id": "PT-015",
+      "title": "HTTP Abort and Halt racing at a pending prompt both finish and a late reply returns session_lost"
+    },
+    {
+      "id": "PT-016",
+      "title": "A correlated HTTP reply racing Abort and Halt finishes and its replay returns session_lost"
+    },
+    {
+      "id": "PT-017",
+      "title": "A malformed correlated HTTP reply racing Abort and Halt finishes and its replay returns session_lost"
+    },
+    {
+      "id": "PT-018",
+      "title": "A stale correlated HTTP reply racing Abort and Halt is rejected and its replay returns session_lost"
+    },
+    {
+      "id": "PT-019",
+      "title": "A wrong-session reply racing Abort and Halt is rejected and the other prompt stays usable"
+    },
+    {
+      "id": "PT-020",
+      "title": "A reply missing its prompt reference races Abort and Halt and is rejected before and after retirement"
+    },
+    {
+      "id": "PT-021",
+      "title": "Source-less HTTP sessions retain private clauses across calls and Abort without leaking to another session"
+    }
+  ]
+}
