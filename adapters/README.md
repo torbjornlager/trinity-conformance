@@ -45,3 +45,10 @@ no browser server or real-network certification is inferred. See
 on disposable native loopback fixtures. Pair it with `cases/http-fields-0.1.json`
 through `local_runtime_contracts.py` in all three sandbox modes; see
 `profiles/http-fields-0.1.md` for scope and invocation.
+
+`native_boolean_options.py` runs the complete shared Boolean selection in trusted
+native processes with source/dispatch counters, resource inventories and positive
+precedence controls. Pair it with `local_runtime_contracts.py` and the Boolean
+boundary diagnostics; see `profiles/boolean-options-0.1.md`. Query rejection cases
+may specify `expected_formal` for exact errors, or `candidate_error_formals` for
+explicitly identified host-policy diagnostics.

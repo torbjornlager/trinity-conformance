@@ -55,6 +55,21 @@ def query_rejection_case(case, url):
         formal = baseline.variant_tokens(rejected.get('details') or rejected.get('data', ''))
         baseline.actor.require(len(formal) > 3 and formal[:2] == ['error', '(']
                                and formal[2] in case['expected_error_names'], repr(rejected))
+        if case.get('expected_formal'):
+            # Ignore the implementation-specific context, but require the exact
+            # formal error, including its domain/type and original culprit.
+            observed = []
+            depth = 0
+            for token in formal[2:]:
+                if token == ',' and depth == 0:
+                    break
+                observed.append(token)
+                if token in ['(', '[', '{']:
+                    depth += 1
+                elif token in [')', ']', '}']:
+                    depth -= 1
+            baseline.actor.require(observed == baseline.variant_tokens(case['expected_formal']),
+                                   repr(rejected))
         harness.call('RejectionRecovery=ok', '[limit(1)]')
         recovered = harness.recv_type('success', limit=64)
         baseline.actor.require(baseline.actor.row_value(recovered, 'RejectionRecovery') == 'ok'
@@ -80,6 +95,9 @@ def main():
     if library.is_dir():
         env['TPL_LIBRARY_PATH'] = str(library)
     rows = []
+    # Each case uses a fresh shell plus rejection/recovery commands. Size the
+    # disposable SWI fixture budget to the pack, without changing node defaults.
+    ws_budget = max(1000, len(pack['cases']) * 10)
     for name, root in [('swi', args.swi_root), ('trealla', args.trealla_root)]:
         port = free_port()
         url = f'http://127.0.0.1:{port}'
@@ -87,7 +105,7 @@ def main():
             goal = (f"use_module({baseline.actor.prolog_quote_atom(str(root / 'prolog/web_prolog.pl'))}),"
                     "use_module(library(socket)),tcp_socket(Socket),"
                     f"tcp_bind(Socket,ip(127,0,0,1):{port}),tcp_listen(Socket,128),"
-                    f"node:node({port},[tcp_socket(Socket),profile(actor),sandbox({args.mode}),auth(open)]),"
+                    f"node:node({port},[tcp_socket(Socket),profile(actor),sandbox({args.mode}),auth(open),max_ws_commands_per_window({ws_budget})]),"
                     'thread_get_message(stop)')
             command = [args.swipl, '-q', '-g', goal]
         else:
@@ -112,6 +130,9 @@ def main():
                     case = dict(original)
                     if pack.get('source'):
                         case['source'] = pack['source']
+                    if case.get('candidate_error_formals'):
+                        case['expected_formal'] = case['candidate_error_formals'][name]
+                        case['expected_error_names'] = [case['expected_formal'].split('(')[0]]
                     row = dict(candidate=name, mode=args.mode, id=case['id'])
                     if args.mode not in case.get('only_sandbox_modes', ['blacklist', 'whitelist', 'off']):
                         row.update(status='not_applicable', detail='policy check for other sandbox modes')
@@ -146,6 +167,7 @@ def main():
                     process.kill()
                     process.wait()
     report = dict(suite=pack['suite'], mode=args.mode, results=rows,
+                  swi_fixture_ws_command_budget=ws_budget,
                   manifest_sha256=hashlib.sha256(args.manifest.read_bytes()).hexdigest())
     (args.output / 'results.json').write_text(json.dumps(report, indent=2) + '\n')
     return int(any(row['status'] == 'fail' for row in rows))
