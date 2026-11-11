@@ -61,6 +61,7 @@ class WebSocket:
         if parsed.scheme not in {"ws", "wss"} or not parsed.hostname:
             raise ValueError(f"invalid WebSocket URL: {url}")
         self.timeout = timeout
+        self._pending = bytearray()
         self.sock = socket.create_connection(
             (parsed.hostname, parsed.port or (443 if parsed.scheme == "wss" else 80)),
             timeout=timeout,
@@ -123,12 +124,12 @@ class WebSocket:
             if len(data) > 65536:
                 raise ProtocolError("oversized WebSocket upgrade response")
         head, extra = bytes(data).split(b"\r\n\r\n", 1)
-        if extra:
-            raise ProtocolError("unexpected framed data in upgrade response")
+        self._pending.extend(extra)
         return head.decode("iso-8859-1")
 
     def _recv_exact(self, count: int) -> bytes:
-        chunks = bytearray()
+        chunks = self._pending[:count]
+        del self._pending[:len(chunks)]
         while len(chunks) < count:
             chunk = self.sock.recv(count - len(chunks))
             if not chunk:
