@@ -40,3 +40,8 @@ provenance and cleans up its processes. It does not restart N3/N5.
 same LC goal manifest in Worker/main modes. The coordinator is a test fixture;
 no browser server or real-network certification is inferred. See
 [the runner guide](../docs/BASELINE_RUNNER.md).
+
+`native_http_fields.py` qualifies RPC/promise field bytes and validation ordering
+on disposable native loopback fixtures. Pair it with `cases/http-fields-0.1.json`
+through `local_runtime_contracts.py` in all three sandbox modes; see
+`profiles/http-fields-0.1.md` for scope and invocation.
