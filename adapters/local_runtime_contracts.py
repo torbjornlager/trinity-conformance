@@ -22,6 +22,27 @@ def free_port():
         return sock.getsockname()[1]
 
 
+def reference_profile_case(case, name, root, args, env):
+    quoted = baseline.actor.prolog_quote_atom
+    fixture = quoted(str(ROOT / 'adapters/reference_profile_policy.pl'))
+    profile, expected = quoted(case['profile']), quoted(case['expected'])
+    if name == 'swi':
+        goal = (f"use_module({quoted(str(root / 'prolog/web_prolog.pl'))}),"
+                f"use_module({fixture}),"
+                f"(reference_profile_policy:check(node_profile_policy,{profile},{expected})->halt;halt(1))")
+        command = [args.swipl, '-q', '-g', goal]
+    else:
+        goal = (f"use_module(profile_policy),use_module({fixture}),"
+                f"(reference_profile_policy:check(profile_policy,{profile},{expected})->halt;halt(1))")
+        command = [args.tpl, '-g', goal]
+    result = subprocess.run(command, cwd=root, env=env, capture_output=True,
+                            text=True, timeout=10)
+    baseline.actor.require(result.returncode == 0,
+                           f'profile policy failed: {result.stdout} {result.stderr}')
+    return dict(scope='native profile policy', profile=case['profile'],
+                expected=case['expected'], exit_code=result.returncode)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest', type=Path, required=True)
@@ -77,6 +98,8 @@ def main():
                             observed = baseline.http_case(case, url, 8, None, False)
                         elif case['transport'] == 'query':
                             observed = baseline.query_case(case, url.replace('http:', 'ws:') + '/ws', 8, None)
+                        elif case['transport'] == 'profile_policy':
+                            observed = reference_profile_case(case, name, root, args, env)
                         else:
                             raise ValueError(f"unsupported transport: {case['transport']}")
                         row.update(status='pass', observation=observed)
