@@ -1,0 +1,3934 @@
+{
+  "suite": "boolean-options-0.1",
+  "baseline": "boolean-options-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Appendix B common Boolean option errors, every-occurrence validation and first scalar precedence",
+  "cases": [
+    {
+      "id": "BOOL-spawn-link-integer",
+      "title": "spawn-link rejects integer",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(1)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1,Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-integer-duplicate",
+      "title": "spawn-link rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(1)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1,Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-float",
+      "title": "spawn-link rejects float",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(1.0)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-float-duplicate",
+      "title": "spawn-link rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(1.0)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-string",
+      "title": "spawn-link rejects string",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(\"true\")])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-string-duplicate",
+      "title": "spawn-link rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(\"true\")])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-chars",
+      "title": "spawn-link rejects chars",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link([t,r,u,e])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-chars-duplicate",
+      "title": "spawn-link rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link([t,r,u,e])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-empty",
+      "title": "spawn-link rejects empty",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link([])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[],Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-empty-duplicate",
+      "title": "spawn-link rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link([])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[],Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-compound",
+      "title": "spawn-link rejects compound",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(f(true))])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-compound-duplicate",
+      "title": "spawn-link rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(f(true))])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-atom",
+      "title": "spawn-link rejects atom",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(maybe)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-atom-duplicate",
+      "title": "spawn-link rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(maybe)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-uppercase",
+      "title": "spawn-link rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link('TRUE')])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-uppercase-duplicate",
+      "title": "spawn-link rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link('TRUE')])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-pending",
+      "title": "spawn-link rejects pending",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(Pending)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-link-pending-duplicate",
+      "title": "spawn-link rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[link(false),link(Pending)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(false),link(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-integer",
+      "title": "spawn-monitor rejects integer",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(1)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1,Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-integer-duplicate",
+      "title": "spawn-monitor rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(1)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-float",
+      "title": "spawn-monitor rejects float",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(1.0)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1.0,Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-float-duplicate",
+      "title": "spawn-monitor rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(1.0)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=1.0,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-string",
+      "title": "spawn-monitor rejects string",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(\"true\")])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=\"true\",Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-string-duplicate",
+      "title": "spawn-monitor rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(\"true\")])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=\"true\",Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-chars",
+      "title": "spawn-monitor rejects chars",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor([t,r,u,e])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-chars-duplicate",
+      "title": "spawn-monitor rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor([t,r,u,e])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-empty",
+      "title": "spawn-monitor rejects empty",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor([])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[],Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-empty-duplicate",
+      "title": "spawn-monitor rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor([])])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=[],Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-compound",
+      "title": "spawn-monitor rejects compound",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(f(true))])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=f(true),Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-compound-duplicate",
+      "title": "spawn-monitor rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(f(true))])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=f(true),Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-atom",
+      "title": "spawn-monitor rejects atom",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(maybe)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=maybe,Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-atom-duplicate",
+      "title": "spawn-monitor rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(maybe)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=maybe,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-uppercase",
+      "title": "spawn-monitor rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor('TRUE')])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V='TRUE',Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-uppercase-duplicate",
+      "title": "spawn-monitor rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor('TRUE')])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V='TRUE',Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-pending",
+      "title": "spawn-monitor rejects pending",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(Pending)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=Pending,Options=[monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-spawn-monitor-pending-duplicate",
+      "title": "spawn-monitor rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "spawn(throw(callback_ran),Pid,[monitor(false),monitor(Pending)])",
+      "native_call": "spawn(throw(callback_ran),Pid,Options)",
+      "native_goal": "V=Pending,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((spawn(throw(callback_ran),Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-integer",
+      "title": "server-link rejects integer",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(1)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=1,Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-integer-duplicate",
+      "title": "server-link rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(1)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=1,Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-float",
+      "title": "server-link rejects float",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(1.0)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-float-duplicate",
+      "title": "server-link rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(1.0)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-string",
+      "title": "server-link rejects string",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(\"true\")])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-string-duplicate",
+      "title": "server-link rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(\"true\")])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-chars",
+      "title": "server-link rejects chars",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link([t,r,u,e])])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-chars-duplicate",
+      "title": "server-link rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link([t,r,u,e])])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-empty",
+      "title": "server-link rejects empty",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link([])])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=[],Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-empty-duplicate",
+      "title": "server-link rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link([])])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=[],Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-compound",
+      "title": "server-link rejects compound",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(f(true))])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-compound-duplicate",
+      "title": "server-link rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(f(true))])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-atom",
+      "title": "server-link rejects atom",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(maybe)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-atom-duplicate",
+      "title": "server-link rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(maybe)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-uppercase",
+      "title": "server-link rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link('TRUE')])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-uppercase-duplicate",
+      "title": "server-link rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link('TRUE')])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-pending",
+      "title": "server-link rejects pending",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(Pending)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-server-link-pending-duplicate",
+      "title": "server-link rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "server_spawn(callback_must_not_run,[],Pid,[link(false),link(Pending)])",
+      "native_call": "server_spawn(callback_must_not_run,[],Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(false),link(V)],term_variables(Options,Vars),catch((server_spawn(callback_must_not_run,[],Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "off"
+      ],
+      "deferred_reason": "SWI whitelist cannot derive this creation wrapper call from the submitted goal; native fixture covers the exact validation and public policy is probed separately.",
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-integer",
+      "title": "supervisor-monitor rejects integer",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(1)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=1,Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-integer-duplicate",
+      "title": "supervisor-monitor rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(1)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=1,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-float",
+      "title": "supervisor-monitor rejects float",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(1.0)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=1.0,Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-float-duplicate",
+      "title": "supervisor-monitor rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(1.0)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=1.0,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-string",
+      "title": "supervisor-monitor rejects string",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(\"true\")])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=\"true\",Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-string-duplicate",
+      "title": "supervisor-monitor rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(\"true\")])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=\"true\",Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-chars",
+      "title": "supervisor-monitor rejects chars",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor([t,r,u,e])])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-chars-duplicate",
+      "title": "supervisor-monitor rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor([t,r,u,e])])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-empty",
+      "title": "supervisor-monitor rejects empty",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor([])])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=[],Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-empty-duplicate",
+      "title": "supervisor-monitor rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor([])])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=[],Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-compound",
+      "title": "supervisor-monitor rejects compound",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(f(true))])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=f(true),Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-compound-duplicate",
+      "title": "supervisor-monitor rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(f(true))])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=f(true),Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-atom",
+      "title": "supervisor-monitor rejects atom",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(maybe)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=maybe,Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-atom-duplicate",
+      "title": "supervisor-monitor rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(maybe)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=maybe,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-uppercase",
+      "title": "supervisor-monitor rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor('TRUE')])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V='TRUE',Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-uppercase-duplicate",
+      "title": "supervisor-monitor rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor('TRUE')])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V='TRUE',Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-pending",
+      "title": "supervisor-monitor rejects pending",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(Pending)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=Pending,Options=[monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-supervisor-monitor-pending-duplicate",
+      "title": "supervisor-monitor rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "supervisor_spawn([],Pid,[monitor(false),monitor(Pending)])",
+      "native_call": "supervisor_spawn([],Pid,Options)",
+      "native_goal": "V=Pending,Options=[monitor(false),monitor(V)],term_variables(Options,Vars),catch((supervisor_spawn([],Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "monitor",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-integer",
+      "title": "toplevel-session rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(1)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1,Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-integer-duplicate",
+      "title": "toplevel-session rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(1)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1,Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-float",
+      "title": "toplevel-session rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(1.0)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1.0,Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-float-duplicate",
+      "title": "toplevel-session rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(1.0)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1.0,Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-string",
+      "title": "toplevel-session rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(\"true\")])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=\"true\",Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-string-duplicate",
+      "title": "toplevel-session rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(\"true\")])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=\"true\",Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-chars",
+      "title": "toplevel-session rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session([t,r,u,e])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-chars-duplicate",
+      "title": "toplevel-session rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session([t,r,u,e])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-empty",
+      "title": "toplevel-session rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session([])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[],Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-empty-duplicate",
+      "title": "toplevel-session rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session([])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[],Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-compound",
+      "title": "toplevel-session rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(f(true))])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=f(true),Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-compound-duplicate",
+      "title": "toplevel-session rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(f(true))])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=f(true),Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-atom",
+      "title": "toplevel-session rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(maybe)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=maybe,Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-atom-duplicate",
+      "title": "toplevel-session rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(maybe)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=maybe,Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-uppercase",
+      "title": "toplevel-session rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session('TRUE')])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V='TRUE',Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-uppercase-duplicate",
+      "title": "toplevel-session rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session('TRUE')])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V='TRUE',Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-pending",
+      "title": "toplevel-session rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(Pending)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=Pending,Options=[session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-session-pending-duplicate",
+      "title": "toplevel-session rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[session(false),session(Pending)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=Pending,Options=[session(false),session(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "session",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-integer",
+      "title": "toplevel-link rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(1)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1,Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-integer-duplicate",
+      "title": "toplevel-link rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(1)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1,Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-float",
+      "title": "toplevel-link rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(1.0)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-float-duplicate",
+      "title": "toplevel-link rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(1.0)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=1.0,Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-string",
+      "title": "toplevel-link rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(\"true\")])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-string-duplicate",
+      "title": "toplevel-link rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(\"true\")])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=\"true\",Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-chars",
+      "title": "toplevel-link rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link([t,r,u,e])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-chars-duplicate",
+      "title": "toplevel-link rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link([t,r,u,e])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-empty",
+      "title": "toplevel-link rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link([])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[],Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-empty-duplicate",
+      "title": "toplevel-link rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link([])])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=[],Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-compound",
+      "title": "toplevel-link rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(f(true))])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-compound-duplicate",
+      "title": "toplevel-link rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(f(true))])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=f(true),Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-atom",
+      "title": "toplevel-link rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(maybe)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-atom-duplicate",
+      "title": "toplevel-link rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(maybe)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=maybe,Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-uppercase",
+      "title": "toplevel-link rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link('TRUE')])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-uppercase-duplicate",
+      "title": "toplevel-link rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link('TRUE')])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V='TRUE',Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-pending",
+      "title": "toplevel-link rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(Pending)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-toplevel-link-pending-duplicate",
+      "title": "toplevel-link rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_spawn(Pid,[link(false),link(Pending)])",
+      "native_call": "toplevel_spawn(Pid,Options)",
+      "native_goal": "V=Pending,Options=[link(false),link(V)],term_variables(Options,Vars),catch((toplevel_spawn(Pid,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "link",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-integer",
+      "title": "chart-trace rejects integer",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(1)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=1,Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-integer-duplicate",
+      "title": "chart-trace rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(1)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=1,Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-float",
+      "title": "chart-trace rejects float",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(1.0)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=1.0,Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-float-duplicate",
+      "title": "chart-trace rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(1.0)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=1.0,Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-string",
+      "title": "chart-trace rejects string",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(\"true\")]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=\"true\",Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-string-duplicate",
+      "title": "chart-trace rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(\"true\")]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=\"true\",Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-chars",
+      "title": "chart-trace rejects chars",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace([t,r,u,e])]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=[t,r,u,e],Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-chars-duplicate",
+      "title": "chart-trace rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace([t,r,u,e])]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=[t,r,u,e],Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-empty",
+      "title": "chart-trace rejects empty",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace([])]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=[],Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-empty-duplicate",
+      "title": "chart-trace rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace([])]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=[],Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-compound",
+      "title": "chart-trace rejects compound",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(f(true))]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=f(true),Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-compound-duplicate",
+      "title": "chart-trace rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(f(true))]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=f(true),Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-atom",
+      "title": "chart-trace rejects atom",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(maybe)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=maybe,Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-atom-duplicate",
+      "title": "chart-trace rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(maybe)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=maybe,Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-uppercase",
+      "title": "chart-trace rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace('TRUE')]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V='TRUE',Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-uppercase-duplicate",
+      "title": "chart-trace rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace('TRUE')]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V='TRUE',Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-pending",
+      "title": "chart-trace rejects pending",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(Pending)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=Pending,Options=[trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-chart-trace-pending-duplicate",
+      "title": "chart-trace rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>')|[trace(false),trace(Pending)]])",
+      "native_call": "statechart_spawn(Pid,[src_text('<invalid/>')|Options])",
+      "native_goal": "V=Pending,Options=[trace(false),trace(V)],term_variables(Options,Vars),catch((statechart_spawn(Pid,[src_text('<invalid/>')|Options]),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "trace",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "sandbox_modes": [
+        "blacklist",
+        "whitelist"
+      ],
+      "deferred_reason": "Trealla owner-off submitted goals currently lack the statechart_spawn alias; native fixture imports the public API explicitly and covers this validation.",
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-integer",
+      "title": "rpc-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(1)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-integer-duplicate",
+      "title": "rpc-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(1)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-float",
+      "title": "rpc-once rejects float",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(1.0)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-float-duplicate",
+      "title": "rpc-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(1.0)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-string",
+      "title": "rpc-once rejects string",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(\"true\")])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-string-duplicate",
+      "title": "rpc-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(\"true\")])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-chars",
+      "title": "rpc-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once([t,r,u,e])])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-chars-duplicate",
+      "title": "rpc-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once([t,r,u,e])])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-empty",
+      "title": "rpc-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once([])])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-empty-duplicate",
+      "title": "rpc-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once([])])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-compound",
+      "title": "rpc-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(f(true))])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-compound-duplicate",
+      "title": "rpc-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(f(true))])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-atom",
+      "title": "rpc-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(maybe)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-atom-duplicate",
+      "title": "rpc-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(maybe)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-uppercase",
+      "title": "rpc-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once('TRUE')])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-uppercase-duplicate",
+      "title": "rpc-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once('TRUE')])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-pending",
+      "title": "rpc-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(Pending)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-rpc-once-pending-duplicate",
+      "title": "rpc-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "rpc('http://127.0.0.1:1',throw(callback_ran),[once(false),once(Pending)])",
+      "native_call": "rpc('http://127.0.0.1:1',throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((rpc('http://127.0.0.1:1',throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-integer",
+      "title": "promise-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(1)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-integer-duplicate",
+      "title": "promise-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(1)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-float",
+      "title": "promise-once rejects float",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(1.0)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-float-duplicate",
+      "title": "promise-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(1.0)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-string",
+      "title": "promise-once rejects string",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(\"true\")])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-string-duplicate",
+      "title": "promise-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(\"true\")])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-chars",
+      "title": "promise-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once([t,r,u,e])])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-chars-duplicate",
+      "title": "promise-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once([t,r,u,e])])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-empty",
+      "title": "promise-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once([])])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-empty-duplicate",
+      "title": "promise-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once([])])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-compound",
+      "title": "promise-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(f(true))])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-compound-duplicate",
+      "title": "promise-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(f(true))])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-atom",
+      "title": "promise-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(maybe)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-atom-duplicate",
+      "title": "promise-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(maybe)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-uppercase",
+      "title": "promise-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once('TRUE')])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-uppercase-duplicate",
+      "title": "promise-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once('TRUE')])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-pending",
+      "title": "promise-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(Pending)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-promise-once-pending-duplicate",
+      "title": "promise-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,[once(false),once(Pending)])",
+      "native_call": "promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((promise('http://127.0.0.1:1',throw(callback_ran),Ref,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-integer",
+      "title": "async-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(1)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-integer-duplicate",
+      "title": "async-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(1)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-float",
+      "title": "async-once rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(1.0)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-float-duplicate",
+      "title": "async-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(1.0)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-string",
+      "title": "async-once rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(\"true\")])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-string-duplicate",
+      "title": "async-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(\"true\")])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-chars",
+      "title": "async-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once([t,r,u,e])])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-chars-duplicate",
+      "title": "async-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once([t,r,u,e])])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-empty",
+      "title": "async-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once([])])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-empty-duplicate",
+      "title": "async-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once([])])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-compound",
+      "title": "async-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(f(true))])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-compound-duplicate",
+      "title": "async-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(f(true))])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-atom",
+      "title": "async-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(maybe)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-atom-duplicate",
+      "title": "async-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(maybe)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-uppercase",
+      "title": "async-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once('TRUE')])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-uppercase-duplicate",
+      "title": "async-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once('TRUE')])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-pending",
+      "title": "async-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(Pending)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-async-once-pending-duplicate",
+      "title": "async-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call(1,throw(callback_ran),[once(false),once(Pending)])",
+      "native_call": "toplevel_call(1,throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call(1,throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-integer",
+      "title": "sync-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(1)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-integer-duplicate",
+      "title": "sync-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(1)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-float",
+      "title": "sync-once rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(1.0)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-float-duplicate",
+      "title": "sync-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(1.0)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-string",
+      "title": "sync-once rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(\"true\")])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-string-duplicate",
+      "title": "sync-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(\"true\")])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-chars",
+      "title": "sync-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once([t,r,u,e])])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-chars-duplicate",
+      "title": "sync-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once([t,r,u,e])])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-empty",
+      "title": "sync-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once([])])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-empty-duplicate",
+      "title": "sync-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once([])])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-compound",
+      "title": "sync-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(f(true))])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-compound-duplicate",
+      "title": "sync-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(f(true))])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-atom",
+      "title": "sync-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(maybe)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-atom-duplicate",
+      "title": "sync-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(maybe)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-uppercase",
+      "title": "sync-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once('TRUE')])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-uppercase-duplicate",
+      "title": "sync-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once('TRUE')])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-pending",
+      "title": "sync-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(Pending)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-sync-once-pending-duplicate",
+      "title": "sync-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch(1,throw(callback_ran),Answer,[once(false),once(Pending)])",
+      "native_call": "toplevel_call_synch(1,throw(callback_ran),Answer,Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch(1,throw(callback_ran),Answer,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-integer",
+      "title": "remote-async-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(1)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-integer-duplicate",
+      "title": "remote-async-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(1)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-float",
+      "title": "remote-async-once rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(1.0)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-float-duplicate",
+      "title": "remote-async-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(1.0)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-string",
+      "title": "remote-async-once rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(\"true\")])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-string-duplicate",
+      "title": "remote-async-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(\"true\")])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-chars",
+      "title": "remote-async-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once([t,r,u,e])])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-chars-duplicate",
+      "title": "remote-async-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once([t,r,u,e])])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-empty",
+      "title": "remote-async-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once([])])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-empty-duplicate",
+      "title": "remote-async-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once([])])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-compound",
+      "title": "remote-async-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(f(true))])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-compound-duplicate",
+      "title": "remote-async-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(f(true))])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-atom",
+      "title": "remote-async-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(maybe)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-atom-duplicate",
+      "title": "remote-async-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(maybe)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-uppercase",
+      "title": "remote-async-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once('TRUE')])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-uppercase-duplicate",
+      "title": "remote-async-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once('TRUE')])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-pending",
+      "title": "remote-async-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(Pending)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-async-once-pending-duplicate",
+      "title": "remote-async-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),[once(false),once(Pending)])",
+      "native_call": "toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-integer",
+      "title": "remote-sync-once rejects integer",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(1)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-integer-duplicate",
+      "title": "remote-sync-once rejects integer in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(1)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-float",
+      "title": "remote-sync-once rejects float",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(1.0)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1.0,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-float-duplicate",
+      "title": "remote-sync-once rejects float in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(1.0)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=1.0,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "1.0",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,1.0)",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-string",
+      "title": "remote-sync-once rejects string",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(\"true\")])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=\"true\",Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-string-duplicate",
+      "title": "remote-sync-once rejects string in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(\"true\")])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=\"true\",Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "\"true\"",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-chars",
+      "title": "remote-sync-once rejects chars",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once([t,r,u,e])])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-chars-duplicate",
+      "title": "remote-sync-once rejects chars in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once([t,r,u,e])])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[t,r,u,e],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[t,r,u,e]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[t,r,u,e])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-empty",
+      "title": "remote-sync-once rejects empty",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once([])])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[],Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-empty-duplicate",
+      "title": "remote-sync-once rejects empty in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once([])])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=[],Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "[]",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,[])",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-compound",
+      "title": "remote-sync-once rejects compound",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(f(true))])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=f(true),Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": false,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-compound-duplicate",
+      "title": "remote-sync-once rejects compound in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(f(true))])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=f(true),Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(type_error(atom,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "f(true)",
+      "formal": "type_error(atom,V)",
+      "duplicate": true,
+      "expected_formal": "type_error(atom,f(true))",
+      "expected_error_names": [
+        "type_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-atom",
+      "title": "remote-sync-once rejects atom",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(maybe)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=maybe,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-atom-duplicate",
+      "title": "remote-sync-once rejects atom in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(maybe)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=maybe,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "maybe",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,maybe)",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-uppercase",
+      "title": "remote-sync-once rejects uppercase",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once('TRUE')])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V='TRUE',Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": false,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-uppercase-duplicate",
+      "title": "remote-sync-once rejects uppercase in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once('TRUE')])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V='TRUE',Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(domain_error(boolean,V),_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "'TRUE'",
+      "formal": "domain_error(boolean,V)",
+      "duplicate": true,
+      "expected_formal": "domain_error(boolean,'TRUE')",
+      "expected_error_names": [
+        "domain_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-pending",
+      "title": "remote-sync-once rejects pending",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(Pending)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=Pending,Options=[once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": false,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    },
+    {
+      "id": "BOOL-remote-sync-once-pending-duplicate",
+      "title": "remote-sync-once rejects pending in a later occurrence",
+      "transport": "query_rejection",
+      "goal": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,[once(false),once(Pending)])",
+      "native_call": "toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options)",
+      "native_goal": "V=Pending,Options=[once(false),once(V)],term_variables(Options,Vars),catch((toplevel_call_synch('@'(1,'http://127.0.0.1:1'),throw(callback_ran),Answer,Options),fail),error(instantiation_error,_),Caught=true),Caught==true,maplist(var,Vars),var(Pid),var(Ref),var(Answer)",
+      "option": "once",
+      "value": "Pending",
+      "formal": "instantiation_error",
+      "duplicate": true,
+      "expected_formal": "instantiation_error",
+      "expected_error_names": [
+        "instantiation_error"
+      ]
+    }
+  ]
+}

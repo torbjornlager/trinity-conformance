@@ -1,0 +1,36 @@
+{
+  "suite": "boolean-boundary-diagnostics-0.1",
+  "baseline": "boolean-boundary-diagnostics-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Explicit policy/availability diagnostics, not language-validation passes",
+  "cases": [
+    {
+      "id": "BOOL-POLICY-WHITELIST",
+      "title": "Classify whitelist creation admission before runtime validation",
+      "transport": "query_rejection",
+      "only_sandbox_modes": [
+        "whitelist"
+      ],
+      "goal": "V=1,toplevel_spawn(Pid,[session(V)])",
+      "candidate_error_formals": {
+        "swi": "instantiation_error",
+        "trealla": "type_error(atom,1)"
+      }
+    },
+    {
+      "id": "BOOL-POLICY-OWNER-OFF",
+      "title": "Classify owner-off statechart API availability",
+      "transport": "query_rejection",
+      "only_sandbox_modes": [
+        "off"
+      ],
+      "goal": "statechart_spawn(Pid,[src_text('<invalid/>'),trace(1)])",
+      "candidate_error_formals": {
+        "swi": "type_error(atom,1)",
+        "trealla": "existence_error(procedure,statechart_spawn/2)"
+      }
+    }
+  ]
+}
