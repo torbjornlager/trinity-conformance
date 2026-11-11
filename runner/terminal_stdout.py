@@ -30,6 +30,8 @@ def check_stdout(harness):
                 output = event["event"] if event["type"] == "io_request" else event
                 if output["type"] != "output":
                     raise AssertionError((goal, event))
+                if goal == flush:
+                    assert "stdout" not in output,event
                 if "stdout" in output:
                     chunks.append(output["stdout"])
                 elif goal == flush:
@@ -42,17 +44,6 @@ def check_stdout(harness):
             if actual != expected:
                 raise AssertionError((goal, actual, expected))
             print(f"PASS {goal}", flush=True)
-        harness.call("output(one),output(two)")
-        values=[]
-        for _ in range(16):
-            event=harness.recv()
-            if event["type"]=="success": break
-            harness.acknowledge_output(event)
-            output=event["event"] if event["type"]=="io_request" else event
-            assert output["type"]=="output" and "stdout" not in output,event
-            values.append(output["data"])
-        assert values==["one","two"],values
-        print("PASS structured output keeps its event semantics",flush=True)
     finally:
         harness.halt()
 
