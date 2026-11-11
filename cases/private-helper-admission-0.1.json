@@ -66,11 +66,17 @@
       "goal": "((ha_pair(A,B),A=tentative,fail);(var(A),var(B)))"
     },
     {
+      "id": "HA-011",
+      "title": "Library callbacks resolve in validated private source",
+      "transport": "query",
+      "goal": "maplist(ha_pair,[one,two],Values),Values==[one,two]"
+    },
+    {
       "id": "HA-012",
       "title": "Checked dynamic updates stay in the retained private database",
       "transport": "query",
       "goal": "assertz(ha_dynamic(extra)),findall(V,ha_dynamic(V),Values),Values==[seed,extra]"
     }
   ],
-  "contract": "Validated actor-local helpers retain their own session scope. HA-011 library closure admission remains with the separate library batch."
+  "contract": "Validated actor-local helpers retain their own session scope, including library closures."
 }
