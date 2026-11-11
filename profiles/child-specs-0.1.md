@@ -7,7 +7,7 @@ candidates run identical [public-interface assertions](../cases/child-specs-0.1.
 
 | Case | Selected observation |
 | --- | --- |
-| SV-001 | A missing start raises missing_start_option(Id), leaving the supervisor output unbound. |
+| SV-001 | A missing start raises existence_error(option,start(Id)), leaving the supervisor output unbound. |
 | SV-002 | Duplicate initial ids raise permission_error(duplicate,supervisor_child_id,Id). |
 | SV-003 | Improper outer child lists and improper child-option lists raise list type errors. |
 | SV-004 | Later invalid restart and shutdown settings are rejected despite earlier valid values. |
