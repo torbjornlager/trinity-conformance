@@ -602,6 +602,36 @@ def check_visitor_ownership(base):
         expect_event(halted, fields, "halted")
 
 
+
+def check_output_prompt_loop(base):
+    # Exercise the published HTTP example's output/read/repeat path, including
+    # output before each prompt and after each correlated reply.
+    with session(base, True) as fields:
+        outputs = []
+        def advance(event):
+            for _ in range(12):
+                if event.get("type") != "output":
+                    return event
+                expect_event(event, fields, "output")
+                outputs.append(event["data"].strip())
+                event = post(base, "poll", fields)
+            raise AssertionError("output loop did not reach a prompt or final result")
+        goal = ("repeat,writeln('Enter a Prolog term (stop to finish).'),"
+                "read(Something),(Something==stop -> !,writeln(done) ; writeln(Something),fail)")
+        first = advance(post(base, "call", {**fields, "goal": goal}))
+        first_ref = prompt_ref(first, fields)
+        respond(base, fields, "hello(prompt_release)", first_ref)
+        second = advance(post(base, "poll", fields))
+        second_ref = prompt_ref(second, fields)
+        require(second_ref != first_ref, "successive reads reused a prompt reference")
+        respond(base, fields, "stop", second_ref)
+        final = advance(post(base, "poll", fields))
+        expect_event(final, fields, "success")
+        require(outputs == ["Enter a Prolog term (stop to finish).", "hello(prompt_release)",
+                            "Enter a Prolog term (stop to finish).", "done"], repr(outputs))
+        require(final.get("data") == [{"Something": "stop"}], repr(final))
+
+
 def check_session_database(base):
     with session(base, True) as first, session(base, True) as other:
         expect_answer(post(base, "call", {**first, "goal": "assertz(pt021_secret(retained))"}), first, {})
@@ -669,6 +699,8 @@ def main():
                                                 reply_kind="missing-reference")
                 elif case["id"] == "PT-021":
                     check_session_database(endpoint)
+                elif case["id"] == "PT-022":
+                    check_output_prompt_loop(endpoint)
                 elif case["id"] == "PT-023":
                     from terminal_stdout import check_http
                     check_http(endpoint)
