@@ -422,6 +422,51 @@ def case_ac_006(candidate: Candidate) -> None:
         harness.halt()
 
 
+def newline_goal(candidate: Candidate, goal: str, child: bool = False) -> None:
+    with Harness(candidate) as harness:
+        harness.spawn_shell()
+        harness.call(goal, "[limit(1)]")
+        outputs = []
+        for _ in range(32):
+            event = harness.recv()
+            if event.get("type") == "success":
+                require(event.get("more") is False, f"newline left a continuation: {event!r}")
+                break
+            if event.get("type") == "down":
+                require(child and event.get("pid") != harness.shell
+                        and event.get("reason") in ("true", True),
+                        f"unexpected child termination: {event!r}")
+                continue
+            output = event.get("event") if event.get("type") == "io_request" else event
+            require(isinstance(output, dict) and output.get("type") == "output",
+                    f"unexpected newline event: {event!r}")
+            outputs.append(output)
+            harness.acknowledge_output(event)
+        else:
+            raise ConformanceFailure("newline did not complete")
+        require(bool(outputs), "nl/0 completed without reaching the terminal")
+        # Legacy native data omits the line ending because the browser adds it.
+        # Newer peers expose exact stdout. Accept both protocol representations.
+        if all("stdout" in output for output in outputs):
+            require("".join(output["stdout"] for output in outputs) == "\n",
+                    f"wrong newline stdout: {outputs!r}")
+        else:
+            require(all(output.get("data") in ("", "\n") for output in outputs),
+                    f"newline emitted printable text: {outputs!r}")
+        harness.halt()
+
+
+def case_io_001(candidate: Candidate) -> None:
+    for goal in ("nl", "call(nl)"):
+        newline_goal(candidate, goal)
+
+
+def case_io_002(candidate: Candidate) -> None:
+    newline_goal(candidate,
+                 "spawn(nl,P,[monitor(true)]),"
+                 "receive({down(_,_,true)->true})", child=True)
+
+
 def case_ac_007(candidate: Candidate) -> None:
     with Harness(candidate) as harness:
         harness.spawn_shell("[session(true),src_list([shell_marker])]")
@@ -1036,6 +1081,8 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-005": case_ac_005,
     "AC-006": case_ac_006,
     "AC-007": case_ac_007,
+    "IO-001": case_io_001,
+    "IO-002": case_io_002,
     "BH-001": case_bh_001,
     "BH-002": case_bh_002,
     "BH-003": case_bh_003,
