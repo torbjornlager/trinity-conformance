@@ -470,6 +470,12 @@ def case_io_002(candidate: Candidate) -> None:
                  "receive({down(_,_,true)->true})", child=True)
 
 
+def case_io_003(candidate: Candidate) -> None:
+    from terminal_stdout import check_stdout
+    with Harness(candidate) as harness:
+        check_stdout(harness)
+
+
 def case_pw_001(candidate: Candidate) -> None:
     # The wire reference and a literal envelope-shaped prompt are separate.
     with Harness(candidate) as harness:
@@ -1195,6 +1201,7 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-006": case_ac_006,
     "AC-007": case_ac_007,
     "IO-001": case_io_001,
+    "IO-003": case_io_003,
     "IO-002": case_io_002,
 
 

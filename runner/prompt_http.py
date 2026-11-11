@@ -669,6 +669,9 @@ def main():
                                                 reply_kind="missing-reference")
                 elif case["id"] == "PT-021":
                     check_session_database(endpoint)
+                elif case["id"] == "PT-023":
+                    from terminal_stdout import check_http
+                    check_http(endpoint)
                 else:
                     raise ValueError(f"unknown case {case['id']}")
             except (AssertionError, KeyError, ValueError, OSError) as error:
