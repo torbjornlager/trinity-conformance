@@ -602,6 +602,15 @@ def check_visitor_ownership(base):
         expect_event(halted, fields, "halted")
 
 
+def check_session_database(base):
+    with session(base, True) as first, session(base, True) as other:
+        expect_answer(post(base, "call", {**first, "goal": "assertz(pt021_secret(retained))"}), first, {})
+        expect_answer(post(base, "call", {**first, "goal": "pt021_secret(X)"}), first, {"X": "retained"})
+        expect_event(post(base, "call", {**other, "goal": "catch(pt021_secret(_),_,fail)"}), other, "failure")
+        expect_event(post(base, "abort", first), first, "abort")
+        expect_answer(post(base, "call", {**first, "goal": "pt021_secret(X)"}), first, {"X": "retained"})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--swi")
@@ -658,6 +667,8 @@ def main():
                 elif case["id"] == "PT-020":
                     check_reply_abort_halt_race(endpoint, 200 if engine == "swi" else 404,
                                                 reply_kind="missing-reference")
+                elif case["id"] == "PT-021":
+                    check_session_database(endpoint)
                 else:
                     raise ValueError(f"unknown case {case['id']}")
             except (AssertionError, KeyError, ValueError, OSError) as error:
