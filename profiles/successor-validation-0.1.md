@@ -28,12 +28,10 @@ The prerequisite maplist callback case requires separate whitelist library
 admission work. It remains with that batch and is not silently counted as a pass
 or used to justify widening this extraction's permissions.
 
-The runner reports two explicitly deferred rows per runtime in whitelist mode:
-SU-019 and SU-HTTP-019 (literal call/N admission). They remain active in blacklist
-and owner-off modes. SU-020 now runs in every mode with validated private-helper
-session admission. These cases are checked on both runtimes with the same
-selection; deferrals are not counted as passing successor semantics. Maplist
-remains with the pending library-admission batch.
+All successor rows now run on both natives in blacklist, whitelist and owner-off
+modes. SU-020 uses validated private-helper admission; SU-019 and SU-HTTP-019
+use completed call/N arity admission. Maplist remains with the separate library
+batch, outside this selection.
 
 `cases/interop-successor-0.1.json` runs the valid relation, float validation,
 and private-source contract across both native peer directions. Use the standard
