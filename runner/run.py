@@ -405,7 +405,10 @@ def case_ac_006(candidate: Candidate) -> None:
         prompt = harness.recv("prompt")
         require(prompt.get("pid") == pid and prompt.get("data") == "Input",
                 f"unexpected browser prompt: {prompt!r}")
-        harness.send({"command": "toplevel_respond", "pid": pid, "input": "hello"})
+        reply = {"command": "toplevel_respond", "pid": pid, "input": "hello"}
+        if "prompt_ref" in prompt:
+            reply["prompt_ref"] = prompt["prompt_ref"]
+        harness.send(reply)
         responded = False
         success: dict[str, Any] | None = None
         for _ in range(2):
@@ -422,6 +425,114 @@ def case_ac_006(candidate: Candidate) -> None:
         harness.halt()
 
 
+def case_pw_001(candidate: Candidate) -> None:
+    # The wire reference and a literal envelope-shaped prompt are separate.
+    with Harness(candidate) as harness:
+        pid = harness.spawn_shell()
+        harness.call("input(prompt_ref(123,question),X)")
+        prompt = harness.recv("prompt")
+        require(prompt.get("pid") == pid and prompt.get("data") == "prompt_ref(123,question)"
+                and isinstance(prompt.get("prompt_ref"), str), f"wrong prompt envelope: {prompt!r}")
+        harness.send({"command": "toplevel_respond", "pid": pid, "input": "answer",
+                      "prompt_ref": prompt["prompt_ref"]})
+        result = harness.recv_type("success")
+        require(row_value(result, "X") == "answer", f"reply failed: {result!r}")
+        harness.halt()
+
+
+def case_pw_002(candidate: Candidate) -> None:
+    with Harness(candidate) as harness:
+        pid = harness.spawn_shell()
+        harness.call("input(first,A),input(second,B)")
+
+        def prompt_ref(prompt: dict[str, Any], label: str) -> str:
+            ref = prompt.get("prompt_ref")
+            require(prompt.get("pid") == pid and prompt.get("data") == label
+                    and isinstance(ref, str) and bool(ref),
+                    f"expected correlated {label} prompt, got {prompt!r}")
+            return ref
+
+        reply = {"command": "toplevel_respond", "pid": pid, "input": "original"}
+        first = dict(reply, prompt_ref=prompt_ref(harness.recv("prompt"), "first"))
+        harness.send(first)
+        events = {event["type"]: event for event in (harness.recv(), harness.recv())}
+        require(events.keys() == {"responded", "prompt"},
+                f"first reply did not acknowledge and produce the next prompt: {events!r}")
+        second = prompt_ref(events["prompt"], "second")
+        require(second != first["prompt_ref"], "consecutive prompts reused a reference")
+
+        for stale in (first, reply):
+            harness.send(stale)
+            event = harness.recv()
+            require(event.get("type") == "error" and event.get("code") == "invalid_prompt_ref",
+                    f"stale or uncorrelated reply was not rejected: {event!r}")
+
+        harness.send(dict(reply, input="current", prompt_ref=second))
+        result = harness.recv_type("success")
+        require(row_value(result, "A") == "original" and row_value(result, "B") == "current",
+                f"a reply was accepted by the wrong prompt: {result!r}")
+        harness.halt()
+
+
+def case_pw_003(candidate: Candidate) -> None:
+    """Parse errors retain the prompt; successful dispatch consumes it once."""
+    with Harness(candidate) as harness:
+        pid = harness.spawn_shell()
+        harness.call("input(question,X)")
+        prompt = harness.recv("prompt")
+        ref = prompt.get("prompt_ref")
+        require(isinstance(ref, str) and bool(ref), f"missing reference: {prompt!r}")
+        reply = {"command": "toplevel_respond", "pid": pid, "prompt_ref": ref}
+        harness.send(dict(reply, input="broken(."))
+        require(harness.recv().get("type") == "error", "malformed reply was accepted")
+        harness.send(dict(reply, input="answer"))
+        events = [harness.recv(), harness.recv()]
+        require({e.get("type") for e in events} == {"responded", "success"},
+                f"corrected reply did not complete the prompt: {events!r}")
+        result = next(e for e in events if e.get("type") == "success")
+        require(row_value(result, "X") == "answer", f"wrong answer: {result!r}")
+        harness.send(dict(reply, input="replayed"))
+        rejected = harness.recv()
+        require(rejected.get("type") == "error" and rejected.get("code") == "invalid_prompt_ref",
+                f"consumed reference was accepted: {rejected!r}")
+        harness.call("input(next,Y)")
+        later = harness.recv("prompt")
+        require(later.get("prompt_ref") != ref, "next prompt reused its reference")
+        harness.send(dict(reply, input="stale"))
+        rejected = harness.recv()
+        require(rejected.get("code") == "invalid_prompt_ref", f"stale reply accepted: {rejected!r}")
+        harness.send(dict(reply, input="fresh", prompt_ref=later["prompt_ref"]))
+        result = harness.recv_type("success")
+        require(row_value(result, "Y") == "fresh", f"replay polluted next prompt: {result!r}")
+        harness.halt()
+
+
+def case_pw_004(candidate: Candidate) -> None:
+    # Acknowledgement confirms dispatch, even when the actor rejects the value.
+    with Harness(candidate) as harness:
+        pid = harness.spawn_shell()
+        harness.call("input(question,expected)")
+        prompt = harness.recv("prompt")
+        ref = prompt.get("prompt_ref")
+        require(isinstance(ref, str) and bool(ref), f"missing reference: {prompt!r}")
+        reply = {"command": "toplevel_respond", "pid": pid, "prompt_ref": ref}
+        harness.send(dict(reply, input="wrong"))
+        harness.recv("responded")
+        harness.send(dict(reply, input="expected"))
+        rejected = harness.recv()
+        require(rejected.get("type") == "error" and rejected.get("code") == "invalid_prompt_ref",
+                f"dispatched reference was reused while actor waited: {rejected!r}")
+        harness.send({"command": "toplevel_abort", "pid": pid})
+        harness.recv("abort")
+        harness.call("input(recovered,X)")
+        recovered = harness.recv("prompt")
+        require(recovered.get("prompt_ref") != ref, "Abort did not refresh the reference")
+        harness.send(dict(reply, input="fresh", prompt_ref=recovered["prompt_ref"]))
+        result = harness.recv_type("success")
+        require(row_value(result, "X") == "fresh", f"Abort did not recover input: {result!r}")
+        harness.halt()
+
+
 def case_ac_007(candidate: Candidate) -> None:
     with Harness(candidate) as harness:
         harness.spawn_shell("[session(true),src_list([shell_marker])]")
@@ -429,16 +540,18 @@ def case_ac_007(candidate: Candidate) -> None:
         spawned = harness.recv("success")
         child = row_value(spawned, "Pid")
         harness.call(
-            f"toplevel_call({child},input('Input',X)),receive({{Answer->true}})",
+            f"toplevel_call({child},input('Input',X)),"
+            "receive({prompt(P,prompt_ref(Ref,'Input')) -> Answer=prompt(P,'Input'); "
+            "prompt(P,'Input') -> Ref=legacy,Answer=prompt(P,'Input')})",
             "[limit(1)]",
         )
         prompt_answer = harness.recv("success")
         prompt_text = row_value(prompt_answer, "Answer")
         require(prompt_text.startswith("prompt("),
                 f"nested input bypassed its protocol caller: {prompt_text!r}")
-        harness.call(
-            f"respond({child},hello),receive({{Answer->true}})", "[limit(1)]"
-        )
+        ref = row_value(prompt_answer, "Ref")
+        reply = f"respond({child},hello)" if ref == "legacy" else f"respond({child},{ref},hello)"
+        harness.call(f"{reply},receive({{Answer->true}})", "[limit(1)]")
         completed = harness.recv("success")
         answer = row_value(completed, "Answer")
         require(answer.startswith("success(") and "input('Input',hello)" in answer,
@@ -1037,6 +1150,10 @@ CASE_FUNCTIONS: dict[str, Callable[[Candidate], None]] = {
     "AC-005": case_ac_005,
     "AC-006": case_ac_006,
     "AC-007": case_ac_007,
+    "PW-001": case_pw_001,
+    "PW-002": case_pw_002,
+    "PW-003": case_pw_003,
+    "PW-004": case_pw_004,
     "BH-001": case_bh_001,
     "BH-002": case_bh_002,
     "BH-003": case_bh_003,
