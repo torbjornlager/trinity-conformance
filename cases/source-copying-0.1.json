@@ -38,6 +38,13 @@
       "transport": "query",
       "source": "sc_poll(Owner):-receive({unexpected->fail},[timeout(0),on_timeout(send(Owner,poll_timeout))]).",
       "goal": "self(S),spawn(sc_poll(S),P,[monitor(true),src_predicates([sc_poll/1])]),receive({poll_timeout->true;down(P,P,R)->throw(worker_down(R))},[timeout(3),on_timeout(throw(no_timeout_callback))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(no_poll_down))])"
+    },
+    {
+      "id": "SCOPY-006",
+      "title": "Second-generation copied guards retain private inference and fallback",
+      "transport": "query",
+      "source": "rc_relation(wife,husband).\nrc_worker:-receive({offer(From,W) if rc_relation(W,H)->send(From,inferred(W,H)),rc_worker;offer(From,W)->send(From,fallback(W)),rc_worker;stop->true}).\nrc_controller(Owner):-self(S),spawn(rc_worker,C,[src_predicates([rc_worker/0,rc_relation/2]),monitor(true)]),send(C,offer(S,wife)),receive({inferred(wife,husband)->true},[timeout(2),on_timeout(throw(copy_inference_missing))]),send(C,offer(S,unknown)),receive({fallback(unknown)->true},[timeout(2),on_timeout(throw(copy_fallback_missing))]),send(C,stop),receive({down(C,C,true)->true},[timeout(2),on_timeout(throw(copy_child_down_missing))]),send(Owner,copy_roundtrip).\n",
+      "goal": "self(S),spawn(rc_controller(S),P,[src_predicates([rc_controller/1,rc_worker/0,rc_relation/2]),monitor(true)]),receive({copy_roundtrip->true},[timeout(4),on_timeout(throw(copy_roundtrip_missing))]),receive({down(P,P,true)->true},[timeout(4),on_timeout(throw(copy_parent_down_missing))])"
     }
   ]
 }

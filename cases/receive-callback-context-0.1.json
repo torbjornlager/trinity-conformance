@@ -1,0 +1,76 @@
+{
+  "suite": "receive-callback-context-0.1",
+  "scope": "required",
+  "contract": "Receive callbacks use the caller runtime and private source; patterns remain data and selection preserves binding, consumption and ordinary exception semantics.",
+  "cases": [
+    {
+      "id": "RC-001",
+      "title": "Source-free guard resolves the public runtime API",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_probe),receive({rc_probe if runtime_property(persistent(true))->R=accepted},[timeout(0),on_timeout(throw(receive_api_guard_missing))]),R==accepted"
+    },
+    {
+      "id": "RC-002",
+      "title": "Selected body resolves the public runtime API and leaves the message consumed",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_probe),receive({rc_probe->runtime_property(persistent(true))},[timeout(0),on_timeout(throw(receive_api_body_missing))]),receive({rc_probe->throw(receive_api_message_repeated)},[timeout(0)])"
+    },
+    {
+      "id": "RC-003",
+      "title": "Source-free timeout callback resolves the same API",
+      "transport": "query",
+      "goal": "receive({},[timeout(0),on_timeout((runtime_property(persistent(true)),R=expired))]),R==expired"
+    },
+    {
+      "id": "RC-004",
+      "title": "Message patterns shaped like API calls remain data",
+      "transport": "query",
+      "goal": "self(S),send(S,rpc(data,data)),receive({rpc(A,B)->runtime_property(persistent(true)),A==data,B==data},[timeout(0),on_timeout(throw(receive_api_pattern_changed))])"
+    },
+    {
+      "id": "RC-005",
+      "title": "Private guard inference is available to the selected body",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_offer(ok)),receive({rc_offer(V) if (runtime_property(persistent(true)),rc_private(V))->rc_pair(V,W),W==ok},[timeout(0),on_timeout(throw(receive_private_guard_missing))])",
+      "source": "rc_private(ok). rc_pair(X,X)."
+    },
+    {
+      "id": "RC-006",
+      "title": "Private timeout callbacks retain the caller source",
+      "transport": "query",
+      "goal": "receive({},[timeout(0),on_timeout((runtime_property(persistent(true)),rc_private(ok),R=expired))]),R==expired",
+      "source": "rc_private(ok). rc_pair(X,X)."
+    },
+    {
+      "id": "RC-007",
+      "title": "A failed guard rolls back its bindings before the fallback",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_offer(ok)),receive({rc_offer(V) if (runtime_property(persistent(true)),V=tentative,fail)->throw(failed_guard_selected);rc_offer(W)->W==ok,var(V)},[timeout(0),on_timeout(throw(receive_fallback_missing))])"
+    },
+    {
+      "id": "RC-008",
+      "title": "An ordinary guard exception preserves the unmatched message for fallback",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_probe),receive({rc_probe if (runtime_property(persistent(true)),X=tentative,throw(rc_ordinary))->throw(throwing_guard_selected);rc_probe->var(X)},[timeout(0),on_timeout(throw(receive_exception_fallback_missing))])"
+    },
+    {
+      "id": "RC-009",
+      "title": "The selected body retains both solutions without consuming another message",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_probe),findall(X,receive({rc_probe->runtime_property(persistent(true)),member(X,[a,b])},[timeout(0),on_timeout(throw(receive_body_missing))]),Xs),Xs==[a,b]"
+    },
+    {
+      "id": "RC-010",
+      "title": "Nested on_timeout goals retain runtime API dispatch",
+      "transport": "query",
+      "goal": "receive({},[timeout(0),on_timeout(catch((runtime_property(persistent(true)),throw(rc_timeout)),rc_timeout,R=recovered))]),R==recovered"
+    },
+    {
+      "id": "RC-011",
+      "title": "Copied private callbacks retain the API in a child",
+      "transport": "query",
+      "goal": "self(S),spawn(rc_copied(S),P,[src_predicates([rc_copied/1]),monitor(true)]),receive({rc_copied_ok->true},[timeout(3),on_timeout(throw(receive_copied_reply_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(receive_copied_down_missing))])",
+      "source": "rc_copied(Owner):-self(S),send(S,rc_probe),receive({rc_probe if runtime_property(persistent(true))->send(Owner,rc_copied_ok)},[timeout(0),on_timeout(throw(receive_copied_api_missing))])."
+    }
+  ]
+}
