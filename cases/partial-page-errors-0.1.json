@@ -1,0 +1,396 @@
+{
+  "suite": "partial-page-errors-0.1",
+  "baseline": "partial-page-errors-0.1",
+  "status": "draft",
+  "scope": "required",
+  "contract": "Appendix B: finite pages preserve collected ordinary solutions before a pending exception; next reports it, stop discards it, and HTTP once retains only the first slice. Resource time exhaustion remains an error.",
+  "cases": [
+    {
+      "id": "PE-001",
+      "title": "An exception before any solution is reported immediately",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "throw(page_boom)",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 5
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-002",
+      "title": "A short partial page precedes its pending error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 5
+          },
+          "expect_prolog": "success([a,b],true)."
+        },
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 2,
+            "limit": 5
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-003",
+      "title": "An error found by full-page lookahead follows the full page",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 2
+          },
+          "expect_prolog": "success([a,b],true)."
+        },
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 2,
+            "limit": 1
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-004",
+      "title": "Partial pages after a nonzero offset advance by returned count",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 1,
+            "limit": 5
+          },
+          "expect_prolog": "success([b],true)."
+        },
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 2,
+            "limit": 5
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-005",
+      "title": "Once discards a pending error after delivering its first slice",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 5,
+            "once": "true"
+          },
+          "expect_prolog": "success([a,b],false)."
+        }
+      ]
+    },
+    {
+      "id": "PE-006",
+      "title": "Once finishes a full slice without retaining a later error",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 1,
+            "once": "true"
+          },
+          "expect_prolog": "success([a],false)."
+        }
+      ]
+    },
+    {
+      "id": "PE-007",
+      "title": "An exception during offset skipping does not create an empty success page",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 3,
+            "limit": 5
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-008",
+      "title": "Owner running-time exhaustion does not publish a truncated success",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(X=a;sleep(1.5),X=b)",
+            "format": "prolog",
+            "template": "X",
+            "offset": 0,
+            "limit": 5
+          },
+          "expect_prolog_error_formal": "resource_error(time)"
+        }
+      ]
+    },
+    {
+      "id": "PE-009",
+      "title": "Toplevel preserves a short partial page before an exception",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[limit(5)]",
+          "expect_type": "success",
+          "values": [
+            "a",
+            "b"
+          ],
+          "more": true
+        },
+        {
+          "command": "next",
+          "expect_type": "error",
+          "error": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-010",
+      "title": "Toplevel delivers a pending exception after an exact full page",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[limit(2)]",
+          "expect_type": "success",
+          "values": [
+            "a",
+            "b"
+          ],
+          "more": true
+        },
+        {
+          "command": "next",
+          "expect_type": "error",
+          "error": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-011",
+      "title": "Toplevel stop discards a pending exception",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[limit(5)]",
+          "expect_type": "success",
+          "values": [
+            "a",
+            "b"
+          ],
+          "more": true
+        },
+        {
+          "command": "stop",
+          "expect_type": "stop"
+        },
+        {
+          "command": "call",
+          "goal": "X=fresh",
+          "options": "[limit(5)]",
+          "expect_type": "success",
+          "values": [
+            "fresh"
+          ],
+          "more": false
+        }
+      ]
+    },
+    {
+      "id": "PE-012",
+      "title": "A session accepts a fresh call after delivering the pending exception",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[limit(5)]",
+          "expect_type": "success",
+          "values": [
+            "a",
+            "b"
+          ],
+          "more": true
+        },
+        {
+          "command": "next",
+          "expect_type": "error",
+          "error": "page_boom"
+        },
+        {
+          "command": "call",
+          "goal": "X=fresh",
+          "options": "[limit(5)]",
+          "expect_type": "success",
+          "values": [
+            "fresh"
+          ],
+          "more": false
+        }
+      ]
+    },
+    {
+      "id": "PE-013",
+      "title": "Toplevel reports an exception before any solution immediately",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "throw(page_boom)",
+          "options": "[limit(5)]",
+          "expect_type": "error",
+          "error": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-014",
+      "title": "An omitted HTTP limit does not turn an exception into a partial success",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X"
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-015",
+      "title": "An omitted HTTP limit does not turn an exception into a partial success with once",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "once": "true"
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-016",
+      "title": "An omitted toplevel limit reports the exception without a partial page",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[]",
+          "expect_type": "error",
+          "error": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-017",
+      "title": "A very large explicit HTTP limit remains finite",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "limit": 1000000000
+          },
+          "expect_prolog": "success([a,b],true)."
+        },
+        {
+          "params": {
+            "goal": "(member(X,[a,b]);throw(page_boom))",
+            "format": "prolog",
+            "template": "X",
+            "offset": 2,
+            "limit": 1
+          },
+          "expect_prolog": "error(page_boom)."
+        }
+      ]
+    },
+    {
+      "id": "PE-018",
+      "title": "A very large explicit toplevel limit remains finite",
+      "transport": "toplevel",
+      "steps": [
+        {
+          "command": "call",
+          "goal": "(member(X,[a,b]);throw(page_boom))",
+          "options": "[limit(1000000000)]",
+          "expect_type": "success",
+          "values": [
+            "a",
+            "b"
+          ],
+          "more": true
+        },
+        {
+          "command": "next",
+          "expect_type": "error",
+          "error": "page_boom"
+        }
+      ]
+    }
+  ]
+}

@@ -155,6 +155,51 @@
           "expect_prolog": "success([verified],false)."
         }
       ]
+    },
+    {
+      "id": "ER-014",
+      "title": "Computed zero divisor for // leaves the result unbound and permits recovery",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "Z is 7-7,catch((X is 9 // Z,fail),E,true),nonvar(E),E=error(evaluation_error(zero_divisor),_),var(X),Y is 9 // 2,integer(Y)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-015",
+      "title": "Computed zero divisor for div leaves the result unbound and permits recovery",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "Z is 7-7,catch((X is 9 div Z,fail),E,true),nonvar(E),E=error(evaluation_error(zero_divisor),_),var(X),Y is 9 div 2,integer(Y)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
+    },
+    {
+      "id": "ER-016",
+      "title": "Computed zero divisor for mod leaves the result unbound and permits recovery",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "Z is 7-7,catch((X is 9 mod Z,fail),E,true),nonvar(E),E=error(evaluation_error(zero_divisor),_),var(X),Y is 9 mod 2,integer(Y)",
+            "format": "prolog",
+            "template": "verified"
+          },
+          "expect_prolog": "success([verified],false)."
+        }
+      ]
     }
   ]
 }
