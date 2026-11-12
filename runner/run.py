@@ -586,8 +586,9 @@ def case_ac_007(candidate: Candidate) -> None:
         child = row_value(spawned, "Pid")
         harness.call(
             f"toplevel_call({child},input('Input',X)),"
-            "receive({prompt(P,prompt_ref(Ref,'Input')) -> Answer=prompt(P,'Input'); "
-            "prompt(P,'Input') -> Ref=legacy,Answer=prompt(P,'Input')})",
+            f"receive({{prompt({child},Ref,'Input') -> Answer=prompt({child},'Input'); "
+            f"prompt({child},prompt_ref(Ref,'Input')) -> Answer=prompt({child},'Input'); "
+            f"prompt({child},'Input') -> Ref=legacy,Answer=prompt({child},'Input')}})",
             "[limit(1)]",
         )
         prompt_answer = harness.recv("success")
