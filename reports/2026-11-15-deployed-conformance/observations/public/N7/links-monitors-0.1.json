@@ -1,0 +1,152 @@
+{
+  "baseline": "links-monitors-0.1",
+  "suite": "links-monitors-0.1",
+  "scope": "required",
+  "candidate": "N7-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-15T17:59:24.529228+00:00",
+  "counts": {
+    "pass": 6,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "LM-001",
+      "title": "Spawn monitoring preserves immediate success failure exception and explicit exit",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4265686684,
+        "data": [
+          {
+            "P": "9039305031@'https://n7.elfenbenstornet.se'",
+            "F": "1872182720@'https://n7.elfenbenstornet.se'",
+            "E": "9490953971@'https://n7.elfenbenstornet.se'",
+            "K": "5078215297@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 149
+    },
+    {
+      "id": "LM-002",
+      "title": "Explicit and spawn-time monitors are independent and preserve unrelated data",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2155042892,
+        "data": [
+          {
+            "S": "2155042892@'https://n7.elfenbenstornet.se'",
+            "P": "9715381819@'https://n7.elfenbenstornet.se'",
+            "R": "2550968562",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 166
+    },
+    {
+      "id": "LM-003",
+      "title": "Monitoring a terminated actor yields no_process with the returned reference",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2835629203,
+        "data": [
+          {
+            "P": "9704358160@'https://n7.elfenbenstornet.se'",
+            "R": "7950558036",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 163
+    },
+    {
+      "id": "LM-004",
+      "title": "Child termination leaves its linked parent alive",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1289596650,
+        "data": [
+          {
+            "S": "1289596650@'https://n7.elfenbenstornet.se'",
+            "Me": "Me",
+            "Child": "Child",
+            "Parent": "1927313349@'https://n7.elfenbenstornet.se'",
+            "C": "3054498086@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 219
+    },
+    {
+      "id": "LM-005",
+      "title": "A three-generation cascade delivers exact notifications under one deadline",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3030283279,
+        "data": [
+          {
+            "S": "3030283279@'https://n7.elfenbenstornet.se'",
+            "R": "R",
+            "C": "C",
+            "G": "G",
+            "GP": "GP",
+            "CP": "CP",
+            "Root": "7610190990@'https://n7.elfenbenstornet.se'",
+            "Child": "2589231954@'https://n7.elfenbenstornet.se'",
+            "Grand": "8548970398@'https://n7.elfenbenstornet.se'",
+            "CR": "5583970246",
+            "GR": "3034143185",
+            "T": "1794765589.516049",
+            "D": "1794765591.516049",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 130
+    },
+    {
+      "id": "LM-006",
+      "title": "Demonitor withdrawal and scoped flush preserve unrelated monitors and messages",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5846962823,
+        "data": [
+          {
+            "S": "5846962823@'https://n7.elfenbenstornet.se'",
+            "P": "5628910416@'https://n7.elfenbenstornet.se'",
+            "Drop": "8393098435",
+            "Keep": "8978691096",
+            "Q": "7457862078@'https://n7.elfenbenstornet.se'",
+            "Flush": "9469382939",
+            "Other": "7051838514",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 147
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)",
+  "format": "direct-runner-observations-v1",
+  "assertion_duration_ms": 974
+}

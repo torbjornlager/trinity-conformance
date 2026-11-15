@@ -7,18 +7,18 @@ another runtime.
 
 ## Current consolidated results
 
-The [1 November native reliability checkpoint](reports/2026-11-01-native-reliability/REPORT.txt)
-records 88/88 passing cases in the expanded `actor-release-0.2` gate, both
-complete native scripts, and the targeted regression evidence. The previous
-40-case gate remains available with `--profile profiles/actor-release-0.1.json`.
+The [15 November deployed and isolated refresh](reports/2026-11-15-deployed-conformance/REPORT.md)
+records 45/45 in each of three exact-image native release fixtures, 70/70 HTTP
+baseline executions and 7/7 shared language cases in each packaged SWI-WASM mode.
+The broader public selection is not all-green: it retains N5 callback-context,
+N7 remote-toplevel and prompt-default findings, an outdated supervisor test
+expectation, and separately controlled N7 admission observations.
 
-The [current coverage matrix](CURRENT_COVERAGE.md) identifies the running nodes,
-the 132/132 deployed ACTOR case executions, the isolated 88/88 release result
-and the latest successful implementation/browser CI. Live source hashes tie
-the deployment to tested revisions. N1/N2 metadata checks, N5's protected public
-route and its execution-only backend checks retain their separate scopes.
-Broader GNU, browser-language and interoperability results are linked as dated
-historical selections. The sections below retain the sequence of repairs.
+The [current coverage matrix](CURRENT_COVERAGE.md) separates current public
+N0–N7 configurations, private release fixtures, browser Node assertions,
+original failures and diagnostic controls. Exact inputs and raw results are
+linked from the dated report. Earlier reports retain their historical scope;
+N5 is now public, and N7 is included explicitly. No live services were changed.
 
 The separate [26 October text checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
 compares the selected character-list configurations in native SWI, Trealla and

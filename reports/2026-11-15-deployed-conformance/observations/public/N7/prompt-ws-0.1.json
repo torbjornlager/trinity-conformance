@@ -1,0 +1,50 @@
+{
+  "baseline": "prompt-ws-0.1",
+  "suite": "prompt-ws-0.1",
+  "scope": "required",
+  "candidate": "N7-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-15T18:06:09.796014+00:00",
+  "counts": {
+    "pass": 0,
+    "fail": 4,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "PW-001",
+      "title": "A WebSocket prompt carries its reference separately from literal prompt_ref data",
+      "status": "fail",
+      "detail": "ConformanceFailure: wrong prompt envelope: {'type': 'prompt', 'pid': 3933861290, 'data': 'prompt_ref(123,question)'}",
+      "duration_ms": 181
+    },
+    {
+      "id": "PW-002",
+      "title": "A later WebSocket prompt accepts its own reply after a stale replay and a reply without a reference",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected correlated first prompt, got {'type': 'prompt', 'pid': 4285188856, 'data': 'first'}",
+      "duration_ms": 126
+    },
+    {
+      "id": "PW-003",
+      "title": "A malformed reply retains its reference and successful dispatch consumes it before the next prompt",
+      "status": "fail",
+      "detail": "ConformanceFailure: missing reference: {'type': 'prompt', 'pid': 9781111546, 'data': 'question'}",
+      "duration_ms": 126
+    },
+    {
+      "id": "PW-004",
+      "title": "A routed reply consumes its reference even when the input pattern rejects its value; Abort recovers",
+      "status": "fail",
+      "detail": "ConformanceFailure: missing reference: {'type': 'prompt', 'pid': 1231762128, 'data': 'question'}",
+      "duration_ms": 146
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)",
+  "format": "direct-runner-observations-v1",
+  "assertion_duration_ms": 579
+}

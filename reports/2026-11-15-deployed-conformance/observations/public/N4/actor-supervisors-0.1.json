@@ -1,0 +1,78 @@
+{
+  "baseline": "actor-supervisors-0.1",
+  "suite": "actor-supervisors-0.1",
+  "scope": "required",
+  "candidate": "N4-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n4.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-15T17:57:28.757097+00:00",
+  "counts": {
+    "pass": 7,
+    "fail": 1,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "SC-001",
+      "title": "Initial startup failure releases previously created child names and preserves the conflicting actor",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'data': \"Unknown error term: supervisor_start_failed(9193753271@'https://n4.elfenbenstornet.se',error(permission_error(register,actor_name,sc_bad),context(actors:register/2,'ordinary registration conflict')))\", 'details': \"error(supervisor_start_failed(9193753271@'https://n4.elfenbenstornet.se',error(permission_error(register,actor_name,sc_bad),context(actors:register/2,'ordinary registration conflict'))),_)\", 'pid': 8514265704, 'type': 'error'}; preceding events were [{'pid': 7085629155, 'reason': 'kill', 'ref': \"7085629155@'https://n4.elfenbenstornet.se'\", 'type': 'down'}]",
+      "duration_ms": 223
+    },
+    {
+      "id": "SC-002",
+      "title": "Failed dynamic addition preserves siblings and permits retry",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 282
+    },
+    {
+      "id": "SC-003",
+      "title": "Failed explicit respawn retains the inactive specification and permits retry",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 308
+    },
+    {
+      "id": "SC-007",
+      "title": "Zero restart budget performs policy cleanup under one-for-one",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 262
+    },
+    {
+      "id": "SC-008",
+      "title": "Zero restart budget performs policy cleanup under one-for-all",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 407
+    },
+    {
+      "id": "SC-009",
+      "title": "Zero restart budget performs policy cleanup under rest-for-one",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 1317
+    },
+    {
+      "id": "SC-010",
+      "title": "Two permitted restarts precede intensity exhaustion",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 261
+    },
+    {
+      "id": "SC-011",
+      "title": "Exhaustion honours numeric and brutal-kill shutdown policies",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 430
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)",
+  "format": "direct-runner-observations-v1",
+  "assertion_duration_ms": 3490
+}

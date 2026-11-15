@@ -1,0 +1,162 @@
+{
+  "baseline": "copying-isolation-0.1",
+  "suite": "copying-isolation-0.1",
+  "scope": "required",
+  "candidate": "N5-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-15T17:57:50.879398+00:00",
+  "counts": {
+    "pass": 6,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2546482483,
+        "data": [
+          {
+            "S": "2546482483@'https://n5.elfenbenstornet.se'",
+            "Me": "Me",
+            "P": "1148406278",
+            "Embedded": "1148406278",
+            "Self": "1148406278",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 257
+    },
+    {
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1956586896,
+        "data": [
+          {
+            "S": "1956586896@'https://n5.elfenbenstornet.se'",
+            "X": "parent",
+            "P": "2908314056",
+            "Value": "child",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 260
+    },
+    {
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1252623177,
+        "data": [
+          {
+            "S": "1252623177@'https://n5.elfenbenstornet.se'",
+            "A": "A",
+            "B": "B",
+            "C": "C",
+            "P": "2158237032",
+            "R1": "inside",
+            "R2": "inside",
+            "U": "parent_received",
+            "V": "V",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 249
+    },
+    {
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1429222134,
+        "data": [
+          {
+            "S": "1429222134@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[alpha,beta]",
+            "P": "2437516748",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 270
+    },
+    {
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1915304044,
+        "data": [
+          {
+            "S": "1915304044@'https://n5.elfenbenstornet.se'",
+            "Tag": "Tag",
+            "Data": "Data",
+            "Rows": "[first-(A-A),second-pair(C,D)]",
+            "P": "1985379010",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "A": "A",
+            "B": "A",
+            "C": "C",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 268
+    },
+    {
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2113461597,
+        "data": [
+          {
+            "S": "2113461597@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "Before": "[parent]",
+            "Initial": "Initial",
+            "Changed": "[changed]",
+            "P": "2344349443",
+            "Values": "Values",
+            "Q": "1558508099",
+            "Sibling": "[right]",
+            "After": "[parent]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 300
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)",
+  "format": "direct-runner-observations-v1",
+  "assertion_duration_ms": 1604
+}

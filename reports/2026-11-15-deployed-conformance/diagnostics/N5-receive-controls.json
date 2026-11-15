@@ -1,0 +1,65 @@
+[
+  {
+    "control": "direct",
+    "goal": "runtime_property(persistent(true)),Control=direct",
+    "outcome": "success",
+    "event": {
+      "type": "success",
+      "pid": 2224559100,
+      "data": [
+        {
+          "Control": "direct"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "control": "findall-outside-receive",
+    "goal": "findall(X,(runtime_property(persistent(true)),member(X,[a,b])),Xs),Xs==[a,b]",
+    "outcome": "success",
+    "event": {
+      "type": "success",
+      "pid": 2570483700,
+      "data": [
+        {
+          "X": "X",
+          "Xs": "[a,b]"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "control": "receive-body",
+    "goal": "self(S),send(S,body_probe),receive({body_probe->runtime_property(persistent(true))},[timeout(0),on_timeout(throw(missing))])",
+    "outcome": "success",
+    "event": {
+      "type": "success",
+      "pid": 3128272005,
+      "data": [
+        {
+          "S": "3128272005@'https://n5.elfenbenstornet.se'"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "control": "receive-enumeration-without-runtime-property",
+    "goal": "self(S),send(S,body_probe),findall(X,receive({body_probe->member(X,[a,b])},[timeout(0),on_timeout(throw(missing))]),Xs),Xs==[a,b]",
+    "outcome": "success",
+    "event": {
+      "type": "success",
+      "pid": 1550219149,
+      "data": [
+        {
+          "S": "1550219149@'https://n5.elfenbenstornet.se'",
+          "X": "X",
+          "Xs": "[a,b]"
+        }
+      ],
+      "more": false
+    }
+  }
+]

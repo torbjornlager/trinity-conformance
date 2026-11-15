@@ -1,0 +1,28 @@
+{
+  "case": {
+    "id": "RC-009",
+    "title": "The selected body retains both solutions without consuming another message",
+    "transport": "query",
+    "goal": "self(S),send(S,rc_probe),findall(X,receive({rc_probe->runtime_property(persistent(true)),member(X,[a,b])},[timeout(0),on_timeout(throw(receive_body_missing))]),Xs),Xs==[a,b]"
+  },
+  "results": [
+    {
+      "repetition": 1,
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'error', 'pid': 3093967866, 'data': 'error(existence_error(procedure,runtime_property/1),runtime_property/1)'}; preceding events were []",
+      "seconds": 0.17342991600000002
+    },
+    {
+      "repetition": 2,
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'error', 'pid': 2977689141, 'data': 'error(existence_error(procedure,runtime_property/1),runtime_property/1)'}; preceding events were []",
+      "seconds": 0.12118016599999998
+    },
+    {
+      "repetition": 3,
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'error', 'pid': 1663950303, 'data': 'error(existence_error(procedure,runtime_property/1),runtime_property/1)'}; preceding events were []",
+      "seconds": 0.108240958
+    }
+  ]
+}

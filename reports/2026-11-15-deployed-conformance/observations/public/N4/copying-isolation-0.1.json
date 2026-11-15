@@ -1,0 +1,162 @@
+{
+  "baseline": "copying-isolation-0.1",
+  "suite": "copying-isolation-0.1",
+  "scope": "required",
+  "candidate": "N4-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n4.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-15T17:57:19.564949+00:00",
+  "counts": {
+    "pass": 6,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Embedded": "2394101473@'https://n4.elfenbenstornet.se'",
+            "Me": "Me",
+            "P": "2394101473@'https://n4.elfenbenstornet.se'",
+            "S": "2474743159@'https://n4.elfenbenstornet.se'",
+            "Self": "2394101473@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2474743159,
+        "type": "success"
+      },
+      "duration_ms": 185
+    },
+    {
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "9490074120@'https://n4.elfenbenstornet.se'",
+            "S": "6071886994@'https://n4.elfenbenstornet.se'",
+            "Value": "child",
+            "X": "parent"
+          }
+        ],
+        "more": false,
+        "pid": 6071886994,
+        "type": "success"
+      },
+      "duration_ms": 223
+    },
+    {
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "B",
+            "BaselineResult": "passed",
+            "C": "C",
+            "P": "7398858736@'https://n4.elfenbenstornet.se'",
+            "R1": "inside",
+            "R2": "inside",
+            "S": "8681619946@'https://n4.elfenbenstornet.se'",
+            "U": "parent_received",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 8681619946,
+        "type": "success"
+      },
+      "duration_ms": 232
+    },
+    {
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "1294012113@'https://n4.elfenbenstornet.se'",
+            "S": "5708650042@'https://n4.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[alpha,beta]"
+          }
+        ],
+        "more": false,
+        "pid": 5708650042,
+        "type": "success"
+      },
+      "duration_ms": 197
+    },
+    {
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "A",
+            "BaselineResult": "passed",
+            "C": "C",
+            "D": "D",
+            "Data": "Data",
+            "P": "2826539263@'https://n4.elfenbenstornet.se'",
+            "Rows": "[first-(A-A),second-pair(C,D)]",
+            "S": "5059668499@'https://n4.elfenbenstornet.se'",
+            "Tag": "Tag",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z"
+          }
+        ],
+        "more": false,
+        "pid": 5059668499,
+        "type": "success"
+      },
+      "duration_ms": 173
+    },
+    {
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "After": "[parent]",
+            "BaselineResult": "passed",
+            "Before": "[parent]",
+            "Changed": "[changed]",
+            "Initial": "Initial",
+            "P": "5547716540@'https://n4.elfenbenstornet.se'",
+            "Q": "1945862027@'https://n4.elfenbenstornet.se'",
+            "S": "3450724709@'https://n4.elfenbenstornet.se'",
+            "Sibling": "[right]",
+            "V": "V",
+            "Values": "Values"
+          }
+        ],
+        "more": false,
+        "pid": 3450724709,
+        "type": "success"
+      },
+      "duration_ms": 245
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)",
+  "format": "direct-runner-observations-v1",
+  "assertion_duration_ms": 1255
+}

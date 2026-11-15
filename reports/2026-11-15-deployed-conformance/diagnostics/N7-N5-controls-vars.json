@@ -1,0 +1,72 @@
+[
+  {
+    "step": "spawn",
+    "goal": "toplevel_spawn(P,[node('https://n5.elfenbenstornet.se'),session(true),monitor(true),src_text('baseline_remote(a). baseline_remote(b).')])",
+    "events": [
+      {
+        "type": "success",
+        "pid": 6971602177,
+        "data": [
+          {
+            "P": "1244450388@'https://n5.elfenbenstornet.se'"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "step": "sync-call",
+    "goal": "toplevel_call_synch(1244450388@'https://n5.elfenbenstornet.se',baseline_remote(X),A,[template(X),limit(1),timeout(3)]),(A==success(1244450388@'https://n5.elfenbenstornet.se',[a],true)->Match=yes;Match=no),(var(A)->AnswerUnbound=yes;AnswerUnbound=no)",
+    "events": [
+      {
+        "type": "success",
+        "pid": 6971602177,
+        "data": [
+          {
+            "X": "X",
+            "A": "A",
+            "Match": "no",
+            "AnswerUnbound": "yes"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "step": "sync-next",
+    "goal": "toplevel_next_synch(1244450388@'https://n5.elfenbenstornet.se',B,[timeout(3)]),(B==success(1244450388@'https://n5.elfenbenstornet.se',[b],false)->Match=yes;Match=no),(var(B)->AnswerUnbound=yes;AnswerUnbound=no)",
+    "events": [
+      {
+        "type": "success",
+        "pid": 6971602177,
+        "data": [
+          {
+            "B": "B",
+            "Match": "no",
+            "AnswerUnbound": "yes"
+          }
+        ],
+        "more": false
+      }
+    ]
+  },
+  {
+    "step": "halt-and-monitor",
+    "goal": "toplevel_halt(1244450388@'https://n5.elfenbenstornet.se'),receive({down(1244450388@'https://n5.elfenbenstornet.se',1244450388@'https://n5.elfenbenstornet.se',Reason)->Down=received},[timeout(3),on_timeout(Down=timeout)])",
+    "events": [
+      {
+        "type": "success",
+        "pid": 6971602177,
+        "data": [
+          {
+            "Reason": "kill",
+            "Down": "received"
+          }
+        ],
+        "more": false
+      }
+    ]
+  }
+]
