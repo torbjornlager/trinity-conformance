@@ -7,12 +7,16 @@ another runtime.
 
 ## Current consolidated results
 
-The [15 November deployed and isolated refresh](reports/2026-11-15-deployed-conformance/REPORT.md)
-records 45/45 in each of three exact-image native release fixtures, 70/70 HTTP
-baseline executions and 7/7 shared language cases in each packaged SWI-WASM mode.
-The broader public selection is not all-green: it retains N5 callback-context,
-N7 remote-toplevel and prompt-default findings, an outdated supervisor test
-expectation, and separately controlled N7 admission observations.
+The [16 November deployed and isolated refresh](reports/2026-11-16-deployed-conformance/REPORT.md),
+run after the directive and sandbox release, records 45/45 plus 7/7
+source-directives in each of three exact-image native release fixtures, 7/7
+source-directives on public N3/N4/N5/N7, 70/70 HTTP baseline executions and 7/7
+shared language cases in each packaged SWI-WASM mode. The broader public
+selection is not all-green: it retains the N5 callback-context, N7
+remote-toplevel and prompt-default findings, the outdated SC-001 expectation,
+controlled N7 admission observations, and a new SD-006/SD-007 applicability
+question for the sandbox-free SWI-WASM engine. The
+[15 November refresh](reports/2026-11-15-deployed-conformance/REPORT.md) is kept.
 
 The [current coverage matrix](CURRENT_COVERAGE.md) separates current public
 N0–N7 configurations, private release fixtures, browser Node assertions,

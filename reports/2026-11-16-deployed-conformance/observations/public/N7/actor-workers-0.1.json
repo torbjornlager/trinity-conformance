@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "baseline": "actor-workers-0.1",
+  "suite": "actor-workers-0.1",
+  "scope": "required",
+  "candidate": "N7-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-16T09:12:21.290689+00:00",
+  "counts": {
+    "pass": 3,
+    "fail": 5,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "WC-001",
+      "title": "Parallel preserves independent bindings and accepts an empty list",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 333
+    },
+    {
+      "id": "WC-002",
+      "title": "Parallel reports logical failure and propagates original exceptions",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 1589
+    },
+    {
+      "id": "WC-003",
+      "title": "Both first_solution arities select a winner and reject an empty solver list",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 1724
+    },
+    {
+      "id": "WC-004",
+      "title": "Continue policies produce a final winning page after failure, exception or exit",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 205
+    },
+    {
+      "id": "WC-005",
+      "title": "Unexpected exits and stop policies produce the documented outcome",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 221
+    },
+    {
+      "id": "WC-006",
+      "title": "Workers resolve supplied predicates and preserve answer variable sharing",
+      "status": "pass",
+      "observation": null,
+      "duration_ms": 149
+    },
+    {
+      "id": "WC-007",
+      "title": "A winning first_solution reclaims its loser and preserves unrelated state",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 257
+    },
+    {
+      "id": "WC-008",
+      "title": "A failing parallel call reclaims its blocked sibling and preserves unrelated state",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 215
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)"
+}

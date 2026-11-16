@@ -1,45 +1,47 @@
 # Current Web Prolog conformance coverage
 
-Updated **15 November 2026**. The fresh selection is **not all-green**. It
-records **623 passes / 24 failures as written across 647 case executions**, with
-separate passing controls and classified contract/admission observations.
-These are case executions across configurations, not 647 independent features.
+Updated **16 November 2026**, after the directive and sandbox release. The fresh
+selection is **not all-green**. It records **681 passes / 29 failures as written
+across 710 case executions**, with separate passing controls and classified
+contract/admission/applicability observations. These are case executions across
+configurations, not 710 independent features. The draft source-directives pack
+passes 7/7 on every sandboxed configuration.
 
-Read the [full report](reports/2026-11-15-deployed-conformance/REPORT.md),
-[machine-readable summary](reports/2026-11-15-deployed-conformance/SUMMARY.json)
-and [preservation check](reports/2026-11-15-deployed-conformance/preservation.json).
+Read the [full report](reports/2026-11-16-deployed-conformance/REPORT.md),
+[machine-readable summary](reports/2026-11-16-deployed-conformance/SUMMARY.json)
+and [15 November report](reports/2026-11-15-deployed-conformance/REPORT.md).
 Original older reports remain unchanged. Source inputs for this refresh are
-`34557d322518941ba13a3e4486736e3d41d73c81`, identified by file hashes.
+`e3285ec`, identified by file hashes.
 
 ## Current deployed surfaces and fresh observations
 
 | Node | Current surface | Fresh selection |
 |---|---|---|
 | N0 | Public RELATION registry/discovery | Metadata only; no RELATION conformance claim |
-| N1 | Public ISOBASE, SWI native 8af3669 | 10/10 ISOBASE HTTP |
-| N2 | Public ISOTOPE, SWI native 6fb82d5 | 10/10 ISOBASE HTTP; not complete ISOTOPE |
-| N3 | Public ACTOR, SWI native 8af3669 | 97/98 public ACTOR; 10/10 HTTP |
-| N4 | Public ACTOR, SWI native 8af3669 | 97/98 public ACTOR; 10/10 HTTP |
-| N5 | **Public ACTOR**, Trealla 09dd226 / 3.14.20 | 96/98 public ACTOR; 10/10 HTTP |
+| N1 | Public ISOBASE, SWI native 74022a6 | 10/10 ISOBASE HTTP |
+| N2 | Public ISOTOPE, SWI native 74022a6 overlay | 10/10 ISOBASE HTTP; not complete ISOTOPE |
+| N3 | Public ACTOR, SWI native 74022a6 | 104/105 public ACTOR (SD 7/7); 10/10 HTTP |
+| N4 | Public ACTOR, SWI native 74022a6 | 104/105 public ACTOR (SD 7/7); 10/10 HTTP |
+| N5 | **Public ACTOR**, Trealla 3d876ef | 103/105 public ACTOR (SD 7/7); 10/10 HTTP |
 | N6 | Public contained ISOBASE, GNU 1.6.0 | 10/10 ISOBASE HTTP |
-| N7 | **Public isolated ACTOR**, ECLiPSe 7.2.13 | 89/98 public ACTOR; 10/10 HTTP; separate worker/prompt controls pass |
+| N7 | **Public isolated ACTOR**, ECLiPSe 7.2.13, package cc060af1 | 95/105 public ACTOR (SD 7/7); 10/10 HTTP; separate worker/prompt controls pass |
 
 N5 is no longer the old SSO-only backend path. N7's UI is
 [https://n7.elfenbenstornet.se/demonstrator](https://n7.elfenbenstornet.se/demonstrator).
 Current safe metadata, image provenance and exact source selection are linked
-from the dated report and the shared project handover. Image labels alone can
-be inherited; native N1/N3/N4 source matches 8af3669, while N2 matches 6fb82d5.
-No pin or deployed image was changed for this test run.
+from the dated report and the shared project handover. The images are the
+candidates of coordinated release `sandbox-20261116-b29a5ad-r2`. No pin or
+deployed image was changed for this test run.
 
 ## Isolated release gate and browser scope
 
 | Configuration | Fresh result |
 |---|---|
-| Deployed SWI N1/N3/N4 image, disposable private ACTOR | 45/45 |
-| Deployed SWI N2 image, disposable private ACTOR | 45/45 |
-| Deployed Trealla N5 image, transport-ready disposable private ACTOR | 45/45 |
-| SWI-WASM Worker, packaged 539a01c under Node | 7/7 shared language cases |
-| SWI-WASM main, same package under Node | 7/7 shared language cases |
+| Deployed SWI N1/N3/N4 image, disposable private ACTOR | 45/45; source-directives 7/7 |
+| Deployed SWI N2 image, disposable private ACTOR | 45/45; source-directives 7/7 |
+| Deployed Trealla N5 image, transport-ready disposable private ACTOR | 45/45; source-directives 7/7 |
+| SWI-WASM Worker, packaged 82aac08 under Node | 7/7 shared language; source-directives 5/7 |
+| SWI-WASM main, same package under Node | 7/7 shared language; source-directives 5/7 |
 | Conformance runner self-tests | 55 pass; separate from case totals |
 
 The current `actor-release-0.2` resolves to 45 cases, including SCOPY-006.
@@ -47,12 +49,15 @@ The 1 November 44-case record remains accurate for its older input hashes.
 The fresh native gate uses distinct execution-only principals and loopback
 fixtures; it is not a public-proxy/security certification. The live public
 selection excludes ownership-lifecycle and adds selected behaviour, supervisor,
-worker, language, receive and prompt packs: 98 cases/node. No full 45-case gate is
+worker, language, receive, prompt and source-directive packs: 105 cases/node. No full 45-case gate is
 claimed for ECLiPSe or the browser. Browser Node assertions are distinct from
 browser UI/network tests and historical implementation CI results.
 
 ## Remaining findings
 
+- **SD-006/SD-007 on SWI-WASM (new):** the browser engine runs `sandbox(off)`,
+  so the forbidden-goal directive runs and creation succeeds. The pack needs an
+  applicability condition (sandboxed nodes only); four failed rows are retained.
 - **N5 RC-009:** missing `runtime_property/1` in the combined receive-body plus
   `findall` assertion; three exact fresh repetitions fail, while four narrower
   controls pass.
@@ -68,9 +73,10 @@ browser UI/network tests and historical implementation CI results.
   failure expectation conflicts with the current manual's synchronous startup
   exception. All four failed rows remain; reconcile the test contract before
   proposing a runtime repair.
-- **Four N7 worker admission failures:** original 429 rows are retained. All four
-  pass when every inner WebSocket session is paced, without changed assertions,
-  deadlines or public limits. Do not relabel the original 89/98 result.
+- **Five N7 worker admission failures** (WC-008 added on 16 November): original
+  429 rows are retained. All five pass when every inner WebSocket session is
+  paced, without changed assertions, deadlines or public limits. Do not relabel
+  the original 95/105 result.
 
 The three-case ACTOR interoperability pack passes **25/36** across 12 directed
 pairs. Inbound-N7 and N7→N5 failures above account for its 11 failed executions.
@@ -83,7 +89,7 @@ See the dated report's `observations/` for canonical CLI reports and direct
 runner observation files, `diagnostics/` for controls, `attempts/` for retained
 fixture failures, `suite-inputs.json` for frozen hashes, and `verification.json`
 for schema/case-ID/count checks. All raw public failures remain failures in the
-primary 647-case selection. Repeated/negotiated/paced controls are separate.
+primary 710-case selection. Repeated/negotiated/paced controls are separate.
 
 This refresh does not run every draft/native-only manifest in the repository:
 full native-specific helper/admission/library contracts, experimental text,

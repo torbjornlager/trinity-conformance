@@ -1,0 +1,172 @@
+{
+  "schema_version": 2,
+  "baseline": "source-directives-0.1",
+  "suite": "source-directives-0.1",
+  "scope": "required",
+  "candidate": "N5-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-16T09:07:29.228432+00:00",
+  "counts": {
+    "pass": 7,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "SD-001",
+      "title": "A source directive that fails makes spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1120430994,
+        "data": [
+          {
+            "CVSelf": "1120430994@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail.')]",
+            "S": "1120430994@'https://n5.elfenbenstornet.se'",
+            "P": "P",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- fail)),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 257
+    },
+    {
+      "id": "SD-002",
+      "title": "A failing goal directive after earlier clauses is reported unqualified, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2676653468,
+        "data": [
+          {
+            "CVSelf": "2676653468@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text('sd_fact(a). :- sd_fact(b).')]",
+            "P": "P",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- sd_fact(b))),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 253
+    },
+    {
+      "id": "SD-003",
+      "title": "The first of several failing directives is reported, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2606497442,
+        "data": [
+          {
+            "CVSelf": "2606497442@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail. :- sd_never_defined_goal_probe = other.')]",
+            "P": "P",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- fail)),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 252
+    },
+    {
+      "id": "SD-004",
+      "title": "Dynamic declarations and clauses still create a working actor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2861931813,
+        "data": [
+          {
+            "CVSelf": "2861931813@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- dynamic sd_dyn/1. sd_ok(yes).'),monitor(true)]",
+            "S": "2861931813@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "P": "2472390925",
+            "R": "yes",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 252
+    },
+    {
+      "id": "SD-005",
+      "title": "A failing directive makes toplevel_spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1236628472,
+        "data": [
+          {
+            "CVSelf": "1236628472@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail.')]",
+            "P": "P",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- fail)),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 204
+    },
+    {
+      "id": "SD-006",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by spawn/3 and never runs",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3066432480,
+        "data": [
+          {
+            "CVSelf": "3066432480@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "Me": "3066432480@'https://n5.elfenbenstornet.se'",
+            "X": "X",
+            "R": "R",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- open('/dev/null',read,_),close(_),assertz(sd_forbidden_ran))),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 221
+    },
+    {
+      "id": "SD-007",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by toplevel_spawn/2 and never runs",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1477566827,
+        "data": [
+          {
+            "CVSelf": "1477566827@'https://n5.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "P": "P",
+            "X": "X",
+            "R": "R",
+            "E": "error(permission_error(execute,sandboxed_directive,(:- open('/dev/null',read,_),close(_),assertz(sd_forbidden_ran))),context(sandbox_policy:safe_source_directive/1,'source directive is disabled in sandbox mode'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 225
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)"
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": 2,
+  "baseline": "0.1",
+  "suite": "language-actor-0.1",
+  "scope": "required",
+  "candidate": "N7-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-16T09:13:01.335983+00:00",
+  "counts": {
+    "pass": 7,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "LC-001",
+      "title": "Identity and references are opaque and stable",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1161692316,
+        "data": [
+          {
+            "Self": "1161692316@'https://n7.elfenbenstornet.se'",
+            "Again": "1161692316@'https://n7.elfenbenstornet.se'",
+            "A": "7755185903",
+            "B": "6117513980",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 150
+    },
+    {
+      "id": "LC-002",
+      "title": "Selective receive retains earlier unmatched data",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6476970612,
+        "data": [
+          {
+            "S": "6476970612@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 147
+    },
+    {
+      "id": "LC-003",
+      "title": "Failed guards preserve messages",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8503214460,
+        "data": [
+          {
+            "S": "8503214460@'https://n7.elfenbenstornet.se'",
+            "X": "X",
+            "Y": "1",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 134
+    },
+    {
+      "id": "LC-004",
+      "title": "Parallel bindings failure and exception",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8353169396,
+        "data": [
+          {
+            "X": "one",
+            "Y": "two",
+            "E": "baseline_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 151
+    },
+    {
+      "id": "LC-005",
+      "title": "First solution returns one winner and applies continue policy",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3101129166,
+        "data": [
+          {
+            "X": "ok",
+            "Y": "ready",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 166
+    },
+    {
+      "id": "LC-006",
+      "title": "Synchronous toplevel paging returns answer terms",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2056262205,
+        "data": [
+          {
+            "P": "1686481043@'https://n7.elfenbenstornet.se'",
+            "X": "X",
+            "A": "success(1686481043@'https://n7.elfenbenstornet.se',[a,b],true)",
+            "B": "success(1686481043@'https://n7.elfenbenstornet.se',[c],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 147
+    },
+    {
+      "id": "LC-007",
+      "title": "Synchronous failure and exception remain answer terms",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5021468519,
+        "data": [
+          {
+            "P": "9213420533@'https://n7.elfenbenstornet.se'",
+            "A": "failure(9213420533@'https://n7.elfenbenstornet.se')",
+            "B": "error(9213420533@'https://n7.elfenbenstornet.se',baseline_error)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 149
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)"
+}

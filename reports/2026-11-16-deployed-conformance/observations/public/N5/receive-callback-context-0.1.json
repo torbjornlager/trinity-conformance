@@ -1,0 +1,207 @@
+{
+  "schema_version": 2,
+  "baseline": "receive-callback-context-0.1",
+  "suite": "receive-callback-context-0.1",
+  "scope": "required",
+  "candidate": "N5-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-16T09:07:24.725696+00:00",
+  "counts": {
+    "pass": 10,
+    "fail": 1,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "RC-001",
+      "title": "Source-free guard resolves the public runtime API",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2923093065,
+        "data": [
+          {
+            "S": "2923093065@'https://n5.elfenbenstornet.se'",
+            "R": "accepted",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 241
+    },
+    {
+      "id": "RC-002",
+      "title": "Selected body resolves the public runtime API and leaves the message consumed",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2308383769,
+        "data": [
+          {
+            "S": "2308383769@'https://n5.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 255
+    },
+    {
+      "id": "RC-003",
+      "title": "Source-free timeout callback resolves the same API",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2290094968,
+        "data": [
+          {
+            "R": "expired",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 247
+    },
+    {
+      "id": "RC-004",
+      "title": "Message patterns shaped like API calls remain data",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1956668224,
+        "data": [
+          {
+            "S": "1956668224@'https://n5.elfenbenstornet.se'",
+            "A": "data",
+            "B": "data",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 248
+    },
+    {
+      "id": "RC-005",
+      "title": "Private guard inference is available to the selected body",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2381422829,
+        "data": [
+          {
+            "S": "2381422829@'https://n5.elfenbenstornet.se'",
+            "V": "ok",
+            "W": "ok",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 251
+    },
+    {
+      "id": "RC-006",
+      "title": "Private timeout callbacks retain the caller source",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3065527060,
+        "data": [
+          {
+            "R": "expired",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 239
+    },
+    {
+      "id": "RC-007",
+      "title": "A failed guard rolls back its bindings before the fallback",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2990600951,
+        "data": [
+          {
+            "S": "2990600951@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "W": "ok",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 249
+    },
+    {
+      "id": "RC-008",
+      "title": "An ordinary guard exception preserves the unmatched message for fallback",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3111084909,
+        "data": [
+          {
+            "S": "3111084909@'https://n5.elfenbenstornet.se'",
+            "X": "X",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 237
+    },
+    {
+      "id": "RC-009",
+      "title": "The selected body retains both solutions without consuming another message",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'error', 'pid': 1703809732, 'data': 'error(existence_error(procedure,runtime_property/1),runtime_property/1)'}; preceding events were []",
+      "duration_ms": 137
+    },
+    {
+      "id": "RC-010",
+      "title": "Nested on_timeout goals retain runtime API dispatch",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3070856781,
+        "data": [
+          {
+            "R": "recovered",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 236
+    },
+    {
+      "id": "RC-011",
+      "title": "Copied private callbacks retain the API in a child",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2481778680,
+        "data": [
+          {
+            "S": "2481778680@'https://n5.elfenbenstornet.se'",
+            "P": "2141150371",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 248
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)"
+}

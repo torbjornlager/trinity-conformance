@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "baseline": "links-monitors-0.1",
+  "suite": "links-monitors-0.1",
+  "scope": "required",
+  "candidate": "N5-public",
+  "advertised_profile": "actor",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "peer": null,
+  "started_at": "2026-11-16T09:06:54.238442+00:00",
+  "counts": {
+    "pass": 6,
+    "fail": 0,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "LM-001",
+      "title": "Spawn monitoring preserves immediate success failure exception and explicit exit",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1148631695,
+        "data": [
+          {
+            "P": "2519337312",
+            "F": "2566516460",
+            "E": "2967135526",
+            "K": "1678509074",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 327
+    },
+    {
+      "id": "LM-002",
+      "title": "Explicit and spawn-time monitors are independent and preserve unrelated data",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2140761952,
+        "data": [
+          {
+            "S": "2140761952@'https://n5.elfenbenstornet.se'",
+            "P": "1615501459",
+            "R": "1000001820",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 260
+    },
+    {
+      "id": "LM-003",
+      "title": "Monitoring a terminated actor yields no_process with the returned reference",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2892377661,
+        "data": [
+          {
+            "P": "1570901636",
+            "R": "1000001832",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 264
+    },
+    {
+      "id": "LM-004",
+      "title": "Child termination leaves its linked parent alive",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1045422957,
+        "data": [
+          {
+            "S": "1045422957@'https://n5.elfenbenstornet.se'",
+            "Me": "Me",
+            "Child": "Child",
+            "Parent": "1357568121",
+            "C": "2291501482",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 281
+    },
+    {
+      "id": "LM-005",
+      "title": "A three-generation cascade delivers exact notifications under one deadline",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1372471584,
+        "data": [
+          {
+            "S": "1372471584@'https://n5.elfenbenstornet.se'",
+            "R": "R",
+            "C": "C",
+            "G": "G",
+            "GP": "GP",
+            "CP": "CP",
+            "Root": "1165978665",
+            "Child": "3003086160",
+            "Grand": "2338112155",
+            "CR": "1000001861",
+            "GR": "1000001862",
+            "T": "1794820015.581043",
+            "D": "1794820017.581043",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 414
+    },
+    {
+      "id": "LM-006",
+      "title": "Demonitor withdrawal and scoped flush preserve unrelated monitors and messages",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1538617649,
+        "data": [
+          {
+            "S": "1538617649@'https://n5.elfenbenstornet.se'",
+            "P": "2990783674",
+            "Drop": "1000001874",
+            "Keep": "1000001875",
+            "Q": "2242342791",
+            "Flush": "1000001878",
+            "Other": "1000001879",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 302
+    }
+  ],
+  "execution_note": "Public anonymous sessions; ordinary actor-owned work; no ownership-lifecycle release gate on live services; N7 case starts paced at least five seconds apart; unmodified assertions/timeouts (core5s/query8s)"
+}
