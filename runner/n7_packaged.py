@@ -146,14 +146,17 @@ def main():
             alias = peer.replace("127.0.0.1", "localhost")
             if read(alias + "/call?" + query) != read(peer + "/call?" + query):
                 raise RuntimeError("Peer alias preflight failed")
+            # An unlisted destination is named as such since eclipse-node 6e7297d;
+            # earlier adapters reported the generic peer_request_failed.
             checks = {
-                "unlisted_origin": f"rpc('{alias}',true)",
-                "redirect": f"rpc(localhost,local_node_loaded(one),[src_uri('{source_url}/redirect')])",
+                "unlisted_origin": (f"rpc('{alias}',true)", ("peer_not_allowed", "peer_request_failed")),
+                "redirect": (f"rpc(localhost,local_node_loaded(one),[src_uri('{source_url}/redirect')])",
+                             ("peer_request_failed",)),
             }
-            for label, goal in checks.items():
+            for label, (goal, reasons) in checks.items():
                 query_string = urlencode({"goal": goal, "format": "json"})
                 event = json.loads(read(owner_request(endpoint + "/call?" + query_string)))
-                if event["type"] != "error" or "peer_request_failed" not in event["data"]:
+                if event["type"] != "error" or not any(reason in event["data"] for reason in reasons):
                     raise RuntimeError(f"Egress policy check failed for {label}: {event}")
             print("N7 denied an unlisted peer origin and refused a source redirect", flush=True)
 
