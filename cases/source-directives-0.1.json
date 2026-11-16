@@ -37,12 +37,18 @@
     {
       "id": "SD-006",
       "title": "A source directive calling a sandbox-forbidden goal is refused by spawn/3 and never runs",
+      "requires": [
+        "goal_sandbox"
+      ],
       "transport": "query",
       "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),self(Me),catch((spawn(((catch(sd_forbidden_ran,_,fail)->X=ran;X=not_ran),Me!sd_probe(X)),_,SDOptions1),receive({sd_probe(R)->true},[timeout(4),on_timeout(R=no_reply)]),E=created(R)),E,true),(E=error(permission_error(execute,sandboxed_directive,_),_)->true;E=error(directive_failed(_),_))"
     },
     {
       "id": "SD-007",
       "title": "A source directive calling a sandbox-forbidden goal is refused by toplevel_spawn/2 and never runs",
+      "requires": [
+        "goal_sandbox"
+      ],
       "transport": "query",
       "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch((toplevel_spawn(P,SDOptions1),toplevel_call(P,(catch(sd_forbidden_ran,_,fail)->X=ran;X=not_ran),[template(X)]),receive({success(P,[R],_)->true},[timeout(4),on_timeout(R=no_reply)]),E=created(R)),E,true),(E=error(permission_error(execute,sandboxed_directive,_),_)->true;E=error(directive_failed(_),_))"
     }

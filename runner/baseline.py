@@ -112,6 +112,17 @@ def wire_case(case: dict, url: str, timeout: float, token: str | None) -> dict:
         return dict(negotiated_subprotocol=selected,replies=replies)
     finally: ws.close()
 
+CAPABILITIES = ('goal_sandbox',)
+
+def unmet_requirement(case: dict, profile: str, capabilities: set) -> str | None:
+    """Why a case does not apply to this candidate, or None when it applies."""
+    minimum=case.get('minimum_profile', 'isobase' if case['transport']=='http' else 'actor')
+    if actor.PROFILE_ORDER[profile]<actor.PROFILE_ORDER[minimum]: return f'requires {minimum}'
+    for need in case.get('requires',[]):
+        if need not in CAPABILITIES: raise ValueError(f'unknown case requirement {need!r} in {case["id"]}')
+        if need not in capabilities: return f'requires {need}'
+    return None
+
 def main() -> int:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest',type=Path,required=True)
@@ -121,6 +132,7 @@ def main() -> int:
     parser.add_argument('--profile',choices=tuple(actor.PROFILE_ORDER),required=True)
     parser.add_argument('--timeout',type=float,default=8)
     parser.add_argument('--token-env')
+    parser.add_argument('--no-goal-sandbox',action='store_true',help='the candidate has no goal sandbox (for example sandbox(off)); cases requiring one are unsupported')
     parser.add_argument('--report',type=Path,required=True)
     args=parser.parse_args()
     import os
@@ -135,9 +147,9 @@ def main() -> int:
     for case in pack['cases']:
         row=dict(id=case['id'],title=case['title']);before=time.monotonic()
         if case.get('issue'): row['issue']=case['issue']
-        minimum=case.get('minimum_profile', 'isobase' if case['transport']=='http' else 'actor')
-        if actor.PROFILE_ORDER[args.profile]<actor.PROFILE_ORDER[minimum]:
-            row.update(status='unsupported',detail=f'requires {minimum}')
+        unmet=unmet_requirement(case,args.profile,set() if args.no_goal_sandbox else {'goal_sandbox'})
+        if unmet:
+            row.update(status='unsupported',detail=unmet)
         else:
             try:
                 if case['transport']=='http': observed=http_case(case,args.url,args.timeout,token,diagnostic)

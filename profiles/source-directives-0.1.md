@@ -19,6 +19,17 @@ required within this pack. All engines run the same
 
 In SD-006 and SD-007 an engine that executes no goal directives at all (ECLiPSe/N7 runs only `dynamic/1`) may refuse with `directive_failed(Directive)` instead; the requirement is that the directive never runs and no actor is created.
 
+SD-006 and SD-007 carry `"requires": ["goal_sandbox"]`: they apply only to
+engines that restrict the goals visitor code may call. An engine running
+`sandbox(off)`, such as the packaged SWI-WASM runtime, has nothing that could
+refuse `open/3`; running the directive is correct there. Runners report these
+cases as `unsupported` for such an engine: `adapters/wasm.cjs` always does, and
+`runner/baseline.py` does when given `--no-goal-sandbox`. N7 announces
+`sandbox(off)` but executes no goal directives, so it still runs and passes
+both cases through the `directive_failed` alternative above. On 16 November
+2026 the SWI-WASM worker and main runs failed both cases before this
+requirement was declared; that report keeps the failed rows.
+
 In SD-001, SD-002, SD-003 and SD-005 a node whose sandbox admits no goal
 directives may instead refuse the directive before it runs, with
 `error(permission_error(execute, sandboxed_directive, _), _)`. Either way no

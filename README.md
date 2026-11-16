@@ -468,6 +468,10 @@ python3 adapters/local_promises.py \
 python3 runner/validate_reports.py /fresh/path/source-directives-results
 ```
 
+SD-006/SD-007 declare `"requires": ["goal_sandbox"]`; engines running
+`sandbox(off)` report them as unsupported (`--no-goal-sandbox` for
+`runner/baseline.py`; always in `adapters/wasm.cjs`).
+
 Directives that raise exceptions, engine-specific unsupported directives,
 `src_uri`, statechart support source and remote creation are outside this pack.
 
