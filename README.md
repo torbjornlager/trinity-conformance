@@ -128,6 +128,12 @@ python3 runner/run.py \
   --candidate node-name
 ```
 
+Nodes with public engine-start limits, such as N7 (20 starts per client per
+minute), answer HTTP 429 when a case opens several sessions in quick succession.
+`--session-interval SECONDS` (also on `runner/baseline.py`) spaces the start of
+every WebSocket session the process opens; 4 seconds keeps the worker cases on
+N7 within its limit. Assertions and deadlines are unchanged.
+
 Use `--case AC-004` to select one case. Failure classifications can be added
 with `--classifications path/to/classifications.json`; see
 [`docs/FAILURE_CLASSIFICATION.md`](docs/FAILURE_CLASSIFICATION.md).
@@ -201,7 +207,9 @@ under the [MIT License](LICENSE).
 Run the identical public-interface cleanup cases against each isolated native
 node using `--manifest cases/actor-supervisors-0.1.json`. They exercise startup
 rollback, dynamic-addition and explicit-respawn retry, restart-budget exhaustion
-under all three strategies, shutdown policies and monitor/message preservation. See the [profile](profiles/actor-supervisors-0.1.md) for coverage
+under all three strategies, shutdown policies and monitor/message preservation.
+Since 16 November 2026 SC-001 expects the synchronous initial-startup failure the
+manual documents: `supervisor_spawn/3` raises `supervisor_start_failed(Pid, Reason)`. See the [profile](profiles/actor-supervisors-0.1.md) for coverage
 limits; runtime regression tests still cover never-published provisional pids.
 
 Run `--manifest cases/supervisor-diagnostics-0.1.json` separately. The runtime-bound

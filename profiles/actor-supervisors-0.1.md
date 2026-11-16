@@ -11,9 +11,13 @@ not import implementation modules or inject failures through private hooks.
 
 ## Contract checked
 
-1. Initial startup that encounters an occupied child name terminates with an
-   exception, releases names created earlier in that attempt, and leaves the
-   unrelated actor occupying the conflicting name available.
+1. Initial startup that encounters an occupied child name fails synchronously:
+   `supervisor_spawn/3` raises `error(supervisor_start_failed(Pid, Reason), _)`
+   (`Reason` is `init_failed` or the original registration error) and binds no
+   supervisor. Names created earlier in that attempt are released, and the
+   unrelated actor occupying the conflicting name stays available. Before 16
+   November 2026 SC-001 expected an asynchronous exit after a returned pid,
+   contrary to the manual's `supervisor_spawn/2-3` entry.
 2. A failed dynamic addition returns `error(Error)`, preserves siblings and
    their state, and permits adding the failed id after removing the conflict.
 3. A failed explicit respawn returns `error(Error)`, retains the inactive

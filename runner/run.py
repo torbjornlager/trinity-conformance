@@ -45,6 +45,29 @@ def require(condition: bool, message: str) -> None:
         raise ConformanceFailure(message)
 
 
+# Minimum seconds between the starts of any two WebSocket sessions this process
+# opens. Nodes with public engine-start limits (N7: 20 per client per minute)
+# answer HTTP 429 when a multi-session case opens sessions faster than that.
+SESSION_INTERVAL = 0.0
+_last_session_start = 0.0
+
+
+def set_session_interval(seconds: float) -> None:
+    global SESSION_INTERVAL
+    if seconds < 0:
+        raise ValueError("session interval must be non-negative")
+    SESSION_INTERVAL = seconds
+
+
+def _pace_session_start() -> None:
+    global _last_session_start
+    if SESSION_INTERVAL:
+        delay = SESSION_INTERVAL - (time.monotonic() - _last_session_start)
+        if delay > 0:
+            time.sleep(delay)
+        _last_session_start = time.monotonic()
+
+
 class WebSocket:
     """Small RFC 6455 client sufficient for the text-only node protocol."""
 
@@ -57,6 +80,7 @@ class WebSocket:
         insecure_tls: bool = False,
         extra_headers: tuple[str, ...] = (),
     ) -> None:
+        _pace_session_start()
         parsed = urlsplit(url)
         if parsed.scheme not in {"ws", "wss"} or not parsed.hostname:
             raise ValueError(f"invalid WebSocket URL: {url}")
@@ -805,12 +829,16 @@ def supervisor_cleanup_goal(candidate: Candidate, goal: str) -> None:
 def case_sc_001(candidate: Candidate) -> None:
     supervisor_cleanup_goal(candidate,
         "setup_call_cleanup(server_spawn(probe,[],Block,[name(sc_bad),src_predicates([probe/4])]),"
+        # Initial startup is synchronous: the failure is raised by supervisor_spawn/3
+        # itself as supervisor_start_failed(Pid,Reason), and no supervisor is returned.
         "setup_call_cleanup(true,"
-        "(supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
+        "(catch(supervisor_spawn([child(sc_a,[start(server(probe,[])),shutdown(0.1)]),"
         "child(sc_c,[start(server(probe,[])),shutdown(0.1)]),"
         "child(sc_bad,[start(server(probe,[]))])],Sup,"
-        "[monitor(true),src_predicates([probe/4])]),"
-        "await(Sup,Sup,exception(Error)),nonvar(Error),absent(sc_a),absent(sc_c),"
+        "[src_predicates([probe/4])]),"
+        "error(supervisor_start_failed(_,Reason),_),true),var(Sup),nonvar(Reason),"
+        "(Reason==init_failed->true;Reason=error(permission_error(register,_,sc_bad),_)),"
+        "absent(sc_a),absent(sc_c),"
         "whereis(sc_bad,Block),server_request(Block,ping,pong,[timeout(1),on_timeout(throw(blocker_unresponsive))])),cleanup(Sup)),cleanup(Block))")
 
 
@@ -1265,6 +1293,8 @@ def main() -> int:
         help="additional WebSocket upgrade header (repeatable; NAME: VALUE)",
     )
     parser.add_argument("--timeout", type=float, default=5.0)
+    parser.add_argument("--session-interval", type=float, default=0.0, metavar="SECONDS",
+                        help="minimum time between WebSocket session starts, for nodes with engine-start limits")
     parser.add_argument("--insecure-tls", action="store_true")
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--case", action="append", dest="case_ids",
@@ -1308,6 +1338,7 @@ def main() -> int:
     for header in args.header:
         if ":" not in header or "\r" in header or "\n" in header:
             parser.error("--header must be a single NAME: VALUE header line")
+    set_session_interval(args.session_interval)
     candidate = Candidate(args.ws_url, args.advertised_profile, args.timeout,
                           token, args.origin, args.insecure_tls,
                           tuple(args.header))

@@ -131,12 +131,14 @@ def main() -> int:
     parser.add_argument('--candidate',required=True)
     parser.add_argument('--profile',choices=tuple(actor.PROFILE_ORDER),required=True)
     parser.add_argument('--timeout',type=float,default=8)
+    parser.add_argument('--session-interval',type=float,default=0.0,metavar='SECONDS',help='minimum time between WebSocket session starts, for nodes with engine-start limits')
     parser.add_argument('--token-env')
     parser.add_argument('--no-goal-sandbox',action='store_true',help='the candidate has no goal sandbox (for example sandbox(off)); cases requiring one are unsupported')
     parser.add_argument('--report',type=Path,required=True)
     args=parser.parse_args()
     import os
     token=os.environ[args.token_env] if args.token_env else None
+    actor.set_session_interval(args.session_interval)
     pack=json.loads(args.manifest.read_text())
     if '__PEER__' in json.dumps(pack):
         if not args.peer: parser.error('this pack requires --peer')
