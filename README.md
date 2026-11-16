@@ -439,6 +439,31 @@ query admission. Child specifications, statecharts, HTTP options, remote creatio
 and concurrent startup races are outside this pack. Historical reports and
 existing runner defaults are unchanged.
 
+## Source directives draft conformance
+
+The separate [Source directives 0.1 pack](profiles/source-directives-0.1.md)
+selects the 15 November 2026 rule: a directive in supplied source that fails
+makes `spawn/3` and `toplevel_spawn/2` raise
+`error(directive_failed(Directive), _)` with no actor created, while succeeding
+declarations and clauses still load. On 16 November 2026 all five cases passed
+on disposable native SWI (`swi-prolog-node` 6005850, selected with
+`--swi-source-candidate --swi-candidate-revision`) and Trealla fixtures, and in
+the language step of eclipse-node's `check_n7.sh`. It uses the same local adapter
+as creation validation:
+
+```sh
+python3 adapters/local_promises.py \
+  --local-manifest cases/source-directives-0.1.json \
+  --swipl /path/to/verified/swipl --tpl /path/to/separate/trealla/tpl \
+  --swi-root /path/to/swi-prolog-node --trealla-root /path/to/trealla-port \
+  --demonstrator-root /path/to/trinity-demonstrator \
+  --output /fresh/path/source-directives-results
+python3 runner/validate_reports.py /fresh/path/source-directives-results
+```
+
+Directives that raise exceptions, engine-specific unsupported directives,
+`src_uri`, statechart support source and remote creation are outside this pack.
+
 ## Supervisor child-specification validation draft conformance
 
 The separate [Child specifications 0.1 pack](profiles/child-specs-0.1.md) selects

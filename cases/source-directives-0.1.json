@@ -1,0 +1,38 @@
+{
+  "suite": "source-directives-0.1",
+  "baseline": "source-directives-0.1",
+  "status": "draft",
+  "scope": "required",
+  "cases": [
+    {
+      "id": "SD-001",
+      "title": "A source directive that fails makes spawn raise directive_failed, or is refused by the sandbox",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- fail.')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),self(S),catch(spawn(S!unexpected_creation,P,SDOptions1),E,true),nonvar(E),(E=error(directive_failed(D),_)->D==fail;E=error(permission_error(execute,sandboxed_directive,_),_)),var(P),receive({unexpected_creation->fail},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "SD-002",
+      "title": "A failing goal directive after earlier clauses is reported unqualified, or refused by the sandbox",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!sd_options_1([src_text('sd_fact(a). :- sd_fact(b).')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,SDOptions1),E,true),nonvar(E),(E=error(directive_failed(D),_)->D==sd_fact(b);E=error(permission_error(execute,sandboxed_directive,_),_)),var(P)"
+    },
+    {
+      "id": "SD-003",
+      "title": "The first of several failing directives is reported, or refused by the sandbox",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- fail. :- sd_never_defined_goal_probe = other.')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(spawn(true,P,SDOptions1),E,true),nonvar(E),(E=error(directive_failed(D),_)->D==fail;E=error(permission_error(execute,sandboxed_directive,_),_)),var(P)"
+    },
+    {
+      "id": "SD-004",
+      "title": "Dynamic declarations and clauses still create a working actor",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- dynamic sd_dyn/1. sd_ok(yes).'),monitor(true)]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),self(S),spawn((sd_ok(V),S!sd_ready(V)),P,SDOptions1),receive({sd_ready(R)->true},[timeout(4),on_timeout(throw(missing_ready))]),R==yes,receive({down(P,P,true)->true},[timeout(4),on_timeout(throw(missing_down))])"
+    },
+    {
+      "id": "SD-005",
+      "title": "A failing directive makes toplevel_spawn raise directive_failed, or is refused by the sandbox",
+      "transport": "query",
+      "goal": "self(CVSelf),CVSelf!sd_options_1([src_text(':- fail.')]),receive({sd_options_1(SDOptions1)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch(toplevel_spawn(P,SDOptions1),E,true),nonvar(E),(E=error(directive_failed(D),_)->D==fail;E=error(permission_error(execute,sandboxed_directive,_),_)),var(P)"
+    }
+  ]
+}
