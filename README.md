@@ -445,10 +445,13 @@ The separate [Source directives 0.1 pack](profiles/source-directives-0.1.md)
 selects the 15 November 2026 rule: a directive in supplied source that fails
 makes `spawn/3` and `toplevel_spawn/2` raise
 `error(directive_failed(Directive), _)` with no actor created, while succeeding
-declarations and clauses still load. On 16 November 2026 all five cases passed
+declarations and clauses still load. SD-006/SD-007 require that a directive
+calling a goal the sandbox forbids (`open/3`) is refused by `spawn/3` and
+`toplevel_spawn/2` and never runs. On 16 November 2026 SD-001 to SD-005 passed
 on disposable native SWI (`swi-prolog-node` 6005850, selected with
 `--swi-source-candidate --swi-candidate-revision`) and Trealla fixtures, and in
-the language step of eclipse-node's `check_n7.sh`. It uses the same local adapter
+the language step of eclipse-node's `check_n7.sh`; SD-006/SD-007 passed on the
+fixed native SWI (`74022a6`), Trealla (`3d876ef`) and N7 fixtures. It uses the same local adapter
 as creation validation:
 
 ```sh

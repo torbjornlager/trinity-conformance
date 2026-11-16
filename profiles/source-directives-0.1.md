@@ -14,6 +14,10 @@ required within this pack. All engines run the same
 | SD-003 | When several directives fail, the first is reported. |
 | SD-004 | `dynamic/1` and ordinary clauses still create a working actor. |
 | SD-005 | `toplevel_spawn/2` with a failing directive raises the same term. |
+| SD-006 | A directive calling a goal the sandbox forbids in queries (`open/3`) is refused by `spawn/3` with `permission_error(execute, sandboxed_directive, _)` and never runs. |
+| SD-007 | The same for `toplevel_spawn/2`. |
+
+In SD-006 and SD-007 an engine that executes no goal directives at all (ECLiPSe/N7 runs only `dynamic/1`) may refuse with `directive_failed(Directive)` instead; the requirement is that the directive never runs and no actor is created.
 
 In SD-001, SD-002, SD-003 and SD-005 a node whose sandbox admits no goal
 directives may instead refuse the directive before it runs, with
@@ -25,6 +29,10 @@ Visitors cannot use `link(false)`, so the cases leave it out.
 Option lists are delivered as ordinary self-messages before calling creation
 predicates, as in the creation-validation pack, so that static query admission
 does not inspect the literal source first. Context arguments are not compared.
+
+SD-006 and SD-007 were added on 16 November 2026 after the diagnostic in
+that day's review showed the directive running on native SWI (both paths) and
+on Trealla (`toplevel_spawn/2`) before the fixes.
 
 Directives that raise an exception are outside this pack: engines currently
 differ on whether the original exception or a warning reaches the creator.
