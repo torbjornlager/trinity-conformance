@@ -1,0 +1,20 @@
+python3 uri_option_tests.py
+PASS 26 URI atom, zero-request, rejected-representation and sharing assertions
+python3 boolean_option_tests.py
+PASS 55 strict Boolean, zero-request, precedence, paging and sharing assertions
+python3 character_reader_tests.py
+PASS 20 character-reader assertions: goals, Unicode, source, shared source, DCGs and variable sharing
+python3 rpc_framing_tests.py
+PASS 6 captured wire framing/sharing assertions
+python3 rpc_tests.py
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/rpc_tests.py", line 18, in <module>
+    SWI,TRINITY=record_run('rpc')
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 99, in record_run
+    swi,trinity,gprolog,gnu=comparison_inputs()
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 65, in comparison_inputs
+    verify_checkout(trinity,LOCK['repositories']['trinity']['commit'])
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 40, in verify_checkout
+    if actual!=expected:raise RuntimeError(f'Comparison revision mismatch at {path}: expected {expected}, got {actual}')
+RuntimeError: Comparison revision mismatch at /Users/lager/trinity-demonstrator: expected f237dd5c806893dad17c95cad9a2dc1692a73607, got 122e5f6b6a6bfce374d1abd00b2f3dd866d284bc
+make: *** [rpc-test] Error 1

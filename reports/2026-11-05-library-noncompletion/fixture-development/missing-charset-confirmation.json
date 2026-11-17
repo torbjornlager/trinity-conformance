@@ -1,0 +1,104 @@
+{
+  "suite": "library-noncompletion-0.1",
+  "scope": "Isolated real Chrome sessions; externally killed browsers and fresh-session recovery, not same-session abort or public transport",
+  "manifest_sha256": "b4a59a5d5f7ae2bf6cbfd6148fefe6048deb0f50b3eb0e1b6c0b094ceb574b6a",
+  "adapter_sha256": "fd1e415956e7a96eeb81864cffae176cbfc400c732e8e61a1131ed69c177fad5",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "56b8859b2e3cffdec26c9b882ac9ca2cb2b7bc2376309e48b99680ec3503ed68",
+    "web/swi_wasm_actor_worker.js": "9b4a81c7cb7c465f14ecfe7d779ee3cf1cb1d0b8ad02e9477b24b70efd9b91d4",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "STDLIB-296",
+      "title": "Infinite countall returns no completed count during a bounded externally observed interval",
+      "status": "pass",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 6052870855,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49755/entry/worker-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 500.6000419999999,
+          "terminal": null,
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 25.39779099999987,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 4368757708,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49755/entry/worker-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "STDLIB-296",
+      "title": "Infinite countall returns no completed count during a bounded externally observed interval",
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:49755/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:49755/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:49755/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:49755/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:3:3)\n    at async <anonymous>:396:30\n    at open (/Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:37:13)\n    at async /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:67:13",
+      "observation": {}
+    }
+  ],
+  "counts": {
+    "pass": 1,
+    "fail": 1
+  }
+}

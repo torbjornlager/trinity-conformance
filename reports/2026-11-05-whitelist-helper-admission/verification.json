@@ -1,0 +1,76 @@
+{
+  "scope": "Development source helper-admission repair; no deployment or consumer pin changes.",
+  "previous_ledger_revision": "3bf01e9841c572ac6326e18ddbe1ba71c2b39253",
+  "runtime_revision": "9bf7399992baeccfbca7a68b21a329e3b1c1bd9c",
+  "runtime_tree_clean": true,
+  "qualified_runtime_sources_match_committed_tree": true,
+  "before_after_settings_same_initial_adapter_and_manifest": true,
+  "runtime_observations": 401,
+  "runtime_auxiliary_sha256": {
+    "README.md": "4de176eac66117aa04a69e55db15cabc042e902a466420253bae001d86173f34",
+    "tools/test.sh": "b2b2b46445a1da04f2f4d79acae952bb840e45e49fda3703dc7295766ab1a8cd"
+  },
+  "files_sha256": {
+    "cases/private-helper-admission-0.1.json": "96773e5c6afd119ef1221e30c87b9454a29422e7158d185850a5711c34c7918b",
+    "cases/node-settings-0.1.json": "6540886c3eb87a7a8fac5aa0b7a142bc8f9926bd0b3cd37864ab1e1d46aac59c",
+    "adapters/local_actor_cases.py": "c67daa77a4ee57888d775b9beb55aa6136c137ef275139d69f44c481b74f5b08",
+    "adapters/trealla_node_settings.py": "22e8b95e97aff2130ffde0e77973e820ff9656c4b065fd71d0b4c8b8fd579ff2",
+    "adapters/trealla_helper_transport.py": "82e440f3663c467610d73a424d3f9469b334a7fc0eea8a73ce2aa40e5f23070e",
+    "runner/run.py": "946b1ab3146290bde299ff32640b6a2d73d0a6505d572fa11c1d2531539bde6f",
+    "runner/baseline.py": "0e672a082e2ed159f34396cb56fef80632269ace648215b9b21c8798d643538f",
+    "runner/appendix_coverage.py": "9bb19dbfb456298f9654133a2b49eedbf5a5cc7ad1f5740e35480b88d5a19dc1"
+  },
+  "reports_sha256": {
+    "shared-whitelist/results.json": "2e974a91ca628425c74bb04467799c1c06947968f7d6ea239efb67bd1e020fc0",
+    "shared-blacklist/results.json": "5efeb6fb1024047ca6ddb1ac54bc4fb48a83b4689061a3b9b5d8f0a98459df1e",
+    "shared-off/results.json": "7cad77423f2ef9557aa5de8102474a88af8461d6e3051fb32cccdba95ce80ab4",
+    "settings-final/results.json": "060b97912cd7e6ef64a8b8aa772e5681f5d66bb24480b0efac03c72dfb81a744",
+    "transport-final/results.json": "7adfcf60daa1c04f4e1b8b8a5bec93e8f17f9ef777c7d604434be100e5c3bca1",
+    "regressions.txt": "0f578960d759f0b9ae159c7d1013603d5c6c2a0d511947fb71db4e57adfa1a5d",
+    "runner-tests.txt": "97110e66ceb5a91d3d81a64006e9f5c8acc08d79cb17a42aace109b637f6a116",
+    "settings-first/results.json": "302cd57fa64dc51cf8e3e55d517bca966efe1f98cb0ba3c27e1ac17410295263",
+    "shared-first/results.json": "d5ba738d8489583f2478055db93361f46cc33de07cedc421f60739c5d839083a"
+  },
+  "counts": {
+    "shared-whitelist/results.json": {
+      "pass": 24,
+      "fail": 0
+    },
+    "shared-blacklist/results.json": {
+      "pass": 24,
+      "fail": 0
+    },
+    "shared-off/results.json": {
+      "pass": 24,
+      "fail": 0
+    },
+    "settings-final/results.json": {
+      "pass": 314,
+      "fail": 0
+    },
+    "transport-final/results.json": {
+      "pass": 15,
+      "fail": 0
+    }
+  },
+  "checks": [
+    {
+      "command": "TPL=/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl SWIPL=/usr/local/bin/swipl TEST_TIMEOUT=120 TEST_STARTUP_DELAY=1 TEST_PORT_BASE=25760 tools/test.sh all",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s runner",
+      "exit_code": 0,
+      "tests": 104
+    },
+    {
+      "command": "python3 runner/appendix_coverage.py --manual /Users/lager/boken/author/appendix-B-current-manual.tex --check",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 runner/library_coverage.py --check",
+      "exit_code": 0,
+      "covered": 43
+    }
+  ]
+}

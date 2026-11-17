@@ -1,0 +1,174 @@
+{
+  "suite": "library-noncompletion-0.1",
+  "scope": "Isolated real Chrome sessions; externally killed browsers and fresh-session recovery, not same-session abort or public transport",
+  "manifest_sha256": "b4a59a5d5f7ae2bf6cbfd6148fefe6048deb0f50b3eb0e1b6c0b094ceb574b6a",
+  "adapter_sha256": "4f7e52d95ecd834e11e29d6b227e63eef4fffbfcd2c24c913898f8d6390f25dc",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "56b8859b2e3cffdec26c9b882ac9ca2cb2b7bc2376309e48b99680ec3503ed68",
+    "web/swi_wasm_actor_worker.js": "9b4a81c7cb7c465f14ecfe7d779ee3cf1cb1d0b8ad02e9477b24b70efd9b91d4",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "STDLIB-296",
+      "title": "Infinite countall returns no completed count during a bounded externally observed interval",
+      "status": "fail",
+      "detail": "Error: noncompletion observation failed\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:78:244",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 8863489220,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49800/entry/worker-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 499.7711250000001,
+          "terminal": null,
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 22.599124999999958,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 5648750848,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49800/entry/worker-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "STDLIB-296",
+      "title": "Infinite countall returns no completed count during a bounded externally observed interval",
+      "status": "pass",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49800/entry/main-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 501.2168749999996,
+          "terminal": null,
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 18.801249999999982,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:49800/entry/main-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "counts": {
+    "pass": 1,
+    "fail": 1
+  }
+}

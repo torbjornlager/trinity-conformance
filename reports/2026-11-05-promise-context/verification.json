@@ -1,0 +1,126 @@
+{
+  "scope": "Development browser promise ownership repair; not a release or whole Appendix B certification",
+  "package_source": {
+    "dirty": true,
+    "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+    "revision": "56b9391c28a7fd6aa844862b331c0f47f7a5dab9"
+  },
+  "qualification": {
+    "source": {
+      "dirty": true,
+      "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+      "revision": "56b9391c28a7fd6aa844862b331c0f47f7a5dab9"
+    },
+    "native_integration": true,
+    "host_integration": false,
+    "runs": [
+      {
+        "label": "statechart-unit",
+        "command": [
+          "/usr/local/bin/swipl",
+          "-f",
+          "none",
+          "-q",
+          "-p",
+          "browser_prolog=/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/wasm-runtime-tests-lbqmlwkp/wasm",
+          "-s",
+          "tests/test_statechart_wasm.pl",
+          "-g",
+          "swi_wasm_statechart_tests:run",
+          "-t",
+          "halt"
+        ],
+        "exit_code": 0,
+        "seconds": 0.147
+      },
+      {
+        "label": "schema-equivalence",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "tools/check_statechart_wasm_equivalence.py",
+          "--wasm-dir",
+          "/private/tmp/promise-context-final/web/wasm",
+          "--native-root",
+          "/Users/lager/swi-prolog-node"
+        ],
+        "exit_code": 0,
+        "seconds": 0.048
+      },
+      {
+        "label": "worker-mailbox",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_actor_worker_smoke.js"
+        ],
+        "exit_code": 0,
+        "seconds": 0.083
+      },
+      {
+        "label": "standalone",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_standalone.js"
+        ],
+        "exit_code": 0,
+        "seconds": 1.164
+      },
+      {
+        "label": "semantic-contracts",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_contracts.js"
+        ],
+        "exit_code": 0,
+        "seconds": 120.837
+      },
+      {
+        "label": "session-api-browser",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_sessions_browser.cjs"
+        ],
+        "exit_code": 0,
+        "seconds": 12.041
+      }
+    ]
+  },
+  "semantic_scenario_count": 102,
+  "new_coordinator_assertions": 13,
+  "new_browser_ownership_assertions": {
+    "worker": 30,
+    "main": 29
+  },
+  "existing_browser_session_assertions": {
+    "worker": 35,
+    "main": 46
+  },
+  "original_parent_child_diagnostic": "pass",
+  "consumer_source_smoke": "pass against the exact development package; consumer pins unchanged",
+  "coverage_validation": "353 source units and seven validator tests pass; browser B-296 is now unverified as a whole with positive ownership evidence, not failing/missing",
+  "deployment": "Unchanged; no commits, dependency pin promotion or public deployment in this task",
+  "notes": [
+    "Initial regression attempts are kept in diagnostics; final package passes all six qualification groups.",
+    "The initial supervisor startup assertion failure was not reproduced on its standalone rerun or final full qualification.",
+    "Native retained-context propagation and complete transport/admission/authentication clause mapping remain outside this browser repair."
+  ],
+  "evidence_sha256": {
+    "browser-main.json": "be5c8c533cf8fca5157d639ce30375f7f2733cece44fcb7722a3636b8929a71f",
+    "browser-test.cjs": "021263de34bcec36fd2c88483999365e977748bed85a380f706bb6b7dd0371f4",
+    "browser-worker.json": "c6a36867642df92ec06d4bd6e0e7b3876747c4a69dfd3230af6100cc789ad529",
+    "consumer-source-smoke.txt": "da1cbe713f478e3a6c495e1a6e83b89042ef46b5c5f18d65d0f732f8f6a93502",
+    "diagnostics/first-regression-attempt.txt": "98f0d15daf2b53be3b1ce3c9ef0bfad23e256509863b2b521b7fb8032f1f87e5",
+    "diagnostics/supervisor-startup-rerun.txt": "67a8403de63212b16ae7843106dd0776d94adef58f6906212795a96278623604",
+    "diagnostics/unused-context-disposal-before-fix.txt": "16fa3750b39c0781ac9213ac3cc192f196ef8f1531595e8d88441bdbc3a594ce",
+    "package-manifest.json": "39ef953a529de5e443b90da832d679bda9a79d01a8e74e17870f98fed3ac028c",
+    "parent-child.txt": "b77aed80681966f3d6693c33c0cd09867e73af7077a7b2214f6aa62779dbd95b",
+    "runtime-source.diff": "a2b0f3fd747560434826a790b5f437127181f54afb8f185167d856d9bff8bdf7",
+    "schema-equivalence.txt": "dc527e011e2a847758848ee6681cdcc733569f99ff8f5c742f1612eb5f05c9f5",
+    "semantic-contracts.txt": "8bee1ca8837a65d9ec2e2935cd065bcdb77b08c00287417467082c3a9f2fb9fb",
+    "session-api-browser.txt": "e2482d95aef7df7f8e38062ea674ef698bf3f8689f338f15f7fd3b9f0113587b",
+    "standalone.txt": "07f74fce34ff8f37488d6e59004f89ef24c2f67eebb8558690e64253410bdbf5",
+    "statechart-unit.txt": "269aeeb0c85b3ec477a1c6f8602dcd0b9c625dcf7129da5e849c73860553b391",
+    "suite-results.json": "45db104c9ef98f3ff69c4263410b2e044402316ab5de842e1cdb1a66f1abc750",
+    "worker-mailbox.txt": "7f7fca869a91bd5c2462bbd33e349eddfe8f23e099edb40aa297a13d326a8bb3",
+    "worker.json": "fda9c879ffba54ddcaec505980c3f5f08a92872dfde7901f39360ad4d13d4c58"
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "suite": "receive-delay-diagnostic",
+  "manifest_sha256": "312307193faf75e3c9c60239335aae974af89c7e4b16d3d9d38400e270d59d81",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "23ab3e5fb73e5ca3eed91f85fd6eb39c0c1d4c55a1887c3149a777f651d4f600",
+    "web/swi_wasm_actor_worker.js": "53e9778027903f06892247432b26eccb1d2a16b9be57c062b13afe403c9379ec",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": null,
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "D-1",
+      "title": "reference",
+      "observation": {
+        "type": "success",
+        "pid": 5292762474,
+        "data": [
+          {
+            "R": "1832911683",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "D-2",
+      "title": "delayed send only with supplied id",
+      "status": "fail",
+      "detail": "Error: actor case deadline\n    at Timeout.<anonymous> (/private/tmp/selective-receive-delay-diagnostic.cjs:10:109)\n    at listOnTimeout (node:internal/timers:585:17)\n    at process.processTimers (node:internal/timers:521:7)",
+      "events": [
+        {
+          "type": "traffic",
+          "message": {
+            "command": "toplevel_spawn",
+            "pid": 3300935309,
+            "options": "[session(true),src_text('\\n')]"
+          },
+          "direction": "request"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:389:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:408:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "traffic",
+          "message": {
+            "type": "spawned",
+            "pid": 3300935309
+          },
+          "direction": "response"
+        },
+        {
+          "type": "shell_ready",
+          "pid": "3300935309"
+        },
+        {
+          "type": "log",
+          "level": "info",
+          "text": "SWI-WASM worker toplevel actor ready.",
+          "scope": "swi-wasm"
+        },
+        {
+          "type": "log",
+          "level": "transport",
+          "text": "3300935309 -> 3300935309: diag_delay",
+          "scope": "swi-wasm",
+          "direction": "request"
+        }
+      ]
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "D-3",
+      "title": "delayed send and receive with supplied id",
+      "status": "fail",
+      "detail": "Error: actor case deadline\n    at Timeout.<anonymous> (/private/tmp/selective-receive-delay-diagnostic.cjs:10:109)\n    at listOnTimeout (node:internal/timers:585:17)\n    at process.processTimers (node:internal/timers:521:7)",
+      "events": [
+        {
+          "type": "traffic",
+          "message": {
+            "command": "toplevel_spawn",
+            "pid": 7659598440,
+            "options": "[session(true),src_text('\\n')]"
+          },
+          "direction": "request"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:389:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:408:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "traffic",
+          "message": {
+            "type": "spawned",
+            "pid": 7659598440
+          },
+          "direction": "response"
+        },
+        {
+          "type": "shell_ready",
+          "pid": "7659598440"
+        },
+        {
+          "type": "log",
+          "level": "info",
+          "text": "SWI-WASM worker toplevel actor ready.",
+          "scope": "swi-wasm"
+        },
+        {
+          "type": "log",
+          "level": "transport",
+          "text": "7659598440 -> 7659598440: diag_delay",
+          "scope": "swi-wasm",
+          "direction": "request"
+        }
+      ]
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "D-4",
+      "title": "delayed send and receive with generated id",
+      "status": "fail",
+      "detail": "Error: actor case deadline\n    at Timeout.<anonymous> (/private/tmp/selective-receive-delay-diagnostic.cjs:10:109)\n    at listOnTimeout (node:internal/timers:585:17)\n    at process.processTimers (node:internal/timers:521:7)",
+      "events": [
+        {
+          "type": "traffic",
+          "message": {
+            "command": "toplevel_spawn",
+            "pid": 2866297539,
+            "options": "[session(true),src_text('\\n')]"
+          },
+          "direction": "request"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:389:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "output",
+          "data": "Warning: /worker_actor_bridge.pl:408:"
+        },
+        {
+          "type": "output",
+          "data": "Warning:    Singleton variables: [Options]"
+        },
+        {
+          "type": "traffic",
+          "message": {
+            "type": "spawned",
+            "pid": 2866297539
+          },
+          "direction": "response"
+        },
+        {
+          "type": "shell_ready",
+          "pid": "2866297539"
+        },
+        {
+          "type": "log",
+          "level": "info",
+          "text": "SWI-WASM worker toplevel actor ready.",
+          "scope": "swi-wasm"
+        },
+        {
+          "type": "log",
+          "level": "transport",
+          "text": "2866297539 -> 2866297539: diag_delay",
+          "scope": "swi-wasm",
+          "direction": "request"
+        }
+      ]
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "D-1",
+      "title": "reference",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "R": "4190845187",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "D-2",
+      "title": "delayed send only with supplied id",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "D-3",
+      "title": "delayed send and receive with supplied id",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "D-4",
+      "title": "delayed send and receive with generated id",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 5,
+    "fail": 3
+  }
+}

@@ -1,0 +1,1220 @@
+diff --git a/README.md b/README.md
+index 88ed1ff..9a8cc0e 100644
+--- a/README.md
++++ b/README.md
+@@ -919,27 +919,31 @@ entering a later spawn wait. The results and remaining repair boundaries are rec
+ They do not prevent the local synchronous tutorial example, or the verified
+ Trealla-to-SWI and browser-to-SWI paging paths. Native spawn-error selection
+ now uses explicit capability negotiation. Receiver-side delegated-lineage cleanup
+-is described below; downstream delegation remains separate.
++is described below.
+ 
+-### Receiving delegated lifetimes from native SWI
++### Native retained-context propagation
+ 
+ See [receiver status and verification](docs/delegated-lineage-status.md) for the
+ implemented commits, current checks and remaining diagnostics.
+ 
+ An authenticated node transport with `internal_transport` authority may supply
+-SWI's existing `lineage` and optional `account` fields. Both identifiers must be
+-32 hexadecimal characters. The default open endpoint does not grant this
+-authority: configure peer bearer credentials or the existing trusted-header
+-boundary explicitly. No deployment credentials or trust policy are changed by
+-this repair. Lineage identity is scoped to the accepted connection;
+-reusing a token on another connection does not share ownership. The account field
+-is validated, but Trealla retains its existing resource accounting rather than
+-claiming SWI's aggregate delegated-account implementation.
++`lineage`, `account`, and `context_origin` fields. Both identifiers must be
++32 hexadecimal characters; the origin is the node URI that minted the context.
++The default open endpoint does not grant this authority: configure peer bearer
++credentials with `peer_transport_tokens([NodeURI-Token,...])` and corresponding
++receiver bearer tokens, or use the existing trusted-header boundary.
++
++Context identity is independent of the accepted connection. Descendants preserve
++its origin and token across further nodes, and returning descendants rejoin the
++original namespace. Unknown origin-local tokens are rejected after closure.
++Legacy peers that omit `context_origin` retain connection-scoped lineage identity.
++The account field is validated and preserved; Trealla retains its existing
++resource accounting rather than claiming SWI's aggregate delegated-account policy.
+ 
+ The receiver carries the lineage with queued commands and installs it during
+ actor creation. Local descendants inherit that namespace, including children
+-created with `link(false)`. Ordinary name lookup and uniqueness remain node-wide;
+-registration ownership and promise access distinguish the delegated namespaces.
++created with `link(false)`. Ordinary names, reservations, and promises belong to
++the client context; services remain node-wide.
+ Actor control and monitor removal through the relay respect those boundaries.
+ 
+ `lineage_close` closes admission, removes that namespace's registrations and name
+@@ -949,7 +953,8 @@ so a racing creation is either included in cleanup or rejected. Children still
+ preparing source reach a closed-namespace startup error before entering their
+ goal; preparation retains the existing loader limits. Repeated closure
+ is harmless; later requests for the closed lineage are rejected. Closing the
+-connection closes every delegated namespace on it. Other lineages, connections,
++last attachment closes the foreign delegated namespace. A returning attachment
++does not own the lifetime of the original client namespace. Other contexts,
+ legacy actors and unrelated monitor references are preserved by explicit lineage
+ closure. Toplevels in the lineage terminate too, whether they are executing a
+ query or waiting between pages; termination is reported by the normal `down`
+@@ -957,11 +962,13 @@ notification rather than as a query error. The command carries no new
+ completion acknowledgement: termination notifications remain the way to observe
+ actor termination.
+ 
+-This is **receiver-side support**. Trealla does not yet propagate this ownership
+-to further remote nodes or forward lineage closure through them. It provides no
+-blanket remote cancellation or no-orphan guarantee. Commands without lineage
+-metadata retain the existing connection behaviour; public browser clients cannot
+-assert transport lineage authority.
++Outgoing connections and routes are cached per context. A dedicated connection
++binds its default context during authenticated `transport_hello`; later commands
++inherit that binding. Closing a context closes its outgoing routes, propagating
++connection loss to descendants. Transport bindings cannot be rebound, and remote
++descendants never inherit administrator authority. This does not promise remote
++cancellation during a network partition. Public browser clients cannot assert
++transport context authority.
+ 
+ `receiver_lineage_tests.pl` covers validation, sandbox boundaries, context
+ restoration, detached descendants, names, promises, repeated closure, queued and
+diff --git a/actor_authority.pl b/actor_authority.pl
+index cc9365e..a5a46ef 100644
+--- a/actor_authority.pl
++++ b/actor_authority.pl
+@@ -1,5 +1,6 @@
+ % SPDX-License-Identifier: MIT
+-:- module(actor_authority, [check_exit/1, open_namespace/2, close_namespace/1]).
++:- module(actor_authority, [check_exit/1, open_namespace/2, close_namespace/1,
++    with_transport_authority/1, restricted_authority/0]).
+ 
+ % Ownership policy for public hosted actors. The core calls a policy hook
+ % before either local termination or distribution routing. Trusted unscoped
+@@ -9,7 +10,18 @@
+ :- use_module(auth_policy, [principal_has_capability/2]).
+ :- multifile actors:hook_check_exit/1.
+ actors:hook_check_exit(Pid) :- actor_authority:check_exit(Pid).
+-:- dynamic owner_namespace/1, closed_owner_namespace/1.
++:- dynamic owner_namespace/1, closed_owner_namespace/1, restricted_thread/1, restricted_actor/1.
++:- meta_predicate with_transport_authority(0).
++
++with_transport_authority(Goal) :-
++    thread_self(T),
++    setup_call_cleanup(asserta(restricted_thread(T),Ref),Goal,erase(Ref)).
++restricted_authority :- thread_self(T),restricted_thread(T),!.
++restricted_authority :- actors:self(Pid),restricted_actor(Pid).
++
++:- multifile actors:hook_spawn_reserved/2.
++actors:hook_spawn_reserved(Pid,_) :-
++    (actor_authority:restricted_authority -> assertz(actor_authority:restricted_actor(Pid));true).
+ :- op(200, xfx, @).
+ 
+ open_namespace(Namespace, Principal) :-
+@@ -33,7 +45,8 @@ prune_closed_owners :-
+             retractall(closed_owner_namespace(Namespace)))).
+ 
+ :- multifile actors:hook_stop/1.
+-actors:hook_stop(_) :-
++actors:hook_stop(Pid) :-
++    retractall(actor_authority:restricted_actor(Pid)),
+     with_mutex('$actor_registry', actor_authority:prune_closed_owners).
+ 
+ check_exit(Pid) :-
+@@ -46,9 +59,8 @@ check_exit(Pid) :-
+     ; throw(error(permission_error(exit,actor,Pid),
+                   context(actors:exit/2,'target is outside the caller ownership tree')))).
+ 
+-namespace_owner(Namespace) :- owner_namespace(Namespace), !.
+-namespace_owner(ws_lineage(Relay,_)) :-
+-    actors:actor_namespace(Relay,Base), owner_namespace(Base).
++namespace_owner(Namespace) :-
++    \+ restricted_authority,owner_namespace(Namespace).
+ 
+ owned_target(Namespace, Pid) :-
+     actors:actor_namespace(Pid,Namespace), !.
+diff --git a/actor_authority_tests.pl b/actor_authority_tests.pl
+index 7fc3feb..5d93575 100644
+--- a/actor_authority_tests.pl
++++ b/actor_authority_tests.pl
+@@ -6,7 +6,7 @@
+ 
+ actor_authority_tests :-
+     foreign_exit_is_denied,
+-    owner_exit_is_allowed,
++    owner_exit_is_allowed,transport_cannot_borrow_owner_authority,
+     trusted_exit_is_allowed,
+     remote_route_is_not_authority,
+     writeln('Actor exit authority: all regressions passed').
+@@ -58,3 +58,17 @@ remote_route_is_not_authority :-
+          Outcome==thrown,nonvar(E),E=error(permission_error(exit,actor,Remote),_)),
+         (retractall(actors:link(Self,Remote)),
+          retractall(actors:actor_namespace(Self,ws_client(remote_owner))))).
++
++transport_cannot_borrow_owner_authority :-
++    make_worker(ws_client(transport_other),Target),
++    NS=ws_client(transport_owner),
++    actor_authority:open_namespace(NS,principal(owner,[admin])),
++    self(Parent),
++    actors:with_actor_namespace(NS,
++        actor_authority:with_transport_authority(
++            spawn((catch(exit(Target,forbidden),E,true),send(Parent,transport_result(E))),P,[monitor(true)]))),
++    receive({transport_result(Error)->true},[timeout(2),on_timeout(fail)]),
++    nonvar(Error),Error=error(permission_error(exit,actor,Target),_),
++    receive({down(P,P,true)->true},[timeout(2),on_timeout(fail)]),
++    actors:actor_thread(Target,_),actor_authority:close_namespace(NS),
++    exit(Target,done),receive({down(Target,Target,done)->true},[timeout(2),on_timeout(fail)]).
+diff --git a/actors.pl b/actors.pl
+index 46d5c28..25af369 100644
+--- a/actors.pl
++++ b/actors.pl
+@@ -245,12 +245,12 @@ reserve_spawn_name(Name, Token) :-
+         ( ensure_registry_namespace_open(Namespace),
+           ( (registered(Name,_) ; reserved_spawn_name(Name,_))
+         -> throw(name_is_in_use(Name))
+-        ; assertz(reserved_spawn_name(Name,Token)),
++        ; assertz(reserved_spawn_name_in(Namespace,Name,Token)),
+           assertz(spawn_name_owner(Token,Namespace)) ))).
+ 
+ release_spawn_name(Token) :-
+     with_mutex('$actor_registry',
+-        (retractall(reserved_spawn_name(_,Token)),retractall(spawn_name_owner(Token,_)),
++        (retractall(reserved_spawn_name_in(_,_,Token)),retractall(spawn_name_owner(Token,_)),
+          retractall(remote_spawn_publication(Token,_,_,_)))).
+ 
+ publish_spawn_name(Pid, Options) :-
+@@ -260,10 +260,10 @@ publish_spawn_name(Pid, Options) :-
+            ( ensure_registry_namespace_open(CurrentNamespace),
+              actor_alive(Pid),
+              ( registered(_,Pid) -> throw(process_already_has_a_name(Pid)) ; true ),
+-             ( retract(reserved_spawn_name(Name,Token))
++             ( retract(reserved_spawn_name_in(CurrentNamespace,Name,Token))
+              -> (retract(spawn_name_owner(Token,Namespace)) -> true ; Namespace=none),
+                 ensure_registry_namespace_open(Namespace),
+-                asserta(registered(Name,Pid)),assertz(registration_owner(Name,Pid,Namespace))
++                asserta(registered_in(Namespace,Name,Pid)),assertz(registration_owner(Name,Pid,Namespace))
+              ; throw(error(existence_error(name_reservation,Token),spawn/3)) )))
+     ; true ).
+ 
+@@ -276,8 +276,8 @@ publish_remote_spawn_name(Pid,Options) :-
+              (reserved_spawn_name(Name,Token),spawn_name_owner(Token,Owner) -> true
+              ; throw(error(existence_error(name_reservation,Token),spawn/3))),
+              ensure_registry_namespace_open(Owner),
+-             retractall(reserved_spawn_name(_,Token)),retractall(spawn_name_owner(Token,_)),
+-             asserta(registered(Name,Pid)),assertz(registration_owner(Name,Pid,Owner)),
++             retractall(reserved_spawn_name_in(_,_,Token)),retractall(spawn_name_owner(Token,_)),
++             asserta(registered_in(Owner,Name,Pid)),assertz(registration_owner(Name,Pid,Owner)),
+              assertz(remote_spawn_publication(Token,Name,Pid,Owner))))
+     ; true).
+ 
+@@ -285,7 +285,7 @@ rollback_remote_spawn_name(Pid,Options) :-
+     (option('$name_reservation'(Token),Options) ->
+         with_mutex('$actor_registry',
+             (retract(remote_spawn_publication(Token,Name,Pid,Owner)) ->
+-                (registration_owner(Name,Pid,Owner) -> remove_registrations([Name-Pid]) ; true)
++                (registration_owner(Name,Pid,Owner) -> remove_namespace_registrations(Owner,[Name-Pid]) ; true)
+             ; true))
+     ; true).
+ 
+@@ -400,7 +400,7 @@ spawn_local(Goal, Pid, Options0, Namespace, Visibility) :-
+ 
+ spawn_local_locked(Self, GoalModule, Goal, Options, Namespace, Visibility,
+                    Pid) :-
+-    (Namespace=ws_lineage(_,_) -> ensure_registry_namespace_open(Namespace) ; true),
++    ensure_registry_namespace_open(Namespace),
+     live_actor_count_unlocked(LiveCount),
+     forall(hook_admit_spawn(LiveCount, Options), true),
+     make_pid_unlocked(Pid),
+@@ -416,7 +416,7 @@ spawn_local_locked(Self, GoalModule, Goal, Options, Namespace, Visibility,
+     % observes the missing relation and exits instead of becoming an orphan.
+     assertz(actor_alive(Pid)),
+     remember_actor_namespace(Visibility, Pid, Namespace),
+-    (Namespace=ws_lineage(_,_) -> assertz(lineage_preparing(Pid)) ; true),
++    (Namespace \== none -> assertz(lineage_preparing(Pid)) ; true),
+     install_spawn_relations(Self, Pid, Options),
+     catch(thread_create(start(Self, Pid, GoalModule, Goal, Options), _Thread,
+                         ThreadOptions),
+@@ -524,7 +524,8 @@ replay_outcome(exception(Ball)) :-
+ % Check admission, publish readiness and enqueue the startup answer under the
+ % same mutex used by closure. Cleanup can then signal only activated actors.
+ signal_actor_started(Pid, Parent) :-
+-    actor_namespace(Pid,Namespace),Namespace=ws_lineage(_,_),!,
++    actor_namespace(Pid,Namespace),
++    Namespace \== none,!,
+     actor_thread(Parent,ParentThread),
+     with_mutex('$actor_registry',
+         (ensure_registry_namespace_open(Namespace),
+@@ -751,9 +752,14 @@ flush_monitor_messages(Ref) :-
+ %   taken by another Pid. Missing or terminating local PIDs raise
+ %   error(existence_error(process, Pid), context(actors:register/2, _)).
+ 
+-:- dynamic(registered/2).
++% Ordinary names and pending reservations are keyed by client namespace.
++:- dynamic registered_in/3.
++registered(Name, Pid) :-
++    registration_namespace(NS), registered_in(NS,Name,Pid).
++reserved_spawn_name(Name, Token) :-
++    registration_namespace(NS), reserved_spawn_name_in(NS,Name,Token).
+ :- dynamic(registered_service/2).
+-:- dynamic reserved_spawn_name/2.
++:- dynamic reserved_spawn_name_in/3.
+ :- dynamic spawn_name_owner/2.
+ :- dynamic remote_spawn_publication/4.
+ :- dynamic registration_owner/3.
+@@ -768,15 +774,12 @@ register(Name, Pid) :-
+         ; (registered(Name, _) ; reserved_spawn_name(Name,_))
+         -> throw(name_is_in_use(Name))
+         ; ensure_registerable_local_pid(Pid),
+-          asserta(registered(Name, Pid)),
++          asserta(registered_in(Namespace,Name,Pid)),
+           assertz(registration_owner(Name,Pid,Namespace)) ))).
+ 
+-% Ownership is separate from node-wide lookup/uniqueness. Only WebSocket
+-% scopes participate in this batch; HTTP and trusted standalone use stay open.
++% Trusted standalone code uses the environment's root namespace.
+ registration_namespace(Namespace) :-
+-    current_actor_namespace(Scope),
+-    ( nonvar(Scope), (Scope=ws_client(_);Scope=ws_lineage(_,_)), ground(Scope) -> Namespace=Scope
+-    ; Namespace=none ).
++    current_actor_namespace(Namespace), must_be(ground,Namespace).
+ 
+ ensure_registry_namespace_open(Namespace) :-
+     ( closed_registry_namespace(Namespace)
+@@ -786,19 +789,19 @@ ensure_registry_namespace_open(Namespace) :-
+ 
+ retire_registry_namespace(Namespace) :-
+     must_be(ground,Namespace),
+-    ( (Namespace=ws_client(_);Namespace=ws_lineage(_,_)) -> true
++    ( (Namespace=ws_client(_);Namespace=ws_lineage(_,_);Namespace=delegated_context(_);Namespace=http_client(_)) -> true
+     ; throw(error(domain_error(websocket_namespace,Namespace),retire_registry_namespace/1)) ),
+     with_mutex('$actor_registry',
+         ( (closed_registry_namespace(Namespace) -> true
+           ; assertz(closed_registry_namespace(Namespace))),
+           findall(Name-Pid,registration_owner(Name,Pid,Namespace),Owned),
+-          remove_registrations(Owned),
++          remove_namespace_registrations(Namespace,Owned),
+           findall(Token,spawn_name_owner(Token,Namespace),Tokens),
+           retire_spawn_names(Tokens),
+           retractall(remote_spawn_publication(_,_,_,Namespace)) )).
+ retire_spawn_names([]).
+ retire_spawn_names([Token|Tokens]) :-
+-    retractall(reserved_spawn_name(_,Token)),retractall(spawn_name_owner(Token,_)),
++    retractall(reserved_spawn_name_in(_,_,Token)),retractall(spawn_name_owner(Token,_)),
+     retire_spawn_names(Tokens).
+ 
+ % Called with the registry mutex held: do not reacquire it via actor_thread/2.
+@@ -820,12 +823,17 @@ ensure_registerable_local_pid(Target) :-
+ 
+ remove_local_registrations(Pid) :-
+     findall(Name-Target,
+-        (registered(Name,Target),local_registration_pid(Target,Local),Local==Pid),
++        (registered_in(_,Name,Target),local_registration_pid(Target,Local),Local==Pid),
+         Registrations),
+     remove_registrations(Registrations).
++remove_namespace_registrations(_,[]).
++remove_namespace_registrations(NS,[Name-Target|Rest]) :-
++    retractall(registered_in(NS,Name,Target)),
++    retractall(registration_owner(Name,Target,NS)),
++    remove_namespace_registrations(NS,Rest).
+ remove_registrations([]).
+ remove_registrations([Name-Target|Rest]) :-
+-    retractall(registered(Name,Target)),
++    retractall(registered_in(_,Name,Target)),
+     retractall(registration_owner(Name,Target,_)),remove_registrations(Rest).
+ 
+ % Remove only exact, known remote PID identities. Do not touch local/service
+@@ -833,7 +841,7 @@ remove_registrations([Name-Target|Rest]) :-
+ remove_remote_aliases(Pids) :-
+     with_mutex('$actor_registry',
+         ( findall(Name-Target,
+-              (registered(Name,Target),member(Pid,Pids),Target==Pid),Aliases),
++              (registered_in(_,Name,Target),member(Pid,Pids),Target==Pid),Aliases),
+           remove_registrations(Aliases) )).
+ 
+ %!  unregister(+Name) is det.
+@@ -842,8 +850,9 @@ remove_remote_aliases(Pids) :-
+ %   registered.
+ 
+ unregister(Name) :-
++    must_be(atom,Name), registration_namespace(NS),
+     with_mutex('$actor_registry',
+-        (retractall(registered(Name,_)),retractall(registration_owner(Name,_,_)))).
++        (retractall(registered_in(NS,Name,_)),retractall(registration_owner(Name,_,NS)))).
+ 
+ %!  whereis(+Name, -Pid) is det.
+ %
+diff --git a/distribution.pl b/distribution.pl
+index 4bc0b69..fb91e29 100644
+--- a/distribution.pl
++++ b/distribution.pl
+@@ -83,7 +83,9 @@ remote_node_open(URL0, remote_node(URL, Reader, Writer), Options) :-
+     node_url_atom(URL0, URL),
+     node_websocket_url(URL, WebSocketURL),
+     self(Owner),
+-    node_connection_options(Options, WebSocketOptions),
++    receiver_lineage:transport_options(URL,TransportOptions),
++    append(TransportOptions,Options,AllOptions),
++    node_connection_options(AllOptions, WebSocketOptions),
+     web_prolog_connect(WebSocketURL, WS,
+         [optional_subprotocols(['web-prolog-sync-spawn-v1','web-prolog-sync-v1']),selected_subprotocol(Selected)|WebSocketOptions]),
+     ( memberchk(Selected,['web-prolog-sync-spawn-v1','web-prolog-sync-v1']) -> Sync = true ; Sync = false ),
+@@ -151,7 +153,8 @@ remote_drop_connection(URL0) :-
+     node_url_atom(URL0, URL),
+     distribution_manager(Manager),
+     self(Caller),
+-    Manager ! '$node_lookup'(URL, Caller),
++    actors:current_actor_namespace(NS),
++    Manager ! '$node_lookup'(context(NS,URL), Caller),
+     receive({ '$node_lookup_reply'(Manager, URL, Node) -> true }, []),
+     ( Node == none -> true ; remote_node_close(Node) ).
+ 
+@@ -187,7 +190,8 @@ remote_spawn_mode(Node, Goal0, RemotePid, Options0, Mode) :-
+     isolation:rewrite_source_options(Options0, SourceModule, Options1),
+     % Local validation may have rewritten both the entry goal and source
+     % clauses. Send language terms; the destination installs its own guards.
+-    isolation:restore_actor_goal(Goal0-Options1, SourceGoal-SourceOptions),
++    isolation:restore_actor_goal(Goal0-Options1, SourceGoal-Options2),
++    isolation:restore_actor_options(Options2,SourceOptions),
+     strip_module(SourceGoal, _, Goal0Plain),
+     exclude(local_spawn_option, SourceOptions, Options),
+     portable_term_for_writer(Writer, Goal0Plain-Options,
+@@ -275,7 +279,9 @@ remote_toplevel_spawn_mode(Node, RemotePid, Options0, Mode) :-
+     Node = remote_node(URL, _Reader, Writer),
+     self(Target),
+     isolation:rewrite_source_options(Options1, SourceModule, Options2),
+-    exclude(local_spawn_option, Options2, Options),
++    restore_actor_goal(Options2,Options3),
++    restore_actor_options(Options3,SourceOptions),
++    exclude(local_spawn_option, SourceOptions, Options),
+     portable_term_for_writer(Writer,Options,PortableOptions),
+     term_wire_atom(PortableOptions, OptionsText),
+     add_inherited_io_fields([command-string_atom(toplevel_spawn),
+@@ -300,8 +306,10 @@ remote_toplevel_call_routed(Node, RemotePid, Goal0, Options0) :-
+ remote_toplevel_call_mode(Node, RemotePid, Goal0, Options0, Routing) :-
+     node_wire_pid(Node, RemotePid, WirePid),
+     Node = remote_node(_, _, Writer),
+-    strip_module(Goal0, _, Goal0Plain),
+-    exclude(local_call_option, Options0, Options),
++    restore_actor_goal(Goal0-Options0,RestoredGoal-RestoredOptions),
++    restore_actor_options(RestoredOptions,SourceOptions),
++    strip_module(RestoredGoal, _, Goal0Plain),
++    exclude(local_call_option, SourceOptions, Options),
+     portable_term_for_writer(Writer, Goal0Plain-Options,
+                              Goal-PortableOptions),
+     goal_options_wire_atoms(Goal, PortableOptions, GoalText, OptionsText),
+@@ -343,7 +351,9 @@ synchronous_remote(Kind,Node,Pid,Goal,FallbackModule,Answer,Options0,Routing) :-
+     (Routing==caller -> RequestRef='$toplevel_sync'(FreshRef) ; RequestRef=FreshRef),
+     MonitorRef='$sync_monitor'(RequestRef),
+     (Routing==caller -> WireQuery=[target(Self)|Query] ; WireQuery=Query),
+-    portable_term_for_writer(Writer,Goal-WireQuery,PortableGoal-PortableOptions),
++    restore_actor_goal(Goal-WireQuery,SourceGoal-SourceQuery0),
++    restore_actor_options(SourceQuery0,SourceQuery),
++    portable_term_for_writer(Writer,SourceGoal-SourceQuery,PortableGoal-PortableOptions),
+     ( Kind == call -> Message='$call'(PortableGoal,['$request_ref'(RequestRef)|PortableOptions])
+     ; Message='$next'(['$request_ref'(RequestRef)|PortableOptions]) ),
+     web_prolog:canonical_answer_text(Message,Text),
+@@ -490,9 +500,11 @@ remote_writer_start(WS, URL, Owner, capabilities(Sync,Correlated)) :-
+     ( Ready == true -> remote_writer_loop(WS, URL) ; true ).
+ 
+ send_transport_hello(WS) :-
+-    web_prolog:object([command-string_atom(transport_hello),
++    receiver_lineage:transport_fields(ContextFields),
++    append(ContextFields,[command-string_atom(transport_hello),
+                        version-number(1),browser_pids-boolean(true),
+-                       io_ack-boolean(true),answer_terms-boolean(true)], JSON),
++                       io_ack-boolean(true),answer_terms-boolean(true)], Fields),
++    web_prolog:object(Fields, JSON),
+     web_prolog_send(WS, JSON).
+ 
+ remote_writer_loop(WS, URL) :-
+@@ -1241,7 +1253,8 @@ take_node_option([Option|Options0], URL, [Option|Options]) :-
+ transparent_node(URL, Node) :-
+     distribution_manager(Manager),
+     self(Caller),
+-    Manager ! '$node_request'(URL, Caller),
++    actors:current_actor_namespace(NS),
++    Manager ! '$node_request'(context(NS,URL), Caller),
+     receive({
+         '$node_reply'(Manager, URL, Node) -> true ;
+         '$node_error'(Manager, URL, Error) -> throw(Error)
+@@ -1252,7 +1265,8 @@ remote_pid_writer(RemotePid, Writer, WirePid) :-
+     integer(WirePid),
+     distribution_manager(Manager),
+     self(Caller),
+-    Manager ! '$route_request'(RemotePid, Caller),
++    actors:current_actor_namespace(NS),
++    Manager ! '$route_request'(context(NS,RemotePid), Caller),
+     receive({
+         '$route_reply'(Manager, RemotePid, Writer) -> true ;
+         '$route_missing'(Manager, RemotePid) -> fail
+@@ -1274,7 +1288,8 @@ caller_prepare_target(transparent, WirePid, URL, Writer, Target, Options) :-
+ manager_register_route(RemotePid, Writer) :-
+     distribution_manager(Manager),
+     self(Caller),
+-    Manager ! '$route_register'(RemotePid, Writer, Caller),
++    actors:current_actor_namespace(NS),
++    Manager ! '$route_register'(context(NS,RemotePid), Writer, Caller),
+     receive({ '$route_registered'(Manager, RemotePid) -> true }, []).
+ 
+ manager_forget_node_if_running(URL, Writer) :-
+@@ -1323,14 +1338,14 @@ distribution_manager_loop(Nodes, Routes) :-
+           ( NextNodes = Nodes, NextRoutes = Routes )),
+     distribution_manager_loop(NextNodes, NextRoutes).
+ 
+-manager_message('$node_request'(URL, Caller), Nodes, Routes,
++manager_message('$node_request'(context(NS,URL), Caller), Nodes, Routes,
+                 NextNodes, Routes) :- !,
+-    ( select(node(URL, Node), Nodes, Rest), node_writer_running(Node) ->
+-        NextNodes = [node(URL, Node)|Rest], Error = none
+-    ; catch(remote_node_open(URL, Node), OpenError, true),
++    ( select(node(context(NS,URL), Node), Nodes, Rest), node_writer_running(Node) ->
++        NextNodes = [node(context(NS,URL), Node)|Rest], Error = none
++    ; catch(actors:with_actor_namespace(NS,remote_node_open(URL, Node)), OpenError, true),
+       ( var(OpenError) ->
+-          exclude(manager_node_url(URL), Nodes, OtherNodes),
+-          NextNodes = [node(URL, Node)|OtherNodes], Error = none
++          exclude(manager_node_url(context(NS,URL)), Nodes, OtherNodes),
++          NextNodes = [node(context(NS,URL), Node)|OtherNodes], Error = none
+       ; NextNodes = Nodes, Error = OpenError
+       )
+     ),
+@@ -1338,26 +1353,31 @@ manager_message('$node_request'(URL, Caller), Nodes, Routes,
+     ( Error == none -> Caller ! '$node_reply'(Manager, URL, Node)
+     ; Caller ! '$node_error'(Manager, URL, Error)
+     ).
+-manager_message('$node_lookup'(URL, Caller), Nodes, Routes,
++manager_message('$node_lookup'(context(NS,URL), Caller), Nodes, Routes,
+                 Nodes, Routes) :- !,
+     manager_identity(Manager),
+-    ( member(node(URL, Node0), Nodes), node_writer_running(Node0) -> Node = Node0
++    ( member(node(context(NS,URL), Node0), Nodes), node_writer_running(Node0) -> Node = Node0
+     ; Node = none
+     ),
+     Caller ! '$node_lookup_reply'(Manager, URL, Node).
+-manager_message('$route_register'(Pid, Writer, Caller), Nodes, Routes,
+-                Nodes, [route(Pid, Writer)|Rest]) :- !,
+-    exclude(manager_route_pid(Pid), Routes, Rest),
++manager_message('$route_register'(context(NS,Pid), Writer, Caller), Nodes, Routes,
++                Nodes, [route(context(NS,Pid), Writer)|Rest]) :- !,
++    exclude(manager_route_pid(context(NS,Pid)), Routes, Rest),
+     manager_identity(Manager),
+     Caller ! '$route_registered'(Manager, Pid).
+-manager_message('$route_request'(Pid, Caller), Nodes, Routes, Nodes, Routes) :- !,
++manager_message('$route_request'(context(NS,Pid), Caller), Nodes, Routes, Nodes, Routes) :- !,
+     manager_identity(Manager),
+-    ( memberchk(route(Pid, Writer), Routes) ->
++    ( memberchk(route(context(NS,Pid), Writer), Routes) ->
+         Caller ! '$route_reply'(Manager, Pid, Writer)
+     ; Caller ! '$route_missing'(Manager, Pid)
+     ).
+ manager_message('$route_forget'(Pid), Nodes, Routes, Nodes, Rest) :- !,
+     exclude(manager_route_pid(Pid), Routes, Rest).
++manager_message('$context_close'(NS),Nodes,Routes,RestNodes,RestRoutes) :- !,
++    findall(Node,member(node(context(NS,_),Node),Nodes),Closing),
++    exclude(context_node(NS),Nodes,RestNodes),
++    exclude(context_route(NS),Routes,RestRoutes),
++    maplist(close_context_node,Closing).
+ manager_message('$node_forget'(_URL, Writer), Nodes, Routes,
+                 RestNodes, RestRoutes) :- !,
+     remove_writer_nodes(Nodes, Writer, RestNodes),
+@@ -1403,7 +1423,8 @@ node_writer_running(remote_node(_, Reader, Writer)) :-
+     catch(thread_property(ReaderThread, status(running)), _, fail),
+     catch(thread_property(WriterThread, status(running)), _, fail).
+ 
+-manager_route_pid(Pid, route(Pid, _)).
++manager_route_pid(Key,route(Stored,_)) :-
++    (Key==Stored;nonvar(Stored),Stored=context(_,Pid),Key==Pid).
+ manager_node_url(URL, node(URL, _)).
+ manager_endpoint_target(Target, endpoint(_, _, EndpointTarget)) :-
+     EndpointTarget == Target.
+@@ -1462,8 +1483,10 @@ notify_node_target_stopped([node(_, remote_node(_, _, Writer))|Nodes], Target) :
+ 
+ portable_term_for_writer(Writer, Term0, Term) :-
+     ( local_runtime_pid(Term0) ->
+-        endpoint_for_target(Writer, Term0, Id),
+-        Term = Id@localhost
++        (web_prolog:current_node_url(Home) -> Term=Term0@Home
++        ;endpoint_for_target(Writer, Term0, Id),Term=Id@localhost)
++    ; nonvar(Term0),Term0='$web_prolog_endpoint'(_,_) ->
++        endpoint_for_target(Writer,Term0,Id),Term=Id@localhost
+     ; var(Term0) -> Term = Term0
+     ; atomic(Term0) -> Term = Term0
+     ; functor(Term0, Name, Arity),
+@@ -1510,3 +1533,11 @@ goal_options_wire_atoms(Goal, Options, GoalAtom, OptionsAtom) :-
+     WriteOptions = [quoted(true),ignore_ops(false),numbervars(false),variable_names(Names)],
+     write_term_to_atom(GoalAtom, Goal, WriteOptions),
+     write_term_to_atom(OptionsAtom, Options, WriteOptions).
++
++:- multifile receiver_lineage:hook_context_closed/1.
++receiver_lineage:hook_context_closed(NS) :-
++    (catch(thread_property('$distribution_manager',status(running)),_,fail)
++    -> '$distribution_manager' ! '$context_close'(NS);true).
++context_node(NS,node(context(NS,_),_)).
++context_route(NS,route(context(NS,_),_)).
++close_context_node(Node) :- catch(remote_node_close(Node),_,true).
+diff --git a/docs/ACTOR_EXIT_AUTHORITY.md b/docs/ACTOR_EXIT_AUTHORITY.md
+index 10097ba..fd7d135 100644
+--- a/docs/ACTOR_EXIT_AUTHORITY.md
++++ b/docs/ACTOR_EXIT_AUTHORITY.md
+@@ -5,13 +5,15 @@ or a distribution hook can take over. WebSocket command authorization alone
+ does not protect predicates invoked by an admitted submitted goal.
+ 
+ The policy hook in `actor_authority.pl` uses the actor's inherited client
+-namespace, including delegated `ws_lineage` contexts. Siblings in one namespace
++namespace, including foreign delegated contexts. Siblings in one namespace
+ can terminate one another. A separate connection is a separate scope even
+ when the authenticated account is the same. A known remote route alone does
+ not grant termination authority: linked remote work must belong to a parent
+ in the caller's scope, or the caller must have node-owner authority.
+ 
+-Authenticated administrator namespaces retain broader authority. Their marker
++Authenticated administrator namespaces retain broader authority for local work.
++Transport commands and their descendants explicitly narrow that authority, even
++when returning to the administrator’s original context. Their marker
+ is maintained by trusted connection/request setup, retained while cached HTTP
+ actors remain, and retired after their last actor stops. Standalone unscoped
+ local callers retain the unrestricted library API. Admission still restricts
+diff --git a/docs/delegated-lineage-status.md b/docs/delegated-lineage-status.md
+index cb8acd6..b1da999 100644
+--- a/docs/delegated-lineage-status.md
++++ b/docs/delegated-lineage-status.md
+@@ -1,6 +1,7 @@
+ # Delegated-lineage receiver status
+ 
+-Checked on 21 October 2026, through commit `5cbb64d`.
++Updated 5 November 2026 for the native retained-context repair.
++The October commit references below record the original receiver implementation.
+ This replaces the temporary handover document. The implementation and test
+ sources are authoritative; this note records the supported boundary and the
+ remaining diagnostics.
+@@ -17,7 +18,10 @@ remaining diagnostics.
+   late creation, and reclaim local actors on lineage or connection closure.
+ - `5cbb64d`: retain the standalone repeated-exit reproducer and raw observations.
+ 
+-Lineage identity is connection-scoped. Explicit closure preserves other lineages,
++Origin-bearing context identity spans transport attachments and remote descendants.
++Returning descendants rejoin the origin namespace; closure rejects late origin
++replay. Outgoing transports and routes are scoped per context. Legacy lineage-only
++traffic remains connection-scoped. Explicit closure preserves other contexts,
+ legacy actors on the connection and unrelated monitor references. Local children
+ with `link(false)` still belong to their lineage. Children preparing source are
+ rejected before activation once preparation finishes under existing loader limits.
+diff --git a/isolation.pl b/isolation.pl
+index 8781ccc..c8b2f13 100644
+--- a/isolation.pl
++++ b/isolation.pl
+@@ -13,6 +13,7 @@
+          run_actor_query/2,        % +Module, +Goal
+          actor_builtin_goal/1,     % +Goal
+          rewrite_source_options/3, % +Options, +SourceModule, -Options
++         restore_actor_options/2,
+          restore_actor_goal/2,     % internal outgoing actor goal restoration
+          load_options_text/3       % +SourceModule, +Options, -Text
+        ]).
+@@ -510,17 +511,14 @@ text_source(Text) :- string(Text), !.
+ text_source(Text) :- is_list(Text).
+ 
+ % Validation installs a local output bridge even in freshly copied source.
+-% Restore just that bridge at export; keep other framework terms untouched.
++% Restore runtime guards to language calls before exporting executable source.
+ % functor/3 and arg/3 retain Trealla's callable metadata during reconstruction.
+ restore_actor_goal(Term, Term) :- var(Term), !.
+ restore_actor_goal(Term0, Goal) :-
+     Term0 = M:Inner, M == sandbox_policy, nonvar(Inner),
+-    functor(Inner, sandbox_library, 5), !,
+-    arg(5, Inner, Original), restore_actor_goal(Original, Goal).
+-restore_actor_goal(Term0, format(F,A)) :-
+-    Term0 = M:Inner, M == sandbox_policy, nonvar(Inner),
+-    functor(Inner, sandbox_format, 2), !,
+-    arg(1, Inner, F), arg(2, Inner, A).
++    restored_guard(Inner, Public), !,
++    restore_actor_goal(Public, Goal).
++
+ restore_actor_goal(Term, Term) :- atomic(Term), !.
+ restore_actor_goal(Term0, Term) :-
+     functor(Term0, Name, Arity), functor(Term, Name, Arity),
+@@ -530,6 +528,60 @@ restore_actor_args(N, Arity, Term0, Term) :-
+     arg(N, Term0, Arg0), restore_actor_goal(Arg0, Arg), arg(N, Term, Arg),
+     Next is N+1, restore_actor_args(Next, Arity, Term0, Term).
+ 
++restored_guard(Inner, Public) :-
++    functor(Inner, Name, Arity),
++    ( Name==sandbox_library ; Name==sandbox_supervisor_call ), Arity==5, !,
++    arg(5, Inner, Public).
++restored_guard(Inner, Public) :-
++    functor(Inner,sandbox_builtin_call,1), !, arg(1,Inner,Public).
++restored_guard(Inner, Public) :-
++    functor(Inner,sandbox_call,N), N>=5, N=<12, !,
++    Inner=..[sandbox_call,_M,_P,_C,_A|Args],Public=..[call|Args].
++restored_guard(Inner, Public) :-
++    functor(Inner,sandbox_toplevel_synch,9),
++    arg(5,Inner,Kind), (Kind==call ; Kind==next), !,
++    Inner=..[_,_M,_P,_C,_A,Kind,Pid,G,R,O],
++    (Kind==call -> Public=toplevel_call_synch(Pid,G,R,O)
++    ;Public=toplevel_next_synch(Pid,R,O)).
++restored_guard(Inner, Public) :-
++    functor(Inner,Name,Arity), guard_public(Name,Arity,Drop,NameOut),
++    Inner=..[_|Args], drop_guard_args(Drop,Args,PublicArgs),
++    Public=..[NameOut|PublicArgs].
++drop_guard_args(0,Args,Args) :- !.
++drop_guard_args(N,[_|Args],Rest) :- K is N-1,drop_guard_args(K,Args,Rest).
++guard_public(sandbox_control_catch,4,1,catch).
++guard_public(sandbox_spawn,7,4,spawn).
++guard_public(sandbox_toplevel_call,7,4,toplevel_call).
++guard_public(sandbox_yield,7,4,yield).
++guard_public(sandbox_clause,6,4,clause).
++guard_public(sandbox_assert,5,4,assert).
++guard_public(sandbox_assert,6,4,assert).
++guard_public(sandbox_asserta,5,4,asserta).
++guard_public(sandbox_asserta,6,4,asserta).
++guard_public(sandbox_assertz,5,4,assertz).
++guard_public(sandbox_assertz,6,4,assertz).
++guard_public(sandbox_retract,5,4,retract).
++guard_public(sandbox_retractall,5,4,retractall).
++guard_public(sandbox_abolish,5,4,abolish).
++guard_public(sandbox_abolish,6,4,abolish).
++guard_public(sandbox_format,2,0,format).
++guard_public(sandbox_sleep,1,0,sleep).
++guard_public(sandbox_between,3,0,between).
++guard_public(sandbox_atom_string,2,0,atom_string).
++guard_public(sandbox_random_member,2,0,random_member).
++guard_public(sandbox_time,2,1,time).
++
++% Source text is executable source only in a source option, never arbitrary
++% application data. Preserve variable sharing within each restored clause.
++restore_actor_options([], []).
++restore_actor_options([src_text(Text0)|Rest0], [src_text(Text)|Rest]) :- !,
++    source_text_atom(Text0,Atom),
++    setup_call_cleanup(open_string(Atom,In),read_source_terms_(In,Terms0),close(In)),
++    restore_actor_goal(Terms0,Terms),source_terms_text(Terms,Text),
++    restore_actor_options(Rest0,Rest).
++restore_actor_options([O|Os],[O|Rest]) :- restore_actor_options(Os,Rest).
++
++
+ rewrite_source_options([], _, []).
+ rewrite_source_options([src_uri(URI)|Options], Module,
+                        [src_text(Text)|Rewritten]) :-
+diff --git a/namespace_tests.pl b/namespace_tests.pl
+index 0ab85ae..e1b4158 100644
+--- a/namespace_tests.pl
++++ b/namespace_tests.pl
+@@ -38,24 +38,23 @@ namespace_names_and_survivors :-
+     run_scope(PA,register(Remote,701@'http://namespace-remote.test'),ok),
+     run_scope(PB,register(Other,702@'http://namespace-remote.test'),ok),
+     register(Trusted,Self),register_service(Service,Target),
+-    % Uniqueness and visibility stay node-wide, regardless of owning scope.
+-    run_scope(PB,whereis(Owned,Target),ok),
+-    run_scope(PB,register(Owned,703@'http://namespace-remote.test'),Taken),
+-    Taken==error(name_is_in_use(Owned)),
++    % Ordinary names are visible and unique within their client context.
++    run_scope(PB,(whereis(Owned,Found),Found==undefined),ok),
++    run_scope(PB,register(Owned,703@'http://namespace-remote.test'),ok),
+     retire_registry_namespace(A),retire_registry_namespace(A),
+     whereis(Owned,undefined),whereis(Remote,undefined),
+-    whereis(Other,702@'http://namespace-remote.test'),whereis(Trusted,Self),
++    run_scope(PB,whereis(Other,702@'http://namespace-remote.test'),ok),whereis(Trusted,Self),
+     whereis_service(Service,Target),actors:actor_thread(Target,_),actors:actor_thread(PA,_),
+     run_scope(PA,register(Late,704@'http://namespace-remote.test'),Rejected),closed_error(A,Rejected),
+     run_scope(PA,namespace_tests:try_named_supervisor(Late),RejectedSpawn),closed_error(A,RejectedSpawn),
+-    run_scope(PB,register(Owned,705@'http://namespace-remote.test'),ok),
++    run_scope(PB,(unregister(Owned),register(Owned,705@'http://namespace-remote.test')),ok),
+     % A repeated close cannot erase a replacement owned by another client.
+-    retire_registry_namespace(A),whereis(Owned,705@'http://namespace-remote.test'),
++    retire_registry_namespace(A),run_scope(PB,whereis(Owned,705@'http://namespace-remote.test'),ok),
+     retire_registry_namespace(B),whereis(Owned,undefined),whereis(Other,undefined),
+     unregister(Trusted),unregister_service(Service),
+     Target ! finish,receive({down(Target,Target,true) -> true},[timeout(2),on_timeout(fail)]),
+     stop_scope(PA),stop_scope(PB),
+-    writeln('creator ownership, node-wide uniqueness, late admission and surviving actors: ok').
++    writeln('creator ownership, context-local uniqueness, late admission and surviving actors: ok').
+ try_named_supervisor(Name) :- supervisor_actor:supervisor_spawn([],_,[name(Name),link(false)]).
+ 
+ reserve_and_wait(Parent,Name) :-
+@@ -68,8 +67,8 @@ namespace_reservation_and_publication :-
+     new_scope(NS,P),new_name(Name),self(Parent),make_ref(Ref),
+     P ! run(Ref,namespace_tests:reserve_and_wait(Parent,Name)),
+     receive({reserved(Token) -> true},[timeout(2),on_timeout(fail)]),
+-    actors:reserved_spawn_name(Name,Token),retire_registry_namespace(NS),
+-    \+ actors:reserved_spawn_name(Name,Token),\+ actors:spawn_name_owner(Token,_),
++    actors:reserved_spawn_name_in(NS,Name,Token),retire_registry_namespace(NS),
++    \+ actors:reserved_spawn_name_in(NS,Name,Token),\+ actors:spawn_name_owner(Token,_),
+     % Reuse the freed name while the old creator is still alive.
+     register(Name,888@'http://namespace-remote.test'),P ! publish,
+     receive({publication(Error) -> true},[timeout(3),on_timeout(fail)]),
+@@ -118,7 +117,7 @@ live_namespace_sessions(A,B) :-
+     remote_toplevel_spawn(A,TA,[session(true)]),remote_toplevel_spawn(B,TB,[session(true)]),
+     new_name(Name),new_name(Other),
+     remote_toplevel_call_synch(A,TA,register(Name,901@'http://namespace-remote.test'),_,[timeout(3)]),
+-    remote_toplevel_call_synch(B,TB,(whereis(Name,901@'http://namespace-remote.test'),register(Other,902@'http://namespace-remote.test')),Before,[timeout(3)]),
++    remote_toplevel_call_synch(B,TB,(whereis(Name,Found),Found==undefined,register(Other,902@'http://namespace-remote.test')),Before,[timeout(3)]),
+     Before=success(_,_,_),remote_node_close(A),
+     wait_alias_gone(B,TB,Name,50),
+     remote_toplevel_call_synch(B,TB,whereis(Other,902@'http://namespace-remote.test'),After,[timeout(3)]),
+diff --git a/receiver_lineage.pl b/receiver_lineage.pl
+index 753db4f..050b267 100644
+--- a/receiver_lineage.pl
++++ b/receiver_lineage.pl
+@@ -1,33 +1,106 @@
+ % SPDX-License-Identifier: MIT
+ :- module(receiver_lineage,
+     [with_wire_context/5, ensure_open/1, check_actor/1,
+-     close_namespace/1, close_connection/1]).
++     close_namespace/1, close_connection/1, open_client_namespace/2,
++     transport_fields/1, configure_transport/1, transport_options/2]).
+ 
+-% Receiver-side delegated lifetime only. Tokens are scoped to the accepted
+-% connection, never global capabilities. No downstream delegation is implied.
++% Native retained contexts span authenticated transport attachments.
++% Legacy lineage-only peers retain connection-scoped delegation.
+ :- use_module(actors, []).
+ :- use_module(rpc, []).
+-:- use_module(auth_policy, [principal_has_capability/2]).
+-:- dynamic connection_lineage/2, connection_base/2, closed_connection/1.
++:- use_module(actor_authority, []).
++:- use_module(auth_policy, [principal_has_capability/2, principal_id/2]).
++:- use_module(crypto_portable, [secure_random_bytes/2, bytes_hex/2]).
++:- dynamic connection_lineage/2, connection_base/2, closed_connection/1,
++    context_binding/4, context_default/4, namespace_principal/2,
++    principal_account/2, peer_transport_token/2.
+ :- meta_predicate with_wire_context(+, +, +, +, 0).
+ 
++% Context ids are minted at the client origin. Only authenticated node
++% transports may carry them; the connection is merely an attachment.
++open_client_namespace(NS, Principal) :-
++    principal_id(Principal, Id),
++    with_mutex('$actor_registry',
++        (namespace_principal(NS,_) -> true ; assertz(namespace_principal(NS,Id)))).
++
++fresh_token(Token) :- secure_random_bytes(16,Bytes),bytes_hex(Bytes,Token).
++
++transport_fields(Fields) :-
++    actors:current_actor_namespace(NS),NS \== none,!,
++    with_mutex('$actor_registry',
++        (actors:ensure_registry_namespace_open(NS),
++         (context_binding(Origin,Token,NS,Account) -> true
++         ; web_prolog:current_node_url(Origin),fresh_token(Token),
++           (namespace_principal(NS,Id) -> true ; Id=anonymous(NS)),
++           (principal_account(Id,Account) -> true
++           ;fresh_token(Account),assertz(principal_account(Id,Account))),
++           assertz(context_binding(Origin,Token,NS,Account))))),
++    Fields=[lineage-string_atom(Token),account-string_atom(Account),
++            context_origin-string_atom(Origin),context_default-boolean(true)].
++transport_fields([]).
++
++configure_transport(Options) :-
++    (memberchk(peer_transport_tokens(Pairs),Options) -> true ; Pairs=[]),
++    must_be(list,Pairs),maplist(validate_peer,Pairs),
++    retractall(peer_transport_token(_,_)),
++    forall(member(URL-Token,Pairs),assertz(peer_transport_token(URL,Token))).
++validate_peer(URL-Token) :- must_be(atom,URL),must_be(atom,Token).
++transport_options(URL,[header('Authorization',Bearer)]) :-
++    peer_transport_token(URL,Token),format(atom(Bearer),'Bearer ~w',[Token]).
++transport_options(_,[]).
++
+ with_wire_context(JSON, Relay, Principal, Command, Goal) :-
+     (web_prolog:json_field(JSON,lineage,Value) ->
+         require_transport(Principal,Value),wire_token(Value,Token),
+-        (web_prolog:json_field(JSON,account,Account) -> wire_token(Account,_) ; true),
+-        Namespace=ws_lineage(Relay,Token),
+-        with_mutex('$actor_registry',
+-            (ensure_connection_open(Relay),
+-             (Command==lineage_close -> true ; actors:ensure_registry_namespace_open(Namespace)),
+-             remember_connection_base(Relay),
+-             (connection_lineage(Relay,Namespace) -> true
+-             ; assertz(connection_lineage(Relay,Namespace))))),
+-        actors:with_actor_namespace(Namespace,once(Goal))
++        (web_prolog:json_field(JSON,account,Account0) -> wire_token(Account0,Account) ; Account=Token),
++        (web_prolog:json_field(JSON,context_origin,Origin0) ->
++            wire_origin(Origin0,Origin),
++            with_mutex('$actor_registry',
++                (resolve_context(Origin,Token,Account,Relay,Command,NS),
++                 bind_default(JSON,Relay,Origin,Token,Account)))
++        ; NS=ws_lineage(Relay,Token),
++          with_mutex('$actor_registry',remember_attachment(Relay,NS,Command))),
++        actors:with_actor_namespace(NS,actor_authority:with_transport_authority(once(Goal)))
++    ; context_default(Relay,Origin,Token,Account) ->
++        require_transport(Principal,Token),
++        with_mutex('$actor_registry',resolve_context(Origin,Token,Account,Relay,Command,NS)),
++        actors:with_actor_namespace(NS,actor_authority:with_transport_authority(once(Goal)))
+     ; Command==lineage_close ->
+         require_transport(Principal,lineage_close),
+         throw(error(existence_error(field,lineage),lineage_close))
++    ; actors:actor_namespace(Relay,Base) -> actors:with_actor_namespace(Base,once(Goal))
+     ; once(Goal)).
+ 
++wire_origin(string(Chars),Origin) :-
++    atom_chars(Origin,Chars),
++    (sub_atom(Origin,0,7,_,'http://');sub_atom(Origin,0,8,_,'https://')),!.
++wire_origin(Value,_) :- throw(error(domain_error(transport_context_origin,Value),receiver_lineage)).
++
++resolve_context(Origin,Token,Account,Relay,Command,NS) :-
++    ensure_connection_open(Relay),
++    (context_binding(Origin,Token,Known,StoredAccount) ->
++        (StoredAccount==Account -> NS=Known
++        ;throw(error(permission_error(rebind,client_account,Token),receiver_lineage)))
++    ; web_prolog:current_node_url(Local),Origin==Local ->
++        throw(error(permission_error(use,closed_client_context,Token),receiver_lineage))
++    ; fresh_token(Id),NS=delegated_context(Id),
++      assertz(context_binding(Origin,Token,NS,Account))),
++    remember_attachment(Relay,NS,Command).
++
++remember_attachment(Relay,NS,Command) :-
++    ensure_connection_open(Relay),
++    (Command==lineage_close -> true ; actors:ensure_registry_namespace_open(NS)),
++    remember_connection_base(Relay),
++    (connection_lineage(Relay,NS) -> true ; assertz(connection_lineage(Relay,NS))).
++
++bind_default(JSON,Relay,Origin,Token,Account) :-
++    (web_prolog:json_field(JSON,context_default,boolean(true)) ->
++        (context_default(Relay,O,T,A) ->
++            (O-T-A==Origin-Token-Account -> true
++            ;throw(error(permission_error(rebind,client_context,Relay),receiver_lineage)))
++        ;assertz(context_default(Relay,Origin,Token,Account)))
++    ;true).
++
+ require_transport(Principal,Value) :-
+     (principal_has_capability(Principal,internal_transport) -> true
+     ; throw(error(permission_error(use,transport_lineage,Value),receiver_lineage))).
+@@ -47,17 +120,24 @@ ensure_open(Namespace) :-
+     with_mutex('$actor_registry',actors:ensure_registry_namespace_open(Namespace)).
+ 
+ check_actor(Pid) :-
+-    actors:current_actor_namespace(Namespace),
+-    (Namespace=ws_lineage(_,_) -> actors:actor_namespace(Pid,Namespace)
+-    ; \+ actors:actor_namespace(Pid,ws_lineage(_,_))).
+-
+-close_namespace(Namespace) :-
+-    Namespace=ws_lineage(_,_),ground(Namespace),
+-    % Closing registry admission shares the spawn mutex. Every successful
+-    % reservation is now in the snapshot; later descendant spawns are denied.
+-    actors:retire_registry_namespace(Namespace),
+-    setup_call_cleanup(true,rpc:dispose_namespace_promises(Namespace),
+-        receiver_lineage:stop_namespace_actors(Namespace)).
++    actors:current_actor_namespace(NS),
++    (NS=ws_lineage(_,_) -> actors:actor_namespace(Pid,NS)
++    ;NS=delegated_context(_) -> actors:actor_namespace(Pid,NS)
++    ; \+ actors:actor_namespace(Pid,ws_lineage(_,_)),
++      \+ actors:actor_namespace(Pid,delegated_context(_))).
++
++close_namespace(NS) :-
++    ground(NS),
++    (NS=ws_lineage(_,_);NS=delegated_context(_)),!,
++    actors:retire_registry_namespace(NS),
++    setup_call_cleanup(true,rpc:dispose_namespace_promises(NS),
++        (close_outgoing(NS),receiver_lineage:stop_namespace_actors(NS))).
++% A returning transport must never retire the original client context.
++close_namespace(_).
++
++close_outgoing(NS) :-
++    forall(hook_context_closed(NS),true).
++:- multifile hook_context_closed/1.
+ 
+ stop_namespace_actors(Namespace) :-
+     with_mutex('$actor_registry',
+@@ -73,14 +153,28 @@ remember_connection_base(Relay) :-
+     ; true).
+ 
+ close_connection(Base) :-
+-    with_mutex('$actor_registry',findall(Relay,connection_base(Relay,Base),Relays)),
++    close_outgoing(Base),
++    with_mutex('$actor_registry',
++        (findall(Relay,connection_base(Relay,Base),Relays),
++         retractall(context_binding(_,_,Base,_)),
++         retractall(namespace_principal(Base,_)))),
+     close_relays(Relays).
+ close_relays([]).
+ close_relays([Relay|Relays]) :-
+     with_mutex('$actor_registry',
+         ((closed_connection(Relay) -> true ; assertz(closed_connection(Relay))),
+-         findall(NS,connection_lineage(Relay,NS),Namespaces))),
++         findall(NS,retract(connection_lineage(Relay,NS)),Namespaces),
++         retractall(context_default(Relay,_,_,_)),
++         retractall(connection_base(Relay,_)))),
+     close_namespaces(Namespaces),close_relays(Relays).
+ close_namespaces([]).
+ close_namespaces([NS|Namespaces]) :-
+-    setup_call_cleanup(true,close_namespace(NS),close_namespaces(Namespaces)).
++    (\+ connection_lineage(_,NS) ->
++        setup_call_cleanup(true,close_namespace(NS),
++            (NS=delegated_context(_) -> retractall(context_binding(_,_,NS,_));true))
++    ;true),
++    close_namespaces(Namespaces).
++
++% Authenticated delegated attachments may address native local pids for open
++% language sends. Browser connections retain their relay capability mapping.
++transport_connection(Relay) :- connection_lineage(Relay,_).
+diff --git a/receiver_lineage_tests.pl b/receiver_lineage_tests.pl
+index aa10a15..cbf1729 100644
+--- a/receiver_lineage_tests.pl
++++ b/receiver_lineage_tests.pl
+@@ -28,7 +28,7 @@ expect_error(Goal,Pattern) :- catch(call(Goal),Error,true),nonvar(Error),Error=P
+ :- meta_predicate expect_error(0,+).
+ 
+ run :-
+-    diagnostic_checks,race_batch(after_prefix,20),
++    diagnostic_checks,stable_contexts,race_batch(after_prefix,20),
+     writeln('Receiver delegated lineage: all regressions passed').
+ 
+ race_prefix :-
+@@ -88,7 +88,7 @@ namespace_isolation :-
+     in_lineage(Relay,a,receiver_lineage:check_actor(Child)),
+     receiver_lineage:close_namespace(NS),receiver_lineage:close_namespace(NS),
+     receive({down(Root,Root,kill) -> true},[timeout(2),on_timeout(fail)]),assert_gone(Child),
+-    whereis(Name,undefined),whereis(OtherName,OtherChild),
++    whereis(Name,undefined),in_lineage(Relay,b,whereis(OtherName,OtherChild)),
+     rpc_namespace_tests:assert_disposed(Ref,Resources),rpc:promise_active(Kept),
+     actors:actor_thread(Other,_),actors:actor_thread(OtherChild,_),actors:actor_thread(Separate,_),
+     expect_error(in_lineage(Relay,a,true),error(permission_error(register,closed_namespace,NS),_)),
+@@ -245,3 +245,47 @@ preparation_race(Kind) :-
+     receive({unexpected_goal_execution -> fail},[timeout(0),on_timeout(true)]),
+     \+ actors:actor_namespace(_,NS),close_relay(Base,Relay),
+     format('closure during ~w preparation rejects activation and wakes creator: ok~n',[Kind]).
++
++% Stable context identity is independent of principal and transport identity.
++context_wire(Origin,Token,Account,Default,JSON) :-
++    web_prolog:object([lineage-string_atom(Token),account-string_atom(Account),
++        context_origin-string_atom(Origin),context_default-boolean(Default)],JSON).
++:- meta_predicate context_call(+,+,+,0).
++context_call(Relay,JSON,Command,Goal) :-
++    peer(P),receiver_lineage:with_wire_context(JSON,Relay,P,Command,call(Goal)).
++
++stable_contexts :-
++    new_relay(Base,A),new_relay(OtherBase,B),
++    token(a,T),token(b,Account),Origin='http://foreign-context.test',
++    context_wire(Origin,T,Account,true,JSON),
++    context_call(A,JSON,transport_hello,actors:current_actor_namespace(NS)),
++    context_call(B,JSON,transport_hello,actors:current_actor_namespace(Again)),NS==Again,
++    context_call(A,pairs([]),spawn,actors:current_actor_namespace(NS)),
++    context_wire(Origin,Account,Account,true,Other),
++    expect_error(context_call(A,Other,transport_hello,true),
++        error(permission_error(rebind,client_context,A),_)),
++    context_wire(Origin,T,T,false,WrongAccount),
++    expect_error(context_call(B,WrongAccount,spawn,true),
++        error(permission_error(rebind,client_account,T),_)),
++    context_wire('http://late-context.test',T,Account,false,LateJSON),
++    context_call(A,LateJSON,lineage_close,
++        (actors:current_actor_namespace(Closed),receiver_lineage:close_namespace(Closed))),
++    expect_error(context_call(A,LateJSON,spawn,true),
++        error(permission_error(register,closed_namespace,Closed),_)),
++    close_relay(Base,A),receiver_lineage:ensure_open(NS),
++    close_relay(OtherBase,B),
++    expect_error(receiver_lineage:ensure_open(NS),error(permission_error(register,closed_namespace,NS),_)),
++    new_relay(Root,RootRelay),new_relay(ReturnBase,ReturnRelay),
++    asserta(web_prolog:node_public_url('http://context-origin.test'),URLRef),
++    setup_call_cleanup(true,
++        (receiver_lineage:open_client_namespace(Root,principal(client,[execute])),
++         actors:with_actor_namespace(Root,receiver_lineage:transport_fields(Fields)),
++         web_prolog:object(Fields,ReturnJSON),
++         context_call(ReturnRelay,ReturnJSON,transport_hello,actors:current_actor_namespace(Root)),
++         close_relay(ReturnBase,ReturnRelay),receiver_lineage:ensure_open(Root),
++         close_relay(Root,RootRelay),
++         new_relay(LateBase,LateRelay),
++         expect_error(context_call(LateRelay,ReturnJSON,spawn,true),
++             error(permission_error(use,closed_client_context,_),_)),
++         close_relay(LateBase,LateRelay)),erase(URLRef)),
++    writeln('stable contexts: attachments, defaults, account binding, root return and replay rejection: ok').
+diff --git a/rpc.pl b/rpc.pl
+index cdc16e8..1fd7833 100644
+--- a/rpc.pl
++++ b/rpc.pl
+@@ -543,7 +543,7 @@ dispose_accessible_promise(Reference,Owner) :-
+ % mutex. Signal workers and wait for collector release only after unlocking.
+ dispose_namespace_promises(Namespace) :-
+     must_be(ground,Namespace),
+-    ((Namespace=ws_client(_);Namespace=ws_lineage(_,_)) -> true
++    ((Namespace=ws_client(_);Namespace=ws_lineage(_,_);Namespace=delegated_context(_)) -> true
+     ; throw(error(domain_error(websocket_namespace,Namespace),dispose_namespace_promises/1))),
+     setup_call_cleanup(
+         promise_transaction(retire_namespace_promises(Namespace,Jobs)),
+diff --git a/source_capture_tests.pl b/source_capture_tests.pl
+index 8fc26b4..f2fefd3 100644
+--- a/source_capture_tests.pl
++++ b/source_capture_tests.pl
+@@ -9,7 +9,7 @@ run :-
+     snapshot(Expected),
+     check_quoting,
+     check_bootstrap_quoting,
+-    check_output_export,
++    check_output_export,check_control_export,
+     thread_self(Parent),
+     setup_call_cleanup(
+         thread_create(source_capture_tests:worker(Parent, Expected), Worker, []),
+@@ -111,3 +111,20 @@ read_terms(Stream, Terms) :-
+     read_term(Stream, Term, []),
+     ( Term == end_of_file -> Terms = []
+     ; Terms = [Term|Rest], read_terms(Stream, Rest) ).
++
++check_control_export :-
++    G=sandbox_policy:sandbox_control_catch(ctx,
++        sandbox_policy:sandbox_yield(m,p,c,a,Ref,Answer,[timeout(2)]),Error,
++        sandbox_policy:sandbox_spawn(m,p,c,a,send(Target,Error),Child,[])),
++    isolation:restore_actor_goal(G,Public),
++    Public=catch(yield(R,A,[timeout(2)]),E,spawn(send(T,E2),C,[])),
++    (var(Ref),R==Ref,A==Answer,E==Error,E2==Error,T==Target,C==Child
++    -> true ; throw(control_export_variable_sharing)),
++    isolation:source_terms_text([(collect(X,Y):-G)],Text),
++    isolation:restore_actor_options([src_text(Text),template(payload(Ref,Ref))],Options),
++    Options=[src_text(Restored),template(payload(Ref,Ref))],
++    open_string(Restored,In),read_term(In,Clause,[]),close(In),
++    Clause=(collect(_,_):-catch(yield(_,_,[timeout(2)]),V,spawn(send(_,V),_,[]))),
++    (var(X),var(Y) -> true ; throw(source_export_bound_input)),
++    % Source-looking application text is not parsed as a source option.
++    isolation:restore_actor_options([template(Text)],[template(Kept)]),Kept==Text.
+diff --git a/swi_lineage_compat.pl b/swi_lineage_compat.pl
+index 235b936..4a81ab9 100644
+--- a/swi_lineage_compat.pl
++++ b/swi_lineage_compat.pl
+@@ -32,7 +32,7 @@ checks(URL,WSURL,Observer) :-
+     setup_call_cleanup(websocket:http_open_websocket(WSURL,WS,Opts),
+         swi_lineage_compat:wire_checks(WS,Observer,O.pid),
+         catch(websocket:ws_close(WS,1000,"done"),_,true)),
+-    eventually_query(Observer,O.pid,"whereis(lineage_child_b,undefined),whereis(lineage_root_b,undefined)",50),
++    eventually_query(Observer,O.pid,"whereis(lineage_child_b,P),P==undefined,whereis(lineage_root_b,Q),Q==undefined",50),
+     native_checks(URL,Observer,O.pid),
+     writeln('Native SWI -> Trealla delegated lineage compatibility: all checks passed').
+ 
+@@ -41,7 +41,9 @@ wire_checks(WS,Observer,O) :-
+     spawn_family(WS,A,"a",RootA),spawn_family(WS,B,"b",RootB),
+     send(WS,_{command:spawn,goal:"self(Me),register(lineage_legacy,Me),receive({finish -> true})",request_id:"legacy"}),
+     event(WS,spawned,Legacy),
+-    eventually_query(Observer,O,"whereis(lineage_child_a,A),A\\==undefined,whereis(lineage_child_b,B),B\\==undefined,whereis(lineage_legacy,L),L\\==undefined",50),
++    query_in_lineage(WS,A,"whereis(lineage_child_a,P),P\\==undefined,whereis(lineage_child_b,Q),Q==undefined"),
++    query_in_lineage(WS,B,"whereis(lineage_child_b,P),P\\==undefined,whereis(lineage_child_a,Q),Q==undefined"),
++    eventually_query(Observer,O,"whereis(lineage_child_a,A),A==undefined,whereis(lineage_child_b,B),B==undefined,whereis(lineage_legacy,L),L==undefined",50),
+     send(WS,_{command:exit,pid:RootB,lineage:A,reason:"kill"}),
+     event(WS,error,Cross),sub_string(Cross.data,_,_,_,"permission"),
+     send(WS,_{command:exit,pid:RootA,reason:"kill"}),
+@@ -51,19 +53,22 @@ wire_checks(WS,Observer,O) :-
+     send(WS,_{command:demonitor,lineage:A,ref:"kept(b)"}),
+     send(WS,_{command:lineage_close,lineage:A}),
+     down(WS,RootA,_),
+-    eventually_query(Observer,O,"whereis(lineage_root_a,undefined),whereis(lineage_child_a,undefined),whereis(lineage_root_b,B),B\\==undefined,whereis(lineage_legacy,L),L\\==undefined",50),
++    query_in_lineage(WS,B,"whereis(lineage_root_b,P),P\\==undefined,whereis(lineage_child_b,Q),Q\\==undefined"),
++    query_legacy(WS,"whereis(lineage_legacy,P),P\\==undefined"),
++    eventually_query(Observer,O,"whereis(lineage_root_a,P),P==undefined,whereis(lineage_child_a,Q),Q==undefined",50),
+     send(WS,_{command:lineage_close,lineage:A}),
+     send(WS,_{command:spawn,lineage:A,goal:"true",request_id:"late"}),
+     event(WS,error,Late),Late.request_id=="late",sub_string(Late.data,_,_,_,"closed_namespace"),
+     send(WS,_{command:exit,lineage:B,pid:RootB,reason:"kill"}),
+     down_ref(WS,RootB,"kept(b)"),
+     send(WS,_{command:lineage_close,lineage:B}),
+-    eventually_query(Observer,O,"whereis(lineage_child_b,undefined),whereis(lineage_legacy,L),L\\==undefined",50),
++    query_legacy(WS,"whereis(lineage_legacy,P),P\\==undefined"),
++    eventually_query(Observer,O,"whereis(lineage_child_b,P),P==undefined",50),
+     % Closing either lineage did not end the legacy actor.
+     send(WS,_{command:send,pid:Legacy.pid,message:"finish"}),down(WS,Legacy.pid,_),
+     % Reopen a different lineage to test connection-wide cleanup too.
+     spawn_family(WS,"cccccccccccccccccccccccccccccccc","b",_),
+-    eventually_query(Observer,O,"whereis(lineage_child_b,B),B\\==undefined",50),
++    query_in_lineage(WS,"cccccccccccccccccccccccccccccccc","whereis(lineage_child_b,P),P\\==undefined"),
+     writeln('Wire authority, multiplexing, late admission, legacy and monitor isolation: ok').
+ 
+ spawn_family(WS,Lineage,Suffix,Pid) :-
+@@ -89,12 +94,15 @@ native_owned_spawn(URL,Observer,O) :-
+                                            [template(X),limit(1),timeout(3)])),
+     (Answer=success(Top,[a],true),var(X) -> true
+     ; throw(unexpected_native_toplevel_answer(Answer,X,Top))),
+-    eventually_query(Observer,O,"whereis(native_lineage_root,P),P\\==undefined",50),
++    node_lifetime:with_context(Context,
++        toplevel_actors:toplevel_call_synch(Top,(whereis(native_lineage_root,P),P\==undefined),Found,[timeout(3)])),
++    Found=success(Top,_,false),
++    eventually_query(Observer,O,"whereis(native_lineage_root,P),P==undefined",50),
+     node_lifetime:with_context(Context,
+         distribution:remote_send_command(URL,_{command:lineage_close})),
+     actors:receive({down(Pid,Pid,_) -> true},[timeout(5),on_timeout(fail)]),
+     actors:receive({down(Top,Top,_) -> true},[timeout(5),on_timeout(fail)]),
+-    eventually_query(Observer,O,"whereis(native_lineage_root,undefined)",50),
++    eventually_query(Observer,O,"whereis(native_lineage_root,P),P==undefined",50),
+     writeln('Native distribution encoding, spawn-time monitor and lineage_close: ok').
+ 
+ send(WS,Dict) :- websocket:ws_send(WS,json(Dict)).
+@@ -114,3 +122,16 @@ query_result(WS,Reply) :-
+     websocket:ws_receive(WS,Frame,[format(json)]),
+     (memberchk(Frame.data.type,["success","failure","error"]) -> Reply=Frame.data
+     ; query_result(WS,Reply)).
++
++% Positive name checks run in their own context; an independent observer must
++% see undefined. Do not constrain whereis/2's output before checking it.
++query_in_lineage(WS,Lineage,Goal) :-
++    send(WS,_{command:toplevel_spawn,lineage:Lineage,options:"[session(false)]"}),
++    event(WS,spawned,Top),
++    send(WS,_{command:toplevel_call,lineage:Lineage,pid:Top.pid,goal:Goal,options:"[template(ok),limit(1)]"}),
++    query_result(WS,R),R.type=="success".
++query_legacy(WS,Goal) :-
++    send(WS,_{command:toplevel_spawn,options:"[session(false)]"}),
++    event(WS,spawned,Top),
++    send(WS,_{command:toplevel_call,pid:Top.pid,goal:Goal,options:"[template(ok),limit(1)]"}),
++    query_result(WS,R),R.type=="success".
+diff --git a/tools/test.sh b/tools/test.sh
+index 6c1537a..c8a4038 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -370,7 +370,7 @@ run_interop() {
+     wait_for_port "$source_port" || fail "SWI source fixture did not start on port $source_port"
+ 
+     start_background "$TPL" -g \
+-        "consult('$ROOT/distribution.pl'),web_prolog:web_prolog_node($trealla_protocol_port,[load_uri_allowed_origins(['http://127.0.0.1:$source_port']),load_uri_allowed_ip_ranges(['127.0.0.0/8']),max_source_text_bytes(128)]),thread_get_message(stop)"
++        "consult('$ROOT/distribution.pl'),web_prolog:web_prolog_node($trealla_protocol_port,[bearer_token(peer,'lineage-test-peer',[execute,internal_transport]),peer_transport_tokens(['http://127.0.0.1:$trealla_remote_port'-'lineage-test-peer']),load_uri_allowed_origins(['http://127.0.0.1:$source_port']),load_uri_allowed_ip_ranges(['127.0.0.0/8']),max_source_text_bytes(128)]),thread_get_message(stop)"
+     trealla_protocol_pid=$STARTED_PID
+     # The native node treats a bare TCP readiness probe as a malformed HTTP
+     # request and logs unexpected_eof. Avoid adding noise to successful runs.
+@@ -465,7 +465,7 @@ run_interop() {
+     fi
+ 
+     start_background "$TPL" -g \
+-        "consult('$ROOT/distribution.pl'),web_prolog:web_prolog_node($trealla_remote_port,[bearer_token(peer,'lineage-test-peer',[execute,internal_transport]),load_uri_allowed_origins(['http://127.0.0.1:$source_port']),load_uri_allowed_ip_ranges(['127.0.0.0/8'])]),thread_get_message(stop)"
++        "consult('$ROOT/distribution.pl'),web_prolog:web_prolog_node($trealla_remote_port,[peer_transport_tokens(['http://127.0.0.1:$trealla_protocol_port'-'lineage-test-peer']),bearer_token(peer,'lineage-test-peer',[execute,internal_transport]),load_uri_allowed_origins(['http://127.0.0.1:$source_port']),load_uri_allowed_ip_ranges(['127.0.0.0/8'])]),thread_get_message(stop)"
+     trealla_remote_pid=$STARTED_PID
+     sleep 0.2
+     kill -0 "$trealla_remote_pid" 2>/dev/null || fail "remote Trealla protocol node did not start on port $trealla_remote_port"
+diff --git a/web_prolog.pl b/web_prolog.pl
+index 61e7716..493a5b1 100644
+--- a/web_prolog.pl
++++ b/web_prolog.pl
+@@ -137,6 +137,7 @@ web_prolog_node(Port, Options) :-
+     findall(File, member(load_shared_db_file(File), Options), SharedDBFiles),
+     configure_shared_db(SharedDBFiles),
+     configure_node_url(Port, Options, PublicURL),
++    receiver_lineage:configure_transport(Options),
+     public_url_options(Options, PublicURL, NodeOptions),
+     option(websocket_options(WSOptions), NodeOptions, []),
+     node(Port, web_prolog_handler(Profile, Sandbox),
+@@ -188,7 +189,8 @@ web_prolog_handler(Profile, Sandbox, WS, '/ws') :-
+     make_ref(NamespaceId),
+     Namespace = ws_client(NamespaceId),
+     setup_call_cleanup(
+-        actor_authority:open_namespace(Namespace, Principal),
++        (actor_authority:open_namespace(Namespace, Principal),
++         receiver_lineage:open_client_namespace(Namespace, Principal)),
+         ( actors:spawn_scoped(
+               relay_start(WS, Principal, Identity, AnswerTerms), Relay,
+               [link(false)], Namespace, internal),
+@@ -445,8 +447,8 @@ dispatch(Command, _, _, _, _, _) :-
+ % Queue the validated context with the command; the relay multiplexes lineages.
+ relay_request(Relay, Message) :-
+     actors:current_actor_namespace(Namespace),
+-    (Namespace=ws_lineage(_,_) -> Relay ! '$lineage'(Namespace,Message)
+-    ; Relay ! Message).
++    (actor_authority:restricted_authority -> Authority=transport ; Authority=local),
++    Relay ! '$lineage'(Namespace,Authority,Message).
+ 
+ relay_command(toplevel_call, JSON, Relay) :- !,
+     owned_pid(JSON, Relay, session, Pid),
+@@ -550,6 +552,9 @@ send_target(JSON, _Relay, service(Name)) :-
+     atom(Name),
+     actors:published_service_target(Name, _),
+     !.
++send_target(JSON,Relay,actor(Pid)) :-
++    receiver_lineage:transport_connection(Relay),
++    json_pid_field(JSON,pid,Pid),integer(Pid),actors:actor_thread(Pid,_),!.
+ send_target(JSON, Relay, actor(Pid)) :-
+     owned_pid(JSON, Relay, any, Pid).
+ 
+@@ -582,6 +587,11 @@ relay_loop(WS) :-
+             )
+     }, []).
+ 
++relay_message(WS,'$lineage'(NS,transport,Message)) :- !,
++    actor_authority:with_transport_authority(
++        web_prolog:relay_message(WS,'$lineage'(NS,Message))).
++relay_message(WS,'$lineage'(NS,local,Message)) :- !,
++    web_prolog:relay_message(WS,'$lineage'(NS,Message)).
+ relay_message(WS, '$lineage'(Namespace,Message)) :- !,
+     catch(actors:with_actor_namespace(Namespace,
+               (receiver_lineage:ensure_open(Namespace),

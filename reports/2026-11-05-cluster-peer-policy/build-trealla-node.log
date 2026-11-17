@@ -1,0 +1,50 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.n5-linda
+#1 transferring dockerfile: 679B done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#3 CACHED
+
+#4 [context trealla_runtime] load metadata for trinity-cluster-policy-trealla-runtime:20261105-cluster
+#4 DONE 1.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [context trealla_runtime] trinity-cluster-policy-trealla-runtime:20261105-cluster
+#7 resolve docker.io/library/trinity-cluster-policy-trealla-runtime:20261105-cluster
+#7 resolve docker.io/library/trinity-cluster-policy-trealla-runtime:20261105-cluster 0.7s done
+#7 DONE 0.7s
+
+#6 [internal] load build context
+#6 transferring context: 9.82kB done
+#6 DONE 0.0s
+
+#8 [1/4] COPY examples/services/linda_space.pl examples/services/linda_bounded_space.pl examples/services/linda_client.pl examples/services/linda_service_trealla.pl /app/owner_services/
+#8 CACHED
+
+#9 [2/4] COPY Deployment/start_n5_linda.pl Deployment/entrypoint.n5-linda.sh Deployment/shared_db_linda.pl /app/owner_start/
+#9 CACHED
+
+#10 [3/4] RUN /opt/trealla/tpl -g "use_module('/app/owner_start/start_n5_linda.pl'),halt"
+#10 CACHED
+
+#11 exporting to image
+#11 exporting layers done
+#11 exporting manifest sha256:148f93e64ecea784790a4a4e7253399503db8f5aa6bb2e69ff69a0eb336016fb done
+#11 exporting config sha256:60100d65cac6216f679ca055fdb02a43e90c20104ef3193a22e17cd17720573f done
+#11 exporting attestation manifest sha256:3ffd7ef050fd6caa51ee585ca7a2b590ae457dc33e73bc4d4219d5365b56960d done
+#11 exporting manifest list sha256:715cf8dda3a09f9a1e73efd8b529bcbdea51c21db0e02d997656650fa9f70b36 done
+#11 naming to docker.io/library/trinity-cluster-policy-n5:20261105-cluster done
+#11 unpacking to docker.io/library/trinity-cluster-policy-n5:20261105-cluster done
+#11 DONE 0.0s

@@ -1,0 +1,20 @@
+{
+  "scope": "actual contained GNU worker to broker to approved TLS peer; custom fields and pinned Host policy",
+  "results": [
+    {
+      "goal": "rpc('https://n1.elfenbenstornet.se',X=ok,[http_timeout(2),request_header('X-Release'=['\u72d0','\u72f8']),user_agent([a,p,p])]),X==ok",
+      "body": "success([passed],false).\n",
+      "status": "pass"
+    },
+    {
+      "goal": "promise('https://n1.elfenbenstornet.se',X=ok,Ref,[template(v(X)),http_timeout(2),request_header('X-Release'=[]),user_agent(appendix)]),yield(Ref,success([v(ok)],false))",
+      "body": "success([passed],false).\n",
+      "status": "pass"
+    },
+    {
+      "goal": "catch((rpc('https://n1.elfenbenstornet.se',true,[request_header('Host'='unapproved.example')]),fail),error(outbound_denied,_),Caught=true),Caught==true",
+      "body": "success([passed],false).\n",
+      "status": "pass"
+    }
+  ]
+}

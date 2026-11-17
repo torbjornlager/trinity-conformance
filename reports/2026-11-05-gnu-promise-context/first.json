@@ -1,0 +1,73 @@
+{
+  "suite": "gnu-promise-context-0.1",
+  "results": [
+    {
+      "candidate": "gnu",
+      "id": "GCTX-001",
+      "title": "Anonymous fresh requests cannot collect/dispose retained-context promises",
+      "status": "fail",
+      "detail": "all owned execution processes reaped"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-002",
+      "title": "Equal authentication alone does not retain ownership across HTTP requests",
+      "status": "fail",
+      "detail": "all owned execution processes reaped"
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-003",
+      "title": "Idle request retirement closes pending transport before forced late completion",
+      "status": "pass",
+      "observation": {
+        "reference": "1000000000",
+        "first": "success([v(1000000000,created)],true).",
+        "peer_closed_before_release": true,
+        "late_response_attempted": true,
+        "fresh_request_denied": "success([ok],false).",
+        "capacity_recovered": true
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-004",
+      "title": "Standalone root stop retires pending transport",
+      "status": "pass",
+      "observation": {
+        "first": {
+          "type": "success",
+          "answers": [
+            "created"
+          ],
+          "more": true
+        },
+        "explicit_cleanup": false,
+        "transport_closed_before_late_response": true,
+        "exit_code": 0
+      }
+    },
+    {
+      "candidate": "gnu",
+      "id": "GCTX-005",
+      "title": "Standalone root cleanup preserves a later promise and retires the old transport",
+      "status": "pass",
+      "observation": {
+        "first": {
+          "type": "success",
+          "answers": [
+            "created"
+          ],
+          "more": true
+        },
+        "explicit_cleanup": true,
+        "transport_closed_before_late_response": true,
+        "exit_code": 0
+      }
+    }
+  ],
+  "counts": {
+    "pass": 3,
+    "fail": 2
+  }
+}

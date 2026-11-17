@@ -1,0 +1,96 @@
+diff --git a/isobase/Makefile b/isobase/Makefile
+index e27eeb7..adfb0ea 100644
+--- a/isobase/Makefile
++++ b/isobase/Makefile
+@@ -63,6 +63,7 @@ local-test: query-worker query-supervisor isobase-node
+ 	python3 source_tests.py
+ 	python3 character_reader_tests.py
+ 	python3 policy_tests.py
++	python3 standard_library_tests.py
+ 	python3 numeric_contract_tests.py
+ 	python3 rpc_address_tests.py
+ 	python3 rpc_localhost_tests.py
+diff --git a/isobase/RPC_BOUNDARY.md b/isobase/RPC_BOUNDARY.md
+index ac7053d..05a4acb 100644
+--- a/isobase/RPC_BOUNDARY.md
++++ b/isobase/RPC_BOUNDARY.md
+@@ -212,3 +212,15 @@ are denied. The two-line root-owned worker lease carries budget and client
+ identity. The broker binds local continuation ownership to that identity and
+ nonce, supplies controller credentials itself, and retains all admission limits.
+ The updated controller and broker must be promoted together.
++
++
++The development standard-library repair supplies guarded `memberchk/2`,
++`forall/2`, `countall/2` and the required `maplist/6-8` forms. Callback execution
++still passes through the ordinary local/shared source policy; none of these
++forms exposes native runtime helpers. `memberchk/2` stops at its first match,
++`forall/2` exports no bindings, and `countall/2` uses a private constant-space
++counter with no generator bindings or extra answers. These entry points are
++protected from submitted-source redefinition. `standard_library_tests.py` runs
++the mirrored shared conformance fixture and policy controls in `local-test`.
++The historical comparison lock is unchanged; this does not claim complete
++ISO conformance or promote consumer/public pins.
+diff --git a/isobase/policy.pl b/isobase/policy.pl
+index c2175dd..5b0cb14 100644
+--- a/isobase/policy.pl
++++ b/isobase/policy.pl
+@@ -42,6 +42,12 @@ iso_rewrite_in(_,throw(E),iso_throw(E)) :- !.
+ iso_rewrite_in(_,succ(A,B),iso_succ(A,B)) :- !.
+ iso_rewrite_in(_,between(L,H,N),iso_between(L,H,N)) :- !.
+ iso_rewrite_in(_,length(L,N),iso_length(L,N)) :- !.
++iso_rewrite_in(_,memberchk(E,L),iso_memberchk(E,L)) :- !.
++iso_rewrite_in(S,forall(G,T),\+ (SG, \+ ST)) :- !,
++    iso_rewrite_in(S,G,SG),iso_rewrite_in(S,T,ST).
++iso_rewrite_in(S,countall(G,N),iso_countall(SG,N)) :- !,
++    (nonvar(G), \+callable(G) -> SG=iso_execute_in(S,G)
++    ; iso_rewrite_in(S,G,SG)).
+ iso_rewrite_in(_,atom_length(A,N),iso_text_length(A,N)) :- !.
+ iso_rewrite_in(_,atom_codes(A,C),iso_text_codes(A,C)) :- !.
+ iso_rewrite_in(_,atom_chars(A,C),iso_text_chars(A,C)) :- !.
+@@ -74,7 +80,7 @@ iso_rewrite_in(S,yield(R,M,O),iso_yield_result(S,R,M,O)) :- !.
+ iso_rewrite_in(_,promise_cleanup(R),(iso_integer(R),iso_net_cancel(R))) :- !.
+ iso_rewrite_in(Scope,clause(H,B), iso_local_clause_in(Scope,H,B)) :- !.
+ iso_rewrite_in(Scope,G, iso_maplist_in(Scope,C,Lists)) :-
+-    nonvar(G),functor(G,maplist,N),N>=2,N=<5,!,G=..[maplist,C|Lists].
++    nonvar(G),functor(G,maplist,N),N>=2,N=<8,!,G=..[maplist,C|Lists].
+ iso_rewrite_in(Scope,G, iso_foldl_in(Scope,C,Lists,V0,V)) :-
+     nonvar(G),functor(G,foldl,N),N>=4,N=<7,!,
+     G=..[foldl,C|Args],append(Lists,[V0,V],Args).
+diff --git a/isobase/prologue.pl b/isobase/prologue.pl
+index de99960..d9e0925 100644
+--- a/isobase/prologue.pl
++++ b/isobase/prologue.pl
+@@ -135,3 +135,18 @@ iso_univ_output(Actual,L) :-
+     ;iso_throw(error(type_error(list,L),(=..)/2))).
+ 
+ :- foreign(iso_atan2_zero(term,term,term)).
++
++% Commit only to the first match. Inspect the list as it is traversed, so an
++% already matched head does not inspect an unused improper tail.
++iso_memberchk(E, L) :- var(L), !, L=[E|_].
++iso_memberchk(_, []) :- !, fail.
++iso_memberchk(E, [H|T]) :- !, (E=H -> true ; iso_memberchk(E,T)).
++iso_memberchk(_, L) :- throw(error(type_error(list,L),memberchk/2)).
++
++% A private counter gives constant-space counting without exporting the
++% generator's bindings or adding a second result on backtracking.
++iso_countall(Goal, Count) :-
++    Counter=count(0),
++    ( call(Goal), arg(1,Counter,N), Next is N+1,
++      nb_setarg(1,Counter,Next), fail
++    ; arg(1,Counter,Actual), Count=Actual ).
+diff --git a/isobase/source.pl b/isobase/source.pl
+index 6cf37a6..5aca621 100644
+--- a/isobase/source.pl
++++ b/isobase/source.pl
+@@ -134,3 +134,10 @@ iso_rpc_reserved(nth1,4).
+ iso_rpc_reserved(call_nth,2).
+ iso_rpc_reserved(time,1).
+ iso_rpc_reserved(runtime_property,1).
++
++% Guarded standard-library forms cannot be replaced by submitted clauses.
++iso_rpc_reserved(memberchk,2).
++iso_rpc_reserved(forall,2).
++iso_rpc_reserved(countall,2).
++iso_rpc_reserved(maplist,N) :- integer(N),N>=2,N=<8.
++iso_rpc_reserved(foldl,N) :- integer(N),N>=4,N=<7.

@@ -1,0 +1,85 @@
+[
+  {
+    "node": "3",
+    "origin": "https://n3.elfenbenstornet.se",
+    "peer": "https://n4.elfenbenstornet.se",
+    "checks": [
+      {
+        "name": "published Queries menu ping-pong",
+        "status": "pass",
+        "baseline": "[5033368291@'https://n3.elfenbenstornet.se']"
+      }
+    ],
+    "status": "fail",
+    "error": "AssertionError [ERR_ASSERTION]: \n?- ui_remote('[[!;;]https://n4.elfenbenstornet.se/]').\n[[;;;terminal-error]Unknown procedure: ui_remote/1]\n\n0 !== 3\n\n    at /Users/lager/trinity-demonstrator/tests/wasm/node_uri_io_browser.cjs:68:18",
+    "snapshot": {
+      "output": "Welcome to [[b;;;;Web Prolog]Web Prolog], running\nthe [[b;;;;ACTOR]ACTOR] profile on node [[b;;;;N3,]N3,]\npowered by [[!u;;;;https://www.swi-prolog.org/]SWI-Prolog].\n\n% Spawned new session and loaded 06 ping-pong.p\nl.\n?- [[b;;;terminal-wp-predicate]actors](UiActors).\nUiActors = [5033368291].\n?- ping_pong.\nPong received ping.\ntrue.\nPing received pong.\nPong received ping.\nPing received pong.\nPong received ping.\nPing received pong.\nPing finished.\nPong finished.\n?- [[b;;;terminal-wp-predicate]actors](UiActors).\nUiActors = [5033368291].\n% Spawned new session and loaded the tutorial p\nrogram.\n?- [[b;;;terminal-wp-predicate]actors](UiActors).\n% Spawned new session and loaded 06 ping-pong.p\nl\nUiActors = [6113931652].\n?- ui_remote('[[!;;]https://n4.elfenbenstornet.se/]').\n[[;;;terminal-error]Unknown procedure: ui_remote/1]",
+      "logs": [
+        {
+          "id": 58,
+          "kind": "error",
+          "scope": "query",
+          "time": "22:53:20",
+          "message": "Unknown procedure: ui_remote/1",
+          "direction": null
+        },
+        {
+          "id": 57,
+          "kind": "transport",
+          "scope": "ws",
+          "time": "22:53:20",
+          "message": "{\n  \"data\": \"Unknown procedure: ui_remote/1\",\n  \"details\": \"error(existence_error(procedure,ui_remote/1),_)\",\n  \"pid\": 6113931652,\n  \"type\": \"error\"\n}",
+          "direction": "response"
+        },
+        {
+          "id": 56,
+          "kind": "transport",
+          "scope": "ws",
+          "time": "22:53:20",
+          "message": "{\n  \"command\": \"toplevel_call\",\n  \"pid\": 6113931652,\n  \"goal\": \"ui_remote('https://n4.elfenbenstornet.se/')\",\n  \"options\": \"[limit(1)]\"\n}",
+          "direction": "request"
+        },
+        {
+          "id": 55,
+          "kind": "info",
+          "scope": "query",
+          "time": "22:53:20",
+          "message": "UiActors = [6113931652@'https://n3.elfenbenstornet.se'].",
+          "direction": null
+        },
+        {
+          "id": 54,
+          "kind": "transport",
+          "scope": "ws",
+          "time": "22:53:20",
+          "message": "{\n  \"data\": [\n    {\n      \"UiActors\": \"[6113931652@'https://n3.elfenbenstornet.se']\"\n    }\n  ],\n  \"more\": false,\n  \"pid\": 6113931652,\n  \"type\": \"success\"\n}",
+          "direction": "response"
+        },
+        {
+          "id": 53,
+          "kind": "transport",
+          "scope": "ws",
+          "time": "22:53:20",
+          "message": "{\n  \"command\": \"toplevel_call\",\n  \"pid\": 6113931652,\n  \"goal\": \"actors(UiActors)\",\n  \"options\": \"[limit(1)]\"\n}",
+          "direction": "request"
+        },
+        {
+          "id": 52,
+          "kind": "info",
+          "scope": "interaction",
+          "time": "22:53:20",
+          "message": "POST /interaction_log (durable usage log): {\"event\":\"example_spawn\",\"example\":\"06 ping-pong.pl\",\"example_url\":\"/examples/actors/06 ping-pong.pl\",\"source_kind\":\"prolog\",\"transport\":\"actor\",\"origin\":\"editor\",\"device\":\"mac\",\"timezone\":\"Europe/Stockholm\",\"language\":\"en-GB\"}",
+          "direction": null
+        },
+        {
+          "id": 51,
+          "kind": "info",
+          "scope": "actor",
+          "time": "22:53:20",
+          "message": "ACTOR session spawned: 6113931652",
+          "direction": null
+        }
+      ]
+    }
+  }
+]

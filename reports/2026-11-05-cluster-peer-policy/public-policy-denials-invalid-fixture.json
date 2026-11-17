@@ -1,0 +1,115 @@
+{
+  "scope": "External spawn/source denial and session recovery on N3-N5 after peer allowlist expansion",
+  "results": [
+    {
+      "node": 3,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "data": "node_sandbox:reject_forbidden_spawn_option/2: No permission to option sandboxed node('https://external.invalid')' (spawn option is disabled in sandbox mode)",
+        "details": "error(permission_error(option,sandboxed,node('https://external.invalid')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6804616127,
+        "type": "success"
+      }
+    },
+    {
+      "node": 3,
+      "id": "EXTERNAL-SOURCE",
+      "status": "fail",
+      "denial": {
+        "data": "Domain error: toplevel_call_option' expected, found src_uri('https://external.invalid/probe.pl')'",
+        "details": "error(domain_error(toplevel_call_option,src_uri('https://external.invalid/probe.pl')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6804616127,
+        "type": "success"
+      }
+    },
+    {
+      "node": 4,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "data": "node_sandbox:reject_forbidden_spawn_option/2: No permission to option sandboxed node('https://external.invalid')' (spawn option is disabled in sandbox mode)",
+        "details": "error(permission_error(option,sandboxed,node('https://external.invalid')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4192227069,
+        "type": "success"
+      }
+    },
+    {
+      "node": 4,
+      "id": "EXTERNAL-SOURCE",
+      "status": "fail",
+      "denial": {
+        "data": "Domain error: toplevel_call_option' expected, found src_uri('https://external.invalid/probe.pl')'",
+        "details": "error(domain_error(toplevel_call_option,src_uri('https://external.invalid/probe.pl')),_)",
+        "type": "error"
+      },
+      "recovery": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4192227069,
+        "type": "success"
+      }
+    },
+    {
+      "node": 5,
+      "id": "EXTERNAL-SPAWN",
+      "status": "pass",
+      "denial": {
+        "type": "error",
+        "data": "error(permission_error(option,sandboxed,node('https://external.invalid')),context(sandbox_policy:sandbox_prepare_spawn/7,'remote spawn destination is not allowlisted'))"
+      },
+      "recovery": {
+        "type": "success",
+        "pid": 2018990212,
+        "data": [
+          {}
+        ],
+        "more": false
+      }
+    },
+    {
+      "node": 5,
+      "id": "EXTERNAL-SOURCE",
+      "status": "pass",
+      "denial": {
+        "type": "error",
+        "data": "error(permission_error(load,source_origin,'https://external.invalid/probe.pl'),source_policy:fetch_source_uri/2)"
+      },
+      "recovery": {
+        "type": "success",
+        "pid": 2018990212,
+        "data": [
+          {}
+        ],
+        "more": false
+      }
+    }
+  ],
+  "counts": {
+    "pass": 4,
+    "fail": 2
+  }
+}

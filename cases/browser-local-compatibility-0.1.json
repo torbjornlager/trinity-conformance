@@ -1,0 +1,26 @@
+{
+  "suite": "browser-local-compatibility-0.1",
+  "baseline": "0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "cases": [
+    {
+      "id": "B-LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "transport": "query",
+      "goal": "Name=ln_case_002,Other=ln_case_002_other,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),spawn(receive({stop->true}),Q,[monitor(true)]),register(Name,P),catch(register(Name,Q),Taken,true),nonvar(Taken),Taken=error(permission_error(register,actor_name,Name),_),catch(register(Other,P),Already,true),nonvar(Already),Already=error(permission_error(register,actor_name,Other),_),whereis(Name,Found),Found==P,whereis(Other,Absent),Absent==undefined,Name!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(missing_pong))]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))]),Q!stop,receive({down(Q,Q,true)->true},[timeout(2),on_timeout(throw(missing_q_down))])"
+    },
+    {
+      "id": "B-LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "transport": "query",
+      "goal": "Name=ln_case_006,self(S),spawn(receive({ping(From)->From!pong,receive({stop->true})}),P,[monitor(true)]),register(Name,P),catch(supervisor_spawn([child(probe,[start(S!unexpected_start)])],Loser,[name(Name)]),Taken,true),nonvar(Taken),Taken=error(permission_error(register,actor_name,Name),_),var(Loser),whereis(Name,Found),Found==P,Name!ping(S),receive({pong->true},[timeout(2),on_timeout(throw(missing_original))]),receive({unexpected_start->fail},[timeout(0),on_timeout(true)]),P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_down))]),catch(supervisor_spawn([],Failed,[name(Name),src_uri('file:///definitely-missing-local-naming-conformance.pl')]),Failure,true),nonvar(Failure),var(Failed),whereis(Name,Absent),Absent==undefined,supervisor_spawn([],Sup,[name(Name),monitor(true)]),whereis(Name,Published),Published==Sup,supervisor_which_children(Name,Children),Children==[],supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_sup_down))]),whereis(Name,Gone),Gone==undefined"
+    },
+    {
+      "id": "B-SV-006",
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "transport": "query",
+      "goal": "self(S),S!sv_invalid(child(retry,[])),receive({sv_invalid(Invalid)->true},[timeout(2),on_timeout(throw(missing_invalid_spec_data))]),supervisor_spawn([child(existing,[start((self(Me),S!existing_started(Me),receive({ping(From)->From!existing_ok,receive({ping(From2)->From2!existing_ok,receive({never->true})})}))),restart(temporary)])],Sup,[monitor(true)]),receive({existing_started(Existing)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),monitor(Existing,R1),Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),supervisor_which_children(Sup,Before),catch(supervisor_spawn_child(Sup,Invalid,Rejected),E,true),nonvar(E),E=error(missing_start_option(retry),_),var(Rejected),supervisor_which_children(Sup,After),After =@= Before,Before=[child(existing,Existing,ExistingSpec)],Existing!ping(S),receive({existing_ok->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),supervisor_spawn_child(Sup,child(retry,[start((self(NewMe),S!retry_started(NewMe),receive({never->true}))),restart(temporary)]),Added),Added==ok,receive({retry_started(New)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),monitor(New,R2),supervisor_which_children(Sup,Final),Final=[child(existing,Existing,KeptSpec),child(retry,New,_)],ExistingSpec =@= KeptSpec,supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),receive({down(Existing,R1,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),receive({down(New,R2,_)->true},[timeout(2),on_timeout(throw(missing_child_spec_observation))]),demonitor(R1,[flush]),demonitor(R2,[flush])"
+    }
+  ]
+}

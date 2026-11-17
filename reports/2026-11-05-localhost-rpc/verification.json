@@ -1,0 +1,104 @@
+{
+  "recorded_at": "2026-11-05T07:29:25.885499+00:00",
+  "scope": "Development localhost RPC/promise repair. Public release pins and nodes unchanged. No complete Appendix B certification.",
+  "sources": {
+    "trealla-port": {
+      "revision": "f1db0b6cd1735f3c52202934facfbb581e0e3203",
+      "files": {
+        "rpc.pl": "ddf745f3423f52a9135ed277fc71d48f4534de1e083e7896a79682e710c60407",
+        "web_prolog.pl": "622946e87c62012652b39857d1bf5ac3c004d4bd6170c20e9a6f0c0c74257e2f",
+        "localhost_rpc_tests.pl": "93548ea89e290adeac0ddb8b4c0c4afa52386fb6e951687168ae1db246f8ea1c",
+        "tools/test.sh": "0e530cae6195eda7f620915f59770c4c04ca77328d1c9aa52a1868088266acb0",
+        "README.md": "536f42c30ac0fe51876af4a2399dfe6467da20d0ea195b0be3441527281e9bc3"
+      }
+    },
+    "gprolog-port": {
+      "revision": "3452f6b230c2a47253f68a522df47bf5b664489c",
+      "files": {
+        "isobase/rpc.pl": "9ab5b62508f8d7e62b3614782148da68ae65d5242304143ee929733ca97f8a6f",
+        "isobase/transport.c": "c4074ca921fe4a1190ae19de8a4ac22734e3cc176c59ae9f49521009df329fac",
+        "isobase/http.c": "70ad8a78129595cadb828e634570fde7e49b09cc6c454643faf409c2488300d7",
+        "isobase/rpc_localhost_tests.py": "f368dd2ab2f2adf675b45236ea0ca4bf4f8a25a39146c29704b247f287f7ba55",
+        "isobase/rpc_address_tests.py": "f4b5b022e786e73aa71cd06b0d36d03559be63448cc6ca4b2d49cb662693a6f0",
+        "isobase/Makefile": "2f25f556bbb71528d602ad052d01bc73bed569fad1ba10efd94d6463bffefcaf",
+        "isobase/RPC_BOUNDARY.md": "b7bfab5ab8530fbc8552ca81c3c16c048c64caba381a120f88d28d2a0279f195"
+      }
+    },
+    "trinity-demonstrator": {
+      "revision": "122e5f6b6a6bfce374d1abd00b2f3dd866d284bc",
+      "files": {
+        "Deployment/n6_egress.py": "4540ecbbedcd32a9a966b33e0547da4ad8999d5c6749f9110ffd123914b7afc9",
+        "Deployment/n6_contained.py": "329966f3f23ace154d3e3ea8b7459af1e5b48d143c3bc9335cc67eef8168cba1",
+        "tests/test_n6_egress.py": "0da2133bf125e38a05b33adb54d4ed8d46c54748d2978ea8d059c4df8005b861",
+        "DEVIATIONS.md": "6de33dccb9c5f40c83241502acc3fd5bd7f03570b91363f0ab38939a1a9e8467",
+        "Deployment/README.md": "080d1061b10d690f3ba455876fad0172b2fdd1fc15146ccc5a4faf1f607dc79f",
+        "tools/ci_pinned_swi.py": "81e18be198ad507b017b1a6ee3b401cc98d17a0d7780e127344856af40e28195"
+      }
+    },
+    "trinity-conformance": {
+      "revision": "3bf722bd4e5efd0f019959d3768cf32b61c220ee",
+      "files": {
+        "adapters/local_node_rpc.py": "18bb0ee393bd444b677c405bb3e883272b59dfdb3f55cb4ae80d81e8ae1acf7f",
+        "cases/local-node-rpc-0.1.json": "7f38269eebb9d7475d1ab153e9c3fc56a817f69adc8f93871a92ff14959e5bc2"
+      }
+    }
+  },
+  "shared_assertions": {
+    "pass": 21,
+    "fail": 0
+  },
+  "contained_assertions": {
+    "pass": 7,
+    "fail": 0
+  },
+  "reported_query_solutions": 6,
+  "regressions": [
+    "Trealla full unit and interop suites",
+    "GNU full RPC suite in explicit candidate comparison mode",
+    "GNU credential lifecycle",
+    "4 egress and 8 adapter unit tests",
+    "real TLS hostname/trust checks",
+    "contained N6 public contract",
+    "Linux containment native probe"
+  ],
+  "qualification_notes": [
+    "Trealla interop uses a copy of the current runner with one-second startup waits for the released x86 engine. Original 0.2-second startup race retained.",
+    "The historical GNU comparison lock targets a different consumer revision. Its refusal is retained; the full suite passed in explicit candidate mode with exact consumer revision and SWI version.",
+    "Disposable Linux images overlay the three identified GNU source files and current consumer broker into a committed base; they are development images, not pinned release artifacts.",
+    "The controller and broker lease protocol changed together; promotion must include both."
+  ],
+  "deployment": "Not committed, pushed, pinned or deployed as part of this development repair.",
+  "development_images": {
+    "trinity-localhost-gnu-dev2:20261105": "sha256:13d16f8a9c3bffa186bc907efc86f5e20befedff92972b78ab817686a1255e5e",
+    "trinity-localhost-n6-dev2:20261105": "sha256:db0897314c7939c9de47ead6a4798de9e2c5b4963d55d2fb3efb969c0e26e7b7"
+  },
+  "evidence_sha256": {
+    "broker-tests.txt": "d046b938081c859c550e17012085f87dbcac24e45dabbdb47e35197d7bb0c90d",
+    "build-candidate.py": "1bef7af8dc36e854c25c03649a86d59ec812d6107866a9d03255cb50e1ae36b7",
+    "build-node.txt": "972f412598ef72eb2ce6f206ee43e5723323986ddce2a6a53a17054379d39fce",
+    "build-runtime.txt": "2334f552c517979cdd46cf44b009968b1293b629bb898d97450d2aec04b3db9e",
+    "check-contained.py": "9bfac7c080b9f52926ccdd7b9daf5f1f6e2298e6b948dc4125d2e3c2f0ad43b0",
+    "ci-runner-tests.txt": "359edda067316981e2b687b54a4cf4b798c3af9d7a5355d56f2aaf0a287c77f1",
+    "contained-public.txt": "8e6f8915a6a76e3b7a8e774bb6998e2642c66609dcce8d2308edbe361bc269ed",
+    "contained.json": "2425e455e72547e14570432915ece852c08c2ce9f48355c34f42cfd3d0c5ccd1",
+    "contained.txt": "37603c86fdb3a0b33739d130dfdc173e99b95c3ca826dc1504458fb983c8d6f4",
+    "diagnostics/historical-comparison-lock.txt": "dab5d283837df2b4d97bf01be1c50d06093c798585596f4fa3ffc88218ac61cc",
+    "diagnostics/interop-startup-race.txt": "e51eda068d6be154cdc32c7ec4086c3203cfe282ccd98c3cf7f381654996edd5",
+    "egress-tls.txt": "cd7340c2154154e8d99349e90ca6d5e23bab0582f5894eb2aed9487026bba54f",
+    "gnu-credentials.txt": "8f81676ab19cb5b61384dc95cda238b546438c6addfe46c2c65a36e29b240a3c",
+    "gnu-rpc-suite.txt": "aed3e42b0bde698691b0353b2917b0a37275ab6fddda1c4d0670e898e3df3fa5",
+    "gprolog-port.diff": "fc9428913694cf3b90e03296c72d7e91fa640ec52aa1f8e24cfd9b37a03f61a0",
+    "interop-runner.sh": "347e6f35825d24d61fdbc4c2c95c8af2e4a515c4eda315fae7656de5cad7be34",
+    "linux-containment.txt": "5aa650d4564623fe1fc51e768cd61bb2e1bab3eda19460d93e676aa281821222",
+    "new-tests/gprolog-port/isobase/rpc_localhost_tests.py": "f368dd2ab2f2adf675b45236ea0ca4bf4f8a25a39146c29704b247f287f7ba55",
+    "new-tests/trealla-port/localhost_rpc_tests.pl": "93548ea89e290adeac0ddb8b4c0c4afa52386fb6e951687168ae1db246f8ea1c",
+    "new-tests/trinity-conformance/adapters/local_node_rpc.py": "18bb0ee393bd444b677c405bb3e883272b59dfdb3f55cb4ae80d81e8ae1acf7f",
+    "new-tests/trinity-conformance/cases/local-node-rpc-0.1.json": "7f38269eebb9d7475d1ab153e9c3fc56a817f69adc8f93871a92ff14959e5bc2",
+    "shared-native.json": "f33634b9716ef94b4a42c3172a0cfb317ae2dc6bdece3536d72f8515c9e4cad7",
+    "trealla-interop.txt": "1792dc65311fc5557c07b68c10f6cb9a864c1b9cb21b7921e1b9516695372c7d",
+    "trealla-port.diff": "641d17b72a210fa95ba68d9593d9374dbadae1d2a95ed020094f70335c6042ea",
+    "trealla-unit.txt": "353c829138410842a64bcf29bd5586131156f6675007dad80788261d149a15c3",
+    "trinity-conformance.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trinity-demonstrator.diff": "5d5914170c94ecda259df47c9d870ccfb1b5b2609357d91492979c8eb327e586"
+  }
+}

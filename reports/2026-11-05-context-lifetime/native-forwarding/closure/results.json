@@ -1,0 +1,116 @@
+{
+  "suite": "native-context-closure-0.1",
+  "sources": {
+    "swi": {
+      "revision": "c1571fe40eb502eac280c4667e4963539bcccfe4",
+      "files_sha256": {
+        "tests/tiers/node/namespace_teardown_tests.pl": "f66df8245946284070d8d93637d52f11072c25ba598c0e8fcc78c51b2c695556",
+        "tests/tiers/node/promise_ownership_tests.pl": "5ad9bbf33c16a7721458850ccc3d72102f8fd101df508b8e22e6685ca63953e9",
+        "tests/tiers/node/promise_lifecycle_tests.pl": "1dd3645cfda1480a5425fcb2148be657a5c1517e7b5822c49e3cd397d6f7bbcf"
+      }
+    },
+    "trealla": {
+      "revision": "4c91f890574eac8ae682334d3a8001bb9949f744",
+      "files_sha256": {
+        "namespace_tests.pl": "0acbfb1d8d7157c928c8acdbd09148fcbf8bc688a50cf78a54d46b804a402726",
+        "rpc_ownership_tests.pl": "900b14d5d77c3afa21b9697196e9e39941dd683a33f71860d55877bbbf897217",
+        "rpc_namespace_tests.pl": "c04c3868ef877abd4d325cc0748770ecd6e206ce0fc5923820d3d9b82efde6c2"
+      }
+    }
+  },
+  "results": [
+    {
+      "candidate": "swi",
+      "id": "LIFE-NAMES",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/usr/local/bin/swipl",
+        "-q",
+        "-s",
+        "load.pl",
+        "-s",
+        "tests/tiers/node/namespace_teardown_tests.pl",
+        "-g",
+        "(run_tests(namespace_teardown)->halt;halt(1))"
+      ],
+      "source": "tests/tiers/node/namespace_teardown_tests.pl",
+      "source_sha256": "f66df8245946284070d8d93637d52f11072c25ba598c0e8fcc78c51b2c695556"
+    },
+    {
+      "candidate": "swi",
+      "id": "LIFE-OWNERSHIP",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/usr/local/bin/swipl",
+        "-q",
+        "-s",
+        "load.pl",
+        "-s",
+        "tests/tiers/node/promise_ownership_tests.pl",
+        "-g",
+        "(run_tests(promise_ownership)->halt;halt(1))"
+      ],
+      "source": "tests/tiers/node/promise_ownership_tests.pl",
+      "source_sha256": "5ad9bbf33c16a7721458850ccc3d72102f8fd101df508b8e22e6685ca63953e9"
+    },
+    {
+      "candidate": "swi",
+      "id": "LIFE-LIFECYCLE",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/usr/local/bin/swipl",
+        "-q",
+        "-s",
+        "load.pl",
+        "-s",
+        "tests/tiers/node/promise_lifecycle_tests.pl",
+        "-g",
+        "(run_tests(promise_lifecycle)->halt;halt(1))"
+      ],
+      "source": "tests/tiers/node/promise_lifecycle_tests.pl",
+      "source_sha256": "1dd3645cfda1480a5425fcb2148be657a5c1517e7b5822c49e3cd397d6f7bbcf"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LIFE-NAMES",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+        "-g",
+        "(catch((consult('namespace_tests.pl'),namespace_tests:namespace_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+      ],
+      "source": "namespace_tests.pl",
+      "source_sha256": "0acbfb1d8d7157c928c8acdbd09148fcbf8bc688a50cf78a54d46b804a402726"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LIFE-OWNERSHIP",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+        "-g",
+        "(catch((consult('rpc_ownership_tests.pl'),rpc_ownership_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+      ],
+      "source": "rpc_ownership_tests.pl",
+      "source_sha256": "900b14d5d77c3afa21b9697196e9e39941dd683a33f71860d55877bbbf897217"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LIFE-LIFECYCLE",
+      "status": "pass",
+      "exit_code": 0,
+      "command": [
+        "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl",
+        "-g",
+        "(catch((consult('rpc_namespace_tests.pl'),rpc_namespace_tests:rpc_namespace_tests),E,(writeq(E),nl,fail))->halt;halt(1))"
+      ],
+      "source": "rpc_namespace_tests.pl",
+      "source_sha256": "c04c3868ef877abd4d325cc0748770ecd6e206ce0fc5923820d3d9b82efde6c2"
+    }
+  ]
+}

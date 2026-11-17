@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/boolean_option_tests.py", line 91, in <module>
+    run(str(Path(parser.parse_args().worker).resolve()))
+  File "/Users/lager/gprolog-port/isobase/boolean_option_tests.py", line 74, in run
+    expect(f'catch(({goal},fail),error({formal},_),true)')
+  File "/Users/lager/gprolog-port/isobase/boolean_option_tests.py", line 47, in expect
+    assert p.returncode == 0 and data == [{'type': 'success', 'answers': ['ok'], 'more': False}], (goal, p.returncode, data, p.stderr)
+AssertionError: ("catch((rpc('http://127.0.0.1:54271',true,[timeout(none),timeout(bad)]),fail),error(type_error(number,bad),_),true)", 0, [{'type': 'error', 'term': 'error(type_error(number,none),/(rpc,3))'}], '')

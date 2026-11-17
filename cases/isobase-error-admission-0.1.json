@@ -1,0 +1,23 @@
+{
+  "suite": "isobase-error-admission-0.1",
+  "baseline": "isobase-error-admission-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "cases": [
+    {
+      "id": "ER-010",
+      "title": "N6 rejects a predicate outside its ISOBASE execution policy",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "catch((error_conformance_missing_43(x),fail),error(existence_error(procedure,_),_),true)",
+            "format": "prolog"
+          },
+          "expect_prolog_error_formal": "permission_error(execute,isobase,/(error_conformance_missing_43,1))"
+        }
+      ]
+    }
+  ]
+}

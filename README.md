@@ -24,10 +24,35 @@ original failures and diagnostic controls. Exact inputs and raw results are
 linked from the dated report. Earlier reports retain their historical scope;
 N5 is now public, and N7 is included explicitly. No live services were changed.
 
-The separate [26 October text checkpoint](reports/2026-10-26-text-migration-checkpoint/COVERAGE.md)
-compares the selected character-list configurations in native SWI, Trealla and
-both browser UI modes. It retains JSON, URI-policy, CORS and public term-reader
-diagnostics separately; it does not promote the experimental text profile.
+The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
+51-case matrix, six controlled promise cases and deterministic attachment
+controls as a strict selection.
+The [monitor qualification](reports/2026-11-05-monitor-contracts/README.md) adds
+196 shared observations across all four ACTOR modes, 64 browser/native transport
+observations and native withdrawal barriers. B-048–B-055 have scoped evidence
+across those modes. Use the [maintained monitor gate](profiles/monitor-contracts-0.1.md)
+for the complete selection; expected receives and replies now fail on missing
+results, and finite validation errors preserve monitors and queued messages.
+The [295-case generation selection](reports/2026-11-05-library-generation-cases/README.md)
+passes across all five modes without runtime changes, including externally bounded
+member/length generation. The [isolated countall fixture](reports/2026-11-05-library-noncompletion/README.md)
+adds bounded noncompletion evidence on all five modes. All 43 selected library
+obligations are covered within their recorded limits; broader Appendix B and
+external ISO coverage remain open.
+The [29-case selective receive selection](reports/2026-11-05-selective-receive/README.md)
+passes on all four ACTOR modes after native/browser deadline and Worker request-ID
+repairs. Ten receive source units are mapped. The [held-guard control matrix](reports/2026-11-05-receive-controls/README.md)
+adds 32 passing observations and maps the remaining guard-control unit within its
+recorded execution boundaries. Public consumer pins are unchanged.
+The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) retains source-unit accounting;
+[Library clause gaps](docs/LIBRARY_TEST_GAPS.md) now identify missing shared tests
+and the repair of the Trealla succ float-error failure found by
+the new 146-case selection. Full obligation mapping and external ISO coverage remain open. See the
+[coverage overview](CURRENT_COVERAGE.md) for dated release boundaries and counts.
+These selections do not establish a language-conformance percentage.
+
+Earlier ACTOR release and historical matrices remain available below with their
+original sources, dates and failures. They do not silently certify new requirements.
 
 ## Scoped interoperability baseline
 
@@ -270,7 +295,9 @@ a readiness-synchronized cascade and scoped demonitor/flush behaviour. It uses
 identical public goals with no fixed sleeps or private runtime imports.
 The [24 October coverage matrix](reports/2026-10-24-links-monitors/COVERAGE.md)
 records **12/12 selections passing** on disposable SWI/Trealla ACTOR nodes.
-Remote monitoring and GNU/browser execution are not measured by this batch.
+Remote monitoring and GNU/browser execution are not measured by that historical
+batch. The newer [monitor contract selection](profiles/monitor-contracts-0.1.md)
+covers all four ACTOR modes and the recorded native/browser routes.
 
 The existing disposable fixture adapter also accepts a local ACTOR manifest:
 
@@ -736,7 +763,9 @@ exercises submitted-goal termination authority, explicit owner termination
 controls and independent monitor delivery after socket closure, including a
 computing grandchild. It requires a disposable private fixture and two
 execution-only principals; see the profile for provisioning and runner flags.
-The original links/monitors pack and historical reports are unchanged.
+Historical reports are unchanged. The current links/monitors and server-wait
+manifests have stronger expected-message assertions, documented in the
+[monitor qualification](reports/2026-11-05-monitor-contracts/README.md).
 
 ## Scoped ACTOR release verification
 
@@ -773,3 +802,8 @@ an inline worker with explicitly copied generator definitions, matching named
 controls, and copied receive timeout options. These combinations were missing
 from the earlier separate guard and isolation packs. Historical packs/reports
 remain unchanged.
+
+The `node-uri-io-0.1` selection runs the same trailing-slash, public-source I/O,
+source-less output and ping-pong assertions in both native directions. See its
+[profile](profiles/node-uri-io-0.1.md) and
+[development qualification](reports/2026-11-06-node-uri-io/README.md).

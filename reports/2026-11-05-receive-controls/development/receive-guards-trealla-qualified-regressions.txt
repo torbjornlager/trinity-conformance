@@ -1,0 +1,102 @@
+Trealla: trealla(3,14,20,[]) (/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl)
+
+=== Idempotent connection shutdown ===
+Node shutdown cancels each connection only once through at_exit: ok
+
+=== Committed exit mailbox boundaries ===
+Committed exits cannot re-enter mailbox waits: all regressions passed
+
+=== submitted actor exit authority ===
+Actor exit authority: all regressions passed
+
+=== Private shared-predicate shadowing ===
+Private shared-predicate shadowing: all regressions passed
+
+=== Actor write/1 terminal routing ===
+blacklist: sharing, inherited terminal, higher-order call and stream denial: ok
+whitelist: sharing, inherited terminal, higher-order call and stream denial: ok
+Actor write/1 output: all regressions passed
+
+=== Computed cyclic answer rejection ===
+pre-copy guard and finite exception envelope: ok
+HTTP pre-handoff rejection, cleanup and finite controls: ok
+Cyclic answer rejection: all regressions passed
+
+=== Canonical URI inputs ===
+URI atoms, early errors and local routing: passed
+
+=== Required standard library and callback guards ===
+PASS 334 standard-library and callback controls across blacklist/whitelist/off
+
+=== Successor validation and copied-source paths ===
+succ integer validation, callback, receive and copied source: passed
+
+=== Strict Boolean language options ===
+Strict Boolean options: all regressions passed
+
+=== Canonical answer negotiation context ===
+Answer negotiation context, exceptional cleanup and thread isolation: ok
+
+=== Concurrent bootstrap and reply serialization ===
+Concurrent bootstrap and reply serialization: all regressions passed
+
+=== Receive caller modules and private API dispatch ===
+PASS receive caller guards, bodies, imported APIs
+
+=== Owned remote demonitor acknowledgement and flush ===
+Remote demonitor: lock, acknowledgement, ownership, flush and writer failures: ok
+
+=== Independent termination notification references ===
+Termination relay: default, private, duplicate, removed and unrelated refs: ok
+
+=== General toplevel creation validation and local path ===
+General toplevel creation: validation and local path unchanged
+
+=== Public synchronous toplevel wrappers ===
+answers, next, sharing and output mismatch: ok
+routing validation and asynchronous replies retained: ok
+late answer cannot satisfy a later call: ok
+timeout callback context, bindings, failure and exception: ok
+stale replies retain original deadline and unrelated monitor/messages: ok
+termination fails fast and private monitors are removed: ok
+committed exit escapes query errors; user actor_exit and unrelated monitors kept: ok
+profile, query and computed callback admission: ok
+private actor callback source context: ok
+sandbox-prepared local queries in both source modes: ok
+Synchronous toplevel wrappers: all regressions passed
+
+=== HTTP request deadlines and promise stream cleanup ===
+{"exit_code": 0, "stdout": "rpc headers [http_timeout(0.2)]: timeout; stream reclaimed; next request succeeds\nrpc body [http_timeout(0.2)]: timeout; stream reclaimed; next request succeeds\nrpc partial [http_timeout(0.2)]: timeout; stream reclaimed; next request succeeds\nrpc headers [timeout(5),http_timeout(0.2)]: timeout; stream reclaimed; next request succeeds\nrpc headers [http_timeout(0.2),timeout(5)]: timeout; stream reclaimed; next request succeeds\npromise headers: callback then error answer; queue, worker, timer and stream reclaimed\npromise body: callback then error answer; queue, worker, timer and stream reclaimed\npromise partial: callback then error answer; queue, worker, timer and stream reclaimed\nshort local waits preserve retry; final success reclaims resources: ok\nmalformed reply: error answer; resources reclaimed; following request succeeds\nHTTP read-timeout enforcement, retry/callbacks and resource cleanup: passed\n", "stderr": "", "executable": "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/tpl", "library": "/Users/lager/trinity-demonstrator/.trinity/trealla-engine/library", "case": "all", "elapsed_seconds": 3.411, "scope": "Plain HTTP; delayed headers, body and partial line; no TLS", "passed": true}
+
+=== HTTP transport timeout option mapping ===
+% Started server at http://localhost:22148/
+HTTP timeout options: all regressions passed
+
+=== Host runtime properties ===
+Runtime properties: enumeration, matching, sandbox, toplevel and child checks passed
+
+=== HTTP server first-slice cleanup ===
+first slice and offset stop before side effects, exceptions or blocking alternatives: ok
+non-ground template/goal sharing is preserved: ok
+same-goal ordinary continuation retains its pid, offset and lookahead: ok
+producer is retired before return; application monitor and unrelated reply survive: ok
+failure, short slices, offsets past end, errors and output mismatch reclaim producers: ok
+collection and skipping retain the whole-page deadline and cleanup: ok
+Node listening on port 22147 (profile actor, sandbox blacklist, auth open)
+HTTP once Prolog/JSON, offset, failure/error and ordinary paging on http://127.0.0.1:22147: ok
+HTTP once validates every occurrence and preserves first-value precedence: ok
+HTTP server once: all regressions passed
+
+=== RPC first-slice once option ===
+% Started server at http://localhost:22146/
+whole first slice, request count, default and duplicate precedence: ok
+validation precedes I/O; non-ground answer sharing is preserved: ok
+failure and error delivery: ok
+promise forwards once/default/first duplicate, fetches one page and preserves peer More: ok
+promise validation precedes source/resources; sharing, offset, failure/error remain intact: ok
+promise timeout/default callback and retry preserve the single request and original answer: ok
+RPC once: all regressions passed
+
+=== first_solution continuation determinism ===
+select/3 leaves a choice point when removing a unique head pid: confirmed
+ERROR: first_solution continuation determinism timed out after 120s

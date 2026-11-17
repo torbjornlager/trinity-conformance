@@ -1,0 +1,249 @@
+diff --git a/DEVIATIONS.md b/DEVIATIONS.md
+index e7873d3..3437461 100644
+--- a/DEVIATIONS.md
++++ b/DEVIATIONS.md
+@@ -20,6 +20,7 @@ diagnostic and node metadata additions preserve every pre-existing wire field.
+ 
+ | date | deviation | rationale |
+ |------|-----------|-----------|
++| 2026-11-05 | Retain the Appendix B `localhost` destination for RPC and promises. Trealla resolves its local listener; contained GNU routes only the local stateless endpoint through its trusted broker, preserving caller-fetched source and private databases. | Closes the reported implementation gap without restoring `Host:Port` terms or relaxing external peer egress restrictions. The controller/broker lease records budget and client identity; broker-derived continuation owners and controller credentials remain outside query workers. Development fix; release pins and public nodes are unchanged. |
+ | 2026-11-05 | Browser promise references now belong to the runtime client context and can be collected/disposed across its main engine and Workers. Creator exit and shell replacement retain them; collector interruption releases only its claims. | Aligns promise ownership with Appendix B. Context closure retires promises and closes admission. The clean pinned release is deployed to N0–N6; real-browser checks exercise its served assets in both execution modes. |
+ | 2026-11-04 | Runtime introspection enumerates five capabilities and uses `independent` or `cooperative` isolation values. Implementation identity is provided by diagnostics, not the language predicate. | Aligns the public API with Appendix B while retaining private browser dispatch for naming and statechart startup. |
+ | 2026-11-04 | Adopt Appendix B URI atoms, strict Boolean options, ordered caller-side sources and initial statechart XML, common supervisor replies, independent numeric execution/HTTP deadlines, and the closed HTTP field schema. Headers use case-insensitive first-field precedence across aliases and UTF-8 values; source fetching never inherits them. | Author-directed common contracts replace runtime-specific acceptance and result differences. The contained GNU worker and broker are promoted together; pinned destinations, reserved identities and operator credentials retain their protection. |
+diff --git a/Deployment/README.md b/Deployment/README.md
+index caeb44d..7f56393 100644
+--- a/Deployment/README.md
++++ b/Deployment/README.md
+@@ -665,6 +665,13 @@ never configure source downloads. The broker independently validates fields;
+ trusted identity fields and the pinned Host remain protected. Existing access,
+ rate and resource policies still apply.
+ 
++The development `localhost` repair adds one broker route for `rpc` and
++`promise`: the fixed local stateless `/call` endpoint. It grants no arbitrary
++loopback or source access. Root-owned leases carry the originating client
++identity and IP budget; the broker derives continuation owners and supplies
++controller credentials without passing them to workers. The controller and
++broker must be promoted together. This repair is not yet in the release pins.
++
+ All public `/portal` and `/portal/` requests permanently redirect to
+ `/demonstrator`, preserving their query string. Current links use `/demonstrator`.
+ 
+diff --git a/Deployment/n6_contained.py b/Deployment/n6_contained.py
+index 0ebda9d..9f7df7c 100644
+--- a/Deployment/n6_contained.py
++++ b/Deployment/n6_contained.py
+@@ -43,11 +43,11 @@ def serve(server_class, root, owner_hash):
+         if not ipaddress.ip_address(address).is_global:
+             raise RuntimeError('approved peer resolved to a non-public address')
+         peers[hostname] = address
+-    broker = Broker('\0trinity-n6-egress', peers, leases)
+     token = secrets.token_hex(32)
+     token_file = temporary / 'controller.token'
+     token_file.write_text(token + '\n')
+     token_file.chmod(0o600)
++    broker = Broker('\0trinity-n6-egress', peers, leases, local_rpc=(8081, token))
+     lifetime_read, lifetime_write = os.pipe2(os.O_CLOEXEC)
+     environment = {k: os.environ[k] for k in ('LANG', 'LC_ALL', 'LC_CTYPE', 'TZ') if k in os.environ}
+     controller = subprocess.Popen([
+diff --git a/Deployment/n6_egress.py b/Deployment/n6_egress.py
+index 47662e4..6da777c 100644
+--- a/Deployment/n6_egress.py
++++ b/Deployment/n6_egress.py
+@@ -2,6 +2,8 @@
+ from collections import defaultdict
+ from http.server import BaseHTTPRequestHandler
+ import http.client
++import hashlib
++import hmac
+ import io
+ import ipaddress
+ import os
+@@ -103,11 +105,23 @@ class PinnedHTTPS(http.client.HTTPSConnection):
+             raise
+ 
+ 
++class LocalRPCConnection(http.client.HTTPConnection):
++    """One fixed controller listener, with the same absolute transport deadline."""
++    def __init__(self, port, timeout):
++        super().__init__('127.0.0.1', port, timeout=timeout)
++        self.deadline = time.monotonic() + timeout
++
++    def connect(self):
++        raw = socket.create_connection(('127.0.0.1', self.port), self.timeout)
++        self.sock = DeadlineSocket(raw, self.deadline)
++
++
+ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
+     daemon_threads = True
+     request_queue_size = 128
+ 
+-    def __init__(self, path, peers, leases):
++    def __init__(self, path, peers, leases, local_rpc=None):
++        self.local_rpc = local_rpc
+         self.peers, self.leases = dict(peers), Path(leases)
+         self.context = ssl.create_default_context()
+         self.lock = threading.Lock()
+@@ -119,19 +133,22 @@ class Broker(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
+         if not str(path).startswith('\0'):
+             os.chmod(path, 0o666)
+ 
+-    def group(self, uid):
++    def lease(self, uid):
+         fd = os.open(self.leases / str(uid), os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+         try:
+             info = os.fstat(fd)
+-            if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_size != 65:
++            if not stat.S_ISREG(info.st_mode) or info.st_uid != 0 or info.st_size != 130:
+                 raise ValueError('invalid_lease')
+-            value = os.read(fd, 66).decode('ascii').strip()
+-            if len(value) != 64 or any(c not in '0123456789abcdef' for c in value):
++            values = os.read(fd, 131).decode('ascii').splitlines()
++            if (len(values) != 2 or any(len(v) != 64 or any(c not in '0123456789abcdef' for c in v) for v in values)):
+                 raise ValueError('invalid_lease')
+-            return value
++            return tuple(values)
+         finally:
+             os.close(fd)
+ 
++    def group(self, uid):
++        return self.lease(uid)[0]
++
+     def process_request(self, connection, address):
+         pid, uid, gid = struct.unpack('3i', connection.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
+         try:
+@@ -213,9 +230,16 @@ class BrokerHandler(BaseHTTPRequestHandler):
+             if len(url.encode()) > 262144 or any(ord(c) <= 32 or ord(c) == 127 for c in url):
+                 return self.reply(403)
+             target = urlsplit(url)
+-            if (purpose not in ('rpc', 'source') or target.scheme != 'https'
++            # localhost is a language node designator. This reserved route can
++            # reach only /call on the configured controller, never arbitrary
++            # loopback resources, source URLs or administration endpoints.
++            local_rpc = getattr(self.server, 'local_rpc', None)
++            local = (local_rpc is not None and purpose == 'rpc'
++                     and target.scheme == 'http' and target.netloc == 'localhost'
++                     and target.path == '/call' and not target.fragment)
++            if (not local and (purpose not in ('rpc', 'source') or target.scheme != 'https'
+                     or target.hostname not in self.server.peers or target.port not in (None, 443)
+-                    or target.username is not None or target.password is not None or target.fragment):
++                    or target.username is not None or target.password is not None or target.fragment)):
+                 return self.reply(403)
+             if owner and (len(owner) != 64 or any(c not in '0123456789abcdef' for c in owner)):
+                 return self.reply(400)
+@@ -227,9 +251,25 @@ class BrokerHandler(BaseHTTPRequestHandler):
+             headers.update(request_headers(fields.get('headers', [''])[0], purpose, owner))
+             if owner and purpose == 'rpc':
+                 headers['x-web-prolog-query-owner'] = owner
+-            peer = self.server.peers[target.hostname]
+-            ipaddress.ip_address(peer)
+-            connection = PinnedHTTPS(target.hostname, peer, timeout, self.server.context)
++            if local:
++                if not owner:
++                    return self.reply(403)
++                # Credentials remain in the broker. Bind delegated execution to
++                # the authenticated worker's lease budget, never supplied headers.
++                group, context = self.server.lease(self.client_address[1])
++                port, token = local_rpc
++                # A worker-supplied nonce cannot address a different client's
++                # cached continuation, including clients sharing an IP budget.
++                headers['x-web-prolog-query-owner'] = hmac.new(
++                    token.encode(), ('local-rpc:' + context + ':' + owner).encode(),
++                    hashlib.sha256).hexdigest()
++                headers['authorization'] = 'Bearer ' + token
++                headers['x-web-prolog-query-budget'] = group
++                connection = LocalRPCConnection(port, timeout)
++            else:
++                peer = self.server.peers[target.hostname]
++                ipaddress.ip_address(peer)
++                connection = PinnedHTTPS(target.hostname, peer, timeout, self.server.context)
+             try:
+                 connection.request('GET', path, headers=headers)
+                 response = connection.getresponse()
+diff --git a/tests/test_n6_egress.py b/tests/test_n6_egress.py
+index 2628890..1ef7623 100644
+--- a/tests/test_n6_egress.py
++++ b/tests/test_n6_egress.py
+@@ -73,4 +73,70 @@ class EgressTests(unittest.TestCase):
+                     FakeConnection.body=body;self.assertIn(fetch('https://n1.elfenbenstornet.se')[0],(400,502))
+         finally:server.shutdown();server.server_close();thread.join()
+ 
++    def test_lease_requires_budget_and_client_identity(self):
++        import tempfile
++        from types import SimpleNamespace
++        with tempfile.TemporaryDirectory() as d:
++            lease=Path(d)/'20001'
++            server=SimpleNamespace(leases=Path(d))
++            real_fstat=egress.os.fstat
++            def trusted_stat(fd):
++                info=real_fstat(fd)
++                return SimpleNamespace(st_uid=0,st_mode=info.st_mode,st_size=info.st_size)
++            with patch.object(egress.os,'fstat',trusted_stat):
++                lease.write_text('b'*64+'\n'+'c'*64+'\n')
++                self.assertEqual(egress.Broker.lease(server,20001),('b'*64,'c'*64))
++                for value in ['b'*64+'\n','b'*64+'\n'+'z'*64+'\n','b'*64+'\n'+'c'*63+'\n']:
++                    lease.write_text(value)
++                    with self.assertRaises(ValueError):egress.Broker.lease(server,20001)
++
++    def test_local_rpc_is_fixed_endpoint_and_lease_budget(self):
++        calls=[]
++        class Controller:
++            def __init__(self,port,timeout):self.port=port
++            def request(self,method,path,headers):calls.append((self.port,path,headers))
++            def getresponse(self):return self
++            status=200
++            def read(self,size):return b'success([ok],false).'
++            def close(self):pass
++        server=HTTPServer(('127.0.0.1',0),egress.BrokerHandler)
++        server.peers={};server.context=object();server.local_rpc=(8081,'private-controller-token')
++        # Real SO_PEERCRED/lease admission is qualified by the Linux container
++        # tests; this fixture verifies route and header derivation at the handler.
++        server.lease=lambda uid:('b'*64,'c'*64)
++        thread=threading.Thread(target=server.serve_forever);thread.start()
++        def fetch(url,**extra):
++            data=dict(url=url,purpose='rpc',query_owner='a'*64,timeout_ms='2000');data.update(extra)
++            req=urllib.request.Request(f'http://127.0.0.1:{server.server_port}/fetch',urlencode(data).encode(),{'Content-Type':'application/x-www-form-urlencoded'})
++            try:
++                with urllib.request.urlopen(req) as r:return r.status,r.read()
++            except urllib.error.HTTPError as e:return e.code,e.read()
++        try:
++            with patch.object(egress,'LocalRPCConnection',Controller):
++                self.assertEqual(fetch('http://localhost/call?goal=true'),(200,b'success([ok],false).'))
++                port,path,headers=calls[-1]
++                self.assertEqual(port,8081);self.assertEqual(path,'/call?goal=true')
++                self.assertEqual(headers['authorization'],'Bearer private-controller-token')
++                owner=headers['x-web-prolog-query-owner']
++                self.assertEqual(len(owner),64);self.assertNotEqual(owner,'a'*64)
++                self.assertEqual(headers['x-web-prolog-query-budget'],'b'*64)
++                count=len(calls)
++                for url in ['http://localhost/admin','http://localhost/','http://127.0.0.1/call','http://localhost:8081/call',
++                            'http://localhost:80/call','http://localhost/call#x','http://user@localhost/call',
++                            'http://localhost/%63all','http://localhost/other/../call']:
++                    self.assertEqual(fetch(url)[0],403,url)
++                self.assertEqual(fetch('http://localhost/call',purpose='source')[0],403)
++                self.assertEqual(fetch('http://localhost/call',query_owner='')[0],403)
++                self.assertEqual(fetch('http://localhost/call',headers='X-Web-Prolog-Query-Budget: forged\n')[0],400)
++                self.assertEqual(len(calls),count)
++                # Even a supplied Authorization field cannot select or expose
++                # the controller credential; broker identity is authoritative.
++                self.assertEqual(fetch('http://localhost/call',headers='Authorization: untrusted\n')[0],200)
++                self.assertEqual(calls[-1][-1]['authorization'],'Bearer private-controller-token')
++                self.assertEqual(calls[-1][-1]['x-web-prolog-query-owner'],owner)
++                server.lease=lambda uid:('b'*64,'d'*64)
++                self.assertEqual(fetch('http://localhost/call')[0],200)
++                self.assertNotEqual(calls[-1][-1]['x-web-prolog-query-owner'],owner)
++        finally:server.shutdown();server.server_close();thread.join()
++
+ if __name__=='__main__':unittest.main()
+diff --git a/tools/ci_pinned_swi.py b/tools/ci_pinned_swi.py
+index 6039c65..25c779b 100644
+--- a/tools/ci_pinned_swi.py
++++ b/tools/ci_pinned_swi.py
+@@ -40,6 +40,8 @@ def plan(native, wasm, swipl):
+         ('pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_swi_dependency.py']),
+         ('browser-pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_browser_dependency.py']),
+         ('trealla-pin-regressions', ROOT, [sys.executable, 'tests/test_pinned_trealla.py']),
++        ('n6-egress-regressions', ROOT, [sys.executable, 'tests/test_n6_egress.py']),
++        ('n6-adapter-regressions', ROOT, [sys.executable, 'tests/test_n6_adapter.py']),
+         ('static-distribution-regressions', ROOT, [sys.executable, 'tests/test_static_demonstrator.py']),
+         ('https-sso-probe-regressions', ROOT, [sys.executable, 'tests/test_https_sso_probe.py']),
+         ('host-url-regressions', ROOT, ['node', 'tools/test-trinity-host.cjs']),

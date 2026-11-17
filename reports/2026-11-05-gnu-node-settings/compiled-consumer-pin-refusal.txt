@@ -1,0 +1,37 @@
+python3 compiled_tests.py
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+PASS security: startup policy, credentials, headers, browser boundary and protected continuations
+PASS credential provisioning, restart revocation, ACL rejection, dump limits and child environment/descriptor isolation
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+make[1]: Nothing to be done for `all'.
+make[1]: `shared-compiler' is up to date.
+PASS query paging, sharing, cut, failure, exceptions, cancellation, EOF, parsing, escaping
+PASS 1000 recovered queries: {'queries': 1000, 'before': 4216, 'after': 4216}
+PASS source facts, recursion, cuts, sharing, DCGs, declarations, errors, isolation and size limit
+PASS policy: control semantics, meta-calls, higher-order calls, DCGs, introspection and denied execution
+PASS 10 source failure/order/slot recovery checks
+PASS 63 outbound policy checks; forbidden and proxy fixtures received zero requests
+Comparison inputs verified (candidate): contract 0.2.0; provenance /Users/lager/gprolog-port/isobase/build/comparison-runs/outbound-credentials-20261105T202820Z-r9gnpw_e/provenance.json
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/outbound_credentials_tests.py", line 176, in <module>
+    if __name__=='__main__':main()
+  File "/Users/lager/gprolog-port/isobase/outbound_credentials_tests.py", line 49, in main
+    rpc_source=Path(os.environ['SWI_RPC_FILE']).resolve() if os.environ.get('SWI_RPC_FILE') else native_source(trinity,'rpc.pl')
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 83, in native_source
+    setup = json.loads(output([sys.executable,trinity/'tools/setup_swi.py','--validate']))
+  File "/Users/lager/gprolog-port/isobase/comparison_config.py", line 24, in output
+    return subprocess.check_output([str(a) for a in args],text=True,stderr=subprocess.STDOUT).strip()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '/Users/lager/trinity-demonstrator/tools/setup_swi.py', '--validate']' returned non-zero exit status 2.
+Traceback (most recent call last):
+  File "/Users/lager/gprolog-port/isobase/compiled_tests.py", line 157, in <module>
+    subprocess.run(['python3',test],check=True,env=env,cwd=ROOT)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python3', 'outbound_credentials_tests.py']' returned non-zero exit status 1.
+make: *** [compiled-test] Error 1

@@ -1,0 +1,768 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.gprolog
+#1 transferring dockerfile: 2.95kB done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#2 DONE 0.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#4 DONE 0.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.43kB done
+#5 DONE 0.0s
+
+#6 [build  1/12] FROM docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3
+#6 resolve docker.io/library/debian:bookworm-slim@sha256:99c0b25c46d0214d5a2091092e7908907dcaecd6a962cde0ac700acee222b6f3 done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 3.69kB done
+#7 DONE 0.0s
+
+#8 [build  2/12] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates git python3 build-essential libcurl4-openssl-dev     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [build  3/12] WORKDIR /build
+#9 CACHED
+
+#10 [build  4/12] COPY dependencies/gprolog-port.json dependencies/gprolog-port.json
+#10 DONE 0.0s
+
+#11 [build  5/12] COPY tools/fetch_gprolog.py tools/
+#11 DONE 0.0s
+
+#12 [build  6/12] RUN --mount=type=secret,id=github_token     python3 tools/fetch_gprolog.py --port-destination /src/gprolog-port --engine-destination /src/gprolog --token-file /run/secrets/github_token
+#12 2.455 {
+#12 2.455   "repository": "https://github.com/torbjornlager/gprolog-port.git",
+#12 2.455   "revision": "626c350961e984fa2ab732ff75adc33f239cff57",
+#12 2.455   "mode": "required for optional private or contained public N6 deployment",
+#12 2.455   "engine": {
+#12 2.455     "repository": "https://github.com/didoudiaz/gprolog.git",
+#12 2.455     "revision": "5976ac516c9fbd1d740d41b238597e327302baea",
+#12 2.455     "version": "1.6.0"
+#12 2.455   }
+#12 2.455 }
+#12 DONE 2.5s
+
+#13 [build  7/12] RUN cd /src/gprolog/src && ./configure --with-install-dir=/src/gprolog-port/install       --without-links-dir --without-doc-dir --without-html-dir --without-examples-dir     && make && make install
+#13 0.172 checking build system type... aarch64-unknown-linux-gnu
+#13 0.219 checking host system type... aarch64-unknown-linux-gnu
+#13 0.219 checking for gcc... gcc
+#13 0.228 checking whether the C compiler works... yes
+#13 0.251 checking for C compiler default output file name... a.out
+#13 0.251 checking for suffix of executables... 
+#13 0.268 checking whether we are cross compiling... no
+#13 0.287 checking for suffix of object files... o
+#13 0.298 checking whether the compiler supports GNU C... yes
+#13 0.309 checking whether gcc accepts -g... yes
+#13 0.319 checking for gcc option to enable C11 features... none needed
+#13 0.352 checking for ranlib... ranlib
+#13 0.352 checking for windres... no
+#13 0.353 checking for ar... ar
+#13 0.353 checking for strip... strip
+#13 0.353 checking for as... as
+#13 0.354 checking whether make sets $(MAKE)... yes
+#13 0.358 checking for a BSD-compatible install... /usr/bin/install -c
+#13 0.363 checking whether ln -s works... yes
+#13 0.363 checking for stdio.h... yes
+#13 0.372 checking for stdlib.h... yes
+#13 0.383 checking for string.h... yes
+#13 0.395 checking for inttypes.h... yes
+#13 0.407 checking for stdint.h... yes
+#13 0.419 checking for strings.h... yes
+#13 0.430 checking for sys/stat.h... yes
+#13 0.442 checking for sys/types.h... yes
+#13 0.452 checking for unistd.h... yes
+#13 0.466 checking for sys/param.h... yes
+#13 0.488 checking whether byte ordering is bigendian... no
+#13 0.524 checking for inline... inline
+#13 0.533 checking size of int... 4
+#13 0.583 checking size of long... 8
+#13 0.624 checking size of void*... 8
+#13 0.653 checking for sys/ioctl_compat.h... no
+#13 0.667 checking for sys/siginfo.h... no
+#13 0.683 checking for termios.h... yes
+#13 0.699 checking for malloc.h... yes
+#13 0.716 checking for endian.h... yes
+#13 0.732 checking for sys/endian.h... no
+#13 0.747 checking for byteswap.h... yes
+#13 0.762 checking for float.h... yes
+#13 0.777 checking for getpagesize... yes
+#13 0.800 checking for working mmap... yes
+#13 0.837 checking for getpagesize... (cached) yes
+#13 0.837 checking for mprotect... yes
+#13 0.857 checking for mallopt... yes
+#13 0.876 checking for fgetc... yes
+#13 0.897 checking for sigaction... yes
+#13 0.917 checking for gcc options needed to detect all undeclared functions... none needed
+#13 0.936 checking whether htole32 is declared... yes
+#13 0.950 checking whether bswap_32 is declared... yes
+#13 0.962 checking for atanh... yes
+#13 0.985 checking for acosh... yes
+#13 1.008 checking for asinh... yes
+#13 1.032 checking whether isnan is declared... yes
+#13 1.050 checking whether isinf is declared... yes
+#13 1.066 checking whether fpclassify is declared... yes
+#13 1.084 checking whether fpclass is declared... no
+#13 1.098 checking whether _fpclass is declared... no
+#13 1.111 checking for socklen_t... yes
+#13 1.136 checking if struct sigcontext needs asm/sigcontext.h... no
+#13 1.151 checking whether sigsetjmp is declared... yes
+#13 1.164 checking for a working sigaction... yes
+#13 1.188 checking constructors execution order... first to last
+#13 1.225 checking for socket... yes
+#13 1.246 checking for gethostbyname... yes
+#13 1.267 checking for sha1sum... sha1sum
+#13 1.276 configure: 
+#13 1.276 configure: Achitecture
+#13 1.276 configure:    Build           : aarch64-unknown-linux-gnu
+#13 1.276 configure:    Host            : aarch64-unknown-linux-gnu
+#13 1.276 configure: 
+#13 1.276 configure: Compilation
+#13 1.276 configure:    CC              : gcc
+#13 1.276 configure:    CFLAGS_MACHINE  :  -fno-strict-aliasing -fcommon
+#13 1.276 configure:    CFLAGS          : -O3 -fomit-frame-pointer -Wno-char-subscripts
+#13 1.276 configure:    AS              : as
+#13 1.276 configure:    ASFLAGS         : 
+#13 1.276 configure:    LDFLAGS         : 
+#13 1.276 configure: 
+#13 1.276 configure: Directories
+#13 1.276 configure:    Installation    : /src/gprolog-port/install
+#13 1.276 configure:    Link to binaries: none
+#13 1.276 configure:    Documentation   : none
+#13 1.276 configure:    HTML document.  : none
+#13 1.276 configure:    Examples        : none
+#13 1.276 configure: 
+#13 1.284 configure: creating ./config.status
+#13 1.313 config.status: creating Makefile
+#13 1.318 config.status: creating TopComp/Makefile
+#13 1.324 config.status: creating Pl2Wam/Makefile
+#13 1.330 config.status: creating Wam2Ma/Makefile
+#13 1.336 config.status: creating Ma2Asm/Makefile
+#13 1.341 config.status: creating Fd2C/Makefile
+#13 1.347 config.status: creating Linedit/Makefile
+#13 1.353 config.status: creating W32GUICons/Makefile
+#13 1.359 config.status: creating Tools/Makefile
+#13 1.365 config.status: creating EnginePl/Makefile
+#13 1.370 config.status: creating BipsPl/Makefile
+#13 1.376 config.status: creating EngineFD/Makefile
+#13 1.382 config.status: creating BipsFD/Makefile
+#13 1.388 config.status: creating Ma2Asm/FromC/Makefile
+#13 1.393 config.status: creating WinInstaller/Makefile
+#13 1.399 config.status: creating WinInstaller/gp-vars-iss.txt
+#13 1.404 config.status: creating EnginePl/gp_config.h
+#13 1.416 cd EnginePl; make config
+#13 1.417 make[1]: Entering directory '/src/gprolog/src/EnginePl'
+#13 1.417 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o pl_config pl_config.c
+#13 1.597 ./pl_config
+#13 1.598 
+#13 1.598 	-------------------------------
+#13 1.598 	--- GNU PROLOG INSTALLATION ---
+#13 1.598 	-------------------------------
+#13 1.598 
+#13 1.598 GNU Prolog version: 1.6.0 (Nov  5 2026)
+#13 1.598 Operating system  : linux-gnu
+#13 1.598 Processor         : aarch64
+#13 1.598 Size of a WAM word: 64 bits
+#13 1.598 C compiler        : gcc
+#13 1.598 C flags           : -O3 -fomit-frame-pointer -Wno-char-subscripts
+#13 1.598 C flags machine   :  -fno-strict-aliasing -fcommon
+#13 1.598 Assembler         : as
+#13 1.598 Assembler flags   : 
+#13 1.598 Loader flags      : 
+#13 1.598 Loader libraries  : -lm
+#13 1.598 Use line editor   : Yes
+#13 1.598 Use piped consult : Yes
+#13 1.598 Use sockets       : Yes
+#13 1.598 Use FD solver     : Yes
+#13 1.598 Use machine regs. : 10 gcc global register variables (GRV)
+#13 1.598 Used register(s)  : x19 (pl_reg_bank)  x20 (TR)  x21 (B)  x22 (H)  x23 (HB1)  x24 (CP)  x25 (E)  x26 (CS)  x27 (S)  x28 (STAMP)  
+#13 1.598 
+#13 1.598 	------------------------------
+#13 1.598 
+#13 1.598 make[1]: Leaving directory '/src/gprolog/src/EnginePl'
+#13 1.598 . ./SETVARS;for i in EnginePl TopComp Tools Wam2Ma Ma2Asm Linedit BipsPl Pl2Wam Fd2C EngineFD BipsFD;do (cd $i; make) || exit 1; done;\
+#13 1.598 (cd TopComp; make top-level) || exit 1;\
+#13 1.598 (cd Pl2Wam; make stage2)
+#13 1.600 make[1]: Entering directory '/src/gprolog/src/EnginePl'
+#13 1.600 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts os_path.c
+#13 1.672 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts os_spawn.c
+#13 1.720 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts os_error.c
+#13 1.731 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts winsup.c
+#13 1.736 (cd ../TopComp; make gplc)
+#13 1.737 make[2]: Entering directory '/src/gprolog/src/TopComp'
+#13 1.737 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts mangling.c
+#13 1.815 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o gplc top_comp.c ../EnginePl/os_path.o ../EnginePl/os_spawn.o ../EnginePl/os_error.o ../EnginePl/winsup.o mangling.o -lm
+#13 2.045 make[2]: Leaving directory '/src/gprolog/src/TopComp'
+#13 2.045 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' machine.c
+#13 2.084 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' stacks_sigsegv.c
+#13 2.133 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' unit_ctor.c
+#13 2.151 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' misc.c
+#13 2.184 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' os_detect.c
+#13 2.199 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' engine.c
+#13 2.264 gplc -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' -c -o trampoline.o trampoline.S
+#13 2.271 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' wam_inst.c
+#13 2.471 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' atom.c
+#13 2.540 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' pred.c
+#13 2.571 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' oper.c
+#13 2.667 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' mem_alloc.c
+#13 2.674 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' if_no_fd.c
+#13 2.690 (cd ../Tools; make)
+#13 2.691 make[2]: Entering directory '/src/gprolog/src/Tools'
+#13 2.691 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o cpp_headers cpp_headers.c
+#13 2.724 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts hash_fct.c
+#13 2.754 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts rbtree.c
+#13 2.813 make[2]: Leaving directory '/src/gprolog/src/Tools'
+#13 2.813 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' hash_tbl.c
+#13 2.920 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' main.c
+#13 2.946 rm -f libengine_pl.a
+#13 2.947 ar rc  libengine_pl.a machine.o stacks_sigsegv.o unit_ctor.o misc.o winsup.o os_detect.o os_spawn.o os_path.o os_error.o engine.o trampoline.o wam_inst.o atom.o pred.o oper.o mem_alloc.o if_no_fd.o ../Tools/hash_fct.o hash_tbl.o main.o
+#13 2.953 ranlib libengine_pl.a
+#13 2.958 make[1]: Leaving directory '/src/gprolog/src/EnginePl'
+#13 2.959 make[1]: Entering directory '/src/gprolog/src/TopComp'
+#13 2.959 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o gplc-filter mangle_filter.c mangling.o
+#13 3.015 make[1]: Leaving directory '/src/gprolog/src/TopComp'
+#13 3.017 make[1]: Entering directory '/src/gprolog/src/Tools'
+#13 3.017 make[1]: Nothing to be done for 'all'.
+#13 3.017 make[1]: Leaving directory '/src/gprolog/src/Tools'
+#13 3.019 make[1]: Entering directory '/src/gprolog/src/Wam2Ma'
+#13 3.019 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts -c wam2ma.c
+#13 3.280 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts -c wam_parser.c
+#13 3.391 gcc  -fno-strict-aliasing -fcommon  -o wam2ma wam2ma.o wam_parser.o ../TopComp/mangling.o ../Tools/rbtree.o
+#13 3.406 make[1]: Leaving directory '/src/gprolog/src/Wam2Ma'
+#13 3.408 make[1]: Entering directory '/src/gprolog/src/Ma2Asm'
+#13 3.408 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts -c ma2asm.c
+#13 3.513 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts -c ma_parser.c
+#13 3.657 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -c ma2asm_inst.c
+#13 3.896 gcc  -fno-strict-aliasing -fcommon  -o ma2asm ma2asm.o ma2asm_inst.o ma_parser.o ../Tools/rbtree.o 
+#13 3.909 make[1]: Leaving directory '/src/gprolog/src/Ma2Asm'
+#13 3.911 make[1]: Entering directory '/src/gprolog/src/Linedit'
+#13 3.911 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char linedit.c
+#13 4.136 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char terminal.c
+#13 4.204 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char ctrl_c.c
+#13 4.221 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char completion.c
+#13 4.259 rm -f liblinedit.a
+#13 4.259 ar rc  liblinedit.a linedit.o terminal.o ctrl_c.o completion.o ../Tools/rbtree.o
+#13 4.261 ranlib liblinedit.a
+#13 4.262 make[1]: Leaving directory '/src/gprolog/src/Linedit'
+#13 4.263 make[1]: Entering directory '/src/gprolog/src/BipsPl'
+#13 4.263 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' error_supp.c
+#13 4.337 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' c_supp.c
+#13 4.593 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' foreign_supp.c
+#13 4.654 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' pred_supp.c
+#13 4.684 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' term_supp.c
+#13 4.763 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' stream_supp.c
+#13 5.014 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' lexer_supp.c
+#13 5.175 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' parser_supp.c
+#13 5.270 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' write_supp.c
+#13 5.410 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' dynam_supp.c
+#13 5.495 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' callinf_supp.c
+#13 5.513 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' bc_supp.c
+#13 5.630 gplc -c foreign.wam
+#13 5.633 gplc -c pl_error.wam
+#13 5.636 gplc -c utils.wam
+#13 5.639 gplc -c unify.wam
+#13 5.642 gplc -c assert.wam
+#13 5.646 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' assert_c.c
+#13 5.683 gplc -c read.wam
+#13 5.687 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' read_c.c
+#13 5.740 gplc -c write.wam
+#13 5.745 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' write_c.c
+#13 5.777 gplc -c print.wam
+#13 5.780 gplc -c const_io.wam
+#13 5.784 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' const_io_c.c
+#13 5.834 gplc -c oper.wam
+#13 5.837 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' oper_c.c
+#13 5.881 gplc -c pred.wam
+#13 5.887 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' pred_c.c
+#13 5.942 gplc -c atom.wam
+#13 5.946 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' atom_c.c
+#13 6.057 gplc -c control.wam
+#13 6.059 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' control_c.c
+#13 6.081 gplc -c call.wam
+#13 6.087 gplc -c call_args.wam
+#13 6.094 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' call_args_c.c
+#13 6.124 gplc -c catch.wam
+#13 6.127 gplc -c throw.wam
+#13 6.130 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' throw_c.c
+#13 6.150 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' flag_supp.c
+#13 6.196 gplc -c flag.wam
+#13 6.199 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' flag_c.c
+#13 6.272 gplc -c arith_inl.wam
+#13 6.277 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' arith_inl_c.c
+#13 6.534 gplc -c type_inl.wam
+#13 6.537 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' type_inl_c.c
+#13 6.573 gplc -c term_inl.wam
+#13 6.577 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' term_inl_c.c
+#13 6.650 gplc -c g_var_inl.wam
+#13 6.653 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' g_var_inl_c.c
+#13 6.830 gplc -c all_solut.wam
+#13 6.834 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' all_solut_c.c
+#13 6.911 gplc -c sort.wam
+#13 6.915 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' sort_c.c
+#13 6.977 gplc -c list.wam
+#13 6.988 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' list_c.c
+#13 7.052 gplc -c stat.wam
+#13 7.056 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' stat_c.c
+#13 7.113 gplc -c stream.wam
+#13 7.126 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' stream_c.c
+#13 7.262 gplc -c file.wam
+#13 7.268 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' file_c.c
+#13 7.309 gplc -c char_io.wam
+#13 7.314 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' char_io_c.c
+#13 7.384 gplc -c dec10io.wam
+#13 7.389 gplc -c format.wam
+#13 7.392 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' format_c.c
+#13 7.550 gplc -c os_interf.wam
+#13 7.556 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' os_interf_c.c
+#13 7.722 gplc -c expand.wam
+#13 7.726 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' expand_c.c
+#13 7.793 gplc -c consult.wam
+#13 7.805 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' consult_c.c
+#13 7.834 gplc -c pretty.wam
+#13 7.838 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' pretty_c.c
+#13 7.963 gplc -c random.wam
+#13 7.966 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' random_c.c
+#13 8.000 gplc -c top_level.wam
+#13 8.012 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' top_level_c.c
+#13 8.051 gplc -c debugger.wam
+#13 8.086 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' debugger_c.c
+#13 8.324 gplc -c src_rdr.wam
+#13 8.338 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' src_rdr_c.c
+#13 8.507 gplc -c all_pl_bips.wam
+#13 8.510 gplc -c sockets.wam
+#13 8.514 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' sockets_c.c
+#13 8.583 gplc -c le_interf.wam
+#13 8.585 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts -funsigned-char' le_interf_c.c
+#13 8.615 rm -f libbips_pl.a
+#13 8.615 ar rc  libbips_pl.a error_supp.o c_supp.o foreign_supp.o pred_supp.o term_supp.o stream_supp.o lexer_supp.o parser_supp.o write_supp.o dynam_supp.o callinf_supp.o bc_supp.o foreign.o pl_error.o utils.o unify.o assert.o assert_c.o read.o read_c.o write.o write_c.o print.o const_io.o const_io_c.o oper.o oper_c.o pred.o pred_c.o atom.o atom_c.o control.o control_c.o call.o call_args.o call_args_c.o catch.o throw.o throw_c.o flag_supp.o flag.o flag_c.o arith_inl.o arith_inl_c.o type_inl.o type_inl_c.o term_inl.o term_inl_c.o g_var_inl.o g_var_inl_c.o all_solut.o all_solut_c.o sort.o sort_c.o list.o list_c.o stat.o stat_c.o stream.o stream_c.o file.o file_c.o char_io.o char_io_c.o dec10io.o format.o format_c.o os_interf.o os_interf_c.o expand.o expand_c.o consult.o consult_c.o pretty.o pretty_c.o random.o random_c.o top_level.o top_level_c.o debugger.o debugger_c.o src_rdr.o src_rdr_c.o all_pl_bips.o sockets.o sockets_c.o le_interf.o le_interf_c.o
+#13 8.627 ranlib libbips_pl.a
+#13 8.635 make[1]: Leaving directory '/src/gprolog/src/BipsPl'
+#13 8.636 make[1]: Entering directory '/src/gprolog/src/Pl2Wam'
+#13 8.636 gplc -c pl2wam.wam
+#13 8.647 gplc -c read_file.wam
+#13 8.674 gplc -c syn_sugar.wam
+#13 8.686 gplc -c internal.wam
+#13 8.696 gplc -c code_gen.wam
+#13 8.721 gplc -c reg_alloc.wam
+#13 8.730 gplc -c inst_codif.wam
+#13 8.736 gplc -c first_arg.wam
+#13 8.740 gplc -c indexing.wam
+#13 8.747 gplc -c wam_emit.wam
+#13 8.754 [ ! -f  pl2wam ] || cp pl2wam pl2wam0
+#13 8.754 gplc -o pl2wam --no-fd-lib-warn --no-top-level pl2wam.o read_file.o syn_sugar.o internal.o code_gen.o reg_alloc.o inst_codif.o first_arg.o indexing.o wam_emit.o
+#13 8.788 make[1]: Leaving directory '/src/gprolog/src/Pl2Wam'
+#13 8.788 make[1]: Entering directory '/src/gprolog/src/Fd2C'
+#13 8.788 gplc -c --fast-math fd2c.pl
+#13 8.798 gplc -c --fast-math read_file.pl
+#13 8.807 gplc -c --fast-math parse.pl
+#13 8.839 gplc -c --fast-math compile.pl
+#13 8.873 gplc -o fd2c --no-fd-lib --min-bips fd2c.o read_file.o parse.o compile.o
+#13 8.899 make[1]: Leaving directory '/src/gprolog/src/Fd2C'
+#13 8.900 make[1]: Entering directory '/src/gprolog/src/EngineFD'
+#13 8.900 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' fd_inst.c
+#13 9.120 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' fd_range.c
+#13 9.380 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' fd_unify.fd
+#13 9.409 rm -f libengine_fd.a
+#13 9.409 ar rc  libengine_fd.a fd_inst.o fd_range.o  fd_unify.o
+#13 9.411 ranlib libengine_fd.a
+#13 9.412 make[1]: Leaving directory '/src/gprolog/src/EngineFD'
+#13 9.413 make[1]: Entering directory '/src/gprolog/src/BipsFD'
+#13 9.413 gplc -c --no-redef-error fd_infos.pl
+#13 9.419 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_infos_c.c
+#13 9.470 gplc -c --no-redef-error fd_values.pl
+#13 9.480 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_values_c.c
+#13 9.553 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_values_fd.fd
+#13 9.581 gplc -c --no-redef-error fd_math.pl
+#13 9.588 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_math_c.c
+#13 9.627 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_math_fd.fd
+#13 10.40 gplc -c --no-redef-error fd_bool.pl
+#13 10.41 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_bool_c.c
+#13 10.56 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_bool_fd.fd
+#13 10.94 gplc -c --no-redef-error fd_prime.pl
+#13 10.95 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_prime_c.c
+#13 10.98 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_prime_fd.fd
+#13 11.00 gplc -c --no-redef-error fd_symbolic.pl
+#13 11.00 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_symbolic_c.c
+#13 11.06 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' fd_symbolic_fd.fd
+#13 11.11 gplc -c --no-redef-error fd_optim.pl
+#13 11.12 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' math_supp.c
+#13 11.30 gplc -c -C '-O3 -fomit-frame-pointer -Wno-char-subscripts ' oper_supp.c
+#13 11.42 gplc -c --no-redef-error all_fd_bips.pl
+#13 11.43 rm -f libbips_fd.a
+#13 11.43 ar rc  libbips_fd.a fd_infos.o fd_infos_c.o fd_values.o fd_values_c.o fd_values_fd.o fd_math.o fd_math_c.o fd_math_fd.o fd_bool.o fd_bool_c.o fd_bool_fd.o fd_prime.o fd_prime_c.o fd_prime_fd.o fd_symbolic.o fd_symbolic_c.o fd_symbolic_fd.o fd_optim.o math_supp.o oper_supp.o all_fd_bips.o
+#13 11.43 ranlib libbips_fd.a
+#13 11.43 make[1]: Leaving directory '/src/gprolog/src/BipsFD'
+#13 11.44 make[1]: Entering directory '/src/gprolog/src/TopComp'
+#13 11.44 gcc  -fno-strict-aliasing -fcommon -c -O3 -fomit-frame-pointer -Wno-char-subscripts top_level_main.c
+#13 11.50 gplc  -o gprolog -C '-O3 -fomit-frame-pointer -Wno-char-subscripts' top_level_main.o
+#13 11.54 make[1]: Leaving directory '/src/gprolog/src/TopComp'
+#13 11.54 make[1]: Entering directory '/src/gprolog/src/Pl2Wam'
+#13 11.54 [ ! -f  pl2wam ] || cp pl2wam pl2wam0
+#13 11.55 rm -rf  pl2wam
+#13 11.55 make
+#13 11.55 make[2]: Entering directory '/src/gprolog/src/Pl2Wam'
+#13 11.55 [ ! -f  pl2wam ] || cp pl2wam pl2wam0
+#13 11.55 gplc -o pl2wam --no-fd-lib-warn --no-top-level pl2wam.o read_file.o syn_sugar.o internal.o code_gen.o reg_alloc.o inst_codif.o first_arg.o indexing.o wam_emit.o
+#13 11.59 make[2]: Leaving directory '/src/gprolog/src/Pl2Wam'
+#13 11.59 make[1]: Leaving directory '/src/gprolog/src/Pl2Wam'
+#13 11.59 ./mkinstalldirs /src/gprolog-port/install /src/gprolog-port/install/bin \
+#13 11.59 /src/gprolog-port/install/include /src/gprolog-port/install/lib
+#13 11.59 mkdir /src/gprolog-port/install
+#13 11.60 mkdir /src/gprolog-port/install/bin
+#13 11.60 mkdir /src/gprolog-port/install/include
+#13 11.60 mkdir /src/gprolog-port/install/lib
+#13 11.60 for i in README COPYING VERSION NEWS ChangeLog gprolog.ico; do /usr/bin/install -c -m 644 ../$i /src/gprolog-port/install; done
+#13 11.60 for i in gplc gplc-filter gprolog pl2wam wam2ma ma2asm fd2c; do /usr/bin/install -c */$i /src/gprolog-port/install/bin; done
+#13 11.66 if test -n ""; then /usr/bin/install -c "" /src/gprolog-port/install/bin/; fi
+#13 11.66 for i in top_level_main.o top_level.o all_pl_bips.o debugger.o all_fd_bips.o; do /usr/bin/install -c -m 644 */$i /src/gprolog-port/install/lib; done
+#13 11.68 for i in libengine_pl.a libbips_pl.a liblinedit.a libengine_fd.a libbips_fd.a; do /usr/bin/install -c -m 644 */$i /src/gprolog-port/install/lib; done
+#13 11.69 for i in gprolog.h fd_to_c.h; do Tools/cpp_headers $i ./$i EnginePl EngineFD BipsPl BipsFD; /usr/bin/install -c -m 644 ./$i /src/gprolog-port/install/include; rm -f $i; done
+#13 11.69 (cd /src/gprolog-port/install/lib; for i in *.a; do ranlib $i; done)
+#13 11.72 if test none != none; then \
+#13 11.72    ./mkinstalldirs none; \
+#13 11.72    (F=`cd ../doc; echo ???*.dvi ???*.ps ???*.pdf ???*.chm ???*.eps ???*.html ???*.png`; \
+#13 11.72    for i in $F; do /usr/bin/install -c -m 644 ../doc/$i none; done); \
+#13 11.72 fi
+#13 11.72 if test none != none; then \
+#13 11.72    ./mkinstalldirs none; \
+#13 11.72    (F=`cd ../doc/html_node; echo ???*.html ???*.css ???*.svg`; \
+#13 11.72    for i in $F; do /usr/bin/install -c -m 644 ../doc/html_node/$i none; done); \
+#13 11.72 fi
+#13 11.72 if test none != none; then \
+#13 11.72    ./mkinstalldirs none/ExamplesPl; \
+#13 11.72    (F=`cd ../examples/ExamplesPl; echo Makefile README PROGS ??*.pl`; \
+#13 11.72    for i in $F; do /usr/bin/install -c -m 644 ../examples/ExamplesPl/$i none/ExamplesPl; done); \
+#13 11.72    ./mkinstalldirs none/ExamplesC; \
+#13 11.72    (F=`cd ../examples/ExamplesC; echo Makefile README ??*.pl ??*_c.c`; \
+#13 11.72    for i in $F; do /usr/bin/install -c -m 644 ../examples/ExamplesC/$i none/ExamplesC; done); \
+#13 11.72    ./mkinstalldirs none/ExamplesFD; \
+#13 11.72    (F=`cd ../examples/ExamplesFD; echo Makefile ??*.pl ??*.fd`; \
+#13 11.72    for i in $F; do /usr/bin/install -c -m 644 ../examples/ExamplesFD/$i none/ExamplesFD; done); \
+#13 11.72 fi
+#13 11.72 if test none != none; then \
+#13 11.72    (cd none 2>/dev/null && rm -f gplc gplc-filter gprolog pl2wam wam2ma ma2asm fd2c ); \
+#13 11.72    rmdir none 2>/dev/null; \
+#13 11.72 fi || exit 0;
+#13 11.72 if test none != none; then \
+#13 11.72    ./mkinstalldirs none; \
+#13 11.72    (cd none ; ln -s -f /src/gprolog-port/install/bin/fd2c /src/gprolog-port/install/bin/gplc /src/gprolog-port/install/bin/gplc-filter /src/gprolog-port/install/bin/gprolog /src/gprolog-port/install/bin/ma2asm /src/gprolog-port/install/bin/pl2wam /src/gprolog-port/install/bin/wam2ma .); \
+#13 11.72 fi
+#13 DONE 11.8s
+
+#14 [build  8/12] RUN make -C /src/gprolog/src check
+#14 0.178 make: Entering directory '/src/gprolog/src'
+#14 0.178 . ./SETVARS; \
+#14 0.178 (cd EnginePl; make check) && \
+#14 0.178 (cd Tools; make check) && \
+#14 0.178 (cd Ma2Asm; make check) && \
+#14 0.178 (cd Pl2Wam; make check) && \
+#14 0.178 (cd BipsPl; make check) && \
+#14 0.178 (cd EngineFD; make check) && \
+#14 0.178 echo "All tests succeeded"
+#14 0.182 make[1]: Entering directory '/src/gprolog/src/EnginePl'
+#14 0.182 for i in 1 2 3 4 5; do \
+#14 0.182   (echo "#define UNIT_NO $i" && \
+#14 0.182    echo "#include \"test_uc_defs.h\"") >test_uc_m$i.c || exit; \
+#14 0.182 done
+#14 0.185 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o test_uc test_uc.c unit_ctor.c -I. test_uc_m[1-5].c
+#14 0.395 rm -f test_uc_m* test_uc*.o
+#14 0.397 ./test_uc
+#14 0.397 unit_ctor tests started...
+#14 0.397 unit <unit #5> found  &name:0xaaaad3bdc0f0
+#14 0.397 unit <unit #4> found  &name:0xaaaad3bdc0d0
+#14 0.397 unit <unit #3> found  &name:0xaaaad3bdc0b0
+#14 0.397 unit <unit #2> found  &name:0xaaaad3bdc090
+#14 0.397 unit <unit #1> found  &name:0xaaaad3bdc070
+#14 0.397 5 units found
+#14 0.397 unit_ctor tests succeded
+#14 0.397 make[1]: Leaving directory '/src/gprolog/src/EnginePl'
+#14 0.399 make[1]: Entering directory '/src/gprolog/src/Tools'
+#14 0.399 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts  -o map_test map_test.c rbtree.o
+#14 1.178 ./map_test
+#14 1.196 Map with Red-Black Tree checks succeeded
+#14 1.196 make[1]: Leaving directory '/src/gprolog/src/Tools'
+#14 1.199 make[1]: Entering directory '/src/gprolog/src/Ma2Asm'
+#14 1.199 if [ "$FC" = "Y" ]; then FCFLAGS='-DFAST'; fi; \
+#14 1.199 gcc  -fno-strict-aliasing -fcommon -O3 -fomit-frame-pointer -Wno-char-subscripts $FCFLAGS -c chkma.c
+#14 1.622 if [ "$FC" != "Y" ]; then MAFLAGS='--ignore-fast'; fi; \
+#14 1.622 ./ma2asm --comment $MAFLAGS chkma_ma.ma
+#14 1.641 gplc -c chkma_ma.s
+#14 1.652 gcc  -fno-strict-aliasing -fcommon  -o chkma chkma.o chkma_ma.o ../EnginePl/trampoline.o ../EnginePl/engine.o -lm 
+#14 1.701 Inside initializer
+#14 1.701 pl_reg_bank=&X(0):0xaaaaaee1b178   B:0xaaaaaee1bc98   E:0xaaaaaee43c98  &Y(0):0xaaaaaee43c80
+#14 1.701 stack:0xaaaaaee1b178
+#14 1.701 test 1: c_code initializer...
+#14 1.701 test 1  OK
+#14 1.701 test 2: long local/global ...
+#14 1.701 test 2  OK
+#14 1.701 test 3: pl_jump/pl_ret...
+#14 1.701 test 3  OK
+#14 1.701 test 4: pl_call/pl_ret/pl_fail...
+#14 1.701 test 4  OK
+#14 1.701 test 5: prep_cp/here_cp...
+#14 1.701 test 5  OK
+#14 1.701 test 6: jump/c_ret...
+#14 1.701 test 6  OK
+#14 1.701 test 7: call_c(void)...
+#14 1.701 test 7  OK
+#14 1.701 test 8: move X(i) to Y(j)...
+#14 1.701 test 8  OK
+#14 1.701 test 9: move Y(i) to X(j)...
+#14 1.701 test 9  OK
+#14 1.701 test 10: call_c(int)...
+#14 1.701 test 10  OK
+#14 1.701 test 11: call_c(double)...
+#14 1.701 test 11  OK
+#14 1.701 test 12: call_c(mixed)...
+#14 1.701 test 12  OK
+#14 1.701 test 13: call_c(string)...
+#14 1.701 test 13  OK
+#14 1.701 test 14: call_c(mem,&label,mem(...),&mem(...))...
+#14 1.701 test 14  OK
+#14 1.701 test 15: call_c(X())...
+#14 1.701 test 15  OK
+#14 1.701 test 16: call_c(Y())...
+#14 1.701 test 16  OK
+#14 1.701 test 17: call_c(FL())...
+#14 1.701 test 17  OK
+#14 1.701 test 18: call_c(FD())...
+#14 1.701 test 18  OK
+#14 1.701 test 19: call_c(lot_of_args)...
+#14 1.701 test 19  OK
+#14 1.701 test 20: call_c()+jump_ret...
+#14 1.701 test 20  OK
+#14 1.701 test 21: call_c()+fail_ret...
+#14 1.701 test 21  OK
+#14 1.701 test 22: call_c()+move_ret mem...
+#14 1.701 test 22  OK
+#14 1.701 test 23: call_c()+move_ret X()...
+#14 1.701 test 23  OK
+#14 1.701 test 24: call_c()+move_ret Y()...
+#14 1.701 test 24  OK
+#14 1.701 test 25: call_c()+move_ret FL()...
+#14 1.701 test 25  OK
+#14 1.701 test 26: call_c()+move_ret FD()...
+#14 1.701 test 26  OK
+#14 1.701 test 27: call_c()+switch_ret...
+#14 1.701 test 27  OK
+#14 1.701 MA checks succeeded
+#14 1.701 make[1]: Leaving directory '/src/gprolog/src/Ma2Asm'
+#14 1.706 make[1]: Entering directory '/src/gprolog/src/Pl2Wam'
+#14 2.429 Bootstrap Prolog Compiler OK
+#14 2.429 make[1]: Leaving directory '/src/gprolog/src/Pl2Wam'
+#14 2.431 make[1]: Entering directory '/src/gprolog/src/BipsPl'
+#14 3.202 Bootstrap Prolog Bips OK
+#14 3.202 make[1]: Leaving directory '/src/gprolog/src/BipsPl'
+#14 3.204 make[1]: Entering directory '/src/gprolog/src/EngineFD'
+#14 3.204 make[1]: Nothing to be done for 'check'.
+#14 3.204 make[1]: Leaving directory '/src/gprolog/src/EngineFD'
+#14 3.204 All tests succeeded
+#14 3.204 make: Leaving directory '/src/gprolog/src'
+#14 DONE 3.2s
+
+#15 [build  9/12] RUN apt-get update && apt-get install -y --no-install-recommends clang     && rm -rf /var/lib/apt/lists/*
+#15 0.187 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#15 0.246 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#15 0.263 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#15 0.283 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+#15 0.673 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#15 0.674 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [359 kB]
+#15 1.258 Fetched 9297 kB in 1s (8343 kB/s)
+#15 1.258 Reading package lists...
+#15 1.513 Reading package lists...
+#15 1.892 Building dependency tree...
+#15 2.088 Reading state information...
+#15 2.241 The following additional packages will be installed:
+#15 2.241   clang-14 libbsd0 libclang-common-14-dev libclang-cpp14 libclang1-14 libedit2
+#15 2.241   libgc1 libicu72 libllvm14 libobjc-12-dev libobjc4 libxml2 libz3-4
+#15 2.242   llvm-14-linker-tools
+#15 2.242 Suggested packages:
+#15 2.242   clang-14-doc wasi-libc
+#15 2.242 Recommended packages:
+#15 2.242   llvm-14-dev libclang-rt-14-dev
+#15 2.322 The following NEW packages will be installed:
+#15 2.322   clang clang-14 libbsd0 libclang-common-14-dev libclang-cpp14 libclang1-14
+#15 2.322   libedit2 libgc1 libicu72 libllvm14 libobjc-12-dev libobjc4 libxml2 libz3-4
+#15 2.322   llvm-14-linker-tools
+#15 2.353 0 upgraded, 15 newly installed, 0 to remove and 3 not upgraded.
+#15 2.353 Need to get 53.5 MB of archives.
+#15 2.353 After this operation, 275 MB of additional disk space will be used.
+#15 2.353 Get:1 http://deb.debian.org/debian bookworm/main arm64 libbsd0 arm64 0.11.7-2 [115 kB]
+#15 2.386 Get:2 http://deb.debian.org/debian bookworm/main arm64 libedit2 arm64 3.1-20221030-2 [88.1 kB]
+#15 2.393 Get:3 http://deb.debian.org/debian bookworm/main arm64 libicu72 arm64 72.1-3+deb12u1 [9202 kB]
+#15 2.850 Get:4 http://deb.debian.org/debian bookworm/main arm64 libxml2 arm64 2.9.14+dfsg-1.3~deb12u6 [620 kB]
+#15 2.853 Get:5 http://deb.debian.org/debian bookworm/main arm64 libz3-4 arm64 4.8.12-3.1 [6282 kB]
+#15 2.994 Get:6 http://deb.debian.org/debian bookworm/main arm64 libllvm14 arm64 1:14.0.6-12 [19.3 MB]
+#15 3.434 Get:7 http://deb.debian.org/debian bookworm/main arm64 libclang-cpp14 arm64 1:14.0.6-12 [9866 kB]
+#15 3.718 Get:8 http://deb.debian.org/debian bookworm/main arm64 libgc1 arm64 1:8.2.2-3 [239 kB]
+#15 3.723 Get:9 http://deb.debian.org/debian bookworm/main arm64 libobjc4 arm64 12.2.0-14+deb12u1 [39.0 kB]
+#15 3.735 Get:10 http://deb.debian.org/debian bookworm/main arm64 libobjc-12-dev arm64 12.2.0-14+deb12u1 [165 kB]
+#15 3.750 Get:11 http://deb.debian.org/debian bookworm/main arm64 libclang-common-14-dev all 1:14.0.6-12 [890 kB]
+#15 3.779 Get:12 http://deb.debian.org/debian bookworm/main arm64 llvm-14-linker-tools arm64 1:14.0.6-12 [1092 kB]
+#15 3.818 Get:13 http://deb.debian.org/debian bookworm/main arm64 libclang1-14 arm64 1:14.0.6-12 [5465 kB]
+#15 3.929 Get:14 http://deb.debian.org/debian bookworm/main arm64 clang-14 arm64 1:14.0.6-12 [97.3 kB]
+#15 3.930 Get:15 http://deb.debian.org/debian bookworm/main arm64 clang arm64 1:14.0-55.7~deb12u1 [5144 B]
+#15 4.111 debconf: delaying package configuration, since apt-utils is not installed
+#15 4.128 Fetched 53.5 MB in 2s (33.3 MB/s)
+#15 4.139 Selecting previously unselected package libbsd0:arm64.
+#15 4.139 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 14692 files and directories currently installed.)
+#15 4.148 Preparing to unpack .../00-libbsd0_0.11.7-2_arm64.deb ...
+#15 4.151 Unpacking libbsd0:arm64 (0.11.7-2) ...
+#15 4.167 Selecting previously unselected package libedit2:arm64.
+#15 4.167 Preparing to unpack .../01-libedit2_3.1-20221030-2_arm64.deb ...
+#15 4.169 Unpacking libedit2:arm64 (3.1-20221030-2) ...
+#15 4.183 Selecting previously unselected package libicu72:arm64.
+#15 4.184 Preparing to unpack .../02-libicu72_72.1-3+deb12u1_arm64.deb ...
+#15 4.185 Unpacking libicu72:arm64 (72.1-3+deb12u1) ...
+#15 4.536 Selecting previously unselected package libxml2:arm64.
+#15 4.537 Preparing to unpack .../03-libxml2_2.9.14+dfsg-1.3~deb12u6_arm64.deb ...
+#15 4.538 Unpacking libxml2:arm64 (2.9.14+dfsg-1.3~deb12u6) ...
+#15 4.573 Selecting previously unselected package libz3-4:arm64.
+#15 4.574 Preparing to unpack .../04-libz3-4_4.8.12-3.1_arm64.deb ...
+#15 4.575 Unpacking libz3-4:arm64 (4.8.12-3.1) ...
+#15 4.869 Selecting previously unselected package libllvm14:arm64.
+#15 4.870 Preparing to unpack .../05-libllvm14_1%3a14.0.6-12_arm64.deb ...
+#15 4.871 Unpacking libllvm14:arm64 (1:14.0.6-12) ...
+#15 5.355 Selecting previously unselected package libclang-cpp14.
+#15 5.356 Preparing to unpack .../06-libclang-cpp14_1%3a14.0.6-12_arm64.deb ...
+#15 5.357 Unpacking libclang-cpp14 (1:14.0.6-12) ...
+#15 5.650 Selecting previously unselected package libgc1:arm64.
+#15 5.651 Preparing to unpack .../07-libgc1_1%3a8.2.2-3_arm64.deb ...
+#15 5.652 Unpacking libgc1:arm64 (1:8.2.2-3) ...
+#15 5.673 Selecting previously unselected package libobjc4:arm64.
+#15 5.674 Preparing to unpack .../08-libobjc4_12.2.0-14+deb12u1_arm64.deb ...
+#15 5.676 Unpacking libobjc4:arm64 (12.2.0-14+deb12u1) ...
+#15 5.688 Selecting previously unselected package libobjc-12-dev:arm64.
+#15 5.688 Preparing to unpack .../09-libobjc-12-dev_12.2.0-14+deb12u1_arm64.deb ...
+#15 5.689 Unpacking libobjc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#15 5.715 Selecting previously unselected package libclang-common-14-dev.
+#15 5.717 Preparing to unpack .../10-libclang-common-14-dev_1%3a14.0.6-12_all.deb ...
+#15 5.718 Unpacking libclang-common-14-dev (1:14.0.6-12) ...
+#15 5.812 Selecting previously unselected package llvm-14-linker-tools.
+#15 5.813 Preparing to unpack .../11-llvm-14-linker-tools_1%3a14.0.6-12_arm64.deb ...
+#15 5.815 Unpacking llvm-14-linker-tools (1:14.0.6-12) ...
+#15 5.874 Selecting previously unselected package libclang1-14.
+#15 5.875 Preparing to unpack .../12-libclang1-14_1%3a14.0.6-12_arm64.deb ...
+#15 5.876 Unpacking libclang1-14 (1:14.0.6-12) ...
+#15 6.146 Selecting previously unselected package clang-14.
+#15 6.148 Preparing to unpack .../13-clang-14_1%3a14.0.6-12_arm64.deb ...
+#15 6.149 Unpacking clang-14 (1:14.0.6-12) ...
+#15 6.164 Selecting previously unselected package clang.
+#15 6.165 Preparing to unpack .../14-clang_1%3a14.0-55.7~deb12u1_arm64.deb ...
+#15 6.166 Unpacking clang (1:14.0-55.7~deb12u1) ...
+#15 6.178 Setting up libicu72:arm64 (72.1-3+deb12u1) ...
+#15 6.181 Setting up libz3-4:arm64 (4.8.12-3.1) ...
+#15 6.183 Setting up libgc1:arm64 (1:8.2.2-3) ...
+#15 6.187 Setting up libbsd0:arm64 (0.11.7-2) ...
+#15 6.190 Setting up libxml2:arm64 (2.9.14+dfsg-1.3~deb12u6) ...
+#15 6.192 Setting up libedit2:arm64 (3.1-20221030-2) ...
+#15 6.195 Setting up libobjc4:arm64 (12.2.0-14+deb12u1) ...
+#15 6.197 Setting up libllvm14:arm64 (1:14.0.6-12) ...
+#15 6.200 Setting up libobjc-12-dev:arm64 (12.2.0-14+deb12u1) ...
+#15 6.202 Setting up llvm-14-linker-tools (1:14.0.6-12) ...
+#15 6.205 Setting up libclang1-14 (1:14.0.6-12) ...
+#15 6.207 Setting up libclang-common-14-dev (1:14.0.6-12) ...
+#15 6.210 Setting up libclang-cpp14 (1:14.0.6-12) ...
+#15 6.213 Setting up clang-14 (1:14.0.6-12) ...
+#15 6.215 Setting up clang (1:14.0-55.7~deb12u1) ...
+#15 6.225 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#15 DONE 6.8s
+
+#16 [build 10/12] RUN make -C /src/gprolog-port/isobase CC=clang all     && /src/gprolog-port/install/bin/gprolog --version 2>&1 | grep -F '1.6.0'
+#16 0.107 make: Entering directory '/src/gprolog-port/isobase'
+#16 0.107 /src/gprolog-port/install/bin/gplc --no-top-level query.pl source.pl policy.pl prologue.pl text.pl rpc.pl shared_empty.pl terms.c transport.c  worker.c -L -lcurl -L -lpthread -o query-worker
+#16 0.297 transport.c: In function 'run_request':
+#16 0.297 transport.c:175:5: warning: 'CURLOPT_PROTOCOLS' is deprecated: since 7.85.0. Use CURLOPT_PROTOCOLS_STR [-Wdeprecated-declarations]
+#16 0.297   175 |     curl_easy_setopt(curl,CURLOPT_PROTOCOLS,(long)(CURLPROTO_HTTP|CURLPROTO_HTTPS));
+#16 0.297       |     ^~~~~~~~~~~~~~~~
+#16 0.297 In file included from transport.c:4:
+#16 0.297 /usr/include/aarch64-linux-gnu/curl/curl.h:1749:3: note: declared here
+#16 0.297  1749 |   CURLOPTDEPRECATED(CURLOPT_PROTOCOLS, CURLOPTTYPE_LONG, 181,
+#16 0.297       |   ^~~~~~~~~~~~~~~~~
+#16 0.298 transport.c:176:5: warning: 'CURLOPT_REDIR_PROTOCOLS' is deprecated: since 7.85.0. Use CURLOPT_REDIR_PROTOCOLS_STR [-Wdeprecated-declarations]
+#16 0.298   176 |     curl_easy_setopt(curl,CURLOPT_REDIR_PROTOCOLS,(long)(CURLPROTO_HTTP|CURLPROTO_HTTPS));
+#16 0.298       |     ^~~~~~~~~~~~~~~~
+#16 0.298 /usr/include/aarch64-linux-gnu/curl/curl.h:1755:3: note: declared here
+#16 0.298  1755 |   CURLOPTDEPRECATED(CURLOPT_REDIR_PROTOCOLS, CURLOPTTYPE_LONG, 182,
+#16 0.298       |   ^~~~~~~~~~~~~~~~~
+#16 0.461 clang -std=c11 -Wall -Wextra -Werror -O2 supervisor.c -o query-supervisor
+#16 0.598 clang -std=c11 -Wall -Wextra -Werror -O2 -pthread http.c -o isobase-node
+#16 0.858 make: Leaving directory '/src/gprolog-port/isobase'
+#16 0.859 Prolog top-level (GNU Prolog) 1.6.0
+#16 DONE 0.9s
+
+#17 [build 11/12] RUN apt-get update && apt-get install -y --no-install-recommends procps     && rm -rf /var/lib/apt/lists/*
+#17 0.202 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#17 0.267 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#17 0.300 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#17 0.356 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+#17 0.772 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#17 0.776 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [359 kB]
+#17 1.353 Fetched 9297 kB in 1s (7382 kB/s)
+#17 1.353 Reading package lists...
+#17 1.607 Reading package lists...
+#17 1.855 Building dependency tree...
+#17 1.922 Reading state information...
+#17 1.989 The following additional packages will be installed:
+#17 1.989   libproc2-0
+#17 1.990 Recommended packages:
+#17 1.990   psmisc
+#17 2.008 The following NEW packages will be installed:
+#17 2.008   libproc2-0 procps
+#17 2.041 0 upgraded, 2 newly installed, 0 to remove and 3 not upgraded.
+#17 2.041 Need to get 758 kB of archives.
+#17 2.041 After this operation, 3010 kB of additional disk space will be used.
+#17 2.041 Get:1 http://deb.debian.org/debian bookworm/main arm64 libproc2-0 arm64 2:4.0.2-3 [60.1 kB]
+#17 2.073 Get:2 http://deb.debian.org/debian bookworm/main arm64 procps arm64 2:4.0.2-3 [698 kB]
+#17 2.189 debconf: delaying package configuration, since apt-utils is not installed
+#17 2.208 Fetched 758 kB in 0s (6854 kB/s)
+#17 2.223 Selecting previously unselected package libproc2-0:arm64.
+#17 2.223 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 15038 files and directories currently installed.)
+#17 2.231 Preparing to unpack .../libproc2-0_2%3a4.0.2-3_arm64.deb ...
+#17 2.240 Unpacking libproc2-0:arm64 (2:4.0.2-3) ...
+#17 2.279 Selecting previously unselected package procps.
+#17 2.280 Preparing to unpack .../procps_2%3a4.0.2-3_arm64.deb ...
+#17 2.287 Unpacking procps (2:4.0.2-3) ...
+#17 2.354 Setting up libproc2-0:arm64 (2:4.0.2-3) ...
+#17 2.369 Setting up procps (2:4.0.2-3) ...
+#17 2.399 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#17 DONE 2.5s
+
+#18 [build 12/12] RUN python3 - <<'PY'
+#18 DONE 0.2s
+
+#19 [stage-1 2/7] RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates libcurl4     && rm -rf /var/lib/apt/lists/*     && groupadd --gid 10001 webprolog     && useradd --uid 10001 --gid webprolog --create-home webprolog
+#19 CACHED
+
+#20 [stage-1 3/7] COPY --from=build /src/gprolog-port/isobase/isobase-node /src/gprolog-port/isobase/query-worker /src/gprolog-port/isobase/query-supervisor /app/isobase/
+#20 DONE 0.0s
+
+#21 [stage-1 4/7] COPY --from=build /src/gprolog/COPYING /usr/share/doc/gprolog/COPYING
+#21 DONE 0.0s
+
+#22 [stage-1 5/7] COPY --from=build /build/dependencies/gprolog-port.json /usr/share/doc/gprolog/runtime-pins.json
+#22 DONE 0.0s
+
+#23 [stage-1 6/7] COPY --from=build /build/build-toolchain.json /usr/share/doc/gprolog/build-toolchain.json
+#23 DONE 0.0s
+
+#24 [stage-1 7/7] WORKDIR /app/isobase
+#24 DONE 0.0s
+
+#25 exporting to image
+#25 exporting layers 0.1s done
+#25 exporting manifest sha256:ce19ab4d268053351ada3778f7cf38fa135dc88a6ebe1c6bfda349eb05480e5f 0.0s done
+#25 exporting config sha256:f4b8a9ff33b05526e0e805ff968fdbf7acf773b8ff64476aa3facff8dacfa518 0.0s done
+#25 exporting attestation manifest sha256:4b8acf73f46415315bb4d42f2a800ac77a2a3270c8fe5c8e75b4fae5e4e78335 0.0s done
+#25 exporting manifest list sha256:43602ee206299ea4a37b6b93ddf1701c87c114a1bdb8c3e680e3f9699fc8d512 done
+#25 naming to docker.io/library/trinity-runtime-repair-gnu-runtime:20261105 done
+#25 unpacking to docker.io/library/trinity-runtime-repair-gnu-runtime:20261105 0.0s done
+#25 DONE 0.2s

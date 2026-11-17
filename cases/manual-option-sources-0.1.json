@@ -1,0 +1,76 @@
+{
+  "suite": "manual-option-sources-0.1",
+  "baseline": "manual-option-sources-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Appendix B common option-validation and source-loading rules agreed 2026-11-04; URI values revised 2026-11-17: a URI is an atom or a string (a string object, or a list of characters or codes), and Id@localhost names the local node",
+  "cases": [
+    {
+      "id": "OPT-004",
+      "title": "Spawn validates URI values before creation",
+      "transport": "query",
+      "goal": "self(S),S!manual_options([node(host:8080)]),receive({manual_options(Options)->true},[timeout(2),on_timeout(throw(missing_option_data))]),catch((spawn(true,Pid,Options),fail),error(type_error(atom_or_string,host:8080),_),true),var(Pid)"
+    },
+    {
+      "id": "OPT-005",
+      "title": "Spawn Boolean validation does not bind pending values",
+      "transport": "query",
+      "goal": "catch((spawn(true,Pid,[monitor(false),monitor(Pending)]),fail),error(instantiation_error,_),true),var(Pid),var(Pending)"
+    },
+    {
+      "id": "OPT-006",
+      "title": "Later policy duplicates are validated before starting workers",
+      "transport": "query",
+      "goal": "catch((first_solution(_,[true],[on_fail(stop),on_fail(maybe)]),fail),error(domain_error(first_solution_policy,maybe),_),true)"
+    },
+    {
+      "id": "OPT-007",
+      "title": "Pending policy values remain unbound",
+      "transport": "query",
+      "goal": "catch((first_solution(_,[true],[on_error(Pending)]),fail),error(instantiation_error,_),true),var(Pending)"
+    },
+    {
+      "id": "OPT-008",
+      "title": "Pending policy option entries remain unbound",
+      "transport": "query",
+      "goal": "catch((first_solution(_,[true],[Pending]),fail),error(instantiation_error,_),true),var(Pending)"
+    },
+    {
+      "id": "OPT-009",
+      "title": "Policy options require atoms",
+      "transport": "query",
+      "goal": "catch((first_solution(_,[true],[on_error(1)]),fail),error(type_error(atom,1),_),true)"
+    },
+    {
+      "id": "SRC-001",
+      "title": "Mixed source kinds retain all clauses in option-list order",
+      "transport": "query",
+      "goal": "self(Parent),spawn((findall(X,manual_order(X),Items),send(Parent,manual_order(Items))),Pid,[src_text('manual_order(first).'),src_list([manual_order(second)]),src_text('manual_order(third).'),monitor(true)]),receive({manual_order(Items)->Items==[first,second,third]},[timeout(3),on_timeout(throw(missing_source_order))]),receive({down(Pid,Pid,true)->true},[timeout(3),on_timeout(throw(missing_source_order_down))])"
+    },
+    {
+      "id": "URI-007",
+      "title": "A character-list node in an address names the same node",
+      "transport": "query",
+      "goal": "self(S),(S=Id@Node->true;Id=S,node_setting(url,Node)),atom_chars(Node,Chars),send(Id@Chars,manual_probe),receive({manual_probe->true},[timeout(2),on_timeout(throw(manual_probe_missing))])"
+    },
+    {
+      "id": "URI-008",
+      "title": "A pending address node is not bound",
+      "transport": "query",
+      "goal": "catch((send('@'(9999999999,Node),probe),fail),error(instantiation_error,_),true),var(Node)"
+    },
+    {
+      "id": "URI-009",
+      "title": "Monitoring validates the node before installing a monitor",
+      "transport": "query",
+      "goal": "catch((monitor('@'(9999999999,[l,1.5]),Ref),fail),error(type_error(atom_or_string,[l,1.5]),_),true),var(Ref)"
+    },
+    {
+      "id": "URI-011",
+      "title": "Id@localhost names the local node for sending and monitoring",
+      "transport": "query",
+      "goal": "self(S),(S=Id@_->true;Id=S),send(Id@localhost,manual_local),receive({manual_local->true},[timeout(2),on_timeout(throw(manual_local_missing))]),spawn(receive({stop->true}),C),(C=CI@_->true;CI=C),monitor(CI@localhost,Ref),C!stop,receive({down(_,Ref,true)->true},[timeout(2),on_timeout(throw(manual_local_down_missing))])"
+    }
+  ]
+}

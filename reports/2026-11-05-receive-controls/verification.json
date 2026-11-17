@@ -1,0 +1,103 @@
+{
+  "status": "development-qualified",
+  "cases": 8,
+  "actor_modes": 4,
+  "pass_observations": 32,
+  "runner_tests_pass": 104,
+  "verified_source_units": {
+    "swi": 34,
+    "trealla": 34,
+    "wasm_worker": 34,
+    "wasm_main": 34,
+    "gnu": 23
+  },
+  "source_commits": {
+    "swi-prolog-node": "80e3e799a40c2c39d87efccb5a6e1ba4d9a8fe1e",
+    "trealla-port": "d92364caaef3b23efdce07d388aa221e20a83b00",
+    "swi-wasm-node": "deb11db4ff58c27b4565f7125d29b0deec6627f7",
+    "trinity-demonstrator": "7071a22861547daff1ac306a9128417d4c3548f6",
+    "boken": "3edc3698774258f71b11bf9998955d273ee26220"
+  },
+  "core_receive_selector_changed": false,
+  "public_deployment_changed": false,
+  "book_changed": false,
+  "browser_runtime_code_changed": false,
+  "browser_child_backend": "Worker under either coordinator; main abort is direct",
+  "native_unit_groups": "passed in combined run; initial interop listener startup failure retained",
+  "interop_rerun": "passed; TEST_STARTUP_DELAY=1, TEST_PORT_BASE=22760, unchanged runtime code",
+  "browser_regressions": [
+    {
+      "label": "worker-mailbox",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_actor_worker_smoke.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.083
+    },
+    {
+      "label": "standalone",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_standalone.js"
+      ],
+      "exit_code": 0,
+      "seconds": 1.349
+    },
+    {
+      "label": "semantic-contracts",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_contracts.js"
+      ],
+      "exit_code": 0,
+      "seconds": 119.455
+    },
+    {
+      "label": "standard-library-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_library_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 1.61
+    },
+    {
+      "label": "session-api-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_sessions_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 12.075
+    },
+    {
+      "label": "selective-receive-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_receive_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 18.808
+    },
+    {
+      "label": "receive-controls-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_receive_controls_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 14.89
+    }
+  ],
+  "inputs_sha256": {
+    "cases/receive-control-0.1.json": "8a63aea14906eabb115dc067cfb1a324a0f8a6b49408c76a0fc868514bb86f3a",
+    "adapters/local_receive_controls.py": "a79e60f9b6e77053145981b08702028c8095ae10ed41cbba386a92b9d4be836d",
+    "adapters/receive_control_peer.py": "3a75054e985ab93bd09a3a1be09904cc21ce37588f46bb40988fd6236ac6d6cc",
+    "adapters/wasm_receive_controls.cjs": "285b751fad38752651064008fe9f3532fe7d420cde757bab8167bf9e177ef4b2",
+    "runner/receive_controls.py": "f1cf137bb7fac95a2d78917c6bfdcd944c1b514e47372d855f659f1131fe195a",
+    "runner/test_receive_controls.py": "601ba75a8b16fabb1e1bb8d1998da2ba37e273ddf8e2e1a4f5bcc4c3306f2c3a",
+    "runner/appendix_coverage.py": "e65f582f042cdb1c8f58767648a47cef74b11b87e3a289cfab0175213e691330",
+    "requirements/appendix-b-0.1.json": "07d1d5304c3c576ed978b5d8459ca2fa0596cc7776fd3fd6d7dfad1c342aa608"
+  }
+}

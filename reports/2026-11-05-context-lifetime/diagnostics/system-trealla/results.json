@@ -1,0 +1,53 @@
+{
+  "suite": "retained-context-0.1",
+  "manifest_sha256": "3018f05faba636a5567b7df2fb601862a224f40a4c91943bfe8d244b73cfcb72",
+  "groups": [
+    {
+      "group": "contexts",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/lager/trinity-conformance/adapters/local_retained_context.py",
+        "--swipl",
+        "/usr/local/bin/swipl",
+        "--tpl",
+        "/usr/local/bin/tpl",
+        "--swi-root",
+        "/Users/lager/swi-prolog-node",
+        "--trealla-root",
+        "/Users/lager/trealla-port",
+        "--output",
+        "/tmp/context-lifetime-baseline-20261105/contexts",
+        "--controlled-promises",
+        "--routes",
+        "swi-a:swi-b",
+        "swi-a:trealla-b",
+        "trealla-a:swi-b",
+        "trealla-a:trealla-b"
+      ],
+      "exit_code": 1,
+      "status": "fail",
+      "detail": "case inventory mismatch: missing=Counter({('swi', 'CTX-001'): 1, ('swi', 'CTX-002'): 1, ('swi', 'CTX-003'): 1, ('swi', 'CTX-004'): 1, ('swi', 'CTX-005'): 1, ('swi', 'CTX-006'): 1, ('swi', 'CTX-007'): 1, ('swi', 'CTX-009'): 1, ('swi', 'CTX-008'): 1, ('swi', 'CTX-010'): 1, ('swi', 'CTX-011'): 1, ('trealla', 'CTX-001'): 1, ('trealla', 'CTX-002'): 1, ('trealla', 'CTX-003'): 1, ('trealla', 'CTX-004'): 1, ('trealla', 'CTX-005'): 1, ('trealla', 'CTX-006'): 1, ('trealla', 'CTX-007'): 1, ('trealla', 'CTX-009'): 1, ('trealla', 'CTX-008'): 1, ('trealla', 'CTX-010'): 1, ('trealla', 'CTX-011'): 1, ('swi', 'CTX-020'): 1, ('swi', 'CTX-012-swi-b'): 1, ('swi', 'CTX-018-swi-b'): 1, ('swi', 'CTX-013-swi-b'): 1, ('swi', 'CTX-014-swi-b'): 1, ('swi', 'CTX-015-swi-b'): 1, ('swi', 'CTX-016-swi-b'): 1, ('swi', 'CTX-017-swi-b'): 1, ('swi', 'CTX-012-trealla-b'): 1, ('swi', 'CTX-018-trealla-b'): 1, ('swi', 'CTX-013-trealla-b'): 1, ('swi', 'CTX-014-trealla-b'): 1, ('swi', 'CTX-015-trealla-b'): 1, ('swi', 'CTX-016-trealla-b'): 1, ('swi', 'CTX-017-trealla-b'): 1, ('trealla', 'CTX-012-swi-b'): 1, ('trealla', 'CTX-018-swi-b'): 1, ('trealla', 'CTX-013-swi-b'): 1, ('trealla', 'CTX-014-swi-b'): 1, ('trealla', 'CTX-015-swi-b'): 1, ('trealla', 'CTX-016-swi-b'): 1, ('trealla', 'CTX-017-swi-b'): 1, ('trealla', 'CTX-012-trealla-b'): 1, ('trealla', 'CTX-018-trealla-b'): 1, ('trealla', 'CTX-013-trealla-b'): 1, ('trealla', 'CTX-014-trealla-b'): 1, ('trealla', 'CTX-015-trealla-b'): 1, ('trealla', 'CTX-016-trealla-b'): 1, ('trealla', 'CTX-017-trealla-b'): 1, ('swi', 'CP-001-swi-a'): 1, ('swi', 'CP-001-swi-b'): 1, ('swi', 'CP-001-trealla-b'): 1, ('trealla', 'CP-001-trealla-a'): 1, ('trealla', 'CP-001-swi-b'): 1, ('trealla', 'CP-001-trealla-b'): 1}), extra=Counter({('fixture', 'CTX-FIXTURE'): 1})"
+    },
+    {
+      "group": "attachments",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "/Users/lager/trinity-conformance/adapters/local_attachment_race.py",
+        "--swipl",
+        "/usr/local/bin/swipl",
+        "--tpl",
+        "/usr/local/bin/tpl",
+        "--swi-root",
+        "/Users/lager/swi-prolog-node",
+        "--trealla-root",
+        "/Users/lager/trealla-port",
+        "--output",
+        "/tmp/context-lifetime-baseline-20261105/attachments"
+      ],
+      "exit_code": 1,
+      "status": "fail",
+      "detail": "nonpassing case: ('trealla', 'ATTACH-REJOIN-FIRST') (fail)"
+    }
+  ],
+  "status": "fail"
+}

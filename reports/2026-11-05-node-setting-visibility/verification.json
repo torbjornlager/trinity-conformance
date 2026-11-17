@@ -1,0 +1,70 @@
+{
+  "scope": "Disposable native RELATION/family-policy qualification; no public deployment, manuscript or dependency pin change.",
+  "previous_ledger_revision": "edb5c864444364ac750c66c35abd8ef0501b2e5c",
+  "runtime_revisions": {
+    "swi": "1c25f34972e5d403e9b556ae12328c07966d4a24",
+    "trealla": "9bf7399992baeccfbca7a68b21a329e3b1c1bd9c"
+  },
+  "runtime_trees_clean": true,
+  "qualified_runtime_sources_match_committed_trees": true,
+  "baseline_and_final_use_identical_adapter": true,
+  "counts": {
+    "pass": 47,
+    "fail": 0
+  },
+  "target_counts": {
+    "swi": {
+      "pass": 32,
+      "fail": 0
+    },
+    "trealla": {
+      "pass": 15,
+      "fail": 0
+    }
+  },
+  "files_sha256": {
+    "adapters/node_setting_visibility.py": "45b4701d8ec5af50830d6d73bb26841c5f432e31ec8d2eb5a631c6600c5aa0aa",
+    "adapters/local_standard_library.py": "a23ddcdef39bd07c7715e685bdf77807bfe01fcb4eb5d85da320ec2ec25511dc",
+    "runner/baseline.py": "0e672a082e2ed159f34396cb56fef80632269ace648215b9b21c8798d643538f",
+    "runner/run.py": "946b1ab3146290bde299ff32640b6a2d73d0a6505d572fa11c1d2531539bde6f",
+    "runner/appendix_coverage.py": "6e1dfadc97fe8150aa73cf33c00980cb7770881d5a988a4a4b0a9dd0f35c2bba"
+  },
+  "reports_sha256": {
+    "first/results.json": "aceb87a5f3c66c6ba25a784787109c3d4ddca17f84b75ef4a8c75087503c9216",
+    "first-adapter.py.txt": "3e536399650c76c5f819fe0d97f629bbb8179c431c2e6cd791e2b6b8bc85fc85",
+    "baseline/results.json": "d397cf4a53af53012a89ca0fb41d10446c50df0b01490d30f8e5eb569d70382c",
+    "final/results.json": "4c0f8fdd49d535fcc5152c6143152ef26dcaccb277e38f52d45cf4590e8e2090",
+    "focused-initial.txt": "c270c4cba9340f36793514b2e96d2615b03fe025d4f7d3ee9df4b7f6ae3d7e92",
+    "focused-final.txt": "9622beffe7b0f1fa3645c73da551a501782652cc58def960fb9c33f14ce96553",
+    "regressions.txt": "0cf7a368f56eb73fe90d3cf0885506cd9bcc2305d7fe1b24040cb7e442911fb0",
+    "runner-tests.txt": "22b938fae92e63fa178d701cc4b2ef451051eb57275e884e0661d49f19eac5be"
+  },
+  "maintained_swi_tests_sha256": "4be836d738fc537cdabada0c6cf212255e1b76f12308489b72ee1cb2759b6cfe",
+  "checks": [
+    {
+      "command": "SWIPL=/usr/local/bin/swipl tools/test.sh LINT TEXT T4_NATIVE",
+      "exit_code": 0,
+      "native_node_tests": 1065,
+      "http_visitor_ownership": "pass"
+    },
+    {
+      "command": "Focused five RELATION node-setting tests in tests/tiers/node/node_tests.pl",
+      "exit_code": 0,
+      "tests": 5
+    },
+    {
+      "command": "python3 -m unittest discover -s runner",
+      "exit_code": 0,
+      "tests": 104
+    },
+    {
+      "command": "python3 runner/appendix_coverage.py --manual /Users/lager/boken/author/appendix-B-current-manual.tex --check",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 runner/library_coverage.py --check",
+      "exit_code": 0,
+      "covered": 43
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-04",
+  "status": "Common RPC/promise timeout batch verified; full Appendix B conformance remains incomplete",
+  "scope": "Development checkouts, shared direct API checks, disposable HTTP/execution nodes and repository regressions. No deployment or release/profile certification.",
+  "counts": {
+    "shared": {
+      "pass": 241,
+      "fail": 0
+    },
+    "live_timeouts": {
+      "pass": 81,
+      "fail": 0
+    },
+    "total": {
+      "pass": 322,
+      "fail": 0
+    }
+  },
+  "reports": [
+    "local.json",
+    "wasm-worker-uri-atoms.json",
+    "wasm-worker-manual-option-sources.json",
+    "wasm-worker-supervisor-common.json",
+    "wasm-worker-statechart-document.json",
+    "wasm-worker-rpc-timeout.json",
+    "wasm-main-uri-atoms.json",
+    "wasm-main-manual-option-sources.json",
+    "wasm-main-supervisor-common.json",
+    "wasm-main-statechart-document.json",
+    "wasm-main-rpc-timeout.json",
+    "live-timeouts.json"
+  ],
+  "additional_execution_node_executables": {
+    "/Users/lager/gprolog-port/isobase/isobase-node": "39c1ebf2b960caa7e232358720664767b5b5cf7e5feb714045215fef1aecf46d",
+    "/Users/lager/gprolog-port/isobase/query-supervisor": "2698ab8becf5cf25c81a4f381f5617fbe1e10640b1bd72f146b4e1c180a5d78d"
+  },
+  "manifest_hashes": {
+    "uri-atoms-0.1": "ebafa705fca82bffe1093a3fcca01af360315faa2b2db752e98f06135e454532",
+    "manual-option-sources-0.1": "17f04c28d9f63f9a73579515c7f53011acd94eb2beba0ee04f98a1c56e38fd68",
+    "supervisor-common-0.1": "0caaa5ef868ad7b0f76063617da79d8a49ce3a5396be8eb30aa02be8ac4bc1f5",
+    "statechart-document-0.1": "f64590ba050d4fdf367d11d21d8e2d50ffff026b587fc7dfe36e0780fcde12bc",
+    "rpc-timeout-0.1": "fab39e3043c75076cb35b09daac48b860a4fce2cd0c1d42de6cf9f7b0da28694"
+  },
+  "verified": [
+    "Both timeout and http_timeout require numbers, validate every occurrence without binding inputs, normalize negatives to zero, and use their first occurrence",
+    "Execution timeout is forwarded independently and each destination applies its owner cap; Trealla no longer uses timeout as an HTTP transport alias",
+    "HTTP timeout covers response headers and body, renews for each later page, and does not configure source preparation",
+    "HTTP expiry raises error(rpc_error(http_timeout),_) for RPC; promises deliver error(error(rpc_error(http_timeout),_)) while preserving goal variables",
+    "Zero HTTP limits start no HTTP transfer; values above 300 seconds are accepted",
+    "Private native/Trealla request timers are disarmed during cleanup, streams are reclaimed, and following requests remain usable",
+    "Browser main does not count its post-response UI scheduling delay against the completed HTTP request",
+    "GNU execution deadline paths (HTTP controller and query supervisor) report resource_error(time); an application throwing the old deadline atom remains unchanged",
+    "Native SWI preserves node URI deployment path prefixes for RPC and promises, matching the other clients",
+    "All previous URI, Boolean, source-order, supervisor and statechart-source validation assertions remain green"
+  ],
+  "regressions": {
+    "native": "LINT TEXT T0 T1_NATIVE T2 T3_NATIVE T4_NATIVE and HTTP visitor checks passed; T4_NATIVE repeated with prefixed-URI regression (1053/1053), then LINT/TEXT passed again",
+    "trealla": "Full unit suite passed, including mandatory full HTTP deadline enforcement and all 80 HTTP client-context checks",
+    "wasm": "All 97 semantic-contract scenarios passed; both deadline scenarios passed again after adding path-prefix assertions",
+    "gnu": "URI, Boolean, source-order/recovery, wire framing, 17 temporary-CA HTTPS checks, HTTP node and full query-supervisor regression suites passed",
+    "interoperability": "Full SWI/Trealla interoperability runner passed"
+  },
+  "qualifications": [
+    "Earlier timed fixture runs overlapped CPU-heavy parallel WASM checks and produced timing failures; final timing checks ran after that load subsided. Those observations remain in diagnostics.",
+    "An intermediate execution-cap check exposed the GNU query supervisor's old deadline atom. The supervisor now emits resource_error(time); the final 81-case run also verifies that an application throwing the old atom is still propagated unchanged. The earlier observation remains in diagnostics/live-current.json.",
+    "One earlier Trealla full-unit attempt lost an HTTP context fixture connection. The isolated 80-context rerun and the subsequent complete unit suite passed; the failed run is retained in diagnostics.",
+    "Interop used an exact copy of tools/test.sh with one-shot fixture startup waits changed from 0.2 to 1 second. All test goals are unchanged; the exact runner and log are retained.",
+    "Full WASM suite and final package have identical web runtime hashes. Only documentation and the added prefix assertions differ: ['docs/runtime.md', 'tests/wasm/swi_wasm_contracts.js']",
+    "The browser deadline transport is mocked; generated public predicates and real WASM engines run. Native HTTP/TLS tests use disposable loopback peers, not production nodes.",
+    "Transport header/authentication schemas remain a separate incomplete migration. Historical 0.2 comparison and immutable release/profile selections have not been rewritten as current conformance."
+  ],
+  "still_to_implement": [
+    "Common HTTP transport-option schemas, header/authentication support and duplicate handling across clients",
+    "Remaining wrapper option schemas and removal of compatibility metadata",
+    "Common client contexts for names and promises, including engine-independent local ownership",
+    "Remote named preparation/publication/activation handshake and uniform remote link cleanup",
+    "Confirmed remote demonitor removal across all implementations",
+    "Uniform statechart invocation ordering, invocation features and engine placement",
+    "Capability-only runtime introspection and common sandbox admission policies",
+    "Synchronise the shared web manual and qualify immutable release pins after implementation work"
+  ],
+  "artifacts": {
+    "diagnostics/live-current.json": "4a5dae550787e7ee89ea654ca741859b9cc1b51f8a407be3eb5106e1c76b2ad6",
+    "diagnostics/live-final.json": "22d5cacdf0250fdd47859ae1f4ea867662e9d270f7440cbee6d64ecc636f622f",
+    "diagnostics/trealla-http-context-failed-unit.txt": "8565f832c27588700395d335dc3059a6e879bfd3d2f42e24917311d8e530c17f",
+    "gnu-bool.txt": "dfeb35e748fc5863b27076171fe3baf423a6b445d78522b083f82a6113980282",
+    "gnu-framing.txt": "45cea65bd09ef76fcfe1660b897be25160ca716d57664d62c245e82557cf2a34",
+    "gnu-http.txt": "53b5daadf8f8d23317794a54d157cf8a5ce1b64fea905313b7f6f1e0b8c27393",
+    "gnu-https.txt": "e895e0e783228ccc6b79483792c0eaca744f737e89e8c10e3a922cc8e4d5921a",
+    "gnu-source.txt": "d2b6675b2336d27638c8f46f93929babcef8cb23fdd594760caf2424cadd44b4",
+    "gnu-supervisor.txt": "a13dce50d02eb49b781a6f1a7382a01563db20b42f1eca02063a73c6f3ed0c54",
+    "gnu-uri.txt": "a4a67868e56502186b35eefdd18d44e1ffbf940f3eaa5c5eeb31b923bb047940",
+    "interop-runner.sh": "4aa1befd56f586e36dd49c62db455fc40cf0e00dba1ff8a69dbcb4f98a53383a",
+    "live-timeouts.json": "42da9bf88c9977b777f347ecbb0d45c880e86068c19b9e4b92ba964167c0a404",
+    "local.json": "f13d5cb82f023c6b022502ec53e45c17d49875bd60560f1059c9e8c445d0637b",
+    "native-interop.txt": "d5a3bcb4005707b68bfd2550fc51a7b2142ba4e9ac799385b65398434d5f29ba",
+    "native-lint-text.txt": "0e531fa56b67dffadb9177db39c7872bd0017f6c1783b4fbf0101d0cce6c3baf",
+    "native-prefix-followup.txt": "ef0523336aefa9a4770313f28f59e4eddf5c4d3d26c9ecc1766f1f8574bb1c27",
+    "native-regressions.txt": "68e17adab44121c7a51f69fee7f1249cee7483390ef3fe83a70efcdf64005405",
+    "node-gnu.log": "5c8f2207fb3f72e42662397871cfce6442fb158953cedf3ed8f803d408d0e3bf",
+    "node-swi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "node-trealla.log": "70705006099666a7e75307ad7fe551157c75198070f7749831365a604132b9d2",
+    "trealla-deadline-enforcement.json": "2de0e3dfef7b366eb993aeb988589a71b117ef6a9dbb5bbabb0b548791a79ef4",
+    "trealla-http-context-followup.txt": "542da9491c336c0c21bb11d5f91aaa57f071eb408f8372e6b99cad667d107c6f",
+    "trealla-unit.txt": "ee6e3918f111e01bada461c0f329bd1519f06ea6b106fd79a72fa42b6836663d",
+    "wasm-full-suite-manifest.json": "e4c220c9188b668c283d495ca12dc653b42cfab1a74522f783dab8b9fb976cc2",
+    "wasm-main-manual-option-sources.json": "bf1746fa4663570a2ef445224b3da8368618df224daf6648ffd3556c6ff29aea",
+    "wasm-main-prefix-followup.txt": "a03d764b75a4ac9c1ba6e102cfe4d4a7a6c0340aeb1e3cb5574aaee6eab7c2bb",
+    "wasm-main-rpc-timeout.json": "7926c5bb10948934d5f5f717787c1b2aea4da70f4e2c861fbcd1e1e0a2ea578e",
+    "wasm-main-statechart-document.json": "7c79034774c319adf742b16b56582b067f7c118d7b0aa0130e21a7847ea2fae0",
+    "wasm-main-supervisor-common.json": "4ebe84fdfc482eaca75061518833bfb8dc0f2082b1894f35d88e3c238b1efcfb",
+    "wasm-main-uri-atoms.json": "1d56ef190c075f45258b4f5c9071570983ea87952770c193c3931f4ef00f7600",
+    "wasm-package-manifest.json": "a58643ab4b896da112d9e614f1470b5a182cc1f9e0516dae7cc5b68802cd6dbb",
+    "wasm-semantic-contracts.txt": "0e2713c73e7d7f6c08777bb647fe8fef325189aab9d6e41c301fcf74ae363ef5",
+    "wasm-worker-manual-option-sources.json": "c8b0e4777fa66dc24b51389933939216c02b56da4a9e2ef26fc42355607fd701",
+    "wasm-worker-prefix-followup.txt": "cc7ecb49e058c230a6574d7b478de8d12417e211b4f003eb3e78bea424fc0b5f",
+    "wasm-worker-rpc-timeout.json": "1d6988d39178af7a49588fd2eb3e1b8c137010878f3e2de2aa20fa82283c0bf4",
+    "wasm-worker-statechart-document.json": "b71f58f2300d8753bf4be0ad814f2063d4af033b3e938f4d633e5c4b6318ad75",
+    "wasm-worker-supervisor-common.json": "7197edf5c30f3d59bd7bb298445a937e8f568eac202ed11634102228b49cb657",
+    "wasm-worker-uri-atoms.json": "63d2c9b7b10f6a523b7e3c3cd6738bb4b4b9b5667215145e4d889e0771db5b60"
+  }
+}

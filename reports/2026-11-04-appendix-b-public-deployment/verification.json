@@ -1,0 +1,294 @@
+{
+  "recorded_at": "2026-11-04T22:36:35.264156+00:00",
+  "scope": "deployed public-node qualification for the common Appendix B runtime changes; not full Appendix B certification",
+  "public_nodes": [
+    "https://n0.elfenbenstornet.se",
+    "https://n1.elfenbenstornet.se",
+    "https://n2.elfenbenstornet.se",
+    "https://n3.elfenbenstornet.se",
+    "https://n4.elfenbenstornet.se",
+    "https://n5.elfenbenstornet.se",
+    "https://n6.elfenbenstornet.se"
+  ],
+  "deployed_consumer_commit": "b3f06c597e6bf189449687ebca4540ba9b749139",
+  "consumer_qualification_commit": "c74f815a00d0c022676c7177d083d922b24ad2da",
+  "pins": {
+    "swi-wasm": {
+      "package": "swipl-wasm",
+      "package_version": "8.2.5",
+      "engine_version": "10.1.19",
+      "engine_commit": "724df2b54cf1dda6fb3327d9167db2ae750c460e",
+      "tarball": "https://registry.npmjs.org/swipl-wasm/-/swipl-wasm-8.2.5.tgz",
+      "integrity": "sha512-wV0VBcuAQToNJzMU86uSKBNPBTfnlRcCA7hbF/8jh+WBNU/R9yY4fwjI/wQ/mLsTa9W27iOrAFBWSnuQyzRdPA==",
+      "bundle": "web/swipl-bundle.js",
+      "bundle_sha256": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+    },
+    "swi-wasm-node": {
+      "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+      "revision": "56b9391c28a7fd6aa844862b331c0f47f7a5dab9",
+      "version": "0.1.0",
+      "manifest_sha256": "24b4e1e637b48467c7008dc0afcbd03a77fe6f1dd897c5755aa5ede42f219ab0"
+    },
+    "trealla-port": {
+      "repository": "https://github.com/torbjornlager/trealla-port.git",
+      "revision": "a1e80a6258259286b6fe577b267cd941eda5434a",
+      "mode": "required for optional Trealla N5 builds",
+      "engine": {
+        "repository": "https://github.com/trealla-prolog/trealla.git",
+        "revision": "841f819c7dbd462d053a8e0cafb51cd168c9cf7c",
+        "version": "3.14.20"
+      }
+    },
+    "swi-prolog-node": {
+      "repository": "https://github.com/torbjornlager/swi-prolog-node.git",
+      "revision": "a982e464dd5087637fd412569b54917d6db807b8",
+      "pack": "web_prolog",
+      "mode": "required for startup, tests and container builds"
+    },
+    "gprolog-port": {
+      "repository": "https://github.com/torbjornlager/gprolog-port.git",
+      "revision": "8dff4798b7d8f06f6f89fc471431fe5af0511682",
+      "mode": "required for optional private or contained public N6 deployment",
+      "engine": {
+        "repository": "https://github.com/didoudiaz/gprolog.git",
+        "revision": "5976ac516c9fbd1d740d41b238597e327302baea",
+        "version": "1.6.0"
+      }
+    }
+  },
+  "public_http_fields": {
+    "pass_count": 354,
+    "fail_count": 0,
+    "nodes": [
+      {
+        "node": 1,
+        "pass": 59,
+        "fail": 0
+      },
+      {
+        "node": 2,
+        "pass": 59,
+        "fail": 0
+      },
+      {
+        "node": 3,
+        "pass": 59,
+        "fail": 0
+      },
+      {
+        "node": 4,
+        "pass": 59,
+        "fail": 0
+      },
+      {
+        "node": 5,
+        "pass": 59,
+        "fail": 0
+      },
+      {
+        "node": 6,
+        "pass": 59,
+        "fail": 0
+      }
+    ]
+  },
+  "public_actor_checks": {
+    "pass_count": 42,
+    "fail_count": 0,
+    "suites": [
+      {
+        "node": 3,
+        "suite": "creation",
+        "pass_count": 6
+      },
+      {
+        "node": 3,
+        "suite": "supervisors",
+        "pass_count": 8
+      },
+      {
+        "node": 4,
+        "suite": "creation",
+        "pass_count": 6
+      },
+      {
+        "node": 4,
+        "suite": "supervisors",
+        "pass_count": 8
+      },
+      {
+        "node": 5,
+        "suite": "creation",
+        "pass_count": 6
+      },
+      {
+        "node": 5,
+        "suite": "supervisors",
+        "pass_count": 8
+      }
+    ]
+  },
+  "public_readiness_browser_and_rpc": {
+    "pass_count": 60,
+    "fail_count": 0
+  },
+  "selected_public_assertions_pass": 456,
+  "selected_public_assertions_fail": 0,
+  "pinned_ci": {
+    "groups": 34,
+    "fail_count": 0,
+    "initial_results": "pinned-ci/results.json",
+    "full_WASM_followup": "pinned-ci-followup.json",
+    "note": "Only test fixtures changed after the built consumer commit; the full WASM tier passes after migrating private signatures and Boolean-domain expectations."
+  },
+  "consumer_wasm_scenarios": 107,
+  "runtime_services_updated": 12,
+  "candidate_proofs": [
+    "177 shared HTTP assertions across exact SWI/Trealla/GNU images",
+    "creation 6 and supervisor 8 checks on SWI and Trealla candidates",
+    "N5 public saturation, Linda and URI source policies",
+    "N6 public contract and actual contained worker/broker fields",
+    "Linux credentials/chroot/capability/files/FD/network/namespace/ptrace/process/orphan/presenter-death containment checks"
+  ],
+  "qualifications": [
+    "No proxy access policy, resource budget, operator credential or persistent volume was weakened or replaced.",
+    "An overlapping initial public check batch reached the existing N1 rate cap. Those results are retained in diagnostics; the successful field rerun uses 1.5 seconds between requests.",
+    "Original CI failures and the old asynchronous supervisor expectation are retained; full corrected checks pass.",
+    "All seven public nodes serve the exact pinned browser and Worker bytes.",
+    "Rollback image tags are retained; disposable candidate containers and volumes were removed.",
+    "This promotion does not claim that every remaining Appendix B requirement is implemented."
+  ],
+  "evidence_sha256": {
+    "WASM-followup.log": "3a7eac798d6f400020dfc86f52ce726669a92646a35fc8a7d528af75b559a8b9",
+    "browser-exception-followup.log": "0a94bb6c513a7a38816dca5c57bc16ff8891224da2d7598e03740495bb47f4f1",
+    "browser-smoke-followup.log": "da1cbe713f478e3a6c495e1a6e83b89042ef46b5c5f18d65d0f732f8f6a93502",
+    "build-driver.log": "d36cb5d2f2f092d07178beeabe49470905ee76d259cd66db8f2612d688097299",
+    "build-driver2.log": "71b93b6277201a800623a0b918070c2d59413cd4e8032a31d33f769c05ff31e6",
+    "build-gnu-node.log": "44be271de95b5d503acadd1a73bb51e049e2d357738de7e1afb8862e837ea320",
+    "build-gnu-runtime.log": "987d0eb9ab60051419d56bdf0e243f56a58c22e5e915752d79044913bb9c3ad8",
+    "build-hub.log": "24a0e89fbbb09f7c7cbb2474d8f36d82ef51cfcb9e7146bd4b1fb6a0c9aa05e0",
+    "build-native.log": "53a75c2c69eb4262ecf9c9f96891fdf63b4abec79ecfdece0e5dddbe36b5a1be",
+    "build-results.json": "b704b201da58747081af4fc03a2ac5c5fe6511e11fd4de42bb1f21315cc529fc",
+    "build-trealla-node.log": "b94f50faf585bbd832a74ae71a0915e36a24b364ec0b9e32a88b2406d49d29f1",
+    "build-trealla-runtime.log": "4a59a0e0061b372542ebbdbf89cf639c2c99d92b6e03d6dd3e2c6b69657e3efa",
+    "build.py": "383646014539a7ebc54ee22a4dc2b69884d9b209ba4a78a2d34e6c109fd29c78",
+    "candidate-cleanup.log": "6fc4502e9459745367ac38b5fdb12d81b61c5274ea887821d3359631d45b097a",
+    "candidate-n5-creation.json": "3f2c420d6f27e1af427f45a3d1d93502c94e0d828275a9945e3c1a39f90cf9ce",
+    "candidate-n5-creation.log": "282fa27c0a5b637c1a2e4fd685d35e4ea30804bb0f83dfecda3f313ac15f6266",
+    "candidate-n5-http-fields.json": "5827e80dab85693e8a2cca32270b171a07a5540b157d0493c5880878d534bfed",
+    "candidate-n5-http-fields.log": "1730dfda4585f1ac7d4373980072b8ec4022804a9b0a6ffcf3dab8859ceff57a",
+    "candidate-n5-linda.log": "9ed652c9d584aa1470a11d1e5b06d6130f384b38c12508ceed8b256a3f7d3074",
+    "candidate-n5-public.log": "80fb2c08b76c6a9040c0a38d2d1e8b81f2bd251506fb97f34c9f3e994af8782e",
+    "candidate-n5-sources.log": "04fa10a03bfb68fd20d1118142174721e2c1bf8aff8ac3aa74047e3a68d6408c",
+    "candidate-n5-start.log": "1ace1a5b211f447db7f223de4018453013cd8f9b5b0ec9e38519637846c859c9",
+    "candidate-n5-supervisors-followup.json": "034acf20f5aa53790e0756d4eecbc1b9ff0c976765ae246b5204610220a9a69d",
+    "candidate-n5-supervisors-followup.log": "2330d253953fcd554f0318bf6a0ebb095c9714d907bb104a9cc2d12008074c5b",
+    "candidate-n5-supervisors.json": "fc06788cf4b8dd04781a38fd3a2dae9fe09a7aeed314c89b5ed73c727aceeb46",
+    "candidate-n5-supervisors.log": "e65e7a3dbb9c884ef9c1ac9cd86203392bb10b3a6a6d51976488258b3cb2e021",
+    "candidate-n6-containment.log": "b2dbb88089bdf8106d803bf75fa20fff5b092fade8fc30eefda37d0d094bea53",
+    "candidate-n6-driver.log": "4e1bf2183592794d97538d112b2093b05b0a16ca90e035ed3c4cfd1cf4c6ee95",
+    "candidate-n6-fields.json": "dff08eb5ab3b0d8575c27cc30742fb4a04f0c5b3bee14d9238d29bbf0847cd99",
+    "candidate-n6-fields.log": "51b795cec041d05d8c19f926bbd1fc97e6186536b284d76aaba2b4b4314db7d3",
+    "candidate-n6-public.log": "8e6f8915a6a76e3b7a8e774bb6998e2642c66609dcce8d2308edbe361bc269ed",
+    "candidate-n6-worker-broker.json": "dd38941a3523aec08f29c15f085b473be6ac3bde4fdd4a08de11e6bbfeab4a02",
+    "candidate-swi-creation.json": "edf1ba56fcc92a317651d1b4533cdb014c8dbb9d8ff0c635d637294337a0bf30",
+    "candidate-swi-creation.log": "282fa27c0a5b637c1a2e4fd685d35e4ea30804bb0f83dfecda3f313ac15f6266",
+    "candidate-swi-http-fields.json": "34a6b3d42a0d3f29e404006a75eeb378688e87db8e943f89f935c141bc7c0efb",
+    "candidate-swi-supervisors.json": "6fd28a14aff2af46bfb5f09d8b8966f64210c6689208658aaac3c637053c4ec5",
+    "candidate-swi-supervisors.log": "af31d06577bafa15664311a96a496d403dce4fbd8118a430d6ea2e2adaca702a",
+    "check-fields.py": "62e06f1f0f45c5179b080b2b0294aab748f805d8e3007353a28571850e3be364",
+    "check-n6.py": "f8df39a7c7a7941fe98c521647f794c47d2b24d013b97f3319c5ad0fb035cd13",
+    "consumer-revision.txt": "46786ca7ba72daa026ba994ad157659abf790a9aa5c7ff68e9de7205cd0927a6",
+    "diagnostics/unpaced-public-n1-http-fields.json": "4b9d65742729d3d33cdec153dd19ef2e1d3dfaca03218fff5a3fa8b769b70945",
+    "diagnostics/unpaced-public-n1-http-fields.log": "c035af15065d10a4cee2dbba395f883c2356db47799a46d3954803d91c5f481f",
+    "diagnostics/unpaced-public-verification.json": "1e072e430c00743bc73c61d0e8e1a0781abf235aa8dc2abca8e8ea40a5952bdc",
+    "diagnostics/unpaced-public-verification.log": "1679575fb69bb4227b1273465b3518705afb05ad59feabc6ab30cebc06f18dff",
+    "inventory.py": "98bd44f80c0171896c96de3f509a03039b7b9fa2d2eb4e99f6eccff1397903f9",
+    "pinned-ci/LINT.log": "5148f43b35361c051cd524dd09c1eddf2724c8704a81e6fbaecfb3eda38b676a",
+    "pinned-ci/T0.log": "9edadaf61cffb4699a0173fd28a9acb6a8cec5ed1da3ebe27f14fd2892554cbd",
+    "pinned-ci/T1_INTEGRATION.log": "012e60b905200cfdad8503cd44d1cbed0ac12035ad272f28a4cf4feab1ec9b50",
+    "pinned-ci/T1_NATIVE.log": "8bc0b14279042cddb2398e12f98c4c69b28deedde75d299fce447d6ad0b474f6",
+    "pinned-ci/T2.log": "b3f1244922020d13ecac5689618d4ad247aebd57c003ace532af8430b9bf4f71",
+    "pinned-ci/T3_INTEGRATION.log": "a3d600ca3ba578462d25226cadec2d268ede543b5588add8ef4162e538ed6420",
+    "pinned-ci/T3_NATIVE.log": "a5b39a5d079464e4ec2a0af8e7115f34e3b3c59c88985bf5f7ab1b95329f25a6",
+    "pinned-ci/T4_INTEGRATION.log": "8750fdd9ca21bdeca2dbaa8567d21d7aded42097a62cd0113941f5e5d927ef4d",
+    "pinned-ci/T4_NATIVE.log": "dc102980f0eb684fb1c7f129ed07d14d7b347598fdbc4113bdbb332ff646ae3c",
+    "pinned-ci/T5.log": "5be6a0ad69670bd01edd70de61652035e97b78d05f00a09ef052f73d0fe8c246",
+    "pinned-ci/TEXT.log": "a36e5955316c3e1d1e0e927fcc13e84b086cc27632553c563ca07019d2928175",
+    "pinned-ci/WASM.log": "2486288955f6c3a6e67849c8005e52ad463f327a9060506b5cd265ec1df89eb4",
+    "pinned-ci/browser-equivalence.log": "dc527e011e2a847758848ee6681cdcc733569f99ff8f5c742f1612eb5f05c9f5",
+    "pinned-ci/browser-pin-regressions.log": "071091e9f2678614fbff061a60660bd62a624443bac9a15c73e017db515578e8",
+    "pinned-ci/browser-prolog-723a821f165848e2/manifest.json": "1e42ee9eacb10ce594d38597f99e62abad31278a34b85663da8d7df473b5705a",
+    "pinned-ci/browser-prolog-723a821f165848e2/shared_db.pl": "00d9afd9aaf73f6c446cc59d884da5c4942084486dbc600a4274f5c5d09927e4",
+    "pinned-ci/browser-prolog-723a821f165848e2/statechart_wasm.pl": "fd4cad98f2941c2ec11c9f21e277be58cd829d87197ae3992869e8ac79be4ac4",
+    "pinned-ci/browser-prolog-723a821f165848e2/statechart_wasm_exec.pl": "0ea5653d596acd99e5dc5afa54db7d4d21af733954a488d0ff354c242fb29bed",
+    "pinned-ci/browser-prolog-723a821f165848e2/statechart_wasm_model.pl": "c85d4d3a0e666a2177a12ae56181343cf89d0fde8e4b06edfed20fda01d26712",
+    "pinned-ci/browser-prolog-723a821f165848e2/statechart_wasm_runtime.pl": "8ed9f5940037dad66e12d5e8d3dcfe020651601e7250e79e3d4e1910a6761da7",
+    "pinned-ci/browser-prolog-723a821f165848e2/sxml_schema.pl": "968c0cc1dd4358e59d0d7ae6bc660299ef234e8b97616aeead154bdd697ff592",
+    "pinned-ci/ci-runner-regressions.log": "1e288bfb1224df502ae0879ee6d165a85e0b632ba232d490af20e9e8c569a9a6",
+    "pinned-ci/cross-origin-native-integration.log": "ce00f280587fbc071d73786cdea17091a4fb18867383aa2cf38816dac76e869a",
+    "pinned-ci/default-startup-regressions.log": "019cfa75559ee091c5b08d111b50720de34a184020a720ca7c874dd1f61b7c5d",
+    "pinned-ci/demonstrator-DEMONSTRATOR.log": "88a1386ccf5d73ab1ef698a810522070e60074ce643ffc7fc38101ec6106ae78",
+    "pinned-ci/demonstrator-JEV.log": "b43d21dadcd8ffdf9d084b0c92607a32c7041d3a5ba519cd5d467d75250e0d6d",
+    "pinned-ci/demonstrator-LINDA.log": "7bc0993949a3d20182588882186a393473c4e3763fa1e649a3eb27b637b8b068",
+    "pinned-ci/demonstrator-MODEL.log": "d98bcaa72febf69e3cc7cf2d2ac243c80172b3400ee53ad92d2839700982fe78",
+    "pinned-ci/demonstrator-MODEL_SXML.log": "234389afa4cb43bf691a013275fdfdc7360bb18dad1ad684e9b9025e55044db4",
+    "pinned-ci/demonstrator-SERVICE_TEXT.log": "dab24af0c3a03e11c0c174204023536b80ff143ebfca2c6e056bec188163d649",
+    "pinned-ci/discovery-regressions.log": "ff071deb5c4f800557796c912af401634b3acb90849d8023b54e143e83999658",
+    "pinned-ci/fetch-regressions.log": "1e6ad8db266feba303d71aa5e645b8fd6cd7c7494b05c5dfe8758aedcb919bf4",
+    "pinned-ci/host-url-regressions.log": "e3e1c15f150ddf3f5fb113e5ea8e801fe9fcf0b966ad329ccda00de01140b0fb",
+    "pinned-ci/https-sso-probe-regressions.log": "feabb4add9e2ca3374e538560634d1ec97dc4f4ce89aab12f3d726e36ea9b2f6",
+    "pinned-ci/native-swi.json": "fc98b6bc5d35d0706bcd81b38aebc0ff68b57bcc987223aa47d913480b85b60d",
+    "pinned-ci/origin-audit.log": "c8400187fd6ebb734cc47847460ee3517bfd6b1b1b0a9c240e95d77f48adf132",
+    "pinned-ci/packaging-regressions.log": "ff1fdaa7f7b011880e9cf5c61d0e51f0466d712f3ad1dc5e6ec9c7aa9fc2a728",
+    "pinned-ci/pin-regressions.log": "5bbc623efa76610f098cb9a7099ac2fbc3196d77d8ad38732d25262cd3e857dd",
+    "pinned-ci/portal-runtime-regressions.log": "604635b07d2387aaa15f99885860780ba7a406224dbbcf3f5c154d13d667cba2",
+    "pinned-ci/provenance.json": "cb3ffe38f1006207c625b9f684c1cce12d96e0a054a7390bcd685eaa7ded313a",
+    "pinned-ci/results.json": "1e7845926f1cc0e32cd0a343e7db2b7dfdd4088ef11796f84cff4096ba5ff4c4",
+    "pinned-ci/setup.log": "fc98b6bc5d35d0706bcd81b38aebc0ff68b57bcc987223aa47d913480b85b60d",
+    "pinned-ci/static-distribution-regressions.log": "0e202d09b86f2e487979364d2edd207626ac6ca2ced07e44a76b4924981e2461",
+    "pinned-ci/trealla-pin-regressions.log": "3204baffa5b055f4539c62afc34364b400822e6d84e1cf2bc84bf6bdd599e599",
+    "pinned-ci/watchdog-regressions.log": "0e1bb448d01f1eff06f4ce900c9bc29f36c6b1be09db5c9190fde1a2caa3798e",
+    "pinned-ci-driver.log": "c6cdc774f537952e5c0966e91adef8ed25aa2dfdb3e15eda155de73de7428f98",
+    "pinned-ci-followup.json": "54c686426c8077066c27f2ccd484c5eea3fc18dbcea9196d2a62a749378a1bf6",
+    "public-before.json": "881ab865ee7ecb51c4ca125e1df1c4276f9144c987c9d99adab3db76aa424d6e",
+    "public-fields-driver.json": "18063e71c6d454a2b0c508c6975de91df4bba946c42802a1d604a43aa794463f",
+    "public-n1-http-fields-paced.log": "d6f2ddfc8dc496398044bebbc40a0efd1c98ac2c9a8fa87f13562aa448a40e46",
+    "public-n1-http-fields.json": "fbf5d8e5b5d7028b1cad161a1f34758390f81f5eabc2de8a834928bd91adb57f",
+    "public-n1-http-fields.log": "c035af15065d10a4cee2dbba395f883c2356db47799a46d3954803d91c5f481f",
+    "public-n2-http-fields-paced.log": "e1743b41ed56d7c8986e6078158d64818045319cb71bc94b098dd8b6ad011b68",
+    "public-n2-http-fields.json": "91efcae7f81b6d65da9ef3b0cf98c5f36562db1d10f778f64ec56f6022c521a5",
+    "public-n3-creation.json": "f89766972d8466f1776a2e7187723ea80f53ae430f71a63de854fcd9c58c0ba4",
+    "public-n3-creation.log": "282fa27c0a5b637c1a2e4fd685d35e4ea30804bb0f83dfecda3f313ac15f6266",
+    "public-n3-http-fields-paced.log": "ef4c9545766420816b6df6ce7946a0b0716556af4c5a71a5f4bf2df142ada2d9",
+    "public-n3-http-fields.json": "77727b7fa90ebe462e7ac859571d6416ec3d20e859a4a51609623fce621c73ce",
+    "public-n3-supervisors.json": "737ad2f876e768f2b28d09987f3067d67da43aeac0949adfd9cb41f2e62d634c",
+    "public-n3-supervisors.log": "3d4fceba28eaa7ece5ff453dc2dc9d1bf52976808cafbdd954a63b1aefda2cbb",
+    "public-n4-creation.json": "3eb886a89c04109d45cf2017132bf732daf0f2d36e9cd14888b99a9e90da1e8f",
+    "public-n4-creation.log": "282fa27c0a5b637c1a2e4fd685d35e4ea30804bb0f83dfecda3f313ac15f6266",
+    "public-n4-http-fields-paced.log": "433e9f602dc2314528e828e6491aa09440df291c5fc3d5f73f124dcbf3e92372",
+    "public-n4-http-fields.json": "76bc94ffda62e0a99476088628076ac2d585afb47b47442e1ba8d1e6a6da0749",
+    "public-n4-supervisors.json": "97cc0d931fbb574a93d0efa7861728c4bd51a4d00aff39541392b6449c262bcb",
+    "public-n4-supervisors.log": "35dd6b0b0f2342a9bb336a8841ec8f58dd76b1128ddb8b026419a03d915e04d2",
+    "public-n5-creation.json": "339e53836f1b30ed913963849ef33bfe9162b1aa18aa91bcd8ceca03b4f47630",
+    "public-n5-creation.log": "282fa27c0a5b637c1a2e4fd685d35e4ea30804bb0f83dfecda3f313ac15f6266",
+    "public-n5-http-fields-paced.log": "108461484843a193797f64b5cc3fe9c8e69202ff03d46281f7bf52687f0becf9",
+    "public-n5-http-fields.json": "df6316a7639f43e64d51fe036efc7928f36efa734f66d07691d2cec00a3fa9f7",
+    "public-n5-sources.log": "04fa10a03bfb68fd20d1118142174721e2c1bf8aff8ac3aa74047e3a68d6408c",
+    "public-n5-supervisors.json": "28e45e202c539d06fd89785b22f4541dc014c28b01e39f3aeacbe603a3854403",
+    "public-n5-supervisors.log": "c65b20d81ee78c7ba2c4b4304f4e7758dff04fe649dce87af91b0ed7bb574b95",
+    "public-n6-contract-paced.log": "8e6f8915a6a76e3b7a8e774bb6998e2642c66609dcce8d2308edbe361bc269ed",
+    "public-n6-http-fields-paced.log": "b3886fec83afddcb063b9dadc33040e1930f0eb59c1b5fc1acb87ceba60b60b5",
+    "public-n6-http-fields.json": "2b9188e94be26f48834b592ed7bba8e8941b6891bc9a268fe416fd7de4788a71",
+    "public-verification-paced.log": "0ce090338164dd5187d8b9879e57972b8cd5d94cf868ca65769a58ee9725435c",
+    "public-verification.json": "5287939f759b111b03cca1b755a582004a2b66a4091daa993229dfe4a51e3c8e",
+    "public-verification.log": "1679575fb69bb4227b1273465b3518705afb05ad59feabc6ab30cebc06f18dff",
+    "pushed-commits.json": "b98474707cd8e214c03d06959cb6732d780f3b5ca094196f3cdefa6b5b86e8b9",
+    "rollback-images.json": "93d9f3b553eeb5bda191f82fa2d1ee0221d5e15b4f42246bb8a1ac5ba9d260e3",
+    "rollout-results.json": "1e686fe7e8d1ac8547d71440fa4f605ba429265572bd78ec0a79988e96651737",
+    "rollout.log": "e2cac745a135b59672334dcc7ad4b01e73090ccbec5dfb31c4a65136f6b30753",
+    "rollout.py": "ed92034362cf29c1afa581b3045d2ba55ea000835c568370e7bf7d492e98b44c",
+    "running-runtime-pins.json": "c03ca88b3e8d9bacdebc1e3d368071a10829cfa5c0cad7a9edeae112d1008446",
+    "verify-public.py": "8dfae2b0fe95a0d1c37c8cab2b7ef8c69f6521f597abccf787a805ebfb530855"
+  }
+}

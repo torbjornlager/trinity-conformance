@@ -1,0 +1,70 @@
+{
+  "suite": "uri-atoms-0.1",
+  "baseline": "uri-atoms-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "A URI is an atom or a string (a string object, or a list of characters or codes). Other values, including the Host:Port shorthand, raise type_error(atom_or_string, Value) before any request. Revised 2026-11-17 from the atom-only rule of 2026-11-04.",
+  "cases": [
+    {
+      "id": "URI-001",
+      "title": "RPC rejects a non-text URI",
+      "transport": "query",
+      "goal": "catch((rpc(42,true),fail),error(type_error(atom_or_string,42),_),true)"
+    },
+    {
+      "id": "URI-002",
+      "title": "RPC does not accept authority shorthand",
+      "transport": "query",
+      "goal": "catch((rpc(localhost:8080,true),fail),error(type_error(atom_or_string,localhost:8080),_),true)"
+    },
+    {
+      "id": "URI-003",
+      "title": "Promise URI validation leaves variables unbound",
+      "transport": "query",
+      "goal": "catch((promise(U,true,Ref),fail),error(instantiation_error,_),true),var(U),var(Ref)"
+    },
+    {
+      "id": "URI-004",
+      "title": "A character list is a URI value",
+      "transport": "query",
+      "goal": "atom_chars('http://invalid.example',Cs),catch((rpc(Cs,true),fail),E,true),nonvar(E),\\+E=error(type_error(_,_),_)"
+    },
+    {
+      "id": "URI-005",
+      "title": "A character list is a source URI value",
+      "transport": "query",
+      "goal": "atom_chars('http://invalid.example/source',Cs),catch((rpc('http://invalid.example',true,[src_uri(Cs)]),fail),E,true),nonvar(E),\\+E=error(type_error(_,_),_)"
+    },
+    {
+      "id": "URI-006",
+      "title": "A compound URI does not bind its components",
+      "transport": "query",
+      "goal": "catch((promise(host:Port,true,Ref),fail),error(type_error(atom_or_string,host:Port),_),true),var(Port),var(Ref)"
+    },
+    {
+      "id": "URI-010",
+      "title": "A list that is not text is not a URI value",
+      "transport": "query",
+      "goal": "catch((rpc([h,1.5],true),fail),error(type_error(atom_or_string,[h,1.5]),_),true)"
+    },
+    {
+      "id": "OPT-001",
+      "title": "Non-atom Boolean options raise an atom type error",
+      "transport": "query",
+      "goal": "catch((rpc('http://invalid.example',true,[once(1)]),fail),error(type_error(atom,1),_),true)"
+    },
+    {
+      "id": "OPT-002",
+      "title": "Invalid Boolean atoms raise a Boolean domain error",
+      "transport": "query",
+      "goal": "catch((rpc('http://invalid.example',true,[once(maybe)]),fail),error(domain_error(boolean,maybe),_),true)"
+    },
+    {
+      "id": "OPT-003",
+      "title": "Later Boolean duplicates are validated",
+      "transport": "query",
+      "goal": "catch((promise('http://invalid.example',true,Ref,[once(false),once(Pending)]),fail),error(instantiation_error,_),true),var(Pending),var(Ref)"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-04",
+  "status": "Caller-fetched statechart document batch verified; full Appendix B conformance remains incomplete",
+  "scope": "Development checkouts; supporting shared API checks and disposable native-node integration. No deployment or release/profile certification.",
+  "counts": {
+    "shared": {
+      "pass": 141,
+      "fail": 0
+    },
+    "live_documents": {
+      "pass": 10,
+      "fail": 0
+    },
+    "total": {
+      "pass": 151,
+      "fail": 0
+    }
+  },
+  "reports": [
+    "local.json",
+    "wasm-worker-uri-atoms.json",
+    "wasm-worker-manual-option-sources.json",
+    "wasm-worker-supervisor-common.json",
+    "wasm-worker-statechart-document.json",
+    "wasm-main-uri-atoms.json",
+    "wasm-main-manual-option-sources.json",
+    "wasm-main-supervisor-common.json",
+    "wasm-main-statechart-document.json",
+    "live-documents.json"
+  ],
+  "manifest_hashes": {
+    "uri-atoms-0.1": "ebafa705fca82bffe1093a3fcca01af360315faa2b2db752e98f06135e454532",
+    "manual-option-sources-0.1": "17f04c28d9f63f9a73579515c7f53011acd94eb2beba0ee04f98a1c56e38fd68",
+    "supervisor-common-0.1": "0caaa5ef868ad7b0f76063617da79d8a49ce3a5396be8eb30aa02be8ac4bc1f5",
+    "statechart-document-0.1": "f64590ba050d4fdf367d11d21d8e2d50ffff026b587fc7dfe36e0780fcde12bc"
+  },
+  "verified": [
+    "Initial statechart URI XML is fetched by the caller before local actor creation or remote dispatch",
+    "Framework dispatch carries XML text and its absolute document URI together; destinations need no access to the initial URI",
+    "The running chart resolves later relative document and Prolog-source references against that document URI, under its execution source-access policy",
+    "Native SWI fetches XML before child source directives run; regression deletes the source file during preparation and still executes the fetched document",
+    "Trealla document references support parent-directory, dot, root-relative, query and absolute forms",
+    "Exactly one XML source required across native SWI, Trealla, WASM main and Worker; missing/multiple sources fail before fetch or creation",
+    "Trealla receiver still validates supplied XML, sources, guards and actions; document-base metadata does not grant execution authority",
+    "Browser main and Worker tests cover relative nested documents and verify XML/base payloads before local or remote dispatch",
+    "URI, Boolean, source-order and supervisor boundary checks from previous batches remain green"
+  ],
+  "regressions": {
+    "native": "LINT TEXT T0 T1_NATIVE T2 T3_NATIVE T4_NATIVE plus HTTP visitor ownership passed; T3_NATIVE repeated with the new document regression, 315/315 passed",
+    "trealla": "Full unit suite passed with document-envelope and URI-resolution checks",
+    "wasm": "All 95 semantic-contract scenarios passed; main document-base assertions added to the routing scenario and passed separately",
+    "interoperability": "Full SWI/Trealla interop runner passed, including the previously failing remote statechart URI test, nested invocation, supervisor, authentication/ownership and source-policy checks"
+  },
+  "qualifications": [
+    "Interop used an exact copy of tools/test.sh with its one-shot fixture startup delays changed from 0.2 to 1 second for the released Trealla executable. All test goals are unchanged; the exact runner and log are retained.",
+    "Runtime code hashes match between the full WASM suite and final shared-check package. The final package adds only the main document-base assertions to the test harness: ['tests/wasm/swi_wasm_contracts.js']",
+    "Browser document transport is mocked; real WASM parsing, public predicates, Worker startup and execution are exercised. No browser CORS or live-network certification is inferred.",
+    "Trealla retains its existing HTTP(S) source origin/IP policy; this batch does not enable local-file fetching there.",
+    "Legacy raw interpreter URI wire entries remain supported. New language-level constructors transmit prepared documents."
+  ],
+  "still_to_implement": [
+    "Common RPC execution/transport timeout handling and transport-option schemas",
+    "Remaining wrapper option schemas and removal of compatibility metadata",
+    "Common client contexts for names and promises, including engine-independent local ownership",
+    "Remote named preparation/publication/activation handshake and uniform remote link cleanup",
+    "Confirmed remote demonitor removal across all implementations",
+    "Uniform statechart invocation ordering, invocation features and engine placement",
+    "Capability-only runtime introspection and common sandbox admission policies",
+    "Synchronise the shared web manual and qualify immutable release pins after implementation work"
+  ],
+  "artifacts": {
+    "fixture-swi-False.log": "b9eac2ee170a1e519540d75e4c8806a5b100e939f58a06932cfcf47dc1415341",
+    "fixture-swi-True.log": "cb9e201a8b4c56ce62c955b94f40f876e5bd787bf74e1e0c3e344cc477d5f67e",
+    "fixture-trealla-False.log": "8d4701876b628727b0b14ea392617910534ada87f4c556817edb1ca9cff34b36",
+    "fixture-trealla-True.log": "8d4701876b628727b0b14ea392617910534ada87f4c556817edb1ca9cff34b36",
+    "interop-runner.sh": "c3be6f1c7315d995798ed1508e1dd8cbb846c47f9c1d932c55112aca9e68b621",
+    "live-documents.json": "613fd677b3d26dc8c93109524907a515762bc5f71441c11b51d26981195b4d2b",
+    "local.json": "4642e5de0b34120bdcff97f76b5db1a056ab96bd5b786969ed28b7ef498dff96",
+    "native-document-followup.txt": "944116532c4d4fd17d5a06f9edcd29b6d44fc0c8c4a85cba4e231afc387dac55",
+    "native-interop.txt": "882b77301ba442f039e1a1703187ac07fcaab984a122b81e26c0582c9a9bb742",
+    "native-regressions.txt": "ab57ee2134f045ae1852de40aefe9d1580e91f3908c067ead223ccf6b705da5a",
+    "trealla-unit.txt": "f551b49173b204cd150bc4a5adb4323acce7b58d8cc95ce432b18164bb6043b7",
+    "wasm-full-suite-manifest.json": "6a16305e0459587a9a4b4c447283a98438382c96d76d7b80dea74b4e416b623a",
+    "wasm-main-document-base.txt": "74eaa94212365890268a186497f674cffd190b9a073aa5e4145756910a8fbd44",
+    "wasm-main-manual-option-sources.json": "e6b2bba52d0cee3e16b08aaaed323c43613eeae952abd92a7a53b3ca8292a9e5",
+    "wasm-main-statechart-document.json": "a17210083d3a44fa68818b2b127459d5487a91615fd9700de42b3674c507d80e",
+    "wasm-main-supervisor-common.json": "08e576cfa1e254d94b4689facb706cd47edd2b1d047c7b97d7b5f67b24d68643",
+    "wasm-main-uri-atoms.json": "6df4443cf7154d60fdfced691be90855d19b627386400a84c380b938b739a382",
+    "wasm-package-manifest.json": "0780ace166766ed4f5c5ac144d0b46cbb805facbe04205209faad3cf40b2e34f",
+    "wasm-semantic-contracts.txt": "5864feb6b20bb660be2be616a66330ffc261d3574f3f7d2bce3f020389a2649f",
+    "wasm-worker-manual-option-sources.json": "b2c6c3d33dcc2fc2749139689c01f94c96bbe34fb6a9a626045de7494357db4d",
+    "wasm-worker-statechart-document.json": "b07bd10f949af9cd9ec6bd16c3e3b54dcc6d3707cbf3971909f38a3712d414e1",
+    "wasm-worker-supervisor-common.json": "78a8d6d888c0a6873165b7eccc4b0892e640cb5c13684a36f17345d736b13933",
+    "wasm-worker-uri-atoms.json": "0efcfdf0ddc3fb6921bd371d7b7e2e1c5f144bcbe5e4e098dd4ee2cfeead09e4"
+  }
+}

@@ -1,0 +1,1324 @@
+% SPDX-License-Identifier: MIT
+
+:- module(sandbox_policy,
+       [ normalize_sandbox_mode/2,
+         sandbox_check_goal/4,
+         sandbox_prepare_goal/5,
+         sandbox_prepare_spawn/7,
+         sandbox_prepare_options/5,
+         sandbox_call/5,
+         sandbox_call/6,
+         sandbox_call/7,
+         sandbox_call/8,
+         sandbox_call/9,
+         sandbox_call/10,
+         sandbox_call/11,
+         sandbox_call/12,
+         sandbox_spawn/7,
+         sandbox_library/5,
+         sandbox_supervisor_call/5,
+         sandbox_toplevel_call/7,
+         sandbox_toplevel_synch/9,
+         sandbox_yield/7,
+         sandbox_control_catch/4,
+         sandbox_format/2,
+         sandbox_time/2,
+         sandbox_sleep/1,
+         sandbox_between/3,
+         sandbox_succ/2,
+         sandbox_atom_string/2,
+         sandbox_random_member/2,
+         sandbox_clause/6,
+         sandbox_assert/5,
+         sandbox_assert/6,
+         sandbox_asserta/5,
+         sandbox_asserta/6,
+         sandbox_assertz/5,
+         sandbox_assertz/6,
+         sandbox_retract/5,
+         sandbox_retractall/5,
+         sandbox_abolish/5,
+         sandbox_abolish/6
+       ]).
+
+/** <module> Trealla sandbox and Web Prolog public policy
+
+Trealla v3.13.2 provides `library(sandbox)`. This module layers Web Prolog's
+profiles, actor capabilities, source-option policy, and scoped mutation rules
+on top of its native safe-goal analysis. Opaque meta-calls still pass through
+runtime guards because their targets are not known during admission.
+
+`blacklist` preserves ordinary Prolog except for explicitly dangerous
+families. `whitelist` additionally permits only a conservative catalog of
+pure predicates, actor operations admitted by the active profile, and
+predicates defined by the submitted source. `off` performs profile checks but
+does not apply sandbox policy.  This is defense in depth; OS containment is
+still required for an internet-facing node.
+*/
+
+:- use_module(library(error)).
+:- use_module(supervisor_admission,[supervisor_spec_goals/2]).
+:- use_module(library(sandbox), []).
+:- use_module(profile_policy).
+:- use_module(isolation).
+:- use_module(resource_policy).
+:- use_module(source_policy).
+
+% Source text is parsed in this module before it is installed in an actor's
+% private module.  Keep the public actor syntax available at that boundary;
+% Trealla does not implicitly import these operators from actors.pl here.
+:- op(800,  xfx, !).
+:- op(200,  xfx, @).
+:- op(1000, xfy, if).
+
+
+                 /*******************************
+                 *            MODES              *
+                 *******************************/
+
+normalize_sandbox_mode(off, off) :- !.
+normalize_sandbox_mode(blacklist, blacklist) :- !.
+normalize_sandbox_mode(whitelist, whitelist) :- !.
+normalize_sandbox_mode(on, whitelist) :- !.
+normalize_sandbox_mode(demo, whitelist) :- !.
+normalize_sandbox_mode(strict, whitelist) :- !.
+normalize_sandbox_mode(Mode, _) :-
+    throw(error(domain_error(node_sandbox_mode, Mode),
+                context(sandbox_policy:normalize_sandbox_mode/2,
+                        'expected off, blacklist, or whitelist (on/demo/strict alias whitelist)'))).
+
+
+                 /*******************************
+                 *         PUBLIC CHECKS         *
+                 *******************************/
+
+sandbox_check_goal(Mode0, Profile, Module, Goal) :-
+    normalize_sandbox_mode(Mode0, Mode),
+    profile_check_goal(Profile, Goal),
+    ( Mode == off -> true
+    ; sandbox_check_goal_(Mode, Profile, Module, [], Goal)
+    ).
+
+sandbox_prepare_goal(Mode0, Profile, Module, Goal0, Goal) :-
+    normalize_sandbox_mode(Mode0, Mode),
+    profile_check_goal(Profile, Goal0),
+    ( Mode == off -> Goal = Goal0
+    ; sandbox_check_goal_(Mode, Profile, Module, [], Goal0),
+      rewrite_goal(Mode, Profile, Module, [], Goal0, Goal)
+    ).
+
+sandbox_prepare_spawn(Mode0, Profile, Module, Goal0, Options0,
+                      Goal, Options) :-
+    normalize_sandbox_mode(Mode0, Mode),
+    must_be(list, Options0),
+    profile_check_spawn_options(Profile, Options0),
+    resolve_source_options(Options0, ResolvedOptions),
+    check_source_options_size(ResolvedOptions),
+    ( Mode == off -> Goal = Goal0, Options = ResolvedOptions
+    ; prepare_source_options(Mode, Profile, ResolvedOptions, Options, AppPIs),
+      check_spawn_options(Options0),
+      profile_check_goal(Profile, Goal0),
+      sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal0),
+      rewrite_goal(Mode, Profile, Module, AppPIs, Goal0, Goal)
+    ).
+
+sandbox_prepare_options(Mode0, Profile, _Module, Options0, Options) :-
+    normalize_sandbox_mode(Mode0, Mode),
+    must_be(list, Options0),
+    profile_check_spawn_options(Profile, Options0),
+    resolve_source_options(Options0, ResolvedOptions),
+    check_source_options_size(ResolvedOptions),
+    ( Mode == off -> Options = ResolvedOptions
+    ; prepare_source_options(Mode, Profile, ResolvedOptions, Options, _),
+      check_spawn_options(Options0)
+    ).
+
+
+                 /*******************************
+                 *          GOAL WALKER          *
+                 *******************************/
+
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs, Goal) :-
+    var(Goal),
+    !.
+% A copied, already-checked constructor retains exactly the current policy
+% and source context. Private helpers cannot inject a different mode/module.
+sandbox_check_goal_(Mode,Profile,Module,_AppPIs,
+                    statechart_actor:statechart_spawn_in(Mode,Profile,Module,_,_)) :- !.
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_format(Format, _Args)) :-
+    !,
+    % A src_predicates/1 child may receive clauses that were already rewritten
+    % when its parent session loaded them.  This one qualified runtime helper
+    % is capability-free and applies its own runtime format guard.
+    reject_format_meta_call(Format).
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_sleep(_Seconds)) :-
+    !.
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_between(_Low, _High, _Value)) :-
+    !.
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_succ(_Before, _After)) :-
+    !.
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_atom_string(_Atom, _String)) :-
+    !.
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    sandbox_policy:sandbox_random_member(_Element, _List)) :-
+    !.
+sandbox_check_goal_(Mode, Profile, Module, AppPIs,
+                    sandbox_policy:sandbox_time(_Context, Goal)) :-
+    !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs,
+                    sandbox_policy:sandbox_control_catch(_,Goal,_,Recover)) :-
+    !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Recover).
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs,
+                    clause(Head, Body)) :-
+    !,
+    allow_application_clause_goal(Head, Body).
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs, read(_Term)) :-
+    !.
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, Qualified:Goal) :-
+    atom(Qualified),
+    !,
+    ( permitted_qualified_module(Qualified), known_actor_goal(Goal)
+    -> sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal)
+    ; throw_sandbox(call, Qualified:Goal, module_qualification)
+    ).
+sandbox_check_goal_(_Mode, _Profile, _Module, _AppPIs, Qualified:Goal) :-
+    !,
+    throw_sandbox(call, Qualified:Goal, module_qualification).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, (A,B)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, A),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, B).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, (A;B)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, A),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, B).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, (A->B)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, A),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, B).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, (\+ A)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, A).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, receive(Clauses)) :- !,
+    check_receive(Mode, Profile, Module, AppPIs, Clauses, []).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, receive(Clauses,Options)) :- !,
+    check_receive(Mode, Profile, Module, AppPIs, Clauses, Options).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, spawn(Goal)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, spawn(Goal,_Pid)) :- !,
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, spawn(Goal,_Pid,Options)) :- !,
+    check_nested_spawn(Mode, Profile, Module, AppPIs, Goal, Options).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal) :-
+    library_callback(Goal, Closure, Extra), !,
+    ( var(Closure) -> check_meta_instantiation(Mode, Goal, [Closure])
+    ; callable(Closure) ->
+      copy_term(Closure, Check), library_closure_goal(Check, Extra, Call),
+      profile_check_goal(Profile, Call),
+      sandbox_check_goal_(Mode, Profile, Module, AppPIs, Call)
+    ; true % An unused closure on empty lists is never called.
+    ).
+sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal) :-
+    meta_goal_parts(Goal, Nested),
+    !,
+    check_meta_instantiation(Mode, Goal, Nested),
+    check_leaf(Mode, Module, AppPIs, Goal),
+    check_nested(Mode, Profile, Module, AppPIs, Nested).
+sandbox_check_goal_(Mode, _Profile, Module, AppPIs, Goal) :-
+    check_leaf(Mode, Module, AppPIs, Goal).
+
+check_nested(_, _, _, _, []).
+check_nested(Mode, Profile, Module, AppPIs, [Goal|Goals]) :-
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal),
+    check_nested(Mode, Profile, Module, AppPIs, Goals).
+
+check_meta_instantiation(whitelist, Goal, Nested) :-
+    contains_variable_goal(Nested),
+    !,
+    throw_sandbox(call, Goal, opaque_meta_call).
+check_meta_instantiation(_, _, _).
+
+contains_variable_goal([Goal|_]) :- var(Goal), !.
+contains_variable_goal([_|Goals]) :- contains_variable_goal(Goals).
+
+meta_goal_parts(call(Goal), [Goal]).
+meta_goal_parts(call(Goal,_), [Goal]).
+meta_goal_parts(call(Goal,_,_), [Goal]).
+meta_goal_parts(call(Goal,_,_,_), [Goal]).
+meta_goal_parts(call(Goal,_,_,_,_), [Goal]).
+meta_goal_parts(call(Goal,_,_,_,_,_), [Goal]).
+meta_goal_parts(call(Goal,_,_,_,_,_,_), [Goal]).
+meta_goal_parts(call(Goal,_,_,_,_,_,_,_), [Goal]).
+meta_goal_parts(once(Goal), [Goal]).
+meta_goal_parts(ignore(Goal), [Goal]).
+meta_goal_parts(catch(Goal,_,Recover), [Goal,Recover]).
+meta_goal_parts(setup_call_cleanup(Setup,Goal,Cleanup), [Setup,Goal,Cleanup]).
+meta_goal_parts(call_cleanup(Goal,Cleanup), [Goal,Cleanup]).
+meta_goal_parts(forall(Generate,Test), [Generate,Test]).
+meta_goal_parts(findall(_,Goal,_), [Goal]).
+meta_goal_parts(findnsols(_,_,Goal,_), [Goal]).
+meta_goal_parts(bagof(_,Goal,_), [Goal]).
+meta_goal_parts(setof(_,Goal,_), [Goal]).
+meta_goal_parts(time(Goal), [Goal]).
+meta_goal_parts(spawn(Goal), [Goal]).
+meta_goal_parts(spawn(Goal,_), [Goal]).
+meta_goal_parts(spawn(Goal,_,_), [Goal]).
+meta_goal_parts(parallel(Goals), Goals) :- is_list(Goals).
+meta_goal_parts(first_solution(_,Goals), Goals) :- is_list(Goals).
+meta_goal_parts(first_solution(_,Goals,_), Goals) :- is_list(Goals).
+meta_goal_parts(toplevel_call(_,Goal), [Goal]).
+meta_goal_parts(toplevel_call(_,Goal,_), [Goal]).
+meta_goal_parts(toplevel_call_synch(_,Goal,_),[Goal]).
+meta_goal_parts(toplevel_call_synch(_,Goal,_,_),[Goal]).
+meta_goal_parts(supervisor_spawn(Specs,_), Goals) :-
+    supervisor_spec_goals(Specs, Goals).
+meta_goal_parts(supervisor_spawn(Specs,_,_), Goals) :-
+    supervisor_spec_goals(Specs, Goals).
+meta_goal_parts(supervisor_spawn_child(_,Spec,_), Goals) :-
+    supervisor_spec_goals([Spec], Goals).
+
+check_nested_spawn(whitelist, _Profile, _Module, _AppPIs, _Goal, Options) :-
+    var(Options), !,
+    throw_sandbox(option, Options, opaque_spawn_options).
+check_nested_spawn(Mode, Profile, Module, AppPIs, Goal, Options) :-
+    ( is_list(Options)
+    -> % Admission must neither bind application variables nor demand source
+       % that preceding query goals have not constructed yet. This copy is
+       % inspected only; the runtime guard receives the original terms.
+       copy_term(Goal-Options, CheckGoal-CheckOptions),
+       nested_source_admission_options(CheckOptions, AdmissionOptions, Deferred),
+       profile_check_spawn_options(Profile, AdmissionOptions),
+       check_spawn_options(CheckOptions),
+       nested_source_predicate_indicators(AdmissionOptions, DeferredPIs),
+       append(AppPIs, DeferredPIs, NestedAppPIs)
+    ; CheckGoal = Goal, Deferred = false, NestedAppPIs = AppPIs
+    ),
+    % With unknown source, whitelist membership of its child predicates is
+    % not decidable yet. Still reject known forbidden operations now. The
+    % rewritten sandbox_spawn/7 retains Mode and checks the actual source
+    % and child goal under that original policy before actors:spawn/3.
+    ( Mode == whitelist, Deferred == true -> CheckMode = blacklist
+    ; CheckMode = Mode ),
+    sandbox_check_goal_(CheckMode, Profile, Module, NestedAppPIs, CheckGoal).
+
+nested_source_admission_options([], [], false).
+nested_source_admission_options([Option|Options], [Admission|Rest], Deferred) :-
+    ( nonvar(Option), Option = src_list(Terms), \+ ground(Terms)
+    -> Admission = src_list([]), Deferred = true
+    ; Admission = Option, Deferred = TailDeferred
+    ),
+    nested_source_admission_options(Options, Rest, TailDeferred).
+
+nested_source_predicate_indicators([], []).
+nested_source_predicate_indicators([src_predicates(PIs)|Options], All) :- !,
+    must_be(list, PIs),
+    maplist(check_declared_pi, PIs),
+    append(PIs, Rest, All),
+    nested_source_predicate_indicators(Options, Rest).
+nested_source_predicate_indicators([_|Options], PIs) :-
+    nested_source_predicate_indicators(Options, PIs).
+
+check_receive(Mode, Profile, Module, AppPIs, Braced, Options) :-
+    receive_term(Braced, Clauses),
+    check_receive_clauses(Mode, Profile, Module, AppPIs, Clauses),
+    check_receive_options(Mode, Profile, Module, AppPIs, Options).
+
+receive_term({Clauses}, Clauses) :- !.
+receive_term(Clauses, Clauses).
+
+check_receive_clauses(M,P,C,A,(Clause;Clauses)) :- !,
+    check_receive_clauses(M,P,C,A,Clause), check_receive_clauses(M,P,C,A,Clauses).
+check_receive_clauses(M,P,C,A,(Head->Body)) :- !,
+    check_receive_head(M,P,C,A,Head), sandbox_check_goal_(M,P,C,A,Body).
+check_receive_clauses(_,_,_,_,_).
+
+check_receive_head(M,P,C,A,Head) :-
+    nonvar(Head), Head = if(_Pattern,Guard), !,
+    sandbox_check_goal_(M,P,C,A,Guard).
+check_receive_head(_,_,_,_,_).
+
+check_receive_options(_,_,_,_,Options) :- var(Options), !.
+check_receive_options(M,P,C,A,Options) :-
+    ( is_list(Options) -> check_receive_option_list(M,P,C,A,Options) ; true ).
+
+check_receive_option_list(_,_,_,_,[]).
+check_receive_option_list(M,P,C,A,[on_timeout(Goal)|Options]) :- !,
+    sandbox_check_goal_(M,P,C,A,Goal), check_receive_option_list(M,P,C,A,Options).
+check_receive_option_list(M,P,C,A,[_|Options]) :- check_receive_option_list(M,P,C,A,Options).
+
+check_leaf(Mode, Module, AppPIs, Goal) :-
+    ( forbidden_goal(Goal, Category)
+    -> throw_sandbox(call, Goal, Category)
+    ; special_goal_check(Mode, Module, AppPIs, Goal)
+    -> true
+    ; Mode == whitelist,
+      \+ whitelist_goal(Module, AppPIs, Goal)
+    -> throw_sandbox(call, Goal, not_whitelisted)
+    ; true
+    ).
+
+special_goal_check(blacklist, _Module, _AppPIs, Goal) :-
+    dynamic_clause_goal(Goal, Clause),
+    var(Clause),
+    !.
+special_goal_check(_Mode, _Module, _AppPIs, Goal) :-
+    dynamic_clause_goal(Goal, Clause),
+    !,
+    check_asserted_clause_head(Clause),
+    clause_body(Clause, Body),
+    ( Body == true -> true ; \+ forbidden_goal(Body, _) ).
+special_goal_check(_Mode, _Module, _AppPIs, retract(Head)) :- !,
+    ( var(Head) -> true ; check_clause_head(Head) ).
+special_goal_check(_Mode, _Module, _AppPIs, retractall(Head)) :- !,
+    ( var(Head) -> true ; check_clause_head(Head) ).
+special_goal_check(_Mode, _Module, _AppPIs, abolish(PI)) :- !,
+    ( var(PI) -> true ; check_mutable_pi(PI) ).
+special_goal_check(_Mode, _Module, _AppPIs, abolish(Name, Arity)) :- !,
+    ( ( var(Name) ; var(Arity) ) -> true
+    ; check_mutable_pi(Name/Arity)
+    ).
+special_goal_check(_, _, _, format(Format)) :- !,
+    reject_format_meta_call(Format).
+special_goal_check(_, _, _, format(Format, _)) :- !,
+    reject_format_meta_call(Format).
+special_goal_check(_, _, _, format(_, Format, _)) :- !,
+    reject_format_meta_call(Format).
+
+dynamic_clause_goal(assert(Clause), Clause).
+dynamic_clause_goal(assert(Clause,_), Clause).
+dynamic_clause_goal(asserta(Clause), Clause).
+dynamic_clause_goal(asserta(Clause,_), Clause).
+dynamic_clause_goal(assertz(Clause), Clause).
+dynamic_clause_goal(assertz(Clause,_), Clause).
+
+clause_body((_Head :- Body), Body) :- !.
+clause_body(_, true).
+
+check_asserted_clause_head((Head :- _)) :- !, check_clause_head(Head).
+check_asserted_clause_head(Head) :- check_clause_head(Head).
+
+permitted_qualified_module(actors).
+permitted_qualified_module(toplevel_actors).
+
+known_actor_goal(Goal) :-
+    callable(Goal), functor(Goal, Name, Arity),
+    actor_safe_pi(Name/Arity).
+
+
+                 /*******************************
+                 *         SOURCE POLICY         *
+                 *******************************/
+
+prepare_source_options(Mode, Profile, Options0, Options, AppPIs) :-
+    materialize_source_options(Options0, PlainOptions, Terms0),
+    normalize_source_terms(Terms0, Terms),
+    source_predicate_indicators(Terms, AppPIs),
+    validate_rewrite_source_terms(Mode, Profile, actor_context, AppPIs,
+                                  Terms, Rewritten),
+    ( Rewritten == [] -> Options = PlainOptions
+    ; Options = [src_list(Rewritten)|PlainOptions]
+    ).
+
+materialize_source_options([], [], []).
+materialize_source_options([Option|Options0], Options, Terms) :-
+    ( Option = src_text(Text)
+    -> source_text_terms(Text, Here), Options = Rest
+    ; Option = src_list(Here)
+    -> must_be(list, Here), Options = Rest
+    ; Option = src_uri(URI)
+    -> throw(error(domain_error(resolved_source_option, src_uri(URI)),
+                   sandbox_policy:sandbox_prepare_options/5))
+    ; Option = src_predicates(PIs)
+    -> throw(error(permission_error(copy, server_predicates, PIs),
+                   context(sandbox_policy:sandbox_prepare_options/5,
+                           'public src_predicates/1 must be materialized by the sending node')))
+    ; Options = [Option|Rest], Here = []
+    ),
+    materialize_source_options(Options0, Rest, Tail),
+    append(Here, Tail, Terms).
+
+source_text_terms(Text0, Terms) :-
+    source_text_atom(Text0, Text),
+    setup_call_cleanup(open_string(Text, Stream),
+                       read_source_terms(Stream, Terms), close(Stream)).
+
+source_text_atom(Text, Text) :- atom(Text), !.
+source_text_atom(Text, Atom) :- string(Text), !, atom_chars(Atom, Text).
+source_text_atom(Text, Atom) :- is_list(Text), !,
+    ( Text = [C|_], integer(C) -> atom_codes(Atom, Text)
+    ; atom_chars(Atom, Text)
+    ).
+source_text_atom(Text, _) :- throw(error(type_error(text, Text), src_text/1)).
+
+read_source_terms(Stream, Terms) :-
+    read_term(Stream, Term, []),
+    ( Term == end_of_file -> Terms = []
+    ; Terms = [Term|Rest], read_source_terms(Stream, Rest)
+    ).
+
+normalize_source_terms([], []).
+normalize_source_terms([Term0|Terms0], Terms) :-
+    ( Term0 = (_ --> _) -> expand_term(Term0, Expanded), term_list(Expanded, Here)
+    ; Here = [Term0]
+    ),
+    normalize_source_terms(Terms0, Rest),
+    append(Here, Rest, Terms).
+
+term_list([], []) :- !.
+term_list([Term|Terms], [Term|Terms]) :- !.
+term_list(Term, [Term]).
+
+source_predicate_indicators(Terms, PIs) :-
+    findall(PI, (member(Term, Terms), source_indicator(Term, PI)), Raw),
+    sort(Raw, PIs).
+
+% A permitted discontiguous declaration defines an application predicate even
+% when there are no clauses. Do not infer admission for other directives.
+source_indicator((:- discontiguous(Decl)), PI) :- !,
+    discontiguous_indicator(Decl, PI).
+source_indicator(Term, PI) :- source_head(Term, Head), head_pi(Head, PI).
+discontiguous_indicator(Decl, PI) :-
+    must_be(nonvar, Decl),
+    ( Decl = (A,B)
+    -> (discontiguous_indicator(A, PI); discontiguous_indicator(B, PI))
+    ; check_mutable_pi(Decl), PI = Decl
+    ).
+
+source_head((:- _), _) :- !, fail.
+source_head((Head :- _), Head) :- !.
+source_head(Head, Head).
+
+head_pi(Head, Name/Arity) :-
+    check_clause_head(Head), functor(Head, Name, Arity).
+
+validate_rewrite_source_terms(_, _, _, _, [], []).
+validate_rewrite_source_terms(Mode, Profile, Module, AppPIs,
+                              [Term0|Terms0], [Term|Terms]) :-
+    validate_rewrite_source_term(Mode, Profile, Module, AppPIs, Term0, Term),
+    validate_rewrite_source_terms(Mode, Profile, Module, AppPIs, Terms0, Terms).
+
+validate_rewrite_source_term(_Mode, _Profile, _Module, _AppPIs,
+                             (:- Directive), (:- Directive)) :- !,
+    safe_source_directive(Directive).
+validate_rewrite_source_term(Mode, Profile, Module, AppPIs,
+                             (Head :- Body0), (Head :- Body)) :- !,
+    check_clause_head(Head),
+    profile_check_goal(Profile, Body0),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Body0),
+    rewrite_goal(Mode, Profile, Module, AppPIs, Body0, Body).
+validate_rewrite_source_term(_Mode, _Profile, _Module, _AppPIs, Fact, Fact) :-
+    check_clause_head(Fact).
+
+safe_source_directive(dynamic(PI)) :- !, check_mutable_pi(PI).
+safe_source_directive(discontiguous(PI)) :- !,
+    forall(discontiguous_indicator(PI, _), true).
+safe_source_directive(Directive) :-
+    throw(error(permission_error(execute, sandboxed_directive, (:- Directive)),
+                context(sandbox_policy:safe_source_directive/1,
+                        'source directive is disabled in sandbox mode'))).
+
+check_declared_pi((A,B)) :- !, check_declared_pi(A), check_declared_pi(B).
+check_declared_pi(Name/Arity) :- atom(Name), integer(Arity), Arity >= 0, !.
+check_declared_pi(PI) :-
+    throw(error(type_error(predicate_indicator, PI),
+                sandbox_policy:check_declared_pi/1)).
+
+check_mutable_pi((A,B)) :- !, check_mutable_pi(A), check_mutable_pi(B).
+check_mutable_pi(PI) :-
+    check_declared_pi(PI),
+    PI = Name/Arity,
+    ( safe_source_head_pi(Name/Arity) -> true
+    ; throw_sandbox(modify, PI, reserved_head)
+    ).
+
+check_clause_head(Head) :-
+    ( var(Head) -> throw(error(instantiation_error, sandbox_policy:check_clause_head/1))
+    ; Head = _:_ -> throw_sandbox(clause, Head, qualified_head)
+    ; callable(Head), functor(Head, Name, Arity),
+      safe_source_head_pi(Name/Arity) -> true
+    ; throw_sandbox(clause, Head, reserved_head)
+    ).
+
+safe_source_head_pi(Name/_Arity) :- atom(Name), \+ sub_atom(Name, 0, 1, _, '$'),
+    \+ reserved_source_name(Name).
+
+reserved_source_name(statechart_spawn).
+reserved_source_name(statechart_halt).
+reserved_source_name(raise).
+reserved_source_name(in).
+reserved_source_name('$actor_load').
+reserved_source_name('$actor_call').
+reserved_source_name('$actor_cleanup').
+reserved_source_name(module).
+reserved_source_name(initialization).
+reserved_source_name(term_expansion).
+reserved_source_name(goal_expansion).
+reserved_source_name(parallel).
+reserved_source_name(first_solution).
+reserved_source_name(server_spawn).
+reserved_source_name(server_request).
+reserved_source_name(server_promise).
+reserved_source_name(server_yield).
+reserved_source_name(server_upgrade).
+reserved_source_name(server_halt).
+reserved_source_name(server_stop).
+reserved_source_name(supervisor_spawn).
+reserved_source_name(supervisor_spawn_child).
+reserved_source_name(supervisor_terminate_child).
+reserved_source_name(supervisor_delete_child).
+reserved_source_name(supervisor_respawn_child).
+reserved_source_name(supervisor_which_children).
+reserved_source_name(supervisor_count_children).
+reserved_source_name(supervisor_halt).
+reserved_source_name(supervisor_stop).
+reserved_source_name(sandbox_call).
+reserved_source_name(sandbox_library).
+reserved_source_name(sandbox_library_call).
+reserved_source_name(sandbox_spawn).
+reserved_source_name(sandbox_supervisor_call).
+reserved_source_name(sandbox_toplevel_call).
+reserved_source_name(sandbox_toplevel_synch).
+reserved_source_name(sandbox_yield).
+reserved_source_name(sandbox_format).
+reserved_source_name(sandbox_time).
+reserved_source_name(sandbox_sleep).
+reserved_source_name(sandbox_between).
+reserved_source_name(sandbox_succ).
+reserved_source_name(sandbox_atom_string).
+reserved_source_name(sandbox_random_member).
+reserved_source_name(sandbox_builtin_call).
+reserved_source_name(sandbox_clause).
+reserved_source_name(sandbox_assert).
+reserved_source_name(sandbox_asserta).
+reserved_source_name(sandbox_assertz).
+reserved_source_name(sandbox_retract).
+reserved_source_name(sandbox_retractall).
+reserved_source_name(sandbox_abolish).
+
+check_spawn_options([]).
+check_spawn_options([node(Node)|Options]) :-
+    allowed_spawn_node_url(Node),
+    !,
+    check_spawn_options(Options).
+check_spawn_options([node(Node)|_]) :- !,
+    throw(error(permission_error(option, sandboxed, node(Node)),
+                context(sandbox_policy:sandbox_prepare_spawn/7,
+                        'remote spawn destination is not allowlisted'))).
+check_spawn_options([_|Options]) :- check_spawn_options(Options).
+
+allowed_spawn_node_url(Node) :- loopback_node_url(Node), !.
+allowed_spawn_node_url(Node) :- source_origin_allowed(Node).
+
+loopback_node_url(Node0) :-
+    source_text_atom(Node0, Node),
+    member(Prefix, ['http://127.0.0.1:', 'https://127.0.0.1:',
+                    'ws://127.0.0.1:', 'wss://127.0.0.1:',
+                    'http://localhost:', 'https://localhost:',
+                    'ws://localhost:', 'wss://localhost:']),
+    atom_concat(Prefix, _, Node),
+    !.
+
+
+                 /*******************************
+                 *        RUNTIME REWRITE        *
+                 *******************************/
+
+rewrite_goal(Mode, Profile, Module, AppPIs, Goal0, Goal) :-
+    rewrite_goal_(Mode, Profile, Module, AppPIs, Goal0, Goal), !.
+rewrite_goal(_, _, _, _, Goal, Goal).
+
+rewrite_goal_(M,P,C,A,Goal,sandbox_policy:sandbox_library(M,P,C,A,Goal)) :-
+    library_callback(Goal, _, _), !.
+rewrite_goal_(Mode, Profile, Module, AppPIs, Var,
+              sandbox_policy:sandbox_call(Mode,Profile,Module,AppPIs,Var)) :- var(Var).
+% Options can be computed at runtime; check and prepare callback goals then,
+% using the same policy/context path as receive and synchronous waits.
+rewrite_goal_(M,P,C,A,yield(R,Answer,Options),
+              sandbox_policy:sandbox_yield(M,P,C,A,R,Answer,Options)) :- !.
+rewrite_goal_(_,_,_,_,statechart_halt(P,R),statechart_actor:statechart_halt(P,R)) :- !.
+rewrite_goal_(_,_,_,_,statechart_halt(P,R,T),statechart_actor:statechart_halt(P,R,T)) :- !.
+rewrite_goal_(_,_,_,_,raise(E),statechart_actor:raise(E)) :- !.
+rewrite_goal_(_,_,_,_,in(S),statechart_actor:in(S)) :- !.
+rewrite_goal_(M,P,C,_A,statechart_spawn(Pid,Options),
+              statechart_actor:statechart_spawn_in(M,P,C,Pid,Options)) :- !.
+% Match the SWI actor I/O prelude without requiring Trealla to redefine a
+% built-in predicate. Stream-specific write/2 and writeln/2 remain forbidden.
+rewrite_goal_(_M,_P,_C,_A,write(Term),
+              actors:terminal_output(Term,[source(io)])).
+rewrite_goal_(_M,_P,_C,_A,writeln(Term),
+              actors:terminal_output(Term,[source(io)])).
+% The SWI actor I/O prelude redefines the non-stream format predicates.  A
+% private Trealla source module cannot redefine built-ins, so route those two
+% forms through an explicitly imported sandbox helper instead.  format/3 is
+% deliberately left as forbidden stream I/O.
+rewrite_goal_(_M,_P,_C,_A,format(Format),
+              sandbox_policy:sandbox_format(Format,[])).
+rewrite_goal_(_M,_P,_C,_A,format(Format,Args),
+              sandbox_policy:sandbox_format(Format,Args)).
+% Trealla's native time/1 writes its report to the process stream.  On a Web
+% Prolog node that leaks into the container log, so report wall and CPU time
+% through the actor's inherited terminal while retaining time/1's meta-call
+% and backtracking behaviour.
+rewrite_goal_(M,P,C,A,time(Goal0),
+              sandbox_policy:sandbox_time(C,Goal)) :-
+    rewrite_goal(M,P,C,A,Goal0,Goal).
+% random_member/2 is provided by SWI's library(random), which is part of the
+% demonstrator's normal environment, but Trealla v3.13.4 has no equivalent.
+rewrite_goal_(_M,_P,_C,_A,random_member(Element,List),
+              sandbox_policy:sandbox_random_member(Element,List)).
+% sleep/1 is available in Trealla's user module but is not inherited by the
+% short-lived private modules used for actor sessions.
+rewrite_goal_(_M,_P,_C,_A,sleep(Seconds),
+              sandbox_policy:sandbox_sleep(Seconds)).
+% SWI accepts `infinite` (and its `inf` alias) as the upper bound of
+% between/3.  Trealla currently requires an integer, so keep portable actor
+% programs on SWI's public contract through this small compatibility bridge.
+rewrite_goal_(_M,_P,_C,_A,between(Low,High,Value),
+              sandbox_policy:sandbox_between(Low,High,Value)).
+rewrite_goal_(_M,_P,_C,_A,succ(Before,After),
+              sandbox_policy:sandbox_succ(Before,After)).
+% Trealla represents strings as character lists but does not provide SWI's
+% atom_string/2 compatibility predicate.  Route it through atom_chars/2 so
+% shared tutorial and application source retains the SWI spelling.
+rewrite_goal_(_M,_P,_C,_A,atom_string(Atom,String),
+              sandbox_policy:sandbox_atom_string(Atom,String)).
+% Session input is an actor protocol operation, never a read from the node's
+% process-local standard input.  This matches SWI's isotope goal rewrite.
+rewrite_goal_(_M,_P,_C,_A,read(Term),actors:input('|:',Term)).
+rewrite_goal_(M,P,C,A,clause(Head,Body),
+              sandbox_policy:sandbox_clause(M,P,C,A,Head,Body)).
+rewrite_goal_(M,P,C,A,(X0,Y0),(X,Y)) :- rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,Y0,Y).
+rewrite_goal_(M,P,C,A,(X0;Y0),(X;Y)) :- rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,Y0,Y).
+rewrite_goal_(M,P,C,A,(X0->Y0),(X->Y)) :- rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,Y0,Y).
+rewrite_goal_(M,P,C,A,(\+X0),(\+X)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,receive(Q0),receive(Q)) :- rewrite_receive(M,P,C,A,Q0,Q).
+rewrite_goal_(M,P,C,A,receive(Q0,O0),receive(Q,O)) :- rewrite_receive(M,P,C,A,Q0,Q), rewrite_receive_options(M,P,C,A,O0,O).
+rewrite_goal_(M,P,C,A,spawn(X),sandbox_policy:sandbox_spawn(M,P,C,A,X,_,[])).
+rewrite_goal_(M,P,C,A,spawn(X,Pid),sandbox_policy:sandbox_spawn(M,P,C,A,X,Pid,[])).
+rewrite_goal_(M,P,C,A,spawn(X,Pid,O),sandbox_policy:sandbox_spawn(M,P,C,A,X,Pid,O)).
+% Recheck runtime-bound child data before dispatch. Static inspection may
+% deliberately leave opaque specifications untouched in blacklist mode.
+rewrite_goal_(M,P,C,A,supervisor_spawn(Specs,Pid),
+              sandbox_policy:sandbox_supervisor_call(M,P,C,A,supervisor_spawn(Specs,Pid))).
+rewrite_goal_(M,P,C,A,supervisor_spawn(Specs,Pid,Options),
+              sandbox_policy:sandbox_supervisor_call(M,P,C,A,supervisor_spawn(Specs,Pid,Options))).
+rewrite_goal_(M,P,C,A,supervisor_spawn_child(Sup,Spec,Reply),
+              sandbox_policy:sandbox_supervisor_call(M,P,C,A,supervisor_spawn_child(Sup,Spec,Reply))).
+rewrite_goal_(M,P,C,A,toplevel_call_synch(Pid,X,R),sandbox_policy:sandbox_toplevel_synch(M,P,C,A,call,Pid,X,R,[])).
+rewrite_goal_(M,P,C,A,toplevel_call_synch(Pid,X,R,O),sandbox_policy:sandbox_toplevel_synch(M,P,C,A,call,Pid,X,R,O)).
+rewrite_goal_(M,P,C,A,toplevel_next_synch(Pid,R),sandbox_policy:sandbox_toplevel_synch(M,P,C,A,next,Pid,true,R,[])).
+rewrite_goal_(M,P,C,A,toplevel_next_synch(Pid,R,O),sandbox_policy:sandbox_toplevel_synch(M,P,C,A,next,Pid,true,R,O)).
+rewrite_goal_(M,P,C,A,toplevel_call(Pid,X),sandbox_policy:sandbox_toplevel_call(M,P,C,A,Pid,X,[])).
+rewrite_goal_(M,P,C,A,toplevel_call(Pid,X,O),sandbox_policy:sandbox_toplevel_call(M,P,C,A,Pid,X,O)).
+rewrite_goal_(M,P,C,A,once(X0),once(X)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,ignore(X0),ignore(X)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,catch(X0,E,H0),
+              sandbox_policy:sandbox_control_catch(C,X,E,H)) :-
+    rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,H0,H).
+rewrite_goal_(M,P,C,A,setup_call_cleanup(S0,X0,K0),setup_call_cleanup(S,X,K)) :- rewrite_goal(M,P,C,A,S0,S), rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,K0,K).
+rewrite_goal_(M,P,C,A,call_cleanup(X0,K0),call_cleanup(X,K)) :- rewrite_goal(M,P,C,A,X0,X), rewrite_goal(M,P,C,A,K0,K).
+% Guard both callbacks at invocation, including under nested meta-calls.
+rewrite_goal_(M,P,C,A,forall(X,Y),
+              sandbox_policy:sandbox_library(M,P,C,A,forall(X,Y))).
+rewrite_goal_(M,P,C,A,findall(T,X0,B),findall(T,X,B)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,findnsols(N,T,X0,B),findnsols(N,T,X,B)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,bagof(T,X0,B),bagof(T,X,B)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,setof(T,X0,B),setof(T,X,B)) :- rewrite_goal(M,P,C,A,X0,X).
+rewrite_goal_(M,P,C,A,call(X),sandbox_policy:sandbox_call(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,call(X,B),sandbox_policy:sandbox_call(M,P,C,A,X,B)).
+rewrite_goal_(M,P,C,A,call(X,B,D),sandbox_policy:sandbox_call(M,P,C,A,X,B,D)).
+rewrite_goal_(M,P,C,A,call(X,B,D,E),sandbox_policy:sandbox_call(M,P,C,A,X,B,D,E)).
+rewrite_goal_(M,P,C,A,call(X,B,D,E,F),sandbox_policy:sandbox_call(M,P,C,A,X,B,D,E,F)).
+rewrite_goal_(M,P,C,A,call(X,B,D,E,F,G),sandbox_policy:sandbox_call(M,P,C,A,X,B,D,E,F,G)).
+rewrite_goal_(M,P,C,A,call(X,B,D,E,F,G,H),sandbox_policy:sandbox_call(M,P,C,A,X,B,D,E,F,G,H)).
+rewrite_goal_(M,P,C,A,call(X,B,D,E,F,G,H,I),sandbox_policy:sandbox_call(M,P,C,A,X,B,D,E,F,G,H,I)).
+rewrite_goal_(M,P,C,A,assert(X),sandbox_policy:sandbox_assert(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,assert(X,R),sandbox_policy:sandbox_assert(M,P,C,A,X,R)).
+rewrite_goal_(M,P,C,A,asserta(X),sandbox_policy:sandbox_asserta(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,asserta(X,R),sandbox_policy:sandbox_asserta(M,P,C,A,X,R)).
+rewrite_goal_(M,P,C,A,assertz(X),sandbox_policy:sandbox_assertz(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,assertz(X,R),sandbox_policy:sandbox_assertz(M,P,C,A,X,R)).
+rewrite_goal_(M,P,C,A,retract(X),sandbox_policy:sandbox_retract(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,retractall(X),sandbox_policy:sandbox_retractall(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,abolish(X),sandbox_policy:sandbox_abolish(M,P,C,A,X)).
+rewrite_goal_(M,P,C,A,abolish(N,R),sandbox_policy:sandbox_abolish(M,P,C,A,N,R)).
+
+rewrite_receive(M,P,C,A,{Q0},{Q}) :- !, rewrite_receive_clauses(M,P,C,A,Q0,Q).
+rewrite_receive(M,P,C,A,Q0,Q) :- rewrite_receive_clauses(M,P,C,A,Q0,Q).
+
+rewrite_receive_clauses(M,P,C,A,(X0;Y0),(X;Y)) :- !,
+    rewrite_receive_clauses(M,P,C,A,X0,X), rewrite_receive_clauses(M,P,C,A,Y0,Y).
+rewrite_receive_clauses(M,P,C,A,(H0->B0),(H->B)) :- !,
+    rewrite_receive_head(M,P,C,A,H0,H), rewrite_goal(M,P,C,A,B0,B).
+rewrite_receive_clauses(_,_,_,_,Q,Q).
+
+rewrite_receive_head(M,P,C,A,H0,H) :-
+    nonvar(H0), H0 = if(Pattern,G0), !,
+    H = if(Pattern,G),
+    rewrite_goal(M,P,C,A,G0,G).
+rewrite_receive_head(_,_,_,_,H,H).
+
+rewrite_receive_options(_,_,_,_,Options,Options) :- var(Options), !.
+rewrite_receive_options(M,P,C,A,Options0,Options) :-
+    ( is_list(Options0) -> rewrite_receive_option_list(M,P,C,A,Options0,Options)
+    ; Options = Options0 ).
+rewrite_receive_option_list(_,_,_,_,[],[]).
+rewrite_receive_option_list(M,P,C,A,[on_timeout(G0)|Os0],[on_timeout(G)|Os]) :- !,
+    rewrite_goal(M,P,C,A,G0,G), rewrite_receive_option_list(M,P,C,A,Os0,Os).
+rewrite_receive_option_list(M,P,C,A,[O|Os0],[O|Os]) :- rewrite_receive_option_list(M,P,C,A,Os0,Os).
+
+% Guard callbacks after the library supplies their extra arguments. Preserve
+% the caller's source namespace even when the closure is computed at runtime.
+library_callback(Goal, Closure, Extra) :-
+    nonvar(Goal), functor(Goal, Name, Arity),
+    ( Name == maplist, Arity >= 2, Arity =< 8 -> Extra is Arity-1
+    ; Name == foldl, Arity >= 4, Arity =< 6 -> Extra is Arity-1
+    ; memberchk(Name/Arity, [countall/2,call_nth/2]) -> Extra=0
+    ; fail ),
+    arg(1, Goal, Closure).
+
+library_closure_goal(Closure, Extra, Goal) :-
+    must_be(callable, Closure), Closure =.. Parts,
+    length(Args, Extra), append(Parts, Args, Full), Goal =.. Full.
+
+sandbox_library(M,P,C,A,forall(Generate,Test)) :- !,
+    \+ (sandbox_library_call(M,P,C,A,Generate),
+        \+ sandbox_library_call(M,P,C,A,Test)).
+sandbox_library(M,P,C,A,Goal0) :-
+    library_callback(Goal0, Closure, _),
+    ( Goal0 = call_nth(_, N), nonvar(N)
+    -> must_be(integer, N),
+       ( N > 0 -> true
+       ; throw(error(domain_error(not_less_than_one,N),call_nth/2)) )
+    ; true ),
+    Goal0 =.. [Name,_|Args],
+    Guard = sandbox_policy:sandbox_library_call(M,P,C,A,Closure),
+    Goal =.. [Name,Guard|Args], call(Goal).
+
+% Library callback types differ from the ISO call/N atom requirement.
+sandbox_library_call(M,P,C,A,X) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[]).
+sandbox_library_call(M,P,C,A,X,B0) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0]).
+sandbox_library_call(M,P,C,A,X,B0,B1) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1]).
+sandbox_library_call(M,P,C,A,X,B0,B1,B2) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1,B2]).
+sandbox_library_call(M,P,C,A,X,B0,B1,B2,B3) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1,B2,B3]).
+sandbox_library_call(M,P,C,A,X,B0,B1,B2,B3,B4) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1,B2,B3,B4]).
+sandbox_library_call(M,P,C,A,X,B0,B1,B2,B3,B4,B5) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1,B2,B3,B4,B5]).
+sandbox_library_call(M,P,C,A,X,B0,B1,B2,B3,B4,B5,B6) :-
+    must_be(callable, X), guarded_call(M,P,C,A,X,[B0,B1,B2,B3,B4,B5,B6]).
+
+sandbox_call(Mode,Profile,Module,AppPIs,Closure) :-
+    guarded_call(Mode,Profile,Module,AppPIs,Closure,[]).
+sandbox_call(M,P,C,A,X,B) :- guarded_call(M,P,C,A,X,[B]).
+sandbox_call(M,P,C,A,X,B,D) :- guarded_call(M,P,C,A,X,[B,D]).
+sandbox_call(M,P,C,A,X,B,D,E) :- guarded_call(M,P,C,A,X,[B,D,E]).
+sandbox_call(M,P,C,A,X,B,D,E,F) :- guarded_call(M,P,C,A,X,[B,D,E,F]).
+sandbox_call(M,P,C,A,X,B,D,E,F,G) :- guarded_call(M,P,C,A,X,[B,D,E,F,G]).
+sandbox_call(M,P,C,A,X,B,D,E,F,G,H) :- guarded_call(M,P,C,A,X,[B,D,E,F,G,H]).
+sandbox_call(M,P,C,A,X,B,D,E,F,G,H,I) :- guarded_call(M,P,C,A,X,[B,D,E,F,G,H,I]).
+
+guarded_call(Mode, Profile, Module, AppPIs, Closure, Extra) :-
+    ( callable(Closure) -> true
+    ; Extra = [_|_], atomic(Closure) -> must_be(atom, Closure)
+    ; must_be(callable, Closure) ),
+    Closure =.. [Name|Args0], append(Args0, Extra, Args), Goal0 =.. [Name|Args],
+    profile_check_goal(Profile, Goal0),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal0),
+    rewrite_goal(Mode, Profile, Module, AppPIs, Goal0, Goal),
+    call_guarded_context(Module, Goal).
+
+% The isolation runner preserves inline control scope. Dynamically qualifying
+% an entire conjunction in a private module can turn its cut into call(!).
+call_guarded_context(actor_context, Goal) :- !,
+    context_module(actor_context, RuntimeModule),
+    isolation:run_actor_query(RuntimeModule, Goal).
+call_guarded_context(Module, Goal) :- call_in_context(Module, Goal).
+
+%!  sandbox_control_catch(+Module, :Goal, ?Catcher, :Recover) is nondet.
+%
+%   ISO catch/3 for application exceptions, while runtime controls remain
+%   reserved to the actor and PTCP boundaries.  Test the control term before
+%   unifying Catcher so a catch-all cannot consume it.
+
+sandbox_control_catch(Module, Goal, Catcher, Recover) :-
+    catch(call_in_context(Module, Goal), Error,
+          sandbox_recover(Module, Error, Catcher, Recover)).
+
+sandbox_recover(_, Error, _, _) :-
+    reserved_runtime_control(Error),
+    !,
+    throw(Error).
+sandbox_recover(Module, Error, Catcher, Recover) :-
+    ( Error = Catcher -> call_in_context(Module, Recover) ; throw(Error) ).
+
+reserved_runtime_control(actor_exit).
+reserved_runtime_control('$abort_goal').
+reserved_runtime_control('$resource_idle').
+reserved_runtime_control(time_limit_exceeded).
+reserved_runtime_control(error(time_limit_exceeded(_, _), _)).
+
+sandbox_assert(M,P,C,A,Clause) :- guarded_assert(assertz,M,P,C,A,Clause).
+sandbox_assert(M,P,C,A,Clause,Ref) :- guarded_assert_ref(assertz,M,P,C,A,Clause,Ref).
+sandbox_asserta(M,P,C,A,Clause) :- guarded_assert(asserta,M,P,C,A,Clause).
+sandbox_asserta(M,P,C,A,Clause,Ref) :- guarded_assert_ref(asserta,M,P,C,A,Clause,Ref).
+sandbox_assertz(M,P,C,A,Clause) :- guarded_assert(assertz,M,P,C,A,Clause).
+sandbox_assertz(M,P,C,A,Clause,Ref) :- guarded_assert_ref(assertz,M,P,C,A,Clause,Ref).
+
+sandbox_retract(_Mode, _Profile, Module, _AppPIs, Head) :-
+    check_clause_head(Head), context_module(Module, RuntimeModule),
+    call(RuntimeModule:retract(Head)).
+
+sandbox_retractall(_Mode, _Profile, Module, _AppPIs, Head) :-
+    check_clause_head(Head), context_module(Module, RuntimeModule),
+    call(RuntimeModule:retractall(Head)).
+
+sandbox_abolish(_Mode, _Profile, Module, _AppPIs, PI) :-
+    check_mutable_pi(PI), context_module(Module, RuntimeModule),
+    call(RuntimeModule:abolish(PI)).
+
+% Trealla's native abolish/2 takes an option list, unlike the ISO/SWI
+% Name,Arity form exposed by the Web Prolog profile. Normalize that portable
+% form to abolish/1 so it cannot escape the actor's private module.
+sandbox_abolish(_Mode, _Profile, Module, _AppPIs, Name, Arity) :-
+    check_mutable_pi(Name/Arity), context_module(Module, RuntimeModule),
+    call(RuntimeModule:abolish(Name/Arity)).
+
+sandbox_supervisor_call(Mode,Profile,Module,AppPIs,Goal) :-
+    profile_check_goal(Profile,Goal),
+    sandbox_check_goal_(Mode,Profile,Module,AppPIs,Goal),
+    call_in_context(Module,Goal).
+
+sandbox_spawn(Mode, Profile, Module, _AppPIs, Goal0, Pid, Options0) :-
+    actors:validate_spawn_options(Options0,public),
+    context_module(Module, RuntimeModule),
+    % Nested src_predicates/1 is resolved only at runtime, after the parent
+    % session's submitted source has been installed in its private module.
+    % Materialize it here before the public-source validator sees the option.
+    isolation:rewrite_source_options(Options0, RuntimeModule, Options1),
+    sandbox_prepare_spawn(Mode, Profile, Module, Goal0, Options1,
+                          Goal, Options),
+    actors:spawn(Goal, Pid, Options),
+    !.
+
+% Runtime checks cover computed callbacks/options as well as the query goal.
+sandbox_yield(Mode,Profile,Module,AppPIs,Reference,Answer,Options0) :-
+    must_be(integer,Reference),
+    strip_module(Options0,Explicit,RawOptions),
+    rpc:validate_client_options(yield,RawOptions),
+    check_receive_options(Mode,Profile,Module,AppPIs,RawOptions),
+    forall(member(on_timeout(Callback),RawOptions),profile_check_goal(Profile,Callback)),
+    rewrite_receive_options(Mode,Profile,Module,AppPIs,RawOptions,Options),
+    (nonvar(Explicit) -> Caller=Explicit ; context_module(Module,Caller)),
+    !,
+    rpc:yield(Reference,Answer,Caller:Options).
+
+sandbox_toplevel_synch(Mode,Profile,Module,AppPIs,Kind,Pid,Goal0,Answer,Options0) :-
+    context_module(Module,RuntimeModule),
+    toplevel_actors:synchronous_options(Kind,RuntimeModule:Options0,_,_,_),
+    toplevel_actors:synchronous_pid(Pid,ResolvedPid),
+    profile_check_goal(Profile,Goal0),
+    sandbox_check_goal_(Mode,Profile,Module,AppPIs,Goal0),
+    check_receive_options(Mode,Profile,Module,AppPIs,Options0),
+    forall(member(on_timeout(Callback),Options0),profile_check_goal(Profile,Callback)),
+    rewrite_receive_options(Mode,Profile,Module,AppPIs,Options0,Options1),
+    % Keep the public default template independent of the execution guard.
+    % Otherwise the local call/1 protection becomes visible in answer rows.
+    (Kind==call, \+memberchk(template(_),Options1) ->
+        strip_module(Goal0,_,Template),Options=[template(Template)|Options1]
+    ; Options=Options1),
+    (toplevel_actors:remote_toplevel_route(ResolvedPid,_) -> Goal=Goal0
+    ; rewrite_goal(Mode,Profile,Module,AppPIs,Goal0,Prepared),
+      % The wrapper strips outer caller qualification. Nest prepared helpers
+      % under call/1 so their execution modules survive that boundary.
+      Goal=call(Prepared)),
+    % Preparation has one result. Do not retain its alternatives across a
+    % synchronous request, or revisit them when output unification fails.
+    !,
+    (Kind==call -> toplevel_actors:toplevel_call_synch(ResolvedPid,Goal,Answer,RuntimeModule:Options)
+    ; toplevel_actors:toplevel_next_synch(ResolvedPid,Answer,RuntimeModule:Options)).
+
+sandbox_toplevel_call(Mode, Profile, Module, AppPIs, Pid, Goal0, Options) :-
+    profile_check_goal(Profile, Goal0),
+    sandbox_check_goal_(Mode, Profile, Module, AppPIs, Goal0),
+    ( nonvar(Pid), compound(Pid), functor(Pid,@,2),
+      current_predicate(distribution:remote_pid_writer/3),
+      distribution:remote_pid_writer(Pid,_,_)
+    -> Goal=Goal0 % The peer executes portable Prolog, not our private guards.
+    ; rewrite_goal(Mode, Profile, Module, AppPIs, Goal0, Goal)
+    ),
+    toplevel_actors:toplevel_call(Pid, Goal, Options).
+
+guarded_assert(Operation, Mode, Profile, Module, AppPIs, Clause0) :-
+    check_asserted_clause_head(Clause0),
+    ( Clause0 = (Head :- Body0)
+    -> profile_check_goal(Profile, Body0),
+       sandbox_check_goal_(Mode, Profile, Module, AppPIs, Body0),
+       rewrite_goal(Mode, Profile, Module, AppPIs, Body0, Body), Clause = (Head :- Body)
+    ; Clause = Clause0
+    ),
+    context_module(Module, RuntimeModule),
+    Goal =.. [Operation, Clause], call(RuntimeModule:Goal).
+
+guarded_assert_ref(Operation, Mode, Profile, Module, AppPIs, Clause0, Ref) :-
+    check_asserted_clause_head(Clause0),
+    ( Clause0 = (Head :- Body0)
+    -> profile_check_goal(Profile, Body0),
+       sandbox_check_goal_(Mode, Profile, Module, AppPIs, Body0),
+       rewrite_goal(Mode, Profile, Module, AppPIs, Body0, Body), Clause = (Head :- Body)
+    ; Clause = Clause0
+    ),
+    context_module(Module, RuntimeModule),
+    Goal =.. [Operation, Clause, Ref], call(RuntimeModule:Goal).
+
+% HTTP client/control resolution must not move database guards into node.
+call_in_context(http_context, Goal) :- !, node:run_http_query(Goal).
+call_in_context(Module, Goal) :- context_module(Module, RuntimeModule), call(RuntimeModule:Goal).
+
+context_module(http_context, user) :- !.
+context_module(actor_context, Module) :- !,
+    actors:self(Pid),
+    ( isolation:actor_source_module(Pid, Module) -> true
+    ; isolation:actor_module(Pid, Module) -> true
+    ; throw(error(existence_error(actor_context, source_module), sandbox_policy))
+    ).
+context_module(Module, Module).
+
+
+                 /*******************************
+                 *       DENY/ALLOW TABLES       *
+                 *******************************/
+
+throw_sandbox(Action, Subject, Category) :-
+    throw(error(permission_error(Action, sandboxed, Subject),
+                context(sandbox_policy:sandbox_check_goal/4, Category))).
+
+forbidden_goal(Goal, Category) :- callable(Goal), functor(Goal,N,A), forbidden_pi(N/A,Category).
+
+forbidden_pi(open/3,stream_io). forbidden_pi(open/4,stream_io).
+forbidden_pi(close/1,stream_io). forbidden_pi(close/2,stream_io).
+forbidden_pi(current_input/1,stream_io). forbidden_pi(current_output/1,stream_io).
+forbidden_pi(set_input/1,stream_io). forbidden_pi(set_output/1,stream_io).
+forbidden_pi(get_byte/1,stream_io). forbidden_pi(get_byte/2,stream_io).
+forbidden_pi(get_char/1,stream_io). forbidden_pi(get_char/2,stream_io).
+forbidden_pi(get_code/1,stream_io). forbidden_pi(get_code/2,stream_io).
+forbidden_pi(put_byte/1,stream_io). forbidden_pi(put_byte/2,stream_io).
+forbidden_pi(put_char/1,stream_io). forbidden_pi(put_char/2,stream_io).
+forbidden_pi(put_code/1,stream_io). forbidden_pi(put_code/2,stream_io).
+forbidden_pi(read/1,stream_io). forbidden_pi(read/2,stream_io).
+forbidden_pi(read_term/2,stream_io). forbidden_pi(read_term/3,stream_io).
+forbidden_pi(write/2,stream_io).
+forbidden_pi(writeln/2,stream_io).
+forbidden_pi(writeq/1,stream_io). forbidden_pi(writeq/2,stream_io).
+forbidden_pi(write_term/2,stream_io). forbidden_pi(write_term/3,stream_io).
+forbidden_pi(format/3,stream_io).
+forbidden_pi(nl/0,stream_io). forbidden_pi(nl/1,stream_io).
+forbidden_pi(consult/1,module_loading). forbidden_pi(reconsult/1,module_loading).
+forbidden_pi((ensure_loaded)/1,module_loading). forbidden_pi(load_files/1,module_loading).
+forbidden_pi(load_files/2,module_loading). forbidden_pi((use_module)/1,module_loading).
+forbidden_pi((use_module)/2,module_loading). forbidden_pi(unload_file/1,module_loading).
+forbidden_pi(halt/0,runtime_state). forbidden_pi(halt/1,runtime_state).
+forbidden_pi(shell/1,process_execution). forbidden_pi(shell/2,process_execution).
+forbidden_pi(system/1,process_execution). forbidden_pi(process_create/2,process_execution).
+forbidden_pi(process_create/3,process_execution). forbidden_pi(process_kill/1,process_execution).
+forbidden_pi(delete_file/1,filesystem). forbidden_pi(rename_file/2,filesystem).
+forbidden_pi(make_directory/1,filesystem). forbidden_pi(delete_directory/1,filesystem).
+forbidden_pi(directory_files/2,filesystem). forbidden_pi(working_directory/2,filesystem).
+forbidden_pi(exists_file/1,filesystem). forbidden_pi(exists_directory/1,filesystem).
+forbidden_pi(access_file/2,filesystem). forbidden_pi(read_file_to_string/3,filesystem).
+forbidden_pi(getenv/2,environment). forbidden_pi(setenv/2,environment). forbidden_pi(unsetenv/1,environment).
+forbidden_pi(socket_client_open/3,network). forbidden_pi(socket_server_open/3,network).
+forbidden_pi(http_open/3,network). forbidden_pi(http_get/3,network). forbidden_pi(http_post/4,network).
+forbidden_pi(load_foreign_library/1,foreign_code). forbidden_pi(load_foreign_library/2,foreign_code).
+forbidden_pi(thread_create/3,threads). forbidden_pi(thread_send_message/2,threads).
+forbidden_pi(thread_get_message/1,threads). forbidden_pi(thread_get_message/2,threads).
+forbidden_pi(thread_get_message/3,threads). forbidden_pi(thread_signal/2,threads).
+forbidden_pi(message_queue_create/1,threads). forbidden_pi(message_queue_create/2,threads).
+forbidden_pi(message_queue_destroy/1,threads). forbidden_pi(mutex_create/2,threads).
+forbidden_pi(mutex_lock/1,threads). forbidden_pi(mutex_unlock/1,threads).
+forbidden_pi(with_mutex/2,threads). forbidden_pi(bb_put/2,runtime_state).
+forbidden_pi(bb_get/2,runtime_reflection). forbidden_pi(bb_delete/1,runtime_state).
+forbidden_pi(nb_setval/2,runtime_state). forbidden_pi(nb_getval/2,runtime_reflection).
+forbidden_pi(nb_current/2,runtime_reflection). forbidden_pi(nb_delete/1,runtime_state).
+forbidden_pi(current_predicate/1,runtime_reflection). forbidden_pi(predicate_property/2,runtime_reflection).
+forbidden_pi(current_prolog_flag/2,runtime_reflection). forbidden_pi(set_prolog_flag/2,runtime_state).
+forbidden_pi(op/3,parser_state). forbidden_pi(char_conversion/2,parser_state).
+forbidden_pi(clause/2,runtime_reflection). forbidden_pi(listing/0,runtime_reflection).
+forbidden_pi(listing/1,runtime_reflection).
+
+whitelist_goal(_Module, AppPIs, Goal) :-
+    functor(Goal,N,A), (memberchk(N/A,AppPIs); actor_safe_pi(N/A)), !.
+whitelist_goal(Module, _AppPIs, Goal) :-
+    catch(sandbox:safe_goal(Module:Goal), _, fail), !.
+whitelist_goal(_Module, _AppPIs, Goal) :-
+    functor(Goal,N,A), safe_pi(N/A).
+
+safe_pi(true/0). safe_pi(fail/0). safe_pi(repeat/0). safe_pi(!/0).
+safe_pi((=)/2). safe_pi((\=)/2). safe_pi((==)/2). safe_pi((\==)/2).
+safe_pi((@<)/2). safe_pi((@=<)/2). safe_pi((@>)/2). safe_pi((@>=)/2).
+safe_pi(compare/3). safe_pi(var/1). safe_pi(nonvar/1). safe_pi(atom/1).
+safe_pi(integer/1). safe_pi(float/1). safe_pi(number/1). safe_pi(atomic/1).
+safe_pi(compound/1). safe_pi(callable/1). safe_pi(ground/1). safe_pi(acyclic_term/1).
+safe_pi(functor/3). safe_pi(arg/3). safe_pi((=..)/2). safe_pi(copy_term/2).
+safe_pi(numbervars/3). safe_pi(term_variables/2). safe_pi(term_hash/2).
+safe_pi((is)/2). safe_pi((=:=)/2). safe_pi((=\=)/2). safe_pi((<)/2).
+safe_pi((=<)/2). safe_pi((>)/2). safe_pi((>=)/2).
+safe_pi(between/3). safe_pi(succ/2). safe_pi(length/2). safe_pi(member/2).
+safe_pi(memberchk/2). safe_pi(append/3). safe_pi(reverse/2). safe_pi(select/3).
+safe_pi(nth0/3). safe_pi(nth1/3). safe_pi(sort/2). safe_pi(msort/2). safe_pi(keysort/2).
+safe_pi(atom_length/2). safe_pi(atom_concat/3). safe_pi(sub_atom/5).
+safe_pi(atom_chars/2). safe_pi(atom_codes/2). safe_pi(char_code/2).
+safe_pi(atom_string/2).
+safe_pi(number_chars/2). safe_pi(number_codes/2). safe_pi(atom_number/2).
+safe_pi(atomic_list_concat/2). safe_pi(atomic_list_concat/3).
+safe_pi(read_term_from_atom/3). safe_pi(random_between/3). safe_pi(sleep/1).
+safe_pi(call/1). safe_pi(call/2). safe_pi(call/3). safe_pi(call/4).
+safe_pi(call/5). safe_pi(call/6). safe_pi(call/7). safe_pi(call/8).
+safe_pi(once/1). safe_pi(ignore/1). safe_pi(catch/3). safe_pi(setup_call_cleanup/3).
+safe_pi(call_cleanup/2). safe_pi(forall/2). safe_pi(findall/3). safe_pi(findnsols/4).
+safe_pi(bagof/3). safe_pi(setof/3). safe_pi(time/1).
+safe_pi(assert/1). safe_pi(assert/2). safe_pi(asserta/1). safe_pi(asserta/2).
+safe_pi(assertz/1). safe_pi(assertz/2). safe_pi(retract/1). safe_pi(retractall/1).
+safe_pi(abolish/1). safe_pi(abolish/2).
+% Like SWI Web Prolog, treat the shipped goal as data here.  The destination
+% node applies its own profile and sandbox policy when proving it.
+safe_pi(rpc/2). safe_pi(rpc/3).
+safe_pi(promise/3). safe_pi(promise/4). safe_pi(promise_cleanup/1).
+safe_pi(yield/2). safe_pi(yield/3).
+safe_pi(runtime_property/1).
+
+actor_safe_pi(self/1). actor_safe_pi(spawn/1). actor_safe_pi(spawn/2). actor_safe_pi(spawn/3).
+actor_safe_pi(send/2). actor_safe_pi(send/3). actor_safe_pi(cancel/1). actor_safe_pi(! / 2).
+actor_safe_pi(receive/1). actor_safe_pi(receive/2). actor_safe_pi(monitor/2).
+actor_safe_pi(demonitor/1). actor_safe_pi(demonitor/2). actor_safe_pi(exit/1).
+actor_safe_pi(exit/2). actor_safe_pi(register/2). actor_safe_pi(whereis/2).
+actor_safe_pi(unregister/1). actor_safe_pi(output/1). actor_safe_pi(output/2).
+% Source copied with src_predicates/1 may already contain the qualified
+% terminal bridge produced by the writeln/1 rewrite.  It is capability-free:
+% output is still confined to the actor's inherited terminal target.
+actor_safe_pi(terminal_output/1). actor_safe_pi(terminal_output/2).
+actor_safe_pi(write/1). actor_safe_pi(writeln/1).
+actor_safe_pi(format/1). actor_safe_pi(format/2).
+actor_safe_pi(input/2). actor_safe_pi(input/3). actor_safe_pi(respond/2).
+actor_safe_pi(make_ref/1). actor_safe_pi(flush/0).
+actor_safe_pi(actors/1).
+actor_safe_pi(toplevel_spawn/1). actor_safe_pi(toplevel_spawn/2).
+actor_safe_pi(toplevel_call/2). actor_safe_pi(toplevel_call/3).
+actor_safe_pi(toplevel_call_synch/3). actor_safe_pi(toplevel_call_synch/4).
+actor_safe_pi(toplevel_next_synch/2). actor_safe_pi(toplevel_next_synch/3).
+actor_safe_pi(toplevel_next/1). actor_safe_pi(toplevel_next/2).
+actor_safe_pi(toplevel_halt/1). actor_safe_pi(toplevel_halt/2).
+actor_safe_pi(toplevel_stop/1). actor_safe_pi(toplevel_abort/1).
+actor_safe_pi(parallel/1). actor_safe_pi(first_solution/2). actor_safe_pi(first_solution/3).
+actor_safe_pi(server_spawn/3). actor_safe_pi(server_spawn/4).
+actor_safe_pi(server_request/3). actor_safe_pi(server_request/4).
+actor_safe_pi(server_promise/3). actor_safe_pi(server_promise/4).
+actor_safe_pi(server_yield/2). actor_safe_pi(server_yield/3). actor_safe_pi(server_yield/4).
+actor_safe_pi(server_upgrade/2). actor_safe_pi(server_upgrade/3).
+actor_safe_pi(server_halt/2). actor_safe_pi(server_stop/2).
+actor_safe_pi(supervisor_spawn/2). actor_safe_pi(supervisor_spawn/3).
+actor_safe_pi(supervisor_spawn_child/3).
+actor_safe_pi(supervisor_terminate_child/3). actor_safe_pi(supervisor_delete_child/3).
+actor_safe_pi(supervisor_respawn_child/3). actor_safe_pi(supervisor_which_children/2).
+actor_safe_pi(supervisor_count_children/2). actor_safe_pi(supervisor_halt/1).
+actor_safe_pi(supervisor_stop/1).
+
+reject_format_meta_call(Format) :-
+    format_text_atom(Format, Atom),
+    ( sub_atom(Atom, _, 2, _, '~@')
+    -> throw(error(permission_error(use, format_specifier, '~@'), format/3))
+    ; true
+    ).
+
+format_text_atom(Format, Atom) :-
+    ( atom(Format) -> Atom = Format
+    ; string(Format) -> string_codes(Format, Codes), atom_codes(Atom, Codes)
+    ; is_list(Format) -> catch(atom_codes(Atom, Format), _, Atom = '')
+    ; Atom = ''
+    ).
+
+% Runtime guard is required even after source validation because Format may be
+% supplied through a variable.  Rendering to an atom prevents access to an
+% ambient stream and produces the same single terminal event as SWI's actor
+% I/O prelude.
+sandbox_format(Format, Args) :-
+    reject_format_meta_call(Format),
+    format(atom(Text), Format, Args),
+    actors:terminal_output(Text, [source(io)]).
+
+sandbox_time(Module, Goal) :-
+    get_time(Wall0),
+    statistics(cputime, CPU0),
+    statistics(inferences, Inferences0),
+    State = time_state(Wall0, CPU0, Inferences0),
+    ( call_cleanup(
+          catch(call_in_context(Module, Goal), Error,
+                ( sandbox_time_report(State), throw(Error) )),
+          Deterministic = true),
+      sandbox_time_report(State),
+      ( Deterministic == true -> ! ; true )
+    ; sandbox_time_report(State),
+      fail
+    ).
+
+sandbox_time_report(time_state(Wall0, CPU0, Inferences0)) :-
+    get_time(Wall1),
+    statistics(cputime, CPU1),
+    statistics(inferences, Inferences1),
+    Wall is max(0, Wall1-Wall0),
+    CPU is max(0, CPU1-CPU0),
+    Inferences is max(0, Inferences1-Inferences0),
+    format(atom(Text),
+           '% ~3f seconds wall, ~3f seconds CPU, ~d inferences~n',
+           [Wall, CPU, Inferences]),
+    actors:terminal_output(Text, [source(io)]).
+
+sandbox_sleep(Seconds) :-
+    % Private actor modules do not inherit sleep/1, so sandboxed source is
+    % still rewritten through this bridge.  Trealla v3.13.10 makes native
+    % sleeps independent across threads and preserves thread_signal/2
+    % interruption, so no mailbox-based timing workaround is needed.
+    sleep(Seconds).
+
+sandbox_between(Low, High, Value) :-
+    ( High == infinite ; High == inf ),
+    !,
+    must_be(integer, Low),
+    ( var(Value)
+    -> integers_from(Low, Value)
+    ; must_be(integer, Value),
+      Value >= Low
+    ).
+sandbox_between(Low, High, Value) :-
+    between(Low, High, Value).
+
+% The engine's succ/2 lets floats pass can_be(not_less_than_zero,_), then
+% reports instantiation_error because neither direction is an integer. Check
+% instantiated arguments first, preserving variables and the original culprit;
+% retain the engine relation for valid integers, zero, domains and both variables.
+sandbox_succ(Before, After) :-
+    (nonvar(Before) -> must_be(integer, Before) ; true),
+    (nonvar(After) -> must_be(integer, After) ; true),
+    succ(Before, After).
+
+integers_from(Value, Value).
+integers_from(Low, Value) :-
+    Next is Low + 1,
+    integers_from(Next, Value).
+
+sandbox_atom_string(Atom, String) :-
+    atom_chars(Atom, String).
+
+sandbox_random_member(Element, List) :-
+    must_be(list, List),
+    length(List, Length),
+    Length > 0,
+    random_between(1, Length, Index),
+    nth1(Index, List, Element).
+
+% Execute a pre-validated primitive in this module, where Trealla exposes its
+% built-ins reliably. Short-lived private modules cannot resolve every native
+% predicate from a compound meta-call.
+sandbox_builtin_call(succ(Before,After)) :- !,
+    sandbox_succ(Before,After).
+sandbox_builtin_call(Goal) :-
+    call(Goal).
+
+% Read clauses from the current actor's submitted program only.  In
+% particular, do not expose the bootstrap predicates, imported libraries, or
+% node runtime to a source-level meta-interpreter.  The source marker also
+% covers declared-but-empty dynamic predicates, for which clause/2 simply
+% fails and lets an interpreter try its next rule.
+sandbox_clause(_Mode, _Profile, Module, _AppPIs, Head, Body) :-
+    allow_application_clause_goal(Head, Body),
+    ( var(Head) -> throw(error(instantiation_error, clause/2)) ; true ),
+    functor(Head, Name, Arity),
+    context_module(Module, RuntimeModule),
+    PI = Name/Arity,
+    ( call(RuntimeModule:'$actor_source_pi'(PI))
+    -> call(RuntimeModule:clause(Head, Stored)),
+       restore_clause_body(RuntimeModule, Stored, Body)
+    ; throw(error(permission_error(access, procedure, Head), clause/2))
+    ).
+
+allow_application_clause_goal(Head, Body) :-
+    ( nonvar(Head), Head = _:_
+    -> throw(error(permission_error(call, sandboxed, clause(Head, Body)),
+                   context(sandbox_policy:sandbox_check_goal/4,
+                           module_qualification)))
+    ; true
+    ).
+
+% This must precede every structural clause.  Otherwise a variable occurring
+% inside an ordinary body such as human(X) unifies with one of the internal
+% wrapper patterns below, commits at its cut, and expands recursively forever.
+restore_clause_body(_Module, Term, Term) :- var(Term), !.
+restore_clause_body(Module,
+                    sandbox_policy:sandbox_clause(_M,_P,_C,_A,Head0,Body0),
+                    clause(Head,Body)) :-
+    !,
+    restore_clause_body(Module, Head0, Head),
+    restore_clause_body(Module, Body0, Body).
+restore_clause_body(Module, Module:Inner0, Inner) :-
+    !,
+    restore_clause_body(Module, Inner0, Inner).
+restore_clause_body(Module, sandbox_policy:sandbox_builtin_call(Goal0), Goal) :-
+    !,
+    restore_clause_body(Module, Goal0, Goal).
+restore_clause_body(_Module, sandbox_policy:sandbox_sleep(Seconds),
+                    sleep(Seconds)) :- !.
+restore_clause_body(_Module,
+                    sandbox_policy:sandbox_between(Low,High,Value),
+                    between(Low,High,Value)) :- !.
+restore_clause_body(_Module,sandbox_policy:sandbox_succ(Before,After),
+                    succ(Before,After)) :- !.
+restore_clause_body(_Module, sandbox_policy:sandbox_atom_string(Atom,String),
+                    atom_string(Atom,String)) :- !.
+restore_clause_body(_Module,
+                    sandbox_policy:sandbox_random_member(Element,List),
+                    random_member(Element,List)) :- !.
+restore_clause_body(Module, sandbox_policy:sandbox_time(_Context, Goal0),
+                    time(Goal)) :-
+    !,
+    restore_clause_body(Module, Goal0, Goal).
+restore_clause_body(Module, sandbox_policy:Call0, Call) :-
+    nonvar(Call0),
+    functor(Call0, sandbox_call, Arity),
+    Arity >= 5,
+    Arity =< 12,
+    !,
+    Call0 =.. [sandbox_call,_Mode,_Profile,_Context,_PIs,Closure0|Extra0],
+    restore_clause_body(Module, Closure0, Closure),
+    restore_clause_args(Module, Extra0, Extra),
+    Call =.. [call,Closure|Extra].
+restore_clause_body(Module, [Head0|Tail0], [Head|Tail]) :-
+    !,
+    restore_clause_body(Module, Head0, Head),
+    restore_clause_body(Module, Tail0, Tail).
+restore_clause_body(_Module, Term, Term) :- atomic(Term), !.
+restore_clause_body(Module, Term0, Term) :-
+    Term0 =.. [Functor|Args0],
+    restore_clause_args(Module, Args0, Args),
+    Term =.. [Functor|Args].
+
+restore_clause_args(_, [], []).
+restore_clause_args(Module, [Arg0|Args0], [Arg|Args]) :-
+    restore_clause_body(Module, Arg0, Arg),
+    restore_clause_args(Module, Args0, Args).
+
+actor_safe_pi(statechart_spawn/2).
+actor_safe_pi(statechart_halt/2).
+actor_safe_pi(statechart_halt/3).
+actor_safe_pi(raise/1).
+actor_safe_pi(in/1).
+
+permitted_qualified_module(statechart_actor).

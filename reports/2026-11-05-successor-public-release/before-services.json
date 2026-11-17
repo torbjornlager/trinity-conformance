@@ -1,0 +1,448 @@
+[
+  {
+    "name": "deployment-wp_n1-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "deployment-wp_n1",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "c66277f04d143e426960f42629cf717c28e4aba8b5080630252bb15a4d17472e",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n1.pl",
+      "-g",
+      "start_n1_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 536870912,
+      "NanoCpus": 500000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_interaction_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "deployment-wp_n2-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "deployment-wp_n2",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "c66277f04d143e426960f42629cf717c28e4aba8b5080630252bb15a4d17472e",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n2.pl",
+      "-g",
+      "start_n2_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 805306368,
+      "NanoCpus": 750000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_interaction_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "deployment-wp_n3-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "deployment-wp_n3",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "6b0dc76ddd6413f67411e2fd08ece5c19f8af7238d3e86766f2628d333af6216",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n3.pl",
+      "-g",
+      "start_n3_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 1073741824,
+      "NanoCpus": 1000000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_interaction_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      },
+      {
+        "Type": "volume",
+        "Name": "trinity-n3-peer-transport",
+        "Destination": "/run/peer-transport",
+        "RW": false
+      }
+    ]
+  },
+  {
+    "name": "deployment-wp_n4-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "deployment-wp_n4",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "496ab4954c0238b3e155b3290ba9f001796c2240e98bea43b6ab2b02ab314b79",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n4.pl",
+      "-g",
+      "start_n4_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 1073741824,
+      "NanoCpus": 1000000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_interaction_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      },
+      {
+        "Type": "volume",
+        "Name": "trinity-n4-peer-transport",
+        "Destination": "/run/peer-transport",
+        "RW": false
+      }
+    ]
+  },
+  {
+    "name": "deployment-wp_admin-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "deployment-wp_admin",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "c66277f04d143e426960f42629cf717c28e4aba8b5080630252bb15a4d17472e",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_admin.pl",
+      "-g",
+      "start_admin_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 805306368,
+      "NanoCpus": 750000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_interaction_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "deployment-wp_n5-1",
+    "image_id": "sha256:715cf8dda3a09f9a1e73efd8b529bcbdea51c21db0e02d997656650fa9f70b36",
+    "configured_image": "deployment-wp_n5",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "fe34240732c455225269769f35e3e30b9bdb39bd373751bb061cd9e9b3b232d4",
+    "user": "webprolog",
+    "entrypoint": [
+      "/bin/sh",
+      "/app/owner_start/entrypoint.n5-linda.sh"
+    ],
+    "command": null,
+    "controls": {
+      "Memory": 1073741824,
+      "NanoCpus": 1000000000,
+      "PidsLimit": 256,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "deployment_trealla_n5_public_state",
+        "Destination": "/state",
+        "RW": true
+      },
+      {
+        "Type": "volume",
+        "Name": "deployment_trealla_n5_public_logs",
+        "Destination": "/var/log/webprolog",
+        "RW": true
+      },
+      {
+        "Type": "volume",
+        "Name": "trinity-n5-peer-transport",
+        "Destination": "/run/peer-transport",
+        "RW": false
+      }
+    ],
+    "rollback_tag": "successor-release-rollback:20261105-n5",
+    "compose_files": "/Users/lager/trinity-demonstrator/Deployment/compose.yaml,/Users/lager/trinity-demonstrator/Deployment/compose.trealla-n5.yaml,/Users/lager/trinity-demonstrator/Deployment/compose.trealla-n5-public.yaml,/Users/lager/trinity-demonstrator/Deployment/compose.peer-transport-volumes.yaml,/Users/lager/trinity-demonstrator/Deployment/compose.gprolog-n6-caddy.yaml,/Users/lager/trinity-demonstrator/Deployment/compose.peer-transport-n5-volumes.yaml"
+  },
+  {
+    "name": "web-prolog-hub-n0-1",
+    "image_id": "sha256:18eb69fe013ee84128d041669a7d8a545a62d7dd80908f905d0fd193974e994d",
+    "configured_image": "web-prolog-hub-n0",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "1d4345025f05d93d1462ecd4bb05d827539e02bc1ede3c12324df9b69f0237f0",
+    "user": "webprolog",
+    "entrypoint": [
+      "swipl",
+      "/app/Deployment/start_node.pl"
+    ],
+    "command": null,
+    "controls": {
+      "Memory": 536870912,
+      "NanoCpus": 500000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "web-prolog-hub_n0_state",
+        "Destination": "/var/lib/web-prolog",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "trinity-n6-host-wp_n6-1",
+    "image_id": "sha256:6ea60f99bc5ceeea95b7b9aa94ce765d20d34213d177cab963172b45c5b9e01f",
+    "configured_image": "trinity-n6-host:latest",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "4b323ab53993b6a44fa44a6b9c8718b05b517620fa9cf70211c6c4e0990d4aef",
+    "user": "0:0",
+    "entrypoint": [
+      "python3",
+      "/app/n6/adapter.py"
+    ],
+    "command": null,
+    "controls": {
+      "Memory": 1073741824,
+      "NanoCpus": 750000000,
+      "PidsLimit": 384,
+      "ReadonlyRootfs": true,
+      "CapAdd": [
+        "CAP_KILL",
+        "CAP_SETGID",
+        "CAP_SETUID",
+        "CAP_SYS_CHROOT"
+      ],
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": []
+  },
+  {
+    "name": "trinity-n6-local-wp_n6-1",
+    "image_id": "sha256:6ea60f99bc5ceeea95b7b9aa94ce765d20d34213d177cab963172b45c5b9e01f",
+    "configured_image": "trinity-n6-local:latest",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "b2feb042134523b4dd8ae72424d9796048bbb9fa24cc3f6fd11ce2cfbe18c150",
+    "user": "webprolog",
+    "entrypoint": [
+      "python3",
+      "/app/n6/adapter.py"
+    ],
+    "command": null,
+    "controls": {
+      "Memory": 1073741824,
+      "NanoCpus": 750000000,
+      "PidsLimit": 128,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": []
+  },
+  {
+    "name": "trinity-n6-host-n6_assets-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "trinity-n6-assets:latest",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "3e26d1e58f66a8a13cc844681040718f12ff1c299a773c417bea50e0a8b796f6",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n1.pl",
+      "-g",
+      "start_n1_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 536870912,
+      "NanoCpus": 500000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": []
+  },
+  {
+    "name": "trinity-n6-local-n6_assets-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "trinity-n6-assets:latest",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "3e26d1e58f66a8a13cc844681040718f12ff1c299a773c417bea50e0a8b796f6",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "-q",
+      "-s",
+      "/app/Deployment/start_n1.pl",
+      "-g",
+      "start_n1_forever",
+      "-t",
+      "halt"
+    ],
+    "controls": {
+      "Memory": 536870912,
+      "NanoCpus": 500000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": []
+  },
+  {
+    "name": "trinity-n6-local-n6_hub-1",
+    "image_id": "sha256:05a0f1df0112b21924b4394b16fda2f31b91eeb739bde7cfb92dc54464846aef",
+    "configured_image": "trinity-n6-assets:latest",
+    "revision": "1581acc2c1ad0680c276feac19210220335b6226",
+    "environment_sha256": "bb0feb2ff1fb8735b4ed9869f0ee84b45b54a0c51633e1b0fa906205d0555f20",
+    "user": "webprolog",
+    "entrypoint": null,
+    "command": [
+      "swipl",
+      "/app/Deployment/start_node.pl"
+    ],
+    "controls": {
+      "Memory": 536870912,
+      "NanoCpus": 500000000,
+      "PidsLimit": null,
+      "ReadonlyRootfs": true,
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges:true"
+      ]
+    },
+    "mounts": []
+  }
+]

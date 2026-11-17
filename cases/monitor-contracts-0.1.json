@@ -1,0 +1,311 @@
+{
+  "suite": "monitor-contracts-0.1",
+  "status": "draft",
+  "scope": "Shared ACTOR monitor contract; four runtime language modes, remote loss/confirmation mapped separately",
+  "source": "mc_error(Goal,Formal) :- catch((call(Goal),Outcome=returned),error(E,_),Outcome=raised(E)), nonvar(Outcome),Outcome=raised(Actual),Actual=@=Formal.\nmc_invalid(Options,Formal) :- self(S),spawn(receive({finish->true}),P,[monitor(true)]),monitor(P,R),S!down(P,R,queued),copy_term(Options,Before),catch((demonitor(R,Options),Outcome=returned),error(E,_),Outcome=raised(E)),Options=@=Before,nonvar(Outcome),Outcome=raised(Actual),Actual=@=Formal,receive({down(P,R,queued)->true},[timeout(0),on_timeout(throw(preflight_flushed))]),P!finish,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(preflight_removed_monitor))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))]).\n",
+  "cases": [
+    {
+      "id": "MC-001",
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "transport": "query",
+      "goal": "spawn(receive({stop->true}),P),register(mc_named,P),findall(R,monitor(mc_named,R),Rs),Rs=[A],monitor(P,B),A\\==B,P!stop,receive({down(P,A,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,B,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),monitor(P,C),C\\==A,C\\==B,receive({down(P,C,no_process)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Extra,Why)->throw(duplicate_notification(Extra,Why))},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-002",
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,R),spawn(send(S,down(P,R,application_supplied)),F,[monitor(true)]),receive({down(F,F,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,R,application_supplied)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!stop,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,R,_)->throw(duplicate_runtime_down)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-003",
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P,[monitor(true)]),monitor(P,R),S!down(P,R,queued),findall(ok,demonitor(R),One),One==[ok],receive({down(P,R,queued)->true},[timeout(0),on_timeout(throw(mc_missing_message))]),S!down(P,R,again),findall(ok,demonitor(R,[flush,flush]),Two),Two==[ok],findall(ok,demonitor(R,[]),Three),Three==[ok],P!stop,receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,R,_)->throw(removed_reference_not_flushed)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-004",
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,R),spawn((demonitor(R,[flush]),send(S,foreign_removed)),F,[monitor(true)]),receive({foreign_removed->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(F,F,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!stop,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(R),demonitor(R,[flush])"
+    },
+    {
+      "id": "MC-005",
+      "title": "An uninstantiated monitor target is rejected without binding target or output",
+      "transport": "query",
+      "goal": "mc_error(monitor(P,R),instantiation_error),var(P),var(R)"
+    },
+    {
+      "id": "MC-006",
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "transport": "query",
+      "goal": "self(S),spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),S!down(P,P,queued),mc_error(demonitor(R,[flush]),instantiation_error),var(R),receive({down(P,P,queued)->true},[timeout(0),on_timeout(throw(mc_missing_message))])"
+    },
+    {
+      "id": "MC-007",
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid(O,instantiation_error),var(O)"
+    },
+    {
+      "id": "MC-008",
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush|Tail],instantiation_error),var(Tail)"
+    },
+    {
+      "id": "MC-009",
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([O],instantiation_error),var(O)"
+    },
+    {
+      "id": "MC-010",
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush,O],instantiation_error),var(O)"
+    },
+    {
+      "id": "MC-011",
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid(bad,type_error(list,bad)),true"
+    },
+    {
+      "id": "MC-012",
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush|bad],type_error(list,[flush|bad])),true"
+    },
+    {
+      "id": "MC-013",
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([unknown],domain_error(demonitor_option,unknown)),true"
+    },
+    {
+      "id": "MC-014",
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush(true)],domain_error(demonitor_option,flush(true))),true"
+    },
+    {
+      "id": "MC-015",
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush(a,b)],domain_error(demonitor_option,flush(a,b))),true"
+    },
+    {
+      "id": "MC-016",
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush,unknown],domain_error(demonitor_option,unknown)),true"
+    },
+    {
+      "id": "MC-017",
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([flush,flush(false)],domain_error(demonitor_option,flush(false))),true"
+    },
+    {
+      "id": "MC-018",
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "transport": "query",
+      "goal": "mc_invalid([7],domain_error(demonitor_option,7)),true"
+    },
+    {
+      "id": "LM-001",
+      "title": "Spawn monitoring preserves immediate success failure exception and explicit exit",
+      "transport": "query",
+      "goal": "spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),spawn(fail,F,[monitor(true)]),receive({down(F,F,false)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),spawn(throw(lm_error),E,[monitor(true)]),receive({down(E,E,exception(lm_error))->true},[timeout(2),on_timeout(throw(mc_missing_message))]),spawn(exit(lm_stop),K,[monitor(true)]),receive({down(K,K,lm_stop)->true},[timeout(2),on_timeout(throw(mc_missing_message))])"
+    },
+    {
+      "id": "LM-002",
+      "title": "Explicit and spawn-time monitors are independent and preserve unrelated data",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P,[monitor(true)]),monitor(P,R),nonvar(R),R\\==P,S!lm_unrelated,P!stop,receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({lm_unrelated->true},[timeout(0),on_timeout(throw(mc_missing_message))]),demonitor(R,[flush])"
+    },
+    {
+      "id": "LM-003",
+      "title": "Monitoring a terminated actor yields no_process with the returned reference",
+      "transport": "query",
+      "goal": "spawn(true,P,[monitor(true)]),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),monitor(P,R),receive({down(P,R,no_process)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(R,[flush])"
+    },
+    {
+      "id": "LM-004",
+      "title": "Child termination leaves its linked parent alive",
+      "transport": "query",
+      "goal": "self(S),spawn((self(Me),spawn(receive({finish->true}),Child,[monitor(true)]),S!lm_ready(Me,Child),receive({finish_child->Child!finish}),receive({down(Child,Child,true)->S!lm_child_finished(Me)},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({ping->S!lm_pong(Me)}),receive({stop->true})),Parent,[monitor(true)]),receive({lm_ready(Parent,C)->nonvar(C)},[timeout(2),on_timeout(throw(mc_missing_message))]),Parent!finish_child,receive({lm_child_finished(Parent)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),Parent!ping,receive({lm_pong(Parent)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),Parent!stop,receive({down(Parent,Parent,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))])"
+    },
+    {
+      "id": "LM-005",
+      "title": "A three-generation cascade delivers exact notifications under one deadline",
+      "transport": "query",
+      "goal": "self(S),S!lm_preserved,spawn((self(R),spawn((self(C),spawn((self(G),S!lm_grand_ready(G),receive({never->true})),GP),S!lm_child_ready(C,GP),receive({never->true})),CP),S!lm_root_ready(R,CP),receive({stop->exit(die)})),Root,[monitor(true)]),receive({lm_root_ready(Root,Child)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({lm_child_ready(Child,Grand)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({lm_grand_ready(Grand)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),monitor(Child,CR),monitor(Grand,GR),get_time(T),D is T+2,Root!stop,receive({down(Root,Root,die)->true},[deadline(D),on_timeout(throw(mc_missing_message))]),receive({down(Child,CR,kill)->true},[deadline(D),on_timeout(throw(mc_missing_message))]),receive({down(Grand,GR,kill)->true},[deadline(D),on_timeout(throw(mc_missing_message))]),receive({lm_preserved->true},[timeout(0),on_timeout(throw(mc_missing_message))]),demonitor(CR,[flush]),demonitor(GR,[flush])"
+    },
+    {
+      "id": "LM-006",
+      "title": "Demonitor withdrawal and scoped flush preserve unrelated monitors and messages",
+      "transport": "query",
+      "goal": "self(S),spawn(receive({stop->true}),P),monitor(P,Drop),monitor(P,Keep),S!lm_keep,demonitor(Drop),P!stop,receive({down(P,Keep,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,Drop,_)->fail},[timeout(0),on_timeout(true)]),receive({lm_keep->true},[timeout(0),on_timeout(throw(mc_missing_message))]),demonitor(Keep,[flush]),spawn(receive({stop->true}),Q),monitor(Q,Flush),monitor(Q,Other),S!down(Q,Flush,fixture_one),S!down(Q,Flush,fixture_two),S!down(Q,Other,fixture_keep),S!lm_application,demonitor(Flush,[flush]),demonitor(Flush,[flush]),receive({down(Q,Other,fixture_keep)->true},[timeout(0),on_timeout(throw(mc_missing_message))]),receive({lm_application->true},[timeout(0),on_timeout(throw(mc_missing_message))]),Q!stop,receive({down(Q,Other,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,Flush,_)->fail},[timeout(0),on_timeout(true)]),demonitor(Other,[flush])"
+    },
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "server_spawn(sw_probe,0,P),server_promise(P,echo(first),R1),server_promise(P,echo(second),R2),R1\\==R2,server_yield(R2,reply(second),[timeout(2),on_timeout(throw(mc_missing_reply))]),server_yield(R1,reply(first),[timeout(0),on_timeout(throw(mc_missing_reply))]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "server_spawn(sw_probe,0,P),server_promise(P,echo(first),R1),server_promise(P,echo(second),R2),server_promise(P,echo(barrier),Barrier),server_yield(Barrier,reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),\\+server_yield(R1,wrong,[timeout(0),on_timeout(throw(missing_selected_reply))]),server_yield(R2,reply(second),[timeout(0),on_timeout(throw(mc_missing_reply))]),server_yield(R1,Again,[timeout(0),on_timeout(Again=consumed)]),Again==consumed,server_halt(P,true)"
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),server_promise(P,block(S),R),receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),server_yield(R,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,P!release,server_yield(R,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),server_promise(P,block(S),R),receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),server_yield(R,Bound,[timeout(0),on_timeout(Bound=bound)]),Bound==bound,\\+server_yield(R,_,[timeout(0),on_timeout(fail)]),catch(server_yield(R,_,[timeout(0),on_timeout(throw(wait_callback))]),Error,true),Error==wait_callback,findall(V,server_yield(R,V,[timeout(0),on_timeout(member(V,[one,two]))]),Values),Values==[one,two],P!release,server_yield(R,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),server_halt(P,true)"
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P),monitor(P,Other),catch(server_request(P,die_now,_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E,true),E==server_down(sw_death),receive({down(P,Other,sw_death)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(Other,[flush]),server_spawn(sw_probe,0,Q),server_promise(Q,die_later(S),R,Mon),monitor(Q,Other2),receive({sw_blocked(Q)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),Q!crash,catch(server_yield(R,Mon,_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E2,true),E2==server_down(sw_death),receive({down(Q,Other2,sw_death)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(Other2,[flush])"
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "transport": "query",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)}).",
+      "goal": "self(S),server_spawn(sw_probe,0,P,[monitor(true)]),server_promise(P,block(S),R,Mon),monitor(P,Other),S!sw_unrelated,receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),server_yield(R,Mon,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,P!release,server_yield(R,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),server_promise(P,echo(ok),R2,M2),server_promise(P,echo(barrier),B),server_yield(B,reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),\\+server_yield(R2,M2,wrong,[timeout(0),on_timeout(throw(missing_selected_reply))]),server_promise(P,block(S),R3,M3),receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),catch(server_yield(R3,M3,_,[timeout(0),on_timeout(throw(sw_timeout))]),E,true),E==sw_timeout,P!release,server_yield(R3,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),receive({sw_unrelated->true},[timeout(0),on_timeout(throw(mc_missing_message))]),server_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Other,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,Mon,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M2,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M3,_)->fail},[timeout(0),on_timeout(true)]),demonitor(Other,[flush])"
+    },
+    {
+      "id": "TW-001",
+      "title": "Caller targeting and independent query variables",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),catch(toplevel_call_synch(P,true,_,[target(other)]),E,true),E=error(domain_error(synchronous_toplevel_target,other),_),toplevel_call_synch(P,X=ok,A,[target(S),template(X),timeout(2)]),A==success(P,[ok],false),var(X),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-002",
+      "title": "Timeout outcome and callback bindings failure exceptions and commitment",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),toplevel_call_synch(P,(self(Me),S!tw_ready(Me,default),receive({release->true})),A,[timeout(0)]),var(A),receive({tw_ready(P,default)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,Barrier,[timeout(2),on_timeout(throw(mc_missing_reply))]),Barrier==success(P,[true],false),findall(V,toplevel_call_synch(P,(self(Me),S!tw_ready(Me,binding),receive({release->true})),_,[timeout(0),on_timeout(member(V,[first,second]))]),Vs),Vs==[first],receive({tw_ready(P,binding)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,B,[timeout(2),on_timeout(throw(mc_missing_reply))]),B==success(P,[true],false),\\+toplevel_call_synch(P,(self(Me),S!tw_ready(Me,failure),receive({release->true})),_,[timeout(0),on_timeout(fail)]),receive({tw_ready(P,failure)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,C,[timeout(2),on_timeout(throw(mc_missing_reply))]),C==success(P,[true],false),catch(toplevel_call_synch(P,(self(Me),S!tw_ready(Me,exception),receive({release->true})),_,[timeout(0),on_timeout(throw(tw_callback))]),E,true),E==tw_callback,receive({tw_ready(P,exception)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,D,[timeout(2),on_timeout(throw(mc_missing_reply))]),D==success(P,[true],false),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-003",
+      "title": "Late timed-out answer cannot satisfy the next synchronous wait",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true)]),toplevel_call_synch(P,(self(Me),S!tw_ready(Me,old),receive({release->true})),Early,[template(old),timeout(0)]),var(Early),receive({tw_ready(P,old)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,A,[template(fresh),timeout(2)]),A==success(P,[fresh],false),toplevel_call_synch(P,(member(X,[a,b,c]),(X==b->(self(Me2),S!tw_next_ready(Me2),receive({release_next->true}));true)),First,[template(X),limit(1),timeout(2),on_timeout(throw(missing_first))]),First==success(P,[a],true),toplevel_next_synch(P,Late,[timeout(0)]),var(Late),receive({tw_next_ready(P)->true},[timeout(2),on_timeout(throw(missing_next_readiness))]),P!release_next,toplevel_next_synch(P,Last,[limit(1),timeout(2),on_timeout(throw(missing_last))]),Last==success(P,[c],false),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-004",
+      "title": "Output mismatch consumes selected slice and continuation advances",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[session(true)]),\\+toplevel_call_synch(P,member(X,[a,b,c,d]),wrong,[template(X),limit(1),timeout(2),on_timeout(throw(missing_call))]),\\+toplevel_next_synch(P,wrong,[limit(1),timeout(2),on_timeout(throw(missing_next))]),toplevel_next_synch(P,A,[limit(2),timeout(2),on_timeout(throw(missing_tail))]),A==success(P,[c,d],false),var(X),toplevel_halt(P,true)"
+    },
+    {
+      "id": "TW-005",
+      "title": "Termination during wait preserves independent and spawn monitors",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,R),catch(toplevel_call_synch(P,exit(tw_death),_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E,true),E==toplevel_down(tw_death),receive({down(P,P,tw_death)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),receive({down(P,R,tw_death)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),demonitor(R,[flush])"
+    },
+    {
+      "id": "TW-006",
+      "title": "Synchronous wait preserves asynchronous answers and unrelated messages",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,R),S!tw_unrelated,toplevel_call(P,true,[template(async)]),toplevel_call_synch(P,true,A,[template(sync),timeout(2)]),A==success(P,[sync],false),receive({success(P,[async],false)->true},[timeout(0),on_timeout(fail)]),receive({tw_unrelated->true},[timeout(0),on_timeout(fail)]),toplevel_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),receive({down(P,R,true)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),demonitor(R,[flush])"
+    },
+    {
+      "id": "MC-019",
+      "title": "Toplevel private monitors preserve public monitors through default timeout callback success failure exception and cleanup",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,Keep),toplevel_call_synch(P,(self(Me),S!tw_ready(Me,default),receive({release->true})),A,[timeout(0)]),var(A),receive({tw_ready(P,default)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,Barrier,[timeout(2),on_timeout(throw(mc_missing_reply))]),Barrier==success(P,[true],false),findall(V,toplevel_call_synch(P,(self(Me),S!tw_ready(Me,binding),receive({release->true})),_,[timeout(0),on_timeout(member(V,[first,second]))]),Vs),Vs==[first],receive({tw_ready(P,binding)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,B,[timeout(2),on_timeout(throw(mc_missing_reply))]),B==success(P,[true],false),\\+toplevel_call_synch(P,(self(Me),S!tw_ready(Me,failure),receive({release->true})),_,[timeout(0),on_timeout(fail)]),receive({tw_ready(P,failure)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,C,[timeout(2),on_timeout(throw(mc_missing_reply))]),C==success(P,[true],false),catch(toplevel_call_synch(P,(self(Me),S!tw_ready(Me,exception),receive({release->true})),_,[timeout(0),on_timeout(throw(tw_callback))]),E,true),E==tw_callback,receive({tw_ready(P,exception)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,D,[timeout(2),on_timeout(throw(mc_missing_reply))]),D==success(P,[true],false),toplevel_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Keep,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-020",
+      "title": "Toplevel call and next private monitors preserve public monitors through successful and timed-out paging",
+      "transport": "query",
+      "goal": "self(S),toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,Keep),toplevel_call_synch(P,(self(Me),S!tw_ready(Me,old),receive({release->true})),Early,[template(old),timeout(0)]),var(Early),receive({tw_ready(P,old)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),P!release,toplevel_call_synch(P,true,A,[template(fresh),timeout(2)]),A==success(P,[fresh],false),toplevel_call_synch(P,(member(X,[a,b,c]),(X==b->(self(Me2),S!tw_next_ready(Me2),receive({release_next->true}));true)),First,[template(X),limit(1),timeout(2),on_timeout(throw(missing_first))]),First==success(P,[a],true),toplevel_next_synch(P,Late,[timeout(0)]),var(Late),receive({tw_next_ready(P)->true},[timeout(2),on_timeout(throw(missing_next_readiness))]),P!release_next,toplevel_next_synch(P,Last,[limit(1),timeout(2),on_timeout(throw(missing_last))]),Last==success(P,[c],false),toplevel_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Keep,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-021",
+      "title": "Toplevel target death discharges private wait while preserving exactly the public references",
+      "transport": "query",
+      "goal": "toplevel_spawn(P,[session(true),monitor(true)]),monitor(P,R),catch(toplevel_call_synch(P,exit(tw_death),_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E,true),E==toplevel_down(tw_death),receive({down(P,P,tw_death)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),receive({down(P,R,tw_death)->true},[timeout(2),on_timeout(throw(missing_readiness_or_notification))]),demonitor(R,[flush]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-022",
+      "title": "Server synchronous private monitors preserve public references through success timeout failure exception and cleanup",
+      "transport": "query",
+      "goal": "self(S),server_spawn(sw_probe,0,P,[monitor(true)]),monitor(P,Keep),server_request(P,echo(first),reply(first),[timeout(2),on_timeout(throw(mc_missing_reply))]),server_request(P,block(S),Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!release,server_request(P,echo(barrier),reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),catch(server_request(P,block(S),_,[timeout(0),on_timeout(throw(mc_wait_error))]),E,true),E==mc_wait_error,receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!release,server_request(P,echo(barrier),reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),\\+server_request(P,block(S),_,[timeout(0),on_timeout(fail)]),receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),P!release,server_request(P,echo(barrier),reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),server_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Keep,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)})."
+    },
+    {
+      "id": "MC-023",
+      "title": "Server target death discharges private waits without extra notifications or suppressing other references",
+      "transport": "query",
+      "goal": "self(S),server_spawn(sw_probe,0,P),monitor(P,Other),catch(server_request(P,die_now,_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E,true),E==server_down(sw_death),receive({down(P,Other,sw_death)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(Other,[flush]),server_spawn(sw_probe,0,Q),server_promise(Q,die_later(S),R,Mon),monitor(Q,Other2),receive({sw_blocked(Q)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),Q!crash,catch(server_yield(R,Mon,_,[timeout(2),on_timeout(throw(mc_missing_reply))]),E2,true),E2==server_down(sw_death),receive({down(Q,Other2,sw_death)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),demonitor(Other2,[flush]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)]),receive({down(Q,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)})."
+    },
+    {
+      "id": "MC-024",
+      "title": "Monitored asynchronous server wait cleanup preserves only public monitors after timeout mismatch and exception",
+      "transport": "query",
+      "goal": "self(S),server_spawn(sw_probe,0,P,[monitor(true)]),server_promise(P,block(S),R,Mon),monitor(P,Other),S!sw_unrelated,receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),server_yield(R,Mon,Early,[timeout(0),on_timeout(Early=waiting)]),Early==waiting,P!release,server_yield(R,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),server_promise(P,echo(ok),R2,M2),server_promise(P,echo(barrier),B),server_yield(B,reply(barrier),[timeout(2),on_timeout(throw(mc_missing_reply))]),\\+server_yield(R2,M2,wrong,[timeout(0),on_timeout(throw(missing_selected_reply))]),server_promise(P,block(S),R3,M3),receive({sw_blocked(P)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),catch(server_yield(R3,M3,_,[timeout(0),on_timeout(throw(sw_timeout))]),E,true),E==sw_timeout,P!release,server_yield(R3,released,[timeout(2),on_timeout(throw(mc_missing_reply))]),receive({sw_unrelated->true},[timeout(0),on_timeout(throw(mc_missing_message))]),server_halt(P,true),receive({down(P,P,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(P,Other,true)->true},[timeout(2),on_timeout(throw(mc_missing_message))]),receive({down(_,Mon,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M2,_)->fail},[timeout(0),on_timeout(true)]),receive({down(_,M3,_)->fail},[timeout(0),on_timeout(true)]),demonitor(Other,[flush]),receive({down(P,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])",
+      "source": "sw_probe(echo(X),State,reply(X),State). sw_probe(block(Observer),State,released,State) :- self(Me), Observer ! sw_blocked(Me), receive({release -> true}). sw_probe(die_now,_,_,_) :- exit(sw_death). sw_probe(die_later(Observer),_,_,_) :- self(Me), Observer ! sw_blocked(Me), receive({crash -> exit(sw_death)})."
+    },
+    {
+      "id": "MC-025",
+      "title": "Supervisor control and child monitors preserve independent public references through inspection termination deletion and halt",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),monitor(Sup,Keep),supervisor_which_children(Sup,[info(a,Child,worker,temporary)]),monitor(Child,ChildRef),supervisor_count_children(Sup,[specs-1,active-1,supervisors-0,workers-1]),supervisor_terminate_child(Sup,a,ok),receive({down(Child,ChildRef,_)->true},[timeout(2),on_timeout(throw(missing_child_down))]),supervisor_delete_child(Sup,a,ok),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup),receive({down(Sup,Sup,true)->true},[timeout(2),on_timeout(throw(missing_spawn_down))]),receive({down(Sup,Keep,true)->true},[timeout(2),on_timeout(throw(missing_explicit_down))]),receive({down(Sup,_,_)->throw(private_monitor_leaked)},[timeout(0),on_timeout(true)])"
+    },
+    {
+      "id": "MC-026",
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "transport": "query",
+      "goal": "mc_error(demonitor(R),instantiation_error),var(R),mc_error(demonitor(wrapper(X),[]),instantiation_error),var(X)"
+    },
+    {
+      "id": "MC-027",
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "mc_error(monitor(1@Node,R),instantiation_error),var(Node),var(R)"
+    },
+    {
+      "id": "MC-028",
+      "title": "Double-quoted URI text in monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "mc_error(monitor(1@\"https://example.test\",R),type_error(atom,\"https://example.test\")),var(R)"
+    },
+    {
+      "id": "MC-029",
+      "title": "List node in monitor target is rejected before returning a reference",
+      "transport": "query",
+      "goal": "mc_error(monitor(1@[104,116,116,112],R),type_error(atom,[104,116,116,112])),var(R)"
+    },
+    {
+      "id": "MC-030",
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "transport": "query",
+      "goal": "mc_invalid([flush,flush(X)],domain_error(demonitor_option,flush(X))),var(X)"
+    },
+    {
+      "id": "MC-031",
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "transport": "query",
+      "goal": "Options=[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad],mc_invalid(Options,type_error(list,Options))"
+    }
+  ]
+}

@@ -1,0 +1,3420 @@
+{
+  "suite": "standard-library-0.4",
+  "baseline": "standard-library-0.4",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "isobase",
+  "contract": "Finite callback selection plus externally bounded member/length generation, ordered pages and retained-query cleanup; not a complete ISO certificate.",
+  "source": "lib_eq1(X).\nlib_eq2(X,X).\nlib_eq3(X,X,X).\nlib_eq4(X,X,X,X).\nlib_eq5(X,X,X,X,X).\nlib_eq6(X,X,X,X,X,X).\nlib_eq7(X,X,X,X,X,X,X).\nlib_choice(a,1). lib_choice(a,2). lib_choice(b,3).\nlib_fold(A,S,T):-T is S+A.\nlib_fold2(A,B,S,T):-T is S+A+B.\nlib_fold3(A,B,C,S,T):-T is S+A+B+C.\nlib_fold_choice(X,S,T):-member(T,[X,S]).\nlib_throw(X):-throw(X).\nlib_args1(a1).\nlib_args1(b1).\nlib_args2(a1,a2).\nlib_args2(b1,b2).\nlib_args3(a1,a2,a3).\nlib_args3(b1,b2,b3).\nlib_args4(a1,a2,a3,a4).\nlib_args4(b1,b2,b3,b4).\nlib_args5(a1,a2,a3,a4,a5).\nlib_args5(b1,b2,b3,b4,b5).\nlib_args6(a1,a2,a3,a4,a5,a6).\nlib_args6(b1,b2,b3,b4,b5,b6).\nlib_args7(a1,a2,a3,a4,a5,a6,a7).\nlib_args7(b1,b2,b3,b4,b5,b6,b7).\nlib_record(A,S,step(A,S)). lib_record2(A,B,S,step(A,B,S)). lib_record3(A,B,C,S,step(A,B,C,S)).\n\nlib_generated(X):-member(X,[a,b]).\nlib_accept(X):-memberchk(X,[a,b]).\nlib_forall_for(X):-forall(member(Y,[X]),lib_accept(Y)).\nlib_any1(_).\nlib_pre1(seed,A1):-lib_args1(A1).\nlib_nd1(Out):-member(Out,[a,b]).\nlib_any2(_,_).\nlib_pre2(seed,A1,A2):-lib_args2(A1,A2).\nlib_nd2(_,Out):-member(Out,[a,b]).\nlib_any3(_,_,_).\nlib_pre3(seed,A1,A2,A3):-lib_args3(A1,A2,A3).\nlib_nd3(_,_,Out):-member(Out,[a,b]).\nlib_any4(_,_,_,_).\nlib_pre4(seed,A1,A2,A3,A4):-lib_args4(A1,A2,A3,A4).\nlib_nd4(_,_,_,Out):-member(Out,[a,b]).\nlib_any5(_,_,_,_,_).\nlib_pre5(seed,A1,A2,A3,A4,A5):-lib_args5(A1,A2,A3,A4,A5).\nlib_nd5(_,_,_,_,Out):-member(Out,[a,b]).\nlib_any6(_,_,_,_,_,_).\nlib_pre6(seed,A1,A2,A3,A4,A5,A6):-lib_args6(A1,A2,A3,A4,A5,A6).\nlib_nd6(_,_,_,_,_,Out):-member(Out,[a,b]).\nlib_any7(_,_,_,_,_,_,_).\nlib_pre7(seed,A1,A2,A3,A4,A5,A6,A7):-lib_args7(A1,A2,A3,A4,A5,A6,A7).\nlib_nd7(_,_,_,_,_,_,Out):-member(Out,[a,b]).\nlib_fold_pre1(tag,A1,S,T):-lib_record(A1,S,T).\nlib_fold_nd1(X,S,T):-member(T,[X,S]).\nlib_fold_any1(_,S,S).\nlib_fold_boom1(Error,_,_,_):-throw(Error).\nlib_fold_pre2(tag,A1,A2,S,T):-lib_record2(A1,A2,S,T).\nlib_fold_nd2(X,_,S,T):-member(T,[X,S]).\nlib_fold_any2(_,_,S,S).\nlib_fold_boom2(Error,_,_,_,_):-throw(Error).\nlib_fold_pre3(tag,A1,A2,A3,S,T):-lib_record3(A1,A2,A3,S,T).\nlib_fold_nd3(X,_,_,S,T):-member(T,[X,S]).\nlib_fold_any3(_,_,_,S,S).\nlib_fold_boom3(Error,_,_,_,_,_):-throw(Error).\nlib_trace1(flags(A,B),a1):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace1(flags(A,B),b1):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace1(_,_):-throw(misordered_callback_arguments).\nlib_map_boom1(Error,_):-throw(Error).\nlib_trace2(flags(A,B),a1,a2):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace2(flags(A,B),b1,b2):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace2(_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom2(Error,_,_):-throw(Error).\nlib_trace3(flags(A,B),a1,a2,a3):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace3(flags(A,B),b1,b2,b3):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace3(_,_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom3(Error,_,_,_):-throw(Error).\nlib_trace4(flags(A,B),a1,a2,a3,a4):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace4(flags(A,B),b1,b2,b3,b4):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace4(_,_,_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom4(Error,_,_,_,_):-throw(Error).\nlib_trace5(flags(A,B),a1,a2,a3,a4,a5):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace5(flags(A,B),b1,b2,b3,b4,b5):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace5(_,_,_,_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom5(Error,_,_,_,_,_):-throw(Error).\nlib_trace6(flags(A,B),a1,a2,a3,a4,a5,a6):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace6(flags(A,B),b1,b2,b3,b4,b5,b6):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace6(_,_,_,_,_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom6(Error,_,_,_,_,_,_):-throw(Error).\nlib_trace7(flags(A,B),a1,a2,a3,a4,a5,a6,a7):-!,(var(A),var(B)->A=first;throw(repeated_or_misordered_callback)).\nlib_trace7(flags(A,B),b1,b2,b3,b4,b5,b6,b7):-!,(A==first,var(B)->B=second;throw(repeated_or_misordered_callback)).\nlib_trace7(_,_,_,_,_,_,_,_):-throw(misordered_callback_arguments).\nlib_map_boom7(Error,_,_,_,_,_,_,_):-throw(Error).\n\nlib_distinct_vars([]).\nlib_distinct_vars([X|Xs]):-var(X),lib_not_identical(X,Xs),lib_distinct_vars(Xs).\nlib_not_identical(_,[]).\nlib_not_identical(X,[Y|Ys]):-X\\==Y,lib_not_identical(X,Ys).\nlib_generated_position(1,X,L,[],Tail):-nonvar(L),L=[Head|Tail],Head==X,var(Tail).\nlib_generated_position(N,X,L,[Head|Heads],Tail):-N>1,nonvar(L),L=[Head|Rest],var(Head),Next is N-1,lib_generated_position(Next,X,Rest,Heads,Tail).\nlib_generated_list(0,L,[]):-L==[].\nlib_generated_list(N,L,[Head|Heads]):-N>0,nonvar(L),L=[Head|Tail],var(Head),Next is N-1,lib_generated_list(Next,Tail,Heads).\n",
+  "cases": [
+    {
+      "id": "STDLIB-001",
+      "title": "member enumerates in order including duplicates",
+      "transport": "query",
+      "goal": "findall(X,member(X,[a,b,a]),[a,b,a])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-002",
+      "title": "member preserves nonground term sharing",
+      "transport": "query",
+      "goal": "member(pair(X,X),[pair(Y,Z)]),var(X),X==Y,Y==Z",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-003",
+      "title": "memberchk commits to the first matching element",
+      "transport": "query",
+      "goal": "findall(X,memberchk(X,[a,b]),[a])",
+      "requirements": [
+        "B-331",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-004",
+      "title": "memberchk preserves matching variable sharing",
+      "transport": "query",
+      "goal": "memberchk(pair(X,X),[pair(Y,Z),other]),var(X),X==Y,Y==Z",
+      "requirements": [
+        "B-331",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-005",
+      "title": "memberchk fails when no member matches",
+      "transport": "query",
+      "goal": "\\+memberchk(c,[a,b])",
+      "requirements": [
+        "B-331",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-006",
+      "title": "memberchk reports a list type error",
+      "transport": "query",
+      "goal": "catch(memberchk(a,wrong),error(type_error(list,wrong),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-007",
+      "title": "append enumerates every split",
+      "transport": "query",
+      "goal": "findall(A-B,append(A,B,[a,b]),[[]-[a,b],[a]-[b],[a,b]-[]])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-008",
+      "title": "append constructs a list",
+      "transport": "query",
+      "goal": "append([a],[b,c],L),L==[a,b,c]",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-009",
+      "title": "length constructs a proper list",
+      "transport": "query",
+      "goal": "length(L,3),L=[A,B,C],var(A),var(B),var(C),A\\==B,B\\==C",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-010",
+      "title": "length measures a list",
+      "transport": "query",
+      "goal": "length([a,b,c],N),N==3",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-011",
+      "title": "select enumerates occurrences in order",
+      "transport": "query",
+      "goal": "findall(X-R,select(X,[a,b,a],R),[a-[b,a],b-[a,a],a-[a,b]])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-012",
+      "title": "nth0 enumerates zero-based positions",
+      "transport": "query",
+      "goal": "findall(N-X,nth0(N,[a,b],X),[0-a,1-b])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-013",
+      "title": "nth1 enumerates one-based positions",
+      "transport": "query",
+      "goal": "findall(N-X,nth1(N,[a,b],X),[1-a,2-b])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-014",
+      "title": "nth0 four-argument form removes an element",
+      "transport": "query",
+      "goal": "nth0(1,[a,b,c],X,R),X==b,R==[a,c]",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-015",
+      "title": "nth1 four-argument form constructs an element",
+      "transport": "query",
+      "goal": "nth1(2,L,b,[a,c]),L==[a,b,c]",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-016",
+      "title": "nth0 four-argument form enumerates positions",
+      "transport": "query",
+      "goal": "findall(N-X-R,nth0(N,[a,b],X,R),[0-a-[b],1-b-[a]])",
+      "requirements": [
+        "B-331"
+      ]
+    },
+    {
+      "id": "STDLIB-017",
+      "title": "between enumerates a closed interval",
+      "transport": "query",
+      "goal": "findall(N,between(-1,1,N),[-1,0,1])",
+      "requirements": [
+        "B-332"
+      ]
+    },
+    {
+      "id": "STDLIB-018",
+      "title": "between tests its output",
+      "transport": "query",
+      "goal": "between(1,3,2),\\+between(1,3,4)",
+      "requirements": [
+        "B-332"
+      ]
+    },
+    {
+      "id": "STDLIB-019",
+      "title": "succ supports both integer directions",
+      "transport": "query",
+      "goal": "succ(2,Y),Y==3,succ(X,3),X==2",
+      "requirements": [
+        "B-332"
+      ]
+    },
+    {
+      "id": "STDLIB-020",
+      "title": "maplist/2 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args1,[a1,b1])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-021",
+      "title": "maplist/2 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq1,[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-022",
+      "title": "maplist/3 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args2,[a1,b1],[a2,b2])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-023",
+      "title": "maplist/3 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq2,[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-024",
+      "title": "maplist/4 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args3,[a1,b1],[a2,b2],[a3,b3])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-025",
+      "title": "maplist/4 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq3,[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-026",
+      "title": "maplist/5 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args4,[a1,b1],[a2,b2],[a3,b3],[a4,b4])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-027",
+      "title": "maplist/5 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq4,[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-028",
+      "title": "maplist/6 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args5,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-029",
+      "title": "maplist/6 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq5,[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-030",
+      "title": "maplist/7 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args6,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-031",
+      "title": "maplist/7 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq6,[],[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-032",
+      "title": "maplist/8 preserves list and element argument order in private callbacks",
+      "transport": "query",
+      "goal": "maplist(lib_args7,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],[a7,b7])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-033",
+      "title": "maplist/8 accepts empty lists",
+      "transport": "query",
+      "goal": "maplist(lib_eq7,[],[],[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-034",
+      "title": "maplist preserves callback nondeterminism",
+      "transport": "query",
+      "goal": "findall(L,maplist(lib_choice,[a,a],L),[[1,1],[1,2],[2,1],[2,2]])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-035",
+      "title": "maplist supports partial application",
+      "transport": "query",
+      "goal": "maplist(lib_eq3(a),[a,a],L),L==[a,a]",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-036",
+      "title": "maplist fails on unequal list lengths",
+      "transport": "query",
+      "goal": "\\+maplist(lib_eq2,[a],[a,b])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-037",
+      "title": "maplist propagates the callback exception",
+      "transport": "query",
+      "goal": "catch(maplist(lib_throw,[library_boom]),library_boom,Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-038",
+      "title": "maplist does not bind an uninstantiated closure on error",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-039",
+      "title": "foldl/4 threads its accumulator",
+      "transport": "query",
+      "goal": "foldl(lib_fold,[1,2,3],0,N),N==6,foldl(lib_record,[a,b],zero,R),R==step(b,step(a,zero))",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-040",
+      "title": "foldl/5 threads its accumulator across two lists",
+      "transport": "query",
+      "goal": "foldl(lib_fold2,[1,2],[3,4],0,N),N==10,foldl(lib_record2,[a,b],[c,d],zero,R),R==step(b,d,step(a,c,zero))",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-041",
+      "title": "foldl/6 threads its accumulator across three lists",
+      "transport": "query",
+      "goal": "foldl(lib_fold3,[1,2],[3,4],[5,6],0,N),N==21,foldl(lib_record3,[a,b],[c,d],[e,f],zero,R),R==step(b,d,f,step(a,c,e,zero))",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-042",
+      "title": "foldl accepts empty lists and preserves the initial value",
+      "transport": "query",
+      "goal": "foldl(lib_fold,[],pair(X,X),R),R=pair(A,B),var(X),X==A,A==B",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-043",
+      "title": "foldl preserves callback alternatives",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_choice,[a,b],zero,R),[b,a,b,zero])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-044",
+      "title": "call_nth enumerates solutions from one",
+      "transport": "query",
+      "goal": "findall(X-N,call_nth(member(X,[a,b,a]),N),[a-1,b-2,a-3])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-045",
+      "title": "call_nth selects one requested solution",
+      "transport": "query",
+      "goal": "findall(X,call_nth(member(X,[a,b,a]),2),[b])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-046",
+      "title": "call_nth fails past the final solution",
+      "transport": "query",
+      "goal": "\\+call_nth(member(_,[a,b]),3)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-047",
+      "title": "call_nth rejects zero",
+      "transport": "query",
+      "goal": "catch(call_nth(true,0),error(domain_error(not_less_than_one,0),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-048",
+      "title": "countall counts duplicate solutions without exporting bindings",
+      "transport": "query",
+      "goal": "countall(member(X,[a,b,a]),N),N==3,var(X)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-049",
+      "title": "countall of failure is zero",
+      "transport": "query",
+      "goal": "countall(fail,N),N==0",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-050",
+      "title": "countall has one result",
+      "transport": "query",
+      "goal": "findall(N,countall(member(_,[a,b]),N),[2])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-051",
+      "title": "countall checks a prebound output",
+      "transport": "query",
+      "goal": "countall(member(_,[a,b]),2),\\+countall(member(_,[a,b]),3)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-052",
+      "title": "countall propagates exceptions without binding its output",
+      "transport": "query",
+      "goal": "catch(countall(throw(library_boom),N),library_boom,Caught=true),Caught==true,var(N)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-053",
+      "title": "nested countall calls have independent counters",
+      "transport": "query",
+      "goal": "countall((member(_,[a,b]),countall(member(_,[c,d,e]),3)),N),N==2",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-054",
+      "title": "forall preserves outer variables",
+      "transport": "query",
+      "goal": "forall(member(X,[a,b]),nonvar(X)),var(X)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-055",
+      "title": "forall detects a failing instance",
+      "transport": "query",
+      "goal": "\\+forall(member(X,[a,b]),X==a),var(X)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-056",
+      "title": "forall succeeds for an empty generator",
+      "transport": "query",
+      "goal": "forall(fail,throw(unreachable))",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-057",
+      "title": "forall propagates callback exceptions",
+      "transport": "query",
+      "goal": "catch(forall(true,throw(library_boom)),library_boom,Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-058",
+      "title": "empty maplist does not invoke an uninstantiated closure",
+      "transport": "query",
+      "goal": "maplist(G,[]),var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-059",
+      "title": "empty maplist does not inspect an unused non-callable closure",
+      "transport": "query",
+      "goal": "maplist(7,[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-060",
+      "title": "memberchk succeeds before an unused improper tail",
+      "transport": "query",
+      "goal": "memberchk(a,[a|unused_tail])",
+      "requirements": [
+        "B-331",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-061",
+      "title": "forall exports neither generator nor test bindings",
+      "transport": "query",
+      "goal": "forall(member(X,[a,b]),Y=X),var(X),var(Y)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-062",
+      "title": "empty foldl does not invoke an uninstantiated closure",
+      "transport": "query",
+      "goal": "foldl(G,[],seed,R),R==seed,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-063",
+      "title": "countall keeps a generator cut scoped and discards bindings",
+      "transport": "query",
+      "goal": "countall((member(X,[a,b]),!),N),N==1,var(X)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-064",
+      "title": "maplist reports the exact callable type and culprit",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333"
+      ]
+    },
+    {
+      "id": "STDLIB-065",
+      "title": "countall reports a non-callable generator",
+      "transport": "query",
+      "goal": "catch(countall(7,N),error(type_error(callable,7),_),Caught=true),Caught==true,var(N)",
+      "requirements": [
+        "B-333"
+      ]
+    },
+    {
+      "id": "STDLIB-066",
+      "title": "maplist/2 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-067",
+      "title": "maplist/2 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-068",
+      "title": "maplist/2 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-069",
+      "title": "empty maplist/2 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-070",
+      "title": "maplist/3 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-071",
+      "title": "maplist/3 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-072",
+      "title": "maplist/3 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-073",
+      "title": "empty maplist/3 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-074",
+      "title": "maplist/4 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-075",
+      "title": "maplist/4 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-076",
+      "title": "maplist/4 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-077",
+      "title": "empty maplist/4 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-078",
+      "title": "maplist/5 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a],[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-079",
+      "title": "maplist/5 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a],[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-080",
+      "title": "maplist/5 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a],[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-081",
+      "title": "empty maplist/5 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-082",
+      "title": "maplist/6 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a],[a],[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-083",
+      "title": "maplist/6 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a],[a],[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-084",
+      "title": "maplist/6 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a],[a],[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-085",
+      "title": "empty maplist/6 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-086",
+      "title": "maplist/7 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a],[a],[a],[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-087",
+      "title": "maplist/7 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a],[a],[a],[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-088",
+      "title": "maplist/7 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a],[a],[a],[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-089",
+      "title": "empty maplist/7 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-090",
+      "title": "maplist/8 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(maplist(7,[a],[a],[a],[a],[a],[a],[a]),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-091",
+      "title": "maplist/8 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(maplist(7.5,[a],[a],[a],[a],[a],[a],[a]),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-092",
+      "title": "maplist/8 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(maplist(G,[a],[a],[a],[a],[a],[a],[a]),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-093",
+      "title": "empty maplist/8 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "maplist(7,[],[],[],[],[],[],[])",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-094",
+      "title": "foldl/4 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(foldl(7,[a],seed,_R),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-095",
+      "title": "foldl/4 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(foldl(7.5,[a],seed,_R),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-096",
+      "title": "foldl/4 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(foldl(G,[a],seed,_R),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-097",
+      "title": "empty foldl/4 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "foldl(7,[],seed,seed)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-098",
+      "title": "foldl/5 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(foldl(7,[a],[a],seed,_R),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-099",
+      "title": "foldl/5 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(foldl(7.5,[a],[a],seed,_R),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-100",
+      "title": "foldl/5 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(foldl(G,[a],[a],seed,_R),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-101",
+      "title": "empty foldl/5 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "foldl(7,[],[],seed,seed)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-102",
+      "title": "foldl/6 rejects a non-callable callback (7)",
+      "transport": "query",
+      "goal": "catch(foldl(7,[a],[a],[a],seed,_R),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-103",
+      "title": "foldl/6 rejects a non-callable callback (7.5)",
+      "transport": "query",
+      "goal": "catch(foldl(7.5,[a],[a],[a],seed,_R),error(type_error(callable,7.5),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-104",
+      "title": "foldl/6 reports an uninstantiated callback",
+      "transport": "query",
+      "goal": "catch(foldl(G,[a],[a],[a],seed,_R),error(instantiation_error,_),Caught=true),Caught==true,var(G)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-105",
+      "title": "empty foldl/6 ignores an unused invalid callback",
+      "transport": "query",
+      "goal": "foldl(7,[],[],[],seed,seed)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-106",
+      "title": "countall(7,_N) reports a callable error at invocation",
+      "transport": "query",
+      "goal": "catch(countall(7,_N),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-107",
+      "title": "call_nth(7,_N) reports a callable error at invocation",
+      "transport": "query",
+      "goal": "catch(call_nth(7,_N),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-108",
+      "title": "forall(7,true) reports a callable error at invocation",
+      "transport": "query",
+      "goal": "catch(forall(7,true),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-109",
+      "title": "forall(true,7) reports a callable error at invocation",
+      "transport": "query",
+      "goal": "catch(forall(true,7),error(type_error(callable,7),_),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-110",
+      "title": "vacuous forall does not invoke its invalid test",
+      "transport": "query",
+      "goal": "forall(fail,7)",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-111",
+      "title": "library callbacks preserve application exceptions",
+      "transport": "query",
+      "goal": "catch(maplist(lib_throw,[error(type_error(atom,7),application)]),error(type_error(atom,7),application),Caught=true),Caught==true",
+      "requirements": [
+        "B-333",
+        "B-334"
+      ]
+    },
+    {
+      "id": "STDLIB-112",
+      "title": "ISO call/N retains its own type-error refinement and original culprit",
+      "transport": "query",
+      "goal": "catch(call(7,a),error(type_error(Type,7),_),Caught=true),Caught==true,memberchk(Type,[atom,callable])",
+      "requirements": [
+        "B-333"
+      ]
+    },
+    {
+      "id": "STDLIB-113",
+      "title": "append removes a supplied prefix or fails without a match",
+      "transport": "query",
+      "goal": "append([a],Tail,[a,b,c]),Tail==[b,c],\\+append([x],_,[a,b,c])",
+      "requirements": [
+        "B-363"
+      ],
+      "library_obligations": [
+        "LIB-005"
+      ]
+    },
+    {
+      "id": "STDLIB-114",
+      "title": "length preserves a partial prefix and creates pairwise-distinct fresh positions",
+      "transport": "query",
+      "goal": "length([X|Tail],4),Tail=[A,B,C],var(X),var(A),var(B),var(C),X\\==A,X\\==B,X\\==C,A\\==B,A\\==C,B\\==C",
+      "requirements": [
+        "B-365"
+      ],
+      "library_obligations": [
+        "LIB-007"
+      ]
+    },
+    {
+      "id": "STDLIB-115",
+      "title": "select enumerates all insertion positions in order",
+      "transport": "query",
+      "goal": "findall(L,select(x,L,[a,b]),[[x,a,b],[a,x,b],[a,b,x]])",
+      "requirements": [
+        "B-367"
+      ],
+      "library_obligations": [
+        "LIB-010"
+      ]
+    },
+    {
+      "id": "STDLIB-116",
+      "title": "select insertion preserves variable identity and remainder order",
+      "transport": "query",
+      "goal": "findall(ok,(select(X,[A,X,B],R),R=[A,B],var(A),var(B),var(X),A\\==B,A\\==X,B\\==X),[ok])",
+      "requirements": [
+        "B-367"
+      ],
+      "library_obligations": [
+        "LIB-010"
+      ]
+    },
+    {
+      "id": "STDLIB-117",
+      "title": "nth0/4 constructs every ordered insertion",
+      "transport": "query",
+      "goal": "findall(N-L,nth0(N,L,x,[a,b]),[0-[x,a,b],1-[a,x,b],2-[a,b,x]])",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-012"
+      ]
+    },
+    {
+      "id": "STDLIB-118",
+      "title": "nth1/4 enumerates ordered removals",
+      "transport": "query",
+      "goal": "findall(N-X-R,nth1(N,[a,b,a],X,R),[1-a-[b,a],2-b-[a,a],3-a-[a,b]])",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-012"
+      ]
+    },
+    {
+      "id": "STDLIB-119",
+      "title": "nth0/3 fails for an index past the finite list",
+      "transport": "query",
+      "goal": "\\+nth0(2,[a,b],X),var(X)",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-013"
+      ]
+    },
+    {
+      "id": "STDLIB-120",
+      "title": "nth0/4 fails for an index past the finite list",
+      "transport": "query",
+      "goal": "\\+nth0(2,[a,b],X,R),var(X),var(R)",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-013"
+      ]
+    },
+    {
+      "id": "STDLIB-121",
+      "title": "nth1/3 fails for an index past the finite list",
+      "transport": "query",
+      "goal": "\\+nth1(3,[a,b],X),var(X)",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-013"
+      ]
+    },
+    {
+      "id": "STDLIB-122",
+      "title": "nth1/4 fails for an index past the finite list",
+      "transport": "query",
+      "goal": "\\+nth1(3,[a,b],X,R),var(X),var(R)",
+      "requirements": [
+        "B-369"
+      ],
+      "library_obligations": [
+        "LIB-013"
+      ]
+    },
+    {
+      "id": "STDLIB-123",
+      "title": "between rejects an empty interval without binding its candidate",
+      "transport": "query",
+      "goal": "findall(N,between(2,1,N),[]),\\+between(2,1,1),\\+between(2,1,2)",
+      "requirements": [
+        "B-371"
+      ],
+      "library_obligations": [
+        "LIB-015"
+      ]
+    },
+    {
+      "id": "STDLIB-124",
+      "title": "between requires an instantiated lower bound",
+      "transport": "query",
+      "goal": "catch(between(L,3,N),E,true),nonvar(E),E=error(instantiation_error,_),var(L),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-125",
+      "title": "between requires an integer lower bound (bad)",
+      "transport": "query",
+      "goal": "catch(between(bad,3,N),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-126",
+      "title": "between requires an integer lower bound (1.5)",
+      "transport": "query",
+      "goal": "catch(between(1.5,3,N),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-127",
+      "title": "between requires an instantiated upper bound",
+      "transport": "query",
+      "goal": "catch(between(1,U,N),E,true),nonvar(E),E=error(instantiation_error,_),var(U),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-128",
+      "title": "between requires an integer upper bound (bad)",
+      "transport": "query",
+      "goal": "catch(between(1,bad,N),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-129",
+      "title": "between requires an integer upper bound (1.5)",
+      "transport": "query",
+      "goal": "catch(between(1,1.5,N),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(N)",
+      "requirements": [
+        "B-371",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-016"
+      ]
+    },
+    {
+      "id": "STDLIB-130",
+      "title": "succ checks supplied pairs with at most one answer",
+      "transport": "query",
+      "goal": "findall(ok,succ(3,4),[ok]),\\+succ(3,3),\\+succ(3,5),\\+succ(0,0)",
+      "requirements": [
+        "B-373"
+      ],
+      "library_obligations": [
+        "LIB-018"
+      ]
+    },
+    {
+      "id": "STDLIB-131",
+      "title": "zero has no nonnegative predecessor",
+      "transport": "query",
+      "goal": "\\+succ(P,0),var(P)",
+      "requirements": [
+        "B-373"
+      ],
+      "library_obligations": [
+        "LIB-018"
+      ]
+    },
+    {
+      "id": "STDLIB-132",
+      "title": "succ requires at least one instantiated argument",
+      "transport": "query",
+      "goal": "catch(succ(P,S),E,true),nonvar(E),E=error(instantiation_error,_),var(P),var(S)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-133",
+      "title": "succ requires an integer predecessor (bad)",
+      "transport": "query",
+      "goal": "catch(succ(bad,V),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-134",
+      "title": "succ requires an integer predecessor (1.5)",
+      "transport": "query",
+      "goal": "catch(succ(1.5,V),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-135",
+      "title": "succ rejects a negative predecessor",
+      "transport": "query",
+      "goal": "catch(succ(-1,V),E,true),nonvar(E),E=error(domain_error(Domain,-1),_),atom(Domain),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-136",
+      "title": "succ requires an integer successor (bad)",
+      "transport": "query",
+      "goal": "catch(succ(V,bad),E,true),nonvar(E),E=error(type_error(integer,bad),_),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-137",
+      "title": "succ requires an integer successor (1.5)",
+      "transport": "query",
+      "goal": "catch(succ(V,1.5),E,true),nonvar(E),E=error(type_error(integer,1.5),_),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-138",
+      "title": "succ rejects a negative successor",
+      "transport": "query",
+      "goal": "catch(succ(V,-1),E,true),nonvar(E),E=error(domain_error(Domain,-1),_),atom(Domain),var(V)",
+      "requirements": [
+        "B-373",
+        "B-014"
+      ],
+      "library_obligations": [
+        "LIB-019"
+      ]
+    },
+    {
+      "id": "STDLIB-139",
+      "title": "call_nth rejects a negative index before invoking its goal",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(index_goal_ran),-1),E,true),nonvar(E),E=error(domain_error(not_less_than_one,-1),_)",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-030"
+      ]
+    },
+    {
+      "id": "STDLIB-140",
+      "title": "call_nth rejects a noninteger index before invoking its goal (bad)",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(index_goal_ran),bad),E,true),nonvar(E),E=error(type_error(integer,bad),_)",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-030"
+      ]
+    },
+    {
+      "id": "STDLIB-141",
+      "title": "call_nth rejects a noninteger index before invoking its goal (1.5)",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(index_goal_ran),1.5),E,true),nonvar(E),E=error(type_error(integer,1.5),_)",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-030"
+      ]
+    },
+    {
+      "id": "STDLIB-142",
+      "title": "call_nth rejects a noninteger index before invoking its goal (pair(a,b))",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(index_goal_ran),pair(a,b)),E,true),nonvar(E),E=error(type_error(integer,pair(a,b)),_)",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-030"
+      ]
+    },
+    {
+      "id": "STDLIB-143",
+      "title": "call_nth rejects a noninteger index before invoking its goal ([a])",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(index_goal_ran),[a]),E,true),nonvar(E),E=error(type_error(integer,[a]),_)",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-030"
+      ]
+    },
+    {
+      "id": "STDLIB-144",
+      "title": "call_nth selection does not evaluate later alternatives",
+      "transport": "query",
+      "goal": "findall(X,call_nth((X=a;X=b;throw(later_alternative_ran)),2),[b])",
+      "requirements": [
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-031"
+      ]
+    },
+    {
+      "id": "STDLIB-145",
+      "title": "countall isolates a variable shared between goal and count",
+      "transport": "query",
+      "goal": "findall(N,countall((N=1;N=2),N),[2])",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-034"
+      ]
+    },
+    {
+      "id": "STDLIB-146",
+      "title": "countall fails a mismatched prebound count shared with its goal",
+      "transport": "query",
+      "goal": "N=1,\\+countall((N=1;N=1),N),N==1",
+      "requirements": [
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-034"
+      ]
+    },
+    {
+      "id": "STDLIB-147",
+      "title": "maplist/2 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd1,[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-148",
+      "title": "maplist/2 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_pre1(seed),[a1,b1]),[ok])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-149",
+      "title": "maplist/2 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace1(flags(A,B)),[a1,b1]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-150",
+      "title": "empty maplist/2 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-151",
+      "title": "maplist/3 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd2,[a1,b1],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-152",
+      "title": "maplist/3 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre2(seed),[a1,b1],Out),[[a2,b2]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-153",
+      "title": "maplist/3 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace2(flags(A,B)),[a1,b1],[a2,b2]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-154",
+      "title": "maplist/3 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args2,Out,[a2,b2]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-155",
+      "title": "maplist/3 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args2,[a1,b1],Out),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-156",
+      "title": "empty maplist/3 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-157",
+      "title": "maplist/4 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd3,[a1,b1],[a2,b2],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-158",
+      "title": "maplist/4 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre3(seed),[a1,b1],[a2,b2],Out),[[a3,b3]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-159",
+      "title": "maplist/4 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace3(flags(A,B)),[a1,b1],[a2,b2],[a3,b3]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-160",
+      "title": "maplist/4 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args3,Out,[a2,b2],[a3,b3]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-161",
+      "title": "maplist/4 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args3,[a1,b1],Out,[a3,b3]),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-162",
+      "title": "maplist/4 constructs unknown list argument 3 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args3,[a1,b1],[a2,b2],Out),[[a3,b3]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-163",
+      "title": "maplist/4 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any3,[a],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-164",
+      "title": "maplist/4 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any3,[a,b],[a],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-165",
+      "title": "maplist/4 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any3,[a,b],[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-166",
+      "title": "empty maplist/4 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-167",
+      "title": "maplist/5 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd4,[a1,b1],[a2,b2],[a3,b3],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-168",
+      "title": "maplist/5 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre4(seed),[a1,b1],[a2,b2],[a3,b3],Out),[[a4,b4]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-169",
+      "title": "maplist/5 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace4(flags(A,B)),[a1,b1],[a2,b2],[a3,b3],[a4,b4]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-170",
+      "title": "maplist/5 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args4,Out,[a2,b2],[a3,b3],[a4,b4]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-171",
+      "title": "maplist/5 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args4,[a1,b1],Out,[a3,b3],[a4,b4]),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-172",
+      "title": "maplist/5 constructs unknown list argument 3 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args4,[a1,b1],[a2,b2],Out,[a4,b4]),[[a3,b3]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-173",
+      "title": "maplist/5 constructs unknown list argument 4 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args4,[a1,b1],[a2,b2],[a3,b3],Out),[[a4,b4]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-174",
+      "title": "maplist/5 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any4,[a],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-175",
+      "title": "maplist/5 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any4,[a,b],[a],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-176",
+      "title": "maplist/5 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any4,[a,b],[a,b],[a],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-177",
+      "title": "maplist/5 rejects a shorter list in argument 4",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any4,[a,b],[a,b],[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-178",
+      "title": "empty maplist/5 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[],[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-179",
+      "title": "maplist/6 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd5,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-180",
+      "title": "maplist/6 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre5(seed),[a1,b1],[a2,b2],[a3,b3],[a4,b4],Out),[[a5,b5]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-181",
+      "title": "maplist/6 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace5(flags(A,B)),[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-182",
+      "title": "maplist/6 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args5,Out,[a2,b2],[a3,b3],[a4,b4],[a5,b5]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-183",
+      "title": "maplist/6 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args5,[a1,b1],Out,[a3,b3],[a4,b4],[a5,b5]),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-184",
+      "title": "maplist/6 constructs unknown list argument 3 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args5,[a1,b1],[a2,b2],Out,[a4,b4],[a5,b5]),[[a3,b3]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-185",
+      "title": "maplist/6 constructs unknown list argument 4 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args5,[a1,b1],[a2,b2],[a3,b3],Out,[a5,b5]),[[a4,b4]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-186",
+      "title": "maplist/6 constructs unknown list argument 5 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args5,[a1,b1],[a2,b2],[a3,b3],[a4,b4],Out),[[a5,b5]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-187",
+      "title": "maplist/6 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any5,[a],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-188",
+      "title": "maplist/6 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any5,[a,b],[a],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-189",
+      "title": "maplist/6 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any5,[a,b],[a,b],[a],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-190",
+      "title": "maplist/6 rejects a shorter list in argument 4",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any5,[a,b],[a,b],[a,b],[a],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-191",
+      "title": "maplist/6 rejects a shorter list in argument 5",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any5,[a,b],[a,b],[a,b],[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-192",
+      "title": "empty maplist/6 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[],[],[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-193",
+      "title": "maplist/7 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd6,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-194",
+      "title": "maplist/7 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre6(seed),[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],Out),[[a6,b6]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-195",
+      "title": "maplist/7 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace6(flags(A,B)),[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-196",
+      "title": "maplist/7 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,Out,[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-197",
+      "title": "maplist/7 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,[a1,b1],Out,[a3,b3],[a4,b4],[a5,b5],[a6,b6]),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-198",
+      "title": "maplist/7 constructs unknown list argument 3 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,[a1,b1],[a2,b2],Out,[a4,b4],[a5,b5],[a6,b6]),[[a3,b3]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-199",
+      "title": "maplist/7 constructs unknown list argument 4 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,[a1,b1],[a2,b2],[a3,b3],Out,[a5,b5],[a6,b6]),[[a4,b4]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-200",
+      "title": "maplist/7 constructs unknown list argument 5 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,[a1,b1],[a2,b2],[a3,b3],[a4,b4],Out,[a6,b6]),[[a5,b5]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-201",
+      "title": "maplist/7 constructs unknown list argument 6 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args6,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],Out),[[a6,b6]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-202",
+      "title": "maplist/7 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-203",
+      "title": "maplist/7 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a,b],[a],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-204",
+      "title": "maplist/7 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a,b],[a,b],[a],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-205",
+      "title": "maplist/7 rejects a shorter list in argument 4",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a,b],[a,b],[a,b],[a],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-206",
+      "title": "maplist/7 rejects a shorter list in argument 5",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a,b],[a,b],[a,b],[a,b],[a],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-207",
+      "title": "maplist/7 rejects a shorter list in argument 6",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any6,[a,b],[a,b],[a,b],[a,b],[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-208",
+      "title": "empty maplist/7 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[],[],[],[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-209",
+      "title": "maplist/8 preserves all callback alternatives in order",
+      "transport": "query",
+      "goal": "findall([X,Y],maplist(lib_nd7,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],[X,Y]),[[a,a],[a,b],[b,a],[b,b]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-210",
+      "title": "maplist/8 appends list arguments after a private closure argument",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_pre7(seed),[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],Out),[[a7,b7]])",
+      "requirements": [
+        "B-375",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-021"
+      ]
+    },
+    {
+      "id": "STDLIB-211",
+      "title": "maplist/8 shared flags observe each position once in left-to-right list-argument order",
+      "transport": "query",
+      "goal": "findall(ok,(maplist(lib_trace7(flags(A,B)),[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],[a7,b7]),A==first,B==second),[ok])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-212",
+      "title": "maplist/8 constructs unknown list argument 1 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,Out,[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],[a7,b7]),[[a1,b1]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-213",
+      "title": "maplist/8 constructs unknown list argument 2 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],Out,[a3,b3],[a4,b4],[a5,b5],[a6,b6],[a7,b7]),[[a2,b2]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-214",
+      "title": "maplist/8 constructs unknown list argument 3 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],[a2,b2],Out,[a4,b4],[a5,b5],[a6,b6],[a7,b7]),[[a3,b3]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-215",
+      "title": "maplist/8 constructs unknown list argument 4 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],[a2,b2],[a3,b3],Out,[a5,b5],[a6,b6],[a7,b7]),[[a4,b4]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-216",
+      "title": "maplist/8 constructs unknown list argument 5 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],[a2,b2],[a3,b3],[a4,b4],Out,[a6,b6],[a7,b7]),[[a5,b5]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-217",
+      "title": "maplist/8 constructs unknown list argument 6 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],Out,[a7,b7]),[[a6,b6]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-218",
+      "title": "maplist/8 constructs unknown list argument 7 from other finite lists",
+      "transport": "query",
+      "goal": "findall(Out,maplist(lib_args7,[a1,b1],[a2,b2],[a3,b3],[a4,b4],[a5,b5],[a6,b6],Out),[[a7,b7]])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-022"
+      ]
+    },
+    {
+      "id": "STDLIB-219",
+      "title": "maplist/8 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a],[a,b],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-220",
+      "title": "maplist/8 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a],[a,b],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-221",
+      "title": "maplist/8 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a,b],[a],[a,b],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-222",
+      "title": "maplist/8 rejects a shorter list in argument 4",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a,b],[a,b],[a],[a,b],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-223",
+      "title": "maplist/8 rejects a shorter list in argument 5",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a,b],[a,b],[a,b],[a],[a,b],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-224",
+      "title": "maplist/8 rejects a shorter list in argument 6",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a,b],[a,b],[a,b],[a,b],[a],[a,b])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-225",
+      "title": "maplist/8 rejects a shorter list in argument 7",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any7,[a,b],[a,b],[a,b],[a,b],[a,b],[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-226",
+      "title": "empty maplist/8 preserves an unused closure variable",
+      "transport": "query",
+      "goal": "maplist(G,[],[],[],[],[],[],[]),var(G)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-227",
+      "title": "foldl/4 appends elements and states after a private closure argument",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_pre1(tag),[a1,b1],zero,R),[step(b1,step(a1,zero))])",
+      "requirements": [
+        "B-377",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-028"
+      ]
+    },
+    {
+      "id": "STDLIB-228",
+      "title": "foldl/4 preserves callback alternatives and duplicate paths",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_nd1,[a1,b1],zero,R),[b1,a1,b1,zero])",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-026"
+      ]
+    },
+    {
+      "id": "STDLIB-229",
+      "title": "empty foldl/4 preserves aliased accumulator and closure variables",
+      "transport": "query",
+      "goal": "foldl(G,[],pair(X,X),R),var(G),var(X),R==pair(X,X),foldl(G,[],S,S),var(G),var(S)",
+      "requirements": [
+        "B-377",
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-026",
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-230",
+      "title": "foldl/4 preserves application exceptions and leaves output unbound",
+      "transport": "query",
+      "goal": "catch(foldl(lib_fold_boom1(error(type_error(atom,7),application)),[a1,b1],zero,R),E,true),nonvar(E),E==error(type_error(atom,7),application),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-231",
+      "title": "foldl/4 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(R,foldl(lib_fold_boom1(error(type_error(atom,7),application)),[a1,b1],zero,R),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(Bag),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-232",
+      "title": "foldl/5 appends elements and states after a private closure argument",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_pre2(tag),[a1,b1],[a2,b2],zero,R),[step(b1,b2,step(a1,a2,zero))])",
+      "requirements": [
+        "B-377",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-028"
+      ]
+    },
+    {
+      "id": "STDLIB-233",
+      "title": "foldl/5 preserves callback alternatives and duplicate paths",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_nd2,[a1,b1],[a2,b2],zero,R),[b1,a1,b1,zero])",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-026"
+      ]
+    },
+    {
+      "id": "STDLIB-234",
+      "title": "empty foldl/5 preserves aliased accumulator and closure variables",
+      "transport": "query",
+      "goal": "foldl(G,[],[],pair(X,X),R),var(G),var(X),R==pair(X,X),foldl(G,[],[],S,S),var(G),var(S)",
+      "requirements": [
+        "B-377",
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-026",
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-235",
+      "title": "foldl/5 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+foldl(lib_fold_any2,[a],[a,b],zero,_)",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-027"
+      ]
+    },
+    {
+      "id": "STDLIB-236",
+      "title": "foldl/5 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+foldl(lib_fold_any2,[a,b],[a],zero,_)",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-027"
+      ]
+    },
+    {
+      "id": "STDLIB-237",
+      "title": "foldl/5 preserves application exceptions and leaves output unbound",
+      "transport": "query",
+      "goal": "catch(foldl(lib_fold_boom2(error(type_error(atom,7),application)),[a1,b1],[a2,b2],zero,R),E,true),nonvar(E),E==error(type_error(atom,7),application),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-238",
+      "title": "foldl/5 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(R,foldl(lib_fold_boom2(error(type_error(atom,7),application)),[a1,b1],[a2,b2],zero,R),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(Bag),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-239",
+      "title": "foldl/6 appends elements and states after a private closure argument",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_pre3(tag),[a1,b1],[a2,b2],[a3,b3],zero,R),[step(b1,b2,b3,step(a1,a2,a3,zero))])",
+      "requirements": [
+        "B-377",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-028"
+      ]
+    },
+    {
+      "id": "STDLIB-240",
+      "title": "foldl/6 preserves callback alternatives and duplicate paths",
+      "transport": "query",
+      "goal": "findall(R,foldl(lib_fold_nd3,[a1,b1],[a2,b2],[a3,b3],zero,R),[b1,a1,b1,zero])",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-026"
+      ]
+    },
+    {
+      "id": "STDLIB-241",
+      "title": "empty foldl/6 preserves aliased accumulator and closure variables",
+      "transport": "query",
+      "goal": "foldl(G,[],[],[],pair(X,X),R),var(G),var(X),R==pair(X,X),foldl(G,[],[],[],S,S),var(G),var(S)",
+      "requirements": [
+        "B-377",
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-026",
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-242",
+      "title": "foldl/6 rejects a shorter list in argument 1",
+      "transport": "query",
+      "goal": "\\+foldl(lib_fold_any3,[a],[a,b],[a,b],zero,_)",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-027"
+      ]
+    },
+    {
+      "id": "STDLIB-243",
+      "title": "foldl/6 rejects a shorter list in argument 2",
+      "transport": "query",
+      "goal": "\\+foldl(lib_fold_any3,[a,b],[a],[a,b],zero,_)",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-027"
+      ]
+    },
+    {
+      "id": "STDLIB-244",
+      "title": "foldl/6 rejects a shorter list in argument 3",
+      "transport": "query",
+      "goal": "\\+foldl(lib_fold_any3,[a,b],[a,b],[a],zero,_)",
+      "requirements": [
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-027"
+      ]
+    },
+    {
+      "id": "STDLIB-245",
+      "title": "foldl/6 preserves application exceptions and leaves output unbound",
+      "transport": "query",
+      "goal": "catch(foldl(lib_fold_boom3(error(type_error(atom,7),application)),[a1,b1],[a2,b2],[a3,b3],zero,R),E,true),nonvar(E),E==error(type_error(atom,7),application),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-246",
+      "title": "foldl/6 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(R,foldl(lib_fold_boom3(error(type_error(atom,7),application)),[a1,b1],[a2,b2],[a3,b3],zero,R),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(Bag),var(R)",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-247",
+      "title": "forall accepts one successful test alternative without exporting bindings or extra answers",
+      "transport": "query",
+      "goal": "findall(ok,(forall(member(X,[a,b]),(fail;Y=X;throw(extra_test_alternative_ran))),var(X),var(Y)),[ok])",
+      "requirements": [
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-037"
+      ]
+    },
+    {
+      "id": "STDLIB-248",
+      "title": "nested forall succeeds without invoking an invalid vacuous test",
+      "transport": "query",
+      "goal": "maplist(forall(fail),[7]),findall(ok,forall(fail,7),[ok])",
+      "requirements": [
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-038"
+      ]
+    },
+    {
+      "id": "STDLIB-249",
+      "title": "nested forall detects a failing callback",
+      "transport": "query",
+      "goal": "\\+maplist(lib_forall_for,[a,b,bad])",
+      "requirements": [
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-038"
+      ]
+    },
+    {
+      "id": "STDLIB-250",
+      "title": "nested forall uses private source and exports no generator or test bindings",
+      "transport": "query",
+      "goal": "maplist(lib_forall_for,[a,b]),maplist(forall(member(X,[a,b])),[Y=X]),var(X),var(Y),findall(ok,(forall(lib_generated(A),B=A),var(A),var(B)),[ok])",
+      "requirements": [
+        "B-383",
+        "B-357"
+      ],
+      "library_obligations": [
+        "LIB-038",
+        "LIB-043"
+      ]
+    },
+    {
+      "id": "STDLIB-251",
+      "title": "invoked uninstantiated countall callback raises a nonbinding instantiation error",
+      "transport": "query",
+      "goal": "catch(countall(G,N),E,true),nonvar(E),E=error(instantiation_error,_),var(G),var(N)",
+      "requirements": [
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-040"
+      ]
+    },
+    {
+      "id": "STDLIB-252",
+      "title": "invoked uninstantiated call_nth callback raises a nonbinding instantiation error",
+      "transport": "query",
+      "goal": "catch(call_nth(G,1),E,true),nonvar(E),E=error(instantiation_error,_),var(G)",
+      "requirements": [
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-040"
+      ]
+    },
+    {
+      "id": "STDLIB-253",
+      "title": "invoked uninstantiated forall generator callback raises a nonbinding instantiation error",
+      "transport": "query",
+      "goal": "catch(forall(G,true),E,true),nonvar(E),E=error(instantiation_error,_),var(G)",
+      "requirements": [
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-040"
+      ]
+    },
+    {
+      "id": "STDLIB-254",
+      "title": "invoked uninstantiated forall test callback raises a nonbinding instantiation error",
+      "transport": "query",
+      "goal": "catch(forall(true,G),E,true),nonvar(E),E=error(instantiation_error,_),var(G)",
+      "requirements": [
+        "B-334"
+      ],
+      "library_obligations": [
+        "LIB-040"
+      ]
+    },
+    {
+      "id": "STDLIB-255",
+      "title": "vacuous forall leaves an unused test variable unbound",
+      "transport": "query",
+      "goal": "forall(fail,Test),var(Test)",
+      "requirements": [
+        "B-334",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-256",
+      "title": "call_nth preserves the original application exception",
+      "transport": "query",
+      "goal": "catch(call_nth(throw(error(type_error(atom,7),application)),1),E,true),nonvar(E),E==error(type_error(atom,7),application)",
+      "requirements": [
+        "B-334",
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-257",
+      "title": "nested call_nth propagates an exception without publishing a partial bag",
+      "transport": "query",
+      "goal": "catch(findall(X,call_nth((X=a;throw(error(type_error(atom,7),application))),2),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-258",
+      "title": "call_nth resolves a private named generator",
+      "transport": "query",
+      "goal": "findall(X,call_nth(lib_generated(X),2),[b])",
+      "requirements": [
+        "B-357",
+        "B-379"
+      ],
+      "library_obligations": [
+        "LIB-043"
+      ]
+    },
+    {
+      "id": "STDLIB-259",
+      "title": "countall resolves a private named generator without exporting bindings",
+      "transport": "query",
+      "goal": "countall(lib_generated(X),N),N==2,var(X)",
+      "requirements": [
+        "B-357",
+        "B-381"
+      ],
+      "library_obligations": [
+        "LIB-043"
+      ]
+    },
+    {
+      "id": "STDLIB-260",
+      "title": "forall resolves private generators and tests in the caller source context",
+      "transport": "query",
+      "goal": "forall(lib_generated(X),lib_accept(X)),var(X),forall(member(Y,[a,b]),lib_accept(Y)),var(Y)",
+      "requirements": [
+        "B-357",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-043"
+      ]
+    },
+    {
+      "id": "STDLIB-261",
+      "title": "maplist/3 rejects its second list being shorter",
+      "transport": "query",
+      "goal": "\\+maplist(lib_any2,[a,b],[a])",
+      "requirements": [
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-023"
+      ]
+    },
+    {
+      "id": "STDLIB-262",
+      "title": "maplist/2 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom1(error(type_error(atom,7),application)),[X]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-263",
+      "title": "maplist/2 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom1(error(type_error(atom,7),application)),[X]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-264",
+      "title": "maplist/3 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom2(error(type_error(atom,7),application)),[X],[a2]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-265",
+      "title": "maplist/3 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom2(error(type_error(atom,7),application)),[X],[a2]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-266",
+      "title": "maplist/4 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom3(error(type_error(atom,7),application)),[X],[a2],[a3]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-267",
+      "title": "maplist/4 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom3(error(type_error(atom,7),application)),[X],[a2],[a3]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-268",
+      "title": "maplist/5 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom4(error(type_error(atom,7),application)),[X],[a2],[a3],[a4]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-269",
+      "title": "maplist/5 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom4(error(type_error(atom,7),application)),[X],[a2],[a3],[a4]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-270",
+      "title": "maplist/6 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom5(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-271",
+      "title": "maplist/6 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom5(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-272",
+      "title": "maplist/7 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom6(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5],[a6]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-273",
+      "title": "maplist/7 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom6(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5],[a6]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-274",
+      "title": "maplist/8 preserves application exceptions and argument variables",
+      "transport": "query",
+      "goal": "catch(maplist(lib_map_boom7(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5],[a6],[a7]),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-275",
+      "title": "maplist/8 preserves application exceptions inside findall",
+      "transport": "query",
+      "goal": "catch(findall(ok,maplist(lib_map_boom7(error(type_error(atom,7),application)),[X],[a2],[a3],[a4],[a5],[a6],[a7]),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(X),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-276",
+      "title": "forall preserves a generator application exception",
+      "transport": "query",
+      "goal": "catch(forall(throw(error(type_error(atom,7),application)),true),E,true),nonvar(E),E==error(type_error(atom,7),application)",
+      "requirements": [
+        "B-334",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-277",
+      "title": "nested forall preserves a generator application exception without a partial bag",
+      "transport": "query",
+      "goal": "catch(findall(ok,forall(throw(error(type_error(atom,7),application)),true),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-278",
+      "title": "forall preserves a test application exception",
+      "transport": "query",
+      "goal": "catch(forall(true,throw(error(type_error(atom,7),application))),E,true),nonvar(E),E==error(type_error(atom,7),application)",
+      "requirements": [
+        "B-334",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-279",
+      "title": "nested forall preserves a test application exception without a partial bag",
+      "transport": "query",
+      "goal": "catch(findall(ok,forall(true,throw(error(type_error(atom,7),application))),Bag),E,true),nonvar(E),E==error(type_error(atom,7),application),var(Bag)",
+      "requirements": [
+        "B-334",
+        "B-383"
+      ],
+      "library_obligations": [
+        "LIB-042"
+      ]
+    },
+    {
+      "id": "STDLIB-280",
+      "title": "empty maplist/2 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom1(unused_callback_invoked),[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-281",
+      "title": "empty maplist/3 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom2(unused_callback_invoked),[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-282",
+      "title": "empty maplist/4 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom3(unused_callback_invoked),[],[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-283",
+      "title": "empty maplist/5 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom4(unused_callback_invoked),[],[],[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-284",
+      "title": "empty maplist/6 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom5(unused_callback_invoked),[],[],[],[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-285",
+      "title": "empty maplist/7 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom6(unused_callback_invoked),[],[],[],[],[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-286",
+      "title": "empty maplist/8 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,maplist(lib_map_boom7(unused_callback_invoked),[],[],[],[],[],[],[]),[ok])",
+      "requirements": [
+        "B-334",
+        "B-375"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-287",
+      "title": "empty foldl/4 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,(foldl(lib_fold_boom1(unused_callback_invoked),[],pair(X,X),R),R==pair(X,X),var(X)),[ok])",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-288",
+      "title": "empty foldl/5 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,(foldl(lib_fold_boom2(unused_callback_invoked),[],[],pair(X,X),R),R==pair(X,X),var(X)),[ok])",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-289",
+      "title": "empty foldl/6 never invokes a callable throwing closure",
+      "transport": "query",
+      "goal": "findall(ok,(foldl(lib_fold_boom3(unused_callback_invoked),[],[],[],pair(X,X),R),R==pair(X,X),var(X)),[ok])",
+      "requirements": [
+        "B-334",
+        "B-377"
+      ],
+      "library_obligations": [
+        "LIB-041"
+      ]
+    },
+    {
+      "id": "STDLIB-290",
+      "title": "member with both arguments fresh preserves occurrence order and all variable identities",
+      "transport": "query",
+      "goal": "call_nth(member(X,L),LibraryIndex),(lib_generated_position(LibraryIndex,X,L,Prefix,Tail),lib_distinct_vars([X,Tail|Prefix])->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-359"
+      ],
+      "library_obligations": [
+        "LIB-002"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    },
+    {
+      "id": "STDLIB-291",
+      "title": "member generates fresh lists for a fixed atom",
+      "transport": "query",
+      "goal": "call_nth(member(hit,L),LibraryIndex),(lib_generated_position(LibraryIndex,hit,L,Prefix,Tail),lib_distinct_vars([Tail|Prefix])->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-359"
+      ],
+      "library_obligations": [
+        "LIB-002"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    },
+    {
+      "id": "STDLIB-292",
+      "title": "member generated occurrence preserves a compound element and shared variable",
+      "transport": "query",
+      "goal": "call_nth(member(pair(X,X),L),LibraryIndex),(lib_generated_position(LibraryIndex,pair(X,X),L,Prefix,Tail),lib_distinct_vars([X,Tail|Prefix])->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-359"
+      ],
+      "library_obligations": [
+        "LIB-002"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    },
+    {
+      "id": "STDLIB-293",
+      "title": "length with both arguments fresh generates independent proper lists in increasing length",
+      "transport": "query",
+      "goal": "call_nth(length(L,N),LibraryIndex),(N=:=LibraryIndex-1,lib_generated_list(N,L,Vars),lib_distinct_vars(Vars)->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-365"
+      ],
+      "library_obligations": [
+        "LIB-008"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    },
+    {
+      "id": "STDLIB-294",
+      "title": "length completes an open tail after a fixed element in increasing length",
+      "transport": "query",
+      "goal": "L=[fixed|Tail],call_nth(length(L,N),LibraryIndex),(N=:=LibraryIndex,Extra is N-1,lib_generated_list(Extra,Tail,Vars),lib_distinct_vars(Vars)->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-365"
+      ],
+      "library_obligations": [
+        "LIB-008"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    },
+    {
+      "id": "STDLIB-295",
+      "title": "length partial-list generation retains shared prefix variables independently of new cells",
+      "transport": "query",
+      "goal": "L=[X,X|Tail],call_nth(length(L,N),LibraryIndex),(N=:=LibraryIndex+1,Extra is N-2,lib_generated_list(Extra,Tail,Vars),lib_distinct_vars([X|Vars])->LibraryCheck=LibraryIndex;throw(invalid_generated_answer(LibraryIndex)))",
+      "requirements": [
+        "B-365"
+      ],
+      "library_obligations": [
+        "LIB-008"
+      ],
+      "bounded_prefix": {
+        "page_size": 3,
+        "pages": 2,
+        "first": 1
+      }
+    }
+  ],
+  "extends": {
+    "manifest": "cases/standard-library-0.3.json",
+    "sha256": "63942e782d57ad9116cf5a4df4bbf2561a18ca4fe18d544a8ead884c8b77e022"
+  }
+}

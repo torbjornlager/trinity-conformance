@@ -1,0 +1,592 @@
+diff --git a/docs/CROSS_NODE_ARCHITECTURE.md b/docs/CROSS_NODE_ARCHITECTURE.md
+index 00544e4..55b2f9b 100644
+--- a/docs/CROSS_NODE_ARCHITECTURE.md
++++ b/docs/CROSS_NODE_ARCHITECTURE.md
+@@ -1307,12 +1307,17 @@ implements the wire protocol of §4 byte-for-byte.
+ 
+ ## Principal lineage and lifetime policy
+ 
+-Updated node peers attach `lineage` and `account` (128-bit token strings) to
+-commands. Ownership and registries use the receiving connection plus lineage;
++Updated node peers attach `lineage` and `account` (128-bit token strings), plus
++`context_origin` (the origin node URI), to commands. Ownership and registries use
++the origin and server-issued context token across transport attachments;
+ quotas charge the delegated principal account across its lineages. The transport
+ peer must be trusted to delegate that account. Browsers cannot set these fields.
+-Older peers that omit them retain one ownership scope per connection and cannot
+-claim lineage isolation.
++Returning descendants rejoin the original namespace. Missing origin-local tokens
++are rejected after closure. Older peers without `context_origin` retain
++connection-scoped lineage identity. Dedicated transports may bind
++`context_default:true` during their authenticated hello; later commands inherit
++the immutable origin, token, and account binding. Delegation grants no
++administrator authority.
+ 
+ Language sends remain open, subject to node policy. Public actor termination
+ requires ownership; monitor removal requires the installing actor. Host thread
+@@ -1330,8 +1335,10 @@ Retries of effectful work need an application idempotency key or equivalent
+ duplicate suppression.
+ 
+ A delegated route is recorded before waiting for a spawn acknowledgement. When
+-the last locally hosted actor in a lineage ends, `lineage_close` reclaims that
+-lineage at the peer, including spawns whose pid has not yet been acknowledged.
++the retained client context closes, `lineage_close` reclaims its delegated work
++at the peer, including spawns whose pid has not yet been acknowledged. Ending
++one local actor does not close an open retained context. Returning transport
++attachments cannot close the original client namespace.
+ Spawn commands carry a fresh decimal-string `request_id`, echoed on `spawned`
+ and spawn-error responses, so a late reply to an abandoned request cannot
+ satisfy a subsequent spawn. Older peers may omit this correlation field; they
+diff --git a/docs/WEB_PROLOG_BUILTINS.md b/docs/WEB_PROLOG_BUILTINS.md
+index 1405ab3..911f808 100644
+--- a/docs/WEB_PROLOG_BUILTINS.md
++++ b/docs/WEB_PROLOG_BUILTINS.md
+@@ -915,9 +915,13 @@ Composition uses `rpc:hook_promise_owner/1`; the independent RPC library default
+ to trusted local sharing. Ownership is unchanged by timeout, interruption or
+ retry. Definitive teardown of a WebSocket, HTTP interactive-session, or
+ delegated-lineage namespace now disposes of its promises on that node. Closing
+-a connection also sweeps every delegated namespace belonging to it. Ordinary
+-request completion, bookkeeping replacement, and termination of one toplevel
+-in an open shared WebSocket namespace do not trigger this disposal.
++the final foreign transport attachment also retires its delegated context;
++a returning attachment cannot retire the origin client namespace. Fresh HTTP
++requests have distinct promise owners even when authenticated as the same
++principal, and their unretained producer retirement disposes of their promises.
++Cached producers preserve their original context while paging. Bookkeeping
++replacement and termination of one toplevel in an open shared WebSocket
++namespace do not trigger namespace disposal.
+ 
+ Surviving actors remain alive, but their old references become unavailable,
+ and creation under the closed namespace raises
+diff --git a/prolog/web_prolog/actor_api.pl b/prolog/web_prolog/actor_api.pl
+index 604e9e7..a002178 100644
+--- a/prolog/web_prolog/actor_api.pl
++++ b/prolog/web_prolog/actor_api.pl
+@@ -44,6 +44,7 @@ facade re-publishes it for legacy-surface consumers.
+     promise/4,
+     yield/2,
+     yield/3,
++    promise_cleanup/1,
+     runtime_property/1
+ ]).
+ 
+diff --git a/prolog/web_prolog/node_execution_context.pl b/prolog/web_prolog/node_execution_context.pl
+index 4a456f8..3b89a62 100644
+--- a/prolog/web_prolog/node_execution_context.pl
++++ b/prolog/web_prolog/node_execution_context.pl
+@@ -7,7 +7,10 @@
+     current_public_execution_namespace/1,
+     open_client_namespace/1, close_client_namespace/1,
+     open_client_connection/2, close_client_connection/1,
+-    client_namespace_status/2
++    client_namespace_status/2,
++    bind_client_lineage/4, resolve_client_lineage/7,
++    client_lineage/4, bind_connection_context/4, connection_context/4,
++    forget_client_lineage/3
+ ]).
+ 
+ /** <module> Public Execution Context
+@@ -92,7 +95,10 @@ current_public_execution_namespace(Namespace) :-
+ % missing open namespaces reject writes; delegated closure markers live only
+ % until their owning connection ends. All access is under actors_registry.
+ :- dynamic open_namespace/1, namespace_connection/2, closed_lineage/2.
+-:- multifile hook_namespace_closed/1, hook_connection_closed/1.
++% A context identity is independent of any one transport attachment.
++:- dynamic client_lineage/4, lineage_attachment/5, connection_context/4.
++:- multifile hook_namespace_closed/1, hook_connection_closed/1,
++             hook_namespace_closed_after/1.
+ 
+ open_client_namespace(Namespace) :-
+     must_be(ground, Namespace),
+@@ -105,23 +111,84 @@ open_client_connection(Queue, Namespace) :-
+ 
+ close_client_namespace(Namespace) :-
+     must_be(ground, Namespace),
+-    setup_call_cleanup(with_mutex(actors_registry,
+-        (   retractall(open_namespace(Namespace)),
+-            (Namespace = ws_lineage(Queue, Token), namespace_connection(Queue, _)
+-            -> (closed_lineage(Queue,Token) -> true; assertz(closed_lineage(Queue,Token)))
+-            ;  true),
+-            actors:retire_registry_namespace(Namespace),
+-            forall(hook_namespace_closed(Namespace),true)
+-        )), true, true).
++    with_mutex(actors_registry,close_namespace_locked(Namespace,WasOpen)),
++    finish_namespace_close(Namespace,WasOpen).
++
++% Caller holds actors_registry. Admission and the last-attachment decision
++% share this lock; promise/route teardown keeps its existing cleanup phases.
++close_namespace_locked(Namespace,WasOpen) :-
++    (namespace_is_open(Namespace) -> WasOpen=true ; WasOpen=false),
++    retractall(open_namespace(Namespace)),
++    (Namespace=ws_lineage(Queue,Token),namespace_connection(Queue,_)
++    -> (closed_lineage(Queue,Token) -> true;assertz(closed_lineage(Queue,Token)))
++    ;true),
++    actors:retire_registry_namespace(Namespace),
++    forall(hook_namespace_closed(Namespace),true).
++
++finish_namespace_close(Namespace,WasOpen) :-
++    (WasOpen==true -> forall(hook_namespace_closed_after(Namespace),true);true).
+ 
+ close_client_connection(Queue) :-
+-    setup_call_cleanup(with_mutex(actors_registry,
+-        (   forall(retract(namespace_connection(Queue, Namespace)),
+-                   close_client_namespace(Namespace)),
+-            actors:retire_registry_namespace(ws_lineage(Queue, _)),
+-            retractall(closed_lineage(Queue, _)),
+-            forall(hook_connection_closed(Queue),true)
+-        )), true, true).
++    with_mutex(actors_registry,
++        (findall(NS,retract(namespace_connection(Queue,NS)),Roots),
++         findall(NS,retract(lineage_attachment(_,Queue,_,_,NS)),Attached),
++         retractall(connection_context(Queue,_,_,_)),
++         retractall(closed_lineage(Queue,_)))),
++    maplist(close_client_namespace,Roots),
++    sort(Attached,Namespaces),
++    forall(member(NS,Namespaces),close_unattached_namespace(NS)),
++    actors:retire_registry_namespace(ws_lineage(Queue,_)),
++    forall(hook_connection_closed(Queue),true).
++
++close_unattached_namespace(NS) :-
++    with_mutex(actors_registry,
++        (NS=delegated_context(_), \+ lineage_attachment(_,_,_,_,NS)
++        -> close_namespace_locked(NS,WasOpen),Retired=true
++        ;Retired=false)),
++    (Retired==true
++    -> setup_call_cleanup(true,finish_namespace_close(NS,WasOpen),
++           with_mutex(actors_registry,retractall(client_lineage(_,_,_,NS))))
++    ;true).
++
++bind_client_lineage(Scope, Origin, Token, NS) :-
++    with_mutex(actors_registry,
++        (   client_lineage(Scope,Origin,Token,Stored)
++        ->  (Stored==NS -> true;throw(error(permission_error(bind,client_context,Token),_)))
++        ;   ensure_namespace_open(NS),assertz(client_lineage(Scope,Origin,Token,NS)))).
++
++resolve_client_lineage(Scope, LocalOrigin, Origin, Token, Queue, Mode, NS) :-
++    with_mutex(actors_registry,
++        (   Mode==close
++        ->  (client_lineage(Scope,Origin,Token,Known) -> NS=Known
++            ;lineage_attachment(Scope,Queue,Origin,Token,Known) -> NS=Known
++            ;Origin==LocalOrigin -> NS=ws_lineage(Queue,Token)
++            ;namespace_connection(Queue,_),
++             flag(native_client_context,N,N+1),NS=delegated_context(context(Scope,N)),
++             assertz(client_lineage(Scope,Origin,Token,NS)),
++             assertz(lineage_attachment(Scope,Queue,Origin,Token,NS)))
++        ;   namespace_connection(Queue,_),
++            (client_lineage(Scope,Origin,Token,Known) -> NS=Known
++            ; Origin==LocalOrigin
++            -> throw(error(permission_error(use,closed_client_context,Token),_))
++            ; flag(native_client_context,N,N+1),NS=delegated_context(context(Scope,N)),
++              open_client_namespace(NS),assertz(client_lineage(Scope,Origin,Token,NS))),
++            ensure_namespace_open(NS),
++            (lineage_attachment(Scope,Queue,Origin,Token,NS) -> true
++            ;assertz(lineage_attachment(Scope,Queue,Origin,Token,NS))))).
++
++ensure_namespace_open(NS) :-
++    (client_namespace_status(NS,closed)
++    -> throw(error(permission_error(use,closed_client_context,NS),_));true).
++
++bind_connection_context(Queue,Scope,Origin,Token) :-
++    with_mutex(actors_registry,
++        (connection_context(Queue,S,O,T)
++        -> (S-O-T==Scope-Origin-Token -> true
++           ;throw(error(permission_error(rebind,client_context,Queue),_)))
++        ;assertz(connection_context(Queue,Scope,Origin,Token)))).
++
++forget_client_lineage(Scope,Origin,Token) :-
++    with_mutex(actors_registry,retractall(client_lineage(Scope,Origin,Token,_))).
+ 
+ client_namespace_status(Namespace, Status) :-
+     managed_namespace(Namespace),
+@@ -129,7 +196,10 @@ client_namespace_status(Namespace, Status) :-
+ managed_namespace(ws_client(_)).
+ managed_namespace(isotope_session(_)).
+ managed_namespace(ws_lineage(_, _)).
++managed_namespace(delegated_context(_)).
+ namespace_is_open(ws_lineage(Queue, Token)) :-
+     namespace_connection(Queue, _), \+ closed_lineage(Queue, Token).
+ namespace_is_open(ws_client(Id)) :- open_namespace(ws_client(Id)).
+ namespace_is_open(isotope_session(Id)) :- open_namespace(isotope_session(Id)).
++
++namespace_is_open(NS) :- NS=delegated_context(_),open_namespace(NS).
+diff --git a/prolog/web_prolog/node_glue.pl b/prolog/web_prolog/node_glue.pl
+index 32c2916..06aff21 100644
+--- a/prolog/web_prolog/node_glue.pl
++++ b/prolog/web_prolog/node_glue.pl
+@@ -288,8 +288,8 @@ promise_client_owner(Owner) :-
+     ->  (ground(Namespace)
+         -> node_lifetime:scope(Scope), Owner = client_namespace(Scope,Namespace)
+         ;  Owner = unavailable)
+-    ;   Context = some(ctx(Scope,Id,_,_,http_call))
+-    ->  (ground(Scope-Id) -> Owner = http_client(Scope,Id); Owner = unavailable)
++    ;   Context = some(ctx(Scope,_,Lineage,_,http_call))
++    ->  (ground(Scope-Lineage) -> Owner = http_client(Scope,Lineage); Owner = unavailable)
+     ;   current_public_execution_profile(_)
+     ->  Owner = unavailable
+     ;   Context = some(ctx(_,_,_,false,_))
+@@ -454,3 +454,11 @@ check_public_rpc_header(Name) :-
+        'x-web-prolog-caps','x-web-prolog-internal-proxy','x-web-prolog-query-budget'])
+     -> throw(error(permission_error(set,proxy_header,Name),context(rpc/3,'proxy identity headers are reserved')))
+     ;true).
++
++:- multifile node_lifetime:hook_lineage_closed/2.
++node_lifetime:hook_lineage_closed(Scope, Lineage) :-
++    rpc:dispose_promises_for_owner(http_client(Scope,Lineage)).
++
++:- multifile node_execution_context:hook_namespace_closed_after/1.
++node_execution_context:hook_namespace_closed_after(NS) :-
++    node_lifetime:close_namespace_routes(NS).
+diff --git a/prolog/web_prolog/node_lifetime.pl b/prolog/web_prolog/node_lifetime.pl
+index dbd187b..8dd2be5 100644
+--- a/prolog/web_prolog/node_lifetime.pl
++++ b/prolog/web_prolog/node_lifetime.pl
+@@ -5,7 +5,7 @@
+     admit_actor/2, sample_actor_cpu/1, forget_actor/1, deliver_message/3, message_consumed/0,
+     command_context/2, with_wire_context/4, connection_owns/2,
+     node_log_output/1, current_owner_context/1, rehome_options/2,
+-    with_websocket_lease/2
++    with_websocket_lease/2, close_namespace_routes/1
+ ]).
+ 
+ /** <module> Principal subtrees and delegated lineage
+@@ -38,8 +38,10 @@ on authenticated node transports; browser-supplied lineage is rejected.
+ :- setting(principal_cpu_window, number, 60, 'CPU accounting window in seconds').
+ 
+ :- dynamic actor_owner/2, mailbox_count/2, principal_lineage/3,
+-           delegated_route/3, cpu_sample/2, cpu_account/4, cpu_watcher/3.
++           delegated_route/3, delegation_context/3, namespace_account/3,
++           actor_client_namespace/2, cpu_sample/2, cpu_account/4, cpu_watcher/3.
+ :- thread_local owner_context/1, connection_spawn/0.
++:- multifile hook_lineage_closed/2.
+ :- dynamic lease_active/1.
+ :- meta_predicate with_owner_context(+, +, +, 0), with_connection_spawn(0),
+                   with_wire_context(+, +, +, 0), with_websocket_lease(+, 0).
+@@ -61,7 +63,7 @@ with_owner_context(Principal, Carrier, Lineage0, Goal) :-
+         (cpu_account(Scope, Id, _, _) -> true;
+          get_time(Now), assertz(cpu_account(Scope, Id, Now, 0)))),
+     (   Lineage0 == local
+-    ->  with_mutex(node_lineage, lineage_for(Scope, tree(Id, Carrier), Lineage))
++    ->  client_lineage(Scope, Id, Carrier, Lineage)
+     ;   Lineage = Lineage0
+     ),
+     (principal_has_capability(Principal, admin) -> Owner = true; Owner = false),
+@@ -90,6 +92,13 @@ prune_accounts :-
+              (retractall(cpu_account(S, Id, _, _)),
+               with_mutex(node_lineage, retractall(principal_lineage(S, account(Id), _)))))).
+ 
++% Resource accounting stays principal-wide; a fresh HTTP interaction does not.
++client_lineage(_, _, http_call, Token) :- !, fresh_lineage(Token).
++client_lineage(Scope, Id, Carrier, Token) :-
++    with_mutex(node_lineage, lineage_for(Scope, tree(Id, Carrier), Token)).
++fresh_lineage(Token) :-
++    crypto_n_random_bytes(16, Bytes), phrase(hex_bytes(Bytes), Cs), atom_codes(Token, Cs).
++
+ lineage_for(Scope, Id, Token) :- principal_lineage(Scope, Id, Token), !.
+ lineage_for(Scope, Id, Token) :-
+     crypto_n_random_bytes(16, Bytes),
+@@ -128,7 +137,8 @@ actor_key(Pid, Key) :- actors:canonical_pid(Pid, Key).
+ check_exit(Pid) :-
+     (   current_owner_context(ctx(Scope, Id, Lineage, false, Carrier))
+     ->  actor_key(Pid, Key),
+-        (   actor_owner(Key, ctx(Scope, Id, Lineage, false, Carrier))
++        (   (actor_owner(Key, ctx(Scope, Id, Lineage, false, Carrier))
++            ;current_public_execution_namespace(NS),actor_client_namespace(Key,NS))
+         ->  true
+         ;   local_to_scope(Scope, Key),
+             \+ actors:resolve_actor_thread(Key, _), \+ actor_owner(Key, _)
+@@ -156,6 +166,7 @@ admit_actor(LocalPid, Options) :-
+     with_mutex(node_subtree,
+         (   check_actor_capacity(Context),
+             assertz(actor_owner(Key, Context)),
++            remember_actor_namespace(Key),
+             assertz(mailbox_count(Key, 0))
+         )),
+     ensure_cpu_watcher(Context).
+@@ -199,6 +210,7 @@ forget_actor(Pid) :-
+         (   findall(Context, actor_owner(Key, Context), Contexts),
+             charge_actor(Key),
+             retractall(actor_owner(Key, _)),
++            retractall(actor_client_namespace(Key,_)),
+             with_mutex(node_mailboxes, retractall(mailbox_count(Key, _))),
+             retractall(cpu_sample(Key, _))
+         )),
+@@ -244,26 +256,63 @@ message_consumed :-
+         )).
+ 
+ command_context(Command0, Command) :-
+-    current_owner_context(ctx(Scope, Id, Lineage, _, _)),
++    current_owner_context(Context), Context=ctx(Scope, Id, Lineage, _, _),
+     atom(Lineage), Lineage \== node,
+-    (   Id = delegated(_, Account)
+-    ->  true
+-    ;   with_mutex(node_lineage, lineage_for(Scope, account(Id), Account))
+-    ),
+-    put_dict(_{lineage:Lineage, account:Account}, Command0, Command).
++    (Id = delegated(_, Account) -> true
++    ;with_mutex(node_lineage,lineage_for(Scope,account(Id),Account))),
++    put_dict(_{lineage:Lineage, account:Account},Command0,WithAccount),
++    (   current_public_execution_namespace(NS)
++    ->  (node_execution_context:client_lineage(Scope,KnownOrigin,Lineage,NS)
++         -> Origin=KnownOrigin
++         ;pid_utils:self_node_url(Origin),
++          node_execution_context:bind_client_lineage(Scope,Origin,Lineage,NS)),
++        with_mutex(node_subtree,
++            (namespace_account(Scope,NS,_) -> true;assertz(namespace_account(Scope,NS,Id))))
++    ;   node_execution_context:client_lineage(Scope,KnownOrigin,Lineage,_)
++    ->  Origin=KnownOrigin
++    ;   true),
++    (nonvar(Origin) -> put_dict(context_origin,WithAccount,Origin,Command)
++    ;Command=WithAccount).
+ 
+ with_wire_context(Dict, Queue, Principal, Goal) :-
+-    (   get_dict(lineage, Dict, Token0)
+-    ->  (principal_has_capability(Principal, internal_transport) -> true;
+-         throw(error(permission_error(use, transport_lineage, Token0), _))),
+-        wire_token(Token0, Token),
+-        (get_dict(account, Dict, Account0) -> wire_token(Account0, Account); Account = Token),
+-        principal_id(Principal, Peer),
+-        scope(Scope),
+-        with_public_execution_namespace(ws_lineage(Queue, Token),
+-            with_context(ctx(Scope, delegated(Peer, Account), Token, false, Queue), Goal))
+-    ;   with_owner_context(Principal, Queue, local, Goal)
+-    ).
++    (   get_dict(lineage,Dict,Token0)
++    ->  require_context_transport(Principal,Token0),wire_token(Token0,Token),
++        (get_dict(account,Dict,Account0) -> wire_token(Account0,Account);Account=Token),
++        (get_dict(context_origin,Dict,Origin0)
++        -> wire_origin(Origin0,Origin),
++           with_wire_lineage(Dict,Queue,Principal,Origin,Token,Account,Goal)
++        ;scope(Scope),principal_id(Principal,Peer),
++         with_public_execution_namespace(ws_lineage(Queue,Token),
++             with_context(ctx(Scope,delegated(Peer,Account),Token,false,Queue),Goal)))
++    ;   node_execution_context:connection_context(Queue,_,Origin,Token-Account)
++    ->  require_context_transport(Principal,Token),
++        with_wire_lineage(Dict,Queue,Principal,Origin,Token,Account,Goal)
++    ;   with_owner_context(Principal,Queue,local,Goal)).
++
++require_context_transport(Principal,Value) :-
++    (principal_has_capability(Principal,internal_transport) -> true
++    ;throw(error(permission_error(use,transport_lineage,Value),_))).
++wire_origin(Value, Origin) :-
++    (atom(Value) -> Origin=Value;string(Value) -> atom_string(Origin,Value)),
++    (sub_atom(Origin,0,_,_,'http://');sub_atom(Origin,0,_,_,'https://')), !.
++wire_origin(Value, _) :- throw(error(domain_error(transport_context_origin,Value),_)).
++
++with_wire_lineage(Dict,Queue,_Principal,Origin,Token,Account,Goal) :-
++    scope(Scope),pid_utils:self_node_url(Local),
++    (get_dict(command,Dict,Command),memberchk(Command,[lineage_close,"lineage_close"])
++    -> Mode=close;Mode=open),
++    node_execution_context:resolve_client_lineage(Scope,Local,Origin,Token,Queue,Mode,NS),
++    (get_dict(context_default,Dict,true)
++    -> node_execution_context:bind_connection_context(Queue,Scope,Origin,Token-Account);true),
++    (Origin==Local,namespace_account(Scope,NS,OriginalId) -> Id=OriginalId
++    ;Id=delegated(Origin,Account),
++     with_mutex(node_subtree,
++         (namespace_account(Scope,NS,Stored)
++         -> (Stored==Id -> true;throw(error(permission_error(rebind,client_account,Token),_)))
++         ;assertz(namespace_account(Scope,NS,Id))))),
++    with_public_execution_namespace(NS,
++        with_context(ctx(Scope,Id,Token,false,Queue),Goal)).
++
+ wire_token(Token0, Token) :-
+     (   (atom(Token0); string(Token0)), atom_string(Token, Token0),
+         atom_length(Token, 32), atom_codes(Token, Cs), maplist(hex_code, Cs)
+@@ -391,8 +440,13 @@ lease_pings(Socket, Interval, Mutex) :-
+ remember_remote(Pid) :-
+     current_owner_context(Context), !,
+     actor_key(Pid, Key),
+-    with_mutex(node_subtree, assertz(actor_owner(Key, Context))).
++    with_mutex(node_subtree,
++        (assertz(actor_owner(Key, Context)),remember_actor_namespace(Key))).
+ remember_remote(_).
++remember_actor_namespace(Key) :-
++    (current_public_execution_namespace(NS),
++     actor_owner(Key,ctx(_,_,Lineage,_,_)),Lineage \== node
++    -> assertz(actor_client_namespace(Key,NS));true).
+ 
+ check_term(Term) :- policy_limit(max_term_depth, Depth), check_depth(Term, Depth).
+ 
+@@ -400,12 +454,18 @@ check_term(Term) :- policy_limit(max_term_depth, Depth), check_depth(Term, Depth
+ % disappears during that wait, lineage reclamation reaches the receiver even
+ % though the source never learned the newly created pid.
+ remember_route(Node) :-
+-    current_owner_context(ctx(Scope, _, Lineage, false, _)), !,
++    current_owner_context(ctx(Scope, _, Lineage, _, _)),
++    atom(Lineage),Lineage \== node,!,
+     with_mutex(node_lineage_routes,
+-        (delegated_route(Scope, Lineage, Node) -> true;
+-         assertz(delegated_route(Scope, Lineage, Node)))).
++        ((delegated_route(Scope, Lineage, Node) -> true;
++          assertz(delegated_route(Scope, Lineage, Node))),
++         (delegation_context(Scope,Lineage,_) -> true
++         ;current_owner_context(C),assertz(delegation_context(Scope,Lineage,C))))).
+ remember_route(_).
+ 
++reclaim_unused_lineage(ctx(Scope,_,Lineage,false,_)) :-
++    node_execution_context:client_lineage(Scope,_,Lineage,NS),
++    node_execution_context:client_namespace_status(NS,open), !.
+ reclaim_unused_lineage(Context) :-
+     Context = ctx(Scope, _, Lineage, false, _),
+     with_mutex(node_subtree,
+@@ -417,6 +477,7 @@ reclaim_unused_lineage(Context) :-
+         retractall(actor_owner(_, ctx(Scope, _, Lineage, false, _)))),
+     with_mutex(node_lineage,
+         retractall(principal_lineage(Scope, tree(_, _), Lineage))),
++    forall(hook_lineage_closed(Scope, Lineage), true),
+     forall(member(Node, Nodes),
+         catch(with_context(Context,
+                   in_scope(Scope, distribution:remote_send_command(
+@@ -431,9 +492,27 @@ in_scope(_, Goal) :- call(Goal).
+ 
+ reclaim_lineage(Queue) :-
+     current_owner_context(ctx(_, _, Lineage, false, Queue)),
+-    (   current_public_execution_namespace(ws_lineage(Queue, Token))
+-    ->  node_execution_context:close_client_namespace(ws_lineage(Queue, Token))
++    (   current_public_execution_namespace(NS),
++        (NS=ws_lineage(Queue,_);NS=delegated_context(_))
++    ->  node_execution_context:close_client_namespace(NS)
+     ;   true
+     ),
+     findall(Pid, actor_owner(Pid, ctx(_, _, Lineage, false, Queue)), Pids),
+     forall(member(Pid, Pids), actors:exit(Pid, kill)).
++
++% Context closure retires delegated work independently of the last local actor.
++% This runs after registry admission is closed and outside its mutex.
++close_namespace_routes(NS) :-
++    findall(S-O-T,node_execution_context:client_lineage(S,O,T,NS),Bindings),
++    forall(member(Scope-Origin-Token,Bindings),
++        (with_mutex(node_lineage_routes,
++             (findall(Node,retract(delegated_route(Scope,Token,Node)),Nodes),
++              (retract(delegation_context(Scope,Token,C)) -> Context=C
++              ;Context=ctx(Scope,node,Token,false,none)))),
++         forall(member(Node,Nodes),
++             catch(with_context(Context,in_scope(Scope,
++                 distribution:remote_send_command(Node,
++                     _{command:lineage_close,lineage:Token,context_origin:Origin}))),_,true)),
++         (in_scope(Scope,pid_utils:self_node_url(Origin))
++         -> node_execution_context:forget_client_lineage(Scope,Origin,Token);true))),
++    retractall(namespace_account(_,NS,_)).
+diff --git a/tests/tiers/node/namespace_teardown_tests.pl b/tests/tiers/node/namespace_teardown_tests.pl
+index 00a5c44..dea7c39 100644
+--- a/tests/tiers/node/namespace_teardown_tests.pl
++++ b/tests/tiers/node/namespace_teardown_tests.pl
+@@ -162,4 +162,40 @@ test(explicit_lineage_closure_blocks_reentry_only_for_that_lineage) :-
+        node_lifetime:with_wire_context(_{lineage:B},Q,Peer,test_namespace_teardown:register_remote(other)),
+        client_namespace_status(NS,Status),assertion(Status==open))).
+ 
++test(context_identity_survives_transport_changes) :-
++    with_connection(Q1,_,with_connection(Q2,_,
++      (resolve_client_lineage(test_scope,'http://local','http://origin',token,Q1,open,NS),
++       resolve_client_lineage(test_scope,'http://local','http://origin',token,Q2,open,Again),
++       assertion(NS==Again),
++       close_client_connection(Q1),assertion(client_namespace_status(NS,open)),
++       close_client_connection(Q2),assertion(client_namespace_status(NS,closed)),
++       assertion(\+client_lineage(test_scope,'http://origin',token,_))))).
++
++test(returning_attachment_rejoins_root_without_owning_its_lifetime) :-
++    with_namespace(Root,with_connection(Q,_,
++      (bind_client_lineage(test_scope,'http://origin',return_token,Root),
++       resolve_client_lineage(test_scope,'http://origin','http://origin',return_token,Q,open,Returned),
++       assertion(Returned==Root),close_client_connection(Q),
++       assertion(client_namespace_status(Root,open)),
++       forget_client_lineage(test_scope,'http://origin',return_token)))).
++
++test(closed_origin_cannot_be_recreated_by_returning_transport) :-
++    with_connection(Q,_,
++      (catch(resolve_client_lineage(test_scope,'http://origin','http://origin',unknown,Q,open,_),E,true),
++       assertion(E=error(permission_error(use,closed_client_context,unknown),_)))).
++
++test(closure_before_first_spawn_blocks_late_context_admission) :-
++    with_connection(Q,_,
++      (resolve_client_lineage(test_scope,'http://local','http://foreign',early,Q,close,NS),
++       close_client_namespace(NS),
++       catch(resolve_client_lineage(test_scope,'http://local','http://foreign',early,Q,open,_),E,true),
++       assertion(E=error(permission_error(use,closed_client_context,NS),_)))).
++
++test(default_transport_binding_cannot_be_rebound) :-
++    with_connection(Q,_,
++      (bind_connection_context(Q,test_scope,'http://origin',token-account),
++       bind_connection_context(Q,test_scope,'http://origin',token-account),
++       catch(bind_connection_context(Q,test_scope,'http://origin',other-account),E,true),
++       assertion(E=error(permission_error(rebind,client_context,Q),_)))).
++
+ :- end_tests(namespace_teardown).
+diff --git a/tests/tiers/node/node_tests.pl b/tests/tiers/node/node_tests.pl
+index 63c6ed2..2456c95 100644
+--- a/tests/tiers/node/node_tests.pl
++++ b/tests/tiers/node/node_tests.pl
+@@ -880,8 +880,7 @@ test(isobase_call_rejects_promise_from_another_anonymous_request,
+                 (rpc:promise_queue_key(Ref,Key),rpc:promise_transaction(rpc:dispose_promise_locked(Key))))
+         )).
+ 
+-test(isobase_call_preserves_promise_between_authenticated_stateless_requests,
+-     true(Answer == success([success([a], false)], false))) :-
++test(isobase_call_separates_promises_between_authenticated_stateless_requests) :-
+     with_node_server_options([profile(isobase), sandbox(blacklist), auth(dev),
+                               dev_principal("promise-test-owner"),dev_capabilities([execute])], URI,
+         (
+@@ -892,7 +891,8 @@ test(isobase_call_preserves_promise_between_authenticated_stateless_requests,
+             read_answer(PromiseURL, success([Ref], false)),
+             format(atom(YieldGoal), 'yield(~w, Answer)', [Ref]),
+             call_url(URI, YieldGoal, 'Answer', 0, 1, '', none, YieldURL),
+-            read_answer(YieldURL, Answer)
++            read_answer(YieldURL, Answer),
++            assertion(Answer = error(error(existence_error(promise,Ref),_)))
+         )).
+ 
+ test(isobase_call_runs_loaded_promise_and_yield_example,
+diff --git a/tests/tiers/node/promise_ownership_tests.pl b/tests/tiers/node/promise_ownership_tests.pl
+index 8f311f5..7725b1f 100644
+--- a/tests/tiers/node/promise_ownership_tests.pl
++++ b/tests/tiers/node/promise_ownership_tests.pl
+@@ -143,21 +143,14 @@ test(foreign_caller_does_not_learn_that_an_owner_is_already_collecting) :-
+           (rpc:promise_transaction(rpc:dispose_promise_locked(Key)),thread_join(Thread,_))),
+         message_queue_destroy(Events)))).
+ 
+-test(authenticated_http_requests_share_principal_but_not_other_principals) :-
+-    with_pending_for_http("alice",Ref,Key),
+-    setup_call_cleanup(true,
+-      (in_http(19101,"bob",(foreign_yield(Ref),promise_cleanup(Ref))),
+-       in_http(19102,"alice",foreign_yield(Ref)),
+-       in_http(19101,"alice",collect(Key,Ref))),
+-      rpc:promise_transaction(rpc:dispose_promise_locked(Key))).
+-
+-test(anonymous_http_requests_have_distinct_owners,
+-     [forall(member(Id,[anonymous,"anon:per-ip-or-connection-id"]))]) :-
+-    with_pending_for_http(Id,Ref,Key),
+-    setup_call_cleanup(true,
++test(fresh_http_requests_have_distinct_owners_and_cleanup_at_retirement,
++     [forall(member(Id,["alice",anonymous,"anon:per-ip-or-connection-id"]))]) :-
++    in_http(19101,Id,with_pending(Ref,Key,
+       (in_http(19101,Id,(foreign_yield(Ref),promise_cleanup(Ref))),
+-       assertion(rpc:promise_state(Key,_,_,_,_,_,_))),
+-      rpc:promise_transaction(rpc:dispose_promise_locked(Key))).
++       assertion(rpc:promise_state(Key,_,_,_,_,_,_)),collect(Key,Ref)))),
++    with_pending_for_http(Id,Retired,RetiredKey),
++    in_http(19101,Id,foreign_yield(Retired)),
++    assertion(\+rpc:promise_state(RetiredKey,_,_,_,_,_,_)).
+ 
+ test(namespace_teardown_disposes_promises_and_rejects_late_creation) :-
+     NS=ws_client(ended_promise_namespace),
+@@ -236,7 +229,7 @@ test(teardown_preserves_other_namespace_node_http_and_trusted_promises) :-
+                  in_namespace(19101,NS,foreign_yield(Ref)),
+                  in_namespace(19102,NS,collect(NodeKey,NodeRef)),
+                  in_namespace(19101,ws_client(other_promise_owner),collect(OtherKey,OtherRef)),
+-                 in_http(19101,"alice",collect(HttpKey,HttpRef)),
++                 collect(HttpKey,HttpRef),
+                  assertion(rpc:promise_state(LocalKey,_,_,_,_,_,trusted_local)))
+               )
+             )
+@@ -328,10 +321,8 @@ test(public_clients_cannot_collect_trusted_local_promises) :-
+       (in_namespace(19101,ws_client(public),(foreign_yield(Ref),promise_cleanup(Ref))),collect(Key,Ref))).
+ 
+ test(trusted_local_context_cannot_collect_or_dispose_client_promises) :-
+-    with_pending_for_http("alice",Ref,Key),
+-    setup_call_cleanup(true,
+-      (foreign_yield(Ref),promise_cleanup(Ref),in_http(19101,"alice",collect(Key,Ref))),
+-      rpc:promise_transaction(rpc:dispose_promise_locked(Key))).
++    in_http(19101,"alice",with_pending(Ref,Key,
++      ((thread_create((foreign_yield(Ref),promise_cleanup(Ref)),T,[]),thread_join(T,true)),collect(Key,Ref)))).
+ 
+ test(missing_identity_cannot_borrow_an_outer_http_owner_frame) :-
+     in_http(19101,"alice",with_pending(Ref,Key,

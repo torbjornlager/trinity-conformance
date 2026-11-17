@@ -1,0 +1,70 @@
+{
+  "suite": "supervisor-common-0.1",
+  "baseline": "supervisor-common-0.1",
+  "status": "draft",
+  "scope": "supporting",
+  "minimum_profile": "actor",
+  "contract": "Appendix B common supervisor contract, agreed 2026-11-04",
+  "cases": [
+    {
+      "id": "SUP-001",
+      "title": "Empty supervisor has common inspection and count formats",
+      "transport": "query",
+      "goal": "supervisor_spawn([],Sup),supervisor_which_children(Sup,[]),supervisor_count_children(Sup,[specs-0,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-002",
+      "title": "Inspection exposes type and restart policy in start order",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true})),restart(transient)]),child(b,[start(receive({stop->true})),restart(permanent)])],Sup),supervisor_which_children(Sup,[info(a,A,worker,transient),info(b,B,worker,permanent)]),A\\==B,supervisor_count_children(Sup,[specs-2,active-2,supervisors-0,workers-2]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-003",
+      "title": "Stopped supervisors are not counted as active supervisors or negative workers",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(nested,[start(start_sub_supervisor([],[])),type(supervisor)])],Sup),supervisor_count_children(Sup,[specs-1,active-1,supervisors-1,workers-0]),supervisor_terminate_child(Sup,nested,ok),supervisor_which_children(Sup,[info(nested,undefined,supervisor,permanent)]),supervisor_count_children(Sup,[specs-1,active-0,supervisors-0,workers-0]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-004",
+      "title": "Respawn returns its new pid and retains child order",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(a,[start(receive({stop->true}))]),child(b,[start(receive({stop->true}))])],Sup),supervisor_which_children(Sup,[info(a,Old,worker,permanent),info(b,B,worker,permanent)]),supervisor_terminate_child(Sup,a,ok),supervisor_respawn_child(Sup,a,ok(New)),New\\==Old,supervisor_which_children(Sup,[info(a,New,worker,permanent),info(b,B,worker,permanent)]),supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-005",
+      "title": "A non-atom child id raises an atom type error without binding nested variables",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(worker(N),[start(true)])],Sup),fail),error(type_error(atom,worker(N)),_),true),var(N),var(Sup)"
+    },
+    {
+      "id": "SUP-006",
+      "title": "An unbound child id raises an instantiation error",
+      "transport": "query",
+      "goal": "catch((supervisor_spawn([child(Id,[start(true)])],Sup),fail),error(instantiation_error,_),true),var(Id),var(Sup)"
+    },
+    {
+      "id": "SUP-007",
+      "title": "Child-management id errors precede contact with the supervisor",
+      "transport": "query",
+      "goal": "catch((supervisor_terminate_child(missing,1,_),fail),error(type_error(atom,1),_),true),catch((supervisor_delete_child(missing,Id,_),fail),error(instantiation_error,_),true),var(Id),catch((supervisor_respawn_child(missing,worker(1),_),fail),error(type_error(atom,worker(1)),_),true)"
+    },
+    {
+      "id": "SUP-008",
+      "title": "All initial ids are validated before actor creation",
+      "transport": "query",
+      "goal": "actors(Before),catch((supervisor_spawn([child(valid,[start(receive({stop->true}))]),child(42,[start(true)])],Sup),fail),error(type_error(atom,42),_),true),var(Sup),actors(After),sort(Before,Sorted),sort(After,Sorted)"
+    },
+    {
+      "id": "SUP-009",
+      "title": "Creation waits for child setup but not the application goal",
+      "transport": "query",
+      "goal": "supervisor_spawn([child(idle,[start(receive({never->true}))])],Sup),supervisor_which_children(Sup,[info(idle,Pid,worker,permanent)]),Pid\\==undefined,supervisor_halt(Sup)"
+    },
+    {
+      "id": "SUP-010",
+      "title": "Halt waits for a busy child to finish shutdown",
+      "transport": "query",
+      "goal": "self(Parent),Source='manual_hold(hold(Observer),State,done,State) :- self(Me), send(Observer,manual_holding(Me)), receive({release -> true}).',supervisor_spawn([child(manual_busy,[start(server(manual_hold,[src_text(Source)])),shutdown(infinity)])],Sup),supervisor_which_children(Sup,[info(manual_busy,Child,worker,permanent)]),server_promise(Child,hold(Parent),Request),receive({manual_holding(Child)->true},[timeout(3),on_timeout(throw(child_did_not_enter))]),spawn((supervisor_halt(Sup),send(Parent,manual_halted)),Waiter,[monitor(true)]),receive({manual_halted->throw(early_halt_ack)},[timeout(0.03)]),send(Child,release),receive({Request-done->true},[timeout(3),on_timeout(throw(missing_server_reply))]),receive({manual_halted->true},[timeout(3),on_timeout(throw(missing_halt_ack))]),receive({down(Waiter,Waiter,true)->true},[timeout(3),on_timeout(throw(missing_waiter_down))])"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "source": {
+    "dirty": false,
+    "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+    "revision": "12ebd8bb26eb178724ff3e0aaa37feccd02e25ac"
+  },
+  "native_integration": false,
+  "host_integration": false,
+  "runs": [
+    {
+      "label": "statechart-unit",
+      "command": [
+        "/usr/local/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-p",
+        "browser_prolog=/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/wasm-runtime-tests-8udrac82/wasm",
+        "-s",
+        "tests/test_statechart_wasm.pl",
+        "-g",
+        "swi_wasm_statechart_tests:run",
+        "-t",
+        "halt"
+      ],
+      "exit_code": 0,
+      "seconds": 0.149
+    },
+    {
+      "label": "schema-equivalence",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "tools/check_statechart_wasm_equivalence.py",
+        "--wasm-dir",
+        "/private/tmp/browser-native-context-clean-20261105/web/wasm"
+      ],
+      "exit_code": 0,
+      "seconds": 0.043
+    },
+    {
+      "label": "worker-mailbox",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_actor_worker_smoke.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.253
+    },
+    {
+      "label": "standalone",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_standalone.js"
+      ],
+      "exit_code": 0,
+      "seconds": 1.448
+    },
+    {
+      "label": "semantic-contracts",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_contracts.js"
+      ],
+      "exit_code": 0,
+      "seconds": 121.297
+    },
+    {
+      "label": "standard-library-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_library_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 1.752
+    },
+    {
+      "label": "session-api-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_sessions_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 11.949
+    },
+    {
+      "label": "selective-receive-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_receive_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 18.92
+    },
+    {
+      "label": "receive-controls-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_receive_controls_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 14.989
+    },
+    {
+      "label": "node-settings-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_node_settings_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 12.008
+    },
+    {
+      "label": "context-closure-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_context_closure_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 7.249
+    }
+  ]
+}

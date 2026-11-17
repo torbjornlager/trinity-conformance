@@ -35,6 +35,24 @@ topology-dependent regressions extracted from the published tutorials. These
 are black-box browser-protocol tests, but they are not profile requirements:
 for example, `DEMO-019` intentionally contacts the demonstrator's N3 and N4.
 
+[`error-contract-0.1.json`](error-contract-0.1.json) is a supporting draft for
+`runner/baseline.py`. It checks formal exceptions independently of native
+context, and checks that application exceptions survive the Prolog response
+envelope. Run it on an execution surface that admits the submitted goals.
+In particular, an admission denial in ER-007 is separate from the question
+of what the runtime throws for an admitted undefined call. The manifest
+does not compare JSON diagnostic strings. The demonstrator tests the prose
+it renders from equivalent error frames separately.
+[`actor-error-contract-0.1.json`](actor-error-contract-0.1.json) uses the same
+runner with a WebSocket URL and tests the exception for an unregistered
+local actor name.
+
+[`relation-error-admission-0.1.json`](relation-error-admission-0.1.json) and
+[`isobase-error-admission-0.1.json`](isobase-error-admission-0.1.json) are
+separate fixtures for the N0 RELATION and N6 ISOBASE execution policies.
+They check the formal term returned at admission. Use them on those nodes
+or an equivalent policy fixture.
+
 ## RELATION
 
 - accepted advertised relation
@@ -119,3 +137,201 @@ requesting stop, wait for normal worker termination, then release the controller
 Root-level assertion timeouts and session teardown bound failed fixtures.
 The pack is required by `profiles/actor-release-0.1.json` together with the
 separate authenticated ownership/lifecycle pack.
+
+## Manual-boundary migration
+
+The draft `uri-atoms-0.1.json` checks URI values and exact Boolean errors at
+RPC/promise and source-URI boundaries. Despite its name it was revised on
+2026-11-17: a URI is an atom or a string (a string object, or a list of
+characters or codes), and any other value, including the `Host:Port`
+shorthand, raises `type_error(atom_or_string, Value)` before a request is made. The ACTOR draft
+`manual-option-sources-0.1.json` adds actor-address node validation, nonbinding
+policy validation, duplicate handling and preservation of all clauses across
+mixed source kinds. Both reflect the Appendix B decisions of 2026-11-04 and
+are supporting checks, without changing historical baseline or release packs.
+The local API adapter is documented in [the adapter guide](../adapters/README.md).
+
+The optional `supervisor-common-0.1.json` pack checks common supervisor inspection
+and count formats, atom IDs, respawn results, preparation admission, and halt
+after child shutdown. Select it with
+`local_manual_boundaries.py --suite supervisor-common-0.1`, or pass the manifest
+to `wasm.cjs` for Worker/main execution. These are supporting API checks; they
+do not certify public-node transport or full Appendix B conformance.
+
+The optional `statechart-document-0.1.json` pack checks that exactly one XML
+source is required, before fetching or actor creation. The separate
+`adapters/local_statechart_documents.py` runner uses disposable SWI/Trealla
+nodes and a loopback document server to verify caller fetching with destination
+source access disabled, and document-base preservation for later relative
+fetches. It records the exact fetch paths and source/executable hashes. Example:
+
+```sh
+python3 adapters/local_statechart_documents.py \
+  --swi-root /path/to/swi-prolog-node --swipl /verified/swipl \
+  --trealla-root /path/to/trealla-port --tpl /released/trealla/tpl \
+  --output /fresh/directory/live-documents.json
+```
+
+Browser semantic checks exercise the generated public APIs and real WASM
+engines with mocked document transport in main and Worker modes. These remain
+supporting checks rather than release or full-protocol certification.
+
+The optional `rpc-timeout-0.1.json` pack checks numeric execution/HTTP limits,
+nonbinding validation and rejection before source work. Use `--suite
+rpc-timeout-0.1` with the local API adapter, or pass the manifest to `wasm.cjs`.
+`adapters/local_rpc_timeouts.py` additionally runs disposable HTTP peers and
+SWI/Trealla/GNU execution nodes. It checks execution requests and owner caps,
+whole-request transport deadlines (including slow headers/body/drip), per-page
+renewal, independent source fetching, error terms, retry and stream cleanup.
+Pass `--swi-root`, `--trealla-root`, `--gnu-root`, `--swipl`, `--tpl`, and a fresh
+`--output` path. These are supporting checks, with exact source and executable
+provenance, rather than release certification.
+
+The optional `http-transport-options-0.1.json` pack checks the closed HTTP option
+schema, nonbinding validation of every duplicate, malformed text and fields,
+reserved proxy fields, and validation before dispatch. It runs with
+`--suite http-transport-options-0.1` in `local_manual_boundaries.py` or through
+`wasm.cjs` in either browser mode. The public schema is shared; caller policy
+(including forbidden browser fields and the GNU destination allowlist) still applies.
+
+`adapters/local_http_transport_options.py` uses a disposable HTTP peer to capture
+actual SWI, Trealla and GNU requests. It checks atom/string/character-list values,
+UTF-8 header bytes and Basic credentials, Basic/Bearer RPC and promise requests,
+case-insensitive first-field precedence across aliases and pages, empty values,
+explicit query-owner retention, and separation from URI source fetching. Pass
+`--swi-root`, `--trealla-root`, `--gnu-root`, `--swipl`, `--tpl`, and a fresh
+`--output` path. Browser semantic tests additionally check the real WASM public
+APIs and Fetch options with mocked transport in main and Worker modes. Broker
+handler and TLS tests are local supporting checks; they do not certify Linux
+worker containment or a deployed worker/broker pair.
+
+Creation validation now follows Appendix B formal errors: Boolean atoms outside
+the permitted domain raise `domain_error(boolean,Value)`, while non-atoms
+raise `type_error(atom,Value)`. The initial supervisor-failure check requires
+a wrapped caller exception, an unbound output and completed sibling rollback
+before checking the surviving conflicting actor. The earlier asynchronous
+startup-notification expectation is superseded by that common contract.
+
+`runtime-introspection-0.1.json` checks the five language capabilities, Boolean
+values, portable isolation values, enumeration and failed matching. It accepts
+host differences in capability values. Use the local API adapter's explicit
+`--suite runtime-introspection-0.1` selection or `wasm.cjs` in either mode.
+`appendix-library-probes-0.1.json` is a separate supporting availability check;
+its GNU failures remain visible and do not become introspection failures.
+The opt-in `adapters/wasm_promise_context.cjs` scenario
+`appendix_promise_context_parent_child` repeats the original context-wide
+lookup diagnostic using real parent/child WASM actors and a mocked HTTP answer.
+It passes on the 5 November development repair. Upstream runtime tests now also
+include coordinator claim controls and real Chrome/HTTP ownership/lifetime
+checks in both execution modes; see `reports/2026-11-05-promise-context/README.md`.
+The requirement ledger and renderer are linked from `docs/APPENDIX_B_COVERAGE.md`.
+
+
+The draft `local-node-rpc-0.1.json` pack checks the retained `localhost`
+destination through stateless HTTP calls: paging, RPC/promise source isolation,
+goal/template sharing, caller-fetched URI source and failure/error answers.
+For URI cases, `--peer` must serve `local_node_loaded(one). local_node_loaded(two).`
+at its root. The existing `runner/baseline.py` runs the HTTP pack. The explicit
+`adapters/local_node_rpc.py` adapter starts disposable SWI, Trealla and GNU
+listeners and a source fixture; it records source and executable hashes. It
+never changes a live node or owner egress policy. The [5 November development
+repair evidence](../reports/2026-11-05-localhost-rpc/README.md) also covers the
+actual contained GNU broker path and the reported N2-source example.
+
+
+`standard-library-0.1.json` supplies 112 common goals and one private-source
+fixture for the Appendix B list/index, integer, iteration and solution-processing
+forms. `adapters/local_standard_library.py` runs fresh SWI/Trealla/GNU HTTP
+workers and retained SWI/Trealla sessions, recording runtime source and binary
+hashes. The upstream browser real-session runner accepts the same file through
+`LIBRARY_MANIFEST`; upstream fixture copies must remain byte-identical.
+[The development repair](../reports/2026-11-05-standard-library/README.md) retains
+the earlier baseline. [The public release](../reports/2026-11-05-standard-library-release/README.md)
+records exact callback errors, the nested Trealla follow-up and deployed pins. This selection does not
+expand every external ISO mode or error refinement into a complete contract.
+
+
+`retained-context-0.1.json` maintains the 51-case native context selection and
+adds six barrier-controlled promise timeout/ownership cases.
+The [profile](../profiles/retained-context-0.1.md) defines its matrix and limits.
+`runner/context_release.py` requires all four routes, exact case coverage and
+passing attachment regression controls; no policy exclusion or successful retry
+can replace a failed invocation. Historical audit reports remain unchanged.
+
+
+The [revised library clause inventory](../docs/LIBRARY_TEST_GAPS.md) initially mapped
+the 112 cases to Appendix B revision `364ee0b`; the finite extension below adds
+new execution evidence without changing historical case IDs. It distinguishes
+covered clauses, partial evidence, known failures and concrete tests still needed. Validate its target/case/source
+links with `python3 runner/library_coverage.py --check`.
+
+
+`standard-library-0.2.json` extends the unchanged 112-case 0.1 pack with 34 finite
+mode/error cases (STDLIB-113–146). It covers prefix removal, fresh constructed
+positions, select/nth insertion, out-of-range indices, reversed integer intervals,
+integer argument errors, succ boundary modes, call_nth validation/selection, and
+shared countall output variables. Run `adapters/local_standard_library.py
+--manifest cases/standard-library-0.2.json` with the usual disposable engine/root
+arguments. For real Chrome, pass its absolute path in `LIBRARY_MANIFEST` to the
+upstream `tests/wasm/swi_wasm_library_browser.cjs` runner. No pinned upstream fixture
+or runtime source is replaced. [Finite-case evidence](../reports/2026-11-05-library-finite-cases/README.md)
+retains the two Trealla succ failures per transport and the invalid initial fixture.
+
+The [successor development repair](../reports/2026-11-05-trealla-succ-repair/README.md)
+passes the same 146-case manifest without changing its assertions. The initial
+Trealla failures stay in the finite-case report; qualified source hashes, owner
+sandbox-off controls and upstream regressions are recorded separately.
+
+
+`standard-library-0.3.json` preserves the 146 earlier cases and adds 143 finite
+callback assertions (STDLIB-147–289). It covers all maplist/foldl arities, caller
+source/closure sharing, argument/position order, mismatched lengths, unused
+closures, error preservation and nested forall. Logical flags make order and
+repeated invocation observable without database writes in ISOBASE. All 289 goals
+are finite and exhaust their answers; bounded/infinite-generation fixtures remain
+separate. Select this file explicitly with the native adapter's `--manifest` or
+the browser runner's `LIBRARY_MANIFEST`. Earlier pinned upstream defaults retain
+their separately versioned selections. [Evidence](../reports/2026-11-05-library-callback-cases/README.md)
+records every case on five modes and both native session surfaces.
+
+
+`standard-library-0.4.json` retains all 289 earlier definitions and source and adds
+six externally bounded generation cases, STDLIB-290–295. `bounded_prefix` selects
+two three-answer pages; each answer validates generated structure and variable
+identities before exposing its ordinal as `LibraryCheck`. Invalid answers throw
+rather than being filtered away. Native HTTP checks offsets zero and three;
+retained native and browser sessions use next, stop and a same-session recovery
+query. The new browser adapter lives in this repository and requires
+`LIBRARY_RUNTIME_ROOT`. [Generation evidence](../reports/2026-11-05-library-generation-cases/README.md)
+records all 295 cases across five modes; infinite countall remains separate.
+
+
+`library-noncompletion-0.1.json` supplies STDLIB-296 as a separately pinned
+supplement to the 295-case shared pack. Its finite control verifies duplicate
+counting, failure, binding isolation and exceptions through the same RPC entry
+peer. The probe calls that peer from inside countall and then enumerates repeat.
+An external controller observes no terminal result for at least 500 ms, confirms
+process/browser termination and runs a fresh-execution finite control. This is
+bounded evidence, not a proof of nontermination. [Results and negative controls](../reports/2026-11-05-library-noncompletion/README.md)
+are separate from public transport certificates and same-session cancellation.
+
+
+`selective-receive-0.2.json` preserves SR-001–006 and adds SR-007–029: one-message
+commitment, body alternatives/cuts, clause order and rollback, ordinary guard
+exceptions, empty clauses, timeout callbacks, relative/absolute deadline priority,
+absolute time scale, sustained unmatched traffic and delayed-send/cancel bridge
+controls. The traffic helper is explicitly supplied to its child; both probe and
+parent have external deadlines. These 29 cases run on four ACTOR modes, not GNU
+ISOBASE. [Repair and clause mapping](../reports/2026-11-05-selective-receive/README.md)
+keep actual guard control-signal semantics open.
+
+
+`receive-control-0.1.json` defines RG-001–008: actual abort, configured PTCP time
+limit, monitored actor termination and ordinary RPC error, each without source
+and with private source. A held read-only RPC confirms entry before control.
+Abort/time recovery checks the same actor's original mailbox order, variable
+sharing and absence of duplicates; ordinary errors check binding rollback.
+Main-browser abort runs directly; child lifecycle tests use Workers under either
+coordinator. [Evidence and bounds](../reports/2026-11-05-receive-controls/README.md)
+state the distinction. Run `runner/receive_controls.py` to validate complete,
+unique accounting and barrier/control/recovery/cleanup evidence.

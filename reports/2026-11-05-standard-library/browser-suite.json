@@ -1,0 +1,86 @@
+{
+  "source": {
+    "dirty": true,
+    "repository": "https://github.com/torbjornlager/swi-wasm-node.git",
+    "revision": "45908bfecc6cf194d1c24a47e0f8bf7563032e33"
+  },
+  "native_integration": false,
+  "host_integration": false,
+  "runs": [
+    {
+      "label": "statechart-unit",
+      "command": [
+        "/usr/local/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-p",
+        "browser_prolog=/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/wasm-runtime-tests-9dvck17c/wasm",
+        "-s",
+        "tests/test_statechart_wasm.pl",
+        "-g",
+        "swi_wasm_statechart_tests:run",
+        "-t",
+        "halt"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "label": "schema-equivalence",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "tools/check_statechart_wasm_equivalence.py",
+        "--wasm-dir",
+        "/private/tmp/standard-library-browser-qualified-package/web/wasm"
+      ],
+      "exit_code": 0,
+      "seconds": 0.048
+    },
+    {
+      "label": "worker-mailbox",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_actor_worker_smoke.js"
+      ],
+      "exit_code": 0,
+      "seconds": 0.27
+    },
+    {
+      "label": "standalone",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_standalone.js"
+      ],
+      "exit_code": 0,
+      "seconds": 1.222
+    },
+    {
+      "label": "semantic-contracts",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_contracts.js"
+      ],
+      "exit_code": 0,
+      "seconds": 118.484
+    },
+    {
+      "label": "standard-library-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_library_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 1.834
+    },
+    {
+      "label": "session-api-browser",
+      "command": [
+        "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+        "tests/wasm/swi_wasm_sessions_browser.cjs"
+      ],
+      "exit_code": 0,
+      "seconds": 11.951
+    }
+  ]
+}

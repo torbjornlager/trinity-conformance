@@ -1,0 +1,455 @@
+{
+  "suite": "library-noncompletion-negative-controls",
+  "scope": "Isolated real Chrome sessions; externally killed browsers and fresh-session recovery, not same-session abort or public transport",
+  "manifest_sha256": "47877ec063cdf0719fa6ed52c3a71aa52059cd334bacd8a697608ae33b931e83",
+  "adapter_sha256": "75c6a182efe49cd4ccef88dea20aa8239f4e266b2f26f7973394112c3cb4dc50",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "56b8859b2e3cffdec26c9b882ac9ca2cb2b7bc2376309e48b99680ec3503ed68",
+    "web/swi_wasm_actor_worker.js": "9b4a81c7cb7c465f14ecfe7d779ee3cf1cb1d0b8ad02e9477b24b70efd9b91d4",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "NONCOMPLETION-NEGATIVE-COMPLETED",
+      "title": "Intentionally rejected completed fixture",
+      "status": "fail",
+      "detail": "Error: noncompletion observation failed\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:85:244",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 6950391297,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-COMPLETED-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 100.65691599999991,
+          "terminal": {
+            "answer": {
+              "type": "success",
+              "pid": 6950391297,
+              "data": [
+                {
+                  "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-COMPLETED-probe'",
+                  "LibraryCount": "1"
+                }
+              ],
+              "more": false
+            }
+          },
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 27.56891699999983,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 1670295055,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-COMPLETED-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": []
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "NONCOMPLETION-NEGATIVE-EXCEPTION",
+      "title": "Intentionally rejected exception fixture",
+      "status": "fail",
+      "detail": "Error: noncompletion observation failed\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:85:244",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 5987222264,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-EXCEPTION-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 101.15341699999999,
+          "terminal": {
+            "answer": {
+              "type": "error",
+              "pid": 5987222264,
+              "data": "deliberate_noncompletion_control"
+            }
+          },
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 26.95600000000013,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 9244463692,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-EXCEPTION-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": []
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "NONCOMPLETION-NEGATIVE-NO-ENTRY",
+      "title": "Intentionally rejected no-entry fixture",
+      "status": "fail",
+      "detail": "Error: callback entry deadline\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:74:45",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "pid": 7696956308,
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/worker-NONCOMPLETION-NEGATIVE-NO-ENTRY-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": [
+          {
+            "confirmed": true,
+            "duration_ms": 19.512249999999767,
+            "exit_code": null,
+            "signal": "SIGKILL"
+          }
+        ]
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "NONCOMPLETION-NEGATIVE-COMPLETED",
+      "title": "Intentionally rejected completed fixture",
+      "status": "fail",
+      "detail": "Error: noncompletion observation failed\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:85:244",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-COMPLETED-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 100.612709,
+          "terminal": {
+            "answer": {
+              "type": "success",
+              "data": [
+                {
+                  "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-COMPLETED-probe'",
+                  "LibraryCount": "1"
+                }
+              ],
+              "more": false
+            }
+          },
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 20.79925000000003,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-COMPLETED-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": []
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "NONCOMPLETION-NEGATIVE-EXCEPTION",
+      "title": "Intentionally rejected exception fixture",
+      "status": "fail",
+      "detail": "Error: noncompletion observation failed\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:85:244",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-EXCEPTION-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "probe": {
+          "entry_count": 1,
+          "entry_response_finished": true,
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ],
+          "elapsed_ms": 100.76012499999979,
+          "terminal": {
+            "answer": {
+              "type": "error",
+              "data": "deliberate_noncompletion_control",
+              "more": false
+            }
+          },
+          "alive_before_termination": true
+        },
+        "termination": {
+          "confirmed": true,
+          "duration_ms": 25.461959000000206,
+          "exit_code": null,
+          "signal": "SIGKILL"
+        },
+        "recovery": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-EXCEPTION-recovery'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": []
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "NONCOMPLETION-NEGATIVE-NO-ENTRY",
+      "title": "Intentionally rejected no-entry fixture",
+      "status": "fail",
+      "detail": "Error: callback entry deadline\n    at /Users/lager/trinity-conformance/adapters/wasm_library_noncompletion.cjs:74:45",
+      "observation": {
+        "warmup": {
+          "passed": true,
+          "entry_count": 1,
+          "answer": {
+            "type": "success",
+            "data": [
+              {
+                "N": "3",
+                "LibraryEntryURI": "'http://127.0.0.1:50224/entry/main-NONCOMPLETION-NEGATIVE-NO-ENTRY-warmup'",
+                "Caught": "true",
+                "LibraryCheck": "passed"
+              }
+            ],
+            "more": false
+          },
+          "requests": [
+            {
+              "goal": "(true)",
+              "template": "v",
+              "format": "prolog",
+              "offset": "0"
+            }
+          ]
+        },
+        "cleanup": [
+          {
+            "confirmed": true,
+            "duration_ms": 15.814125000000786,
+            "exit_code": null,
+            "signal": "SIGKILL"
+          }
+        ]
+      }
+    }
+  ],
+  "counts": {
+    "pass": 0,
+    "fail": 6
+  }
+}

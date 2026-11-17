@@ -1,0 +1,116 @@
+{
+  "scope": "development API introspection repair and conservative Appendix B audit; no deployment or full profile certification",
+  "introspection": {
+    "pass_count": 25,
+    "fail_count": 0
+  },
+  "library_diagnostics": {
+    "pass_count": 8,
+    "fail_count": 2,
+    "note": "Both failures are GNU execution-policy rejection, retained separately from introspection."
+  },
+  "promise_context_diagnostic": {
+    "pass_count": 0,
+    "fail_count": 1,
+    "note": "Real WASM Worker parent/child cannot share the context-owned promise; only HTTP reply mocked."
+  },
+  "regressions": {
+    "native": "LINT TEXT T0 T1_NATIVE T2 T3_NATIVE T4_NATIVE passed, including 1055 T4 cases",
+    "trealla": "full unit and SWI/Trealla interoperability passed",
+    "wasm": [
+      {
+        "label": "statechart-unit",
+        "command": [
+          "/usr/local/bin/swipl",
+          "-f",
+          "none",
+          "-q",
+          "-p",
+          "browser_prolog=/var/folders/cv/q5t08z852cx4mrj16hgnp_fh0000gp/T/wasm-runtime-tests-vnt5xho9/wasm",
+          "-s",
+          "tests/test_statechart_wasm.pl",
+          "-g",
+          "swi_wasm_statechart_tests:run",
+          "-t",
+          "halt"
+        ],
+        "exit_code": 0,
+        "seconds": 0.136
+      },
+      {
+        "label": "schema-equivalence",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "tools/check_statechart_wasm_equivalence.py",
+          "--wasm-dir",
+          "/private/tmp/introspection-wasm-after/web/wasm",
+          "--native-root",
+          "/Users/lager/swi-prolog-node"
+        ],
+        "exit_code": 0,
+        "seconds": 0.039
+      },
+      {
+        "label": "worker-mailbox",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_actor_worker_smoke.js"
+        ],
+        "exit_code": 0,
+        "seconds": 0.258
+      },
+      {
+        "label": "standalone",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_standalone.js"
+        ],
+        "exit_code": 0,
+        "seconds": 1.218
+      },
+      {
+        "label": "semantic-contracts",
+        "command": [
+          "/Users/lager/.nvm/versions/node/v22.23.4/bin/node",
+          "tests/wasm/swi_wasm_contracts.js"
+        ],
+        "exit_code": 0,
+        "seconds": 115.928
+      }
+    ],
+    "consumer": "source smoke passed with an explicit development package; pinned startup correctly rejects dirty runtime inputs, so no consumer pin was bypassed or promoted"
+  },
+  "deployment": "Unchanged: the preceding public deployment keeps its own exact pins; these capability edits are not deployed.",
+  "evidence_sha256": {
+    "build-inventory.py": "c00399825cdb84ce62b84c1c888c9c6b396771e891f2cdb34b1f811e7e70b82a",
+    "consumer-source-smoke.txt": "da1cbe713f478e3a6c495e1a6e83b89042ef46b5c5f18d65d0f732f8f6a93502",
+    "diagnostics/baseline-package-manifest.json": "24b4e1e637b48467c7008dc0afcbd03a77fe6f1dd897c5755aa5ede42f219ab0",
+    "diagnostics/introspection-before-corrected-local.json": "2e154c62d24ef8b67eecf6363438e4963eb7d4efd2aec6bbdb6b622e9cbdc9cc",
+    "diagnostics/introspection-before-corrected-main.json": "b094a56925a2e3aecab495069ac4ba92b7891266509005e9070dc44074624b50",
+    "diagnostics/introspection-before-corrected-worker.json": "818e65ee518144ed21599aa623a50b63ddff6b11920001c833cc159981d92eea",
+    "diagnostics/introspection-before-local.json": "9f1f5f67bd0600606b6b53aa00c72f4402fc1c1188eb91619ccd7d8358513d07",
+    "diagnostics/introspection-before-main.json": "97d20067fd7b3a56cd70dadb1e0911347d273c0700c7ef0ef7c28ac224131f8a",
+    "diagnostics/introspection-before-worker.json": "4575ff377c9082a851ac0aa19547ecb7f2d10df8ba38247d65de938a57f5d2c9",
+    "gnu-build.txt": "7fd8d50b7ab3918697fecbd8d9678f253250294a6fa020cbc1d0b284e14cfaab",
+    "interop-runner.sh": "8f2015735eebda81b9cefe8a22a40d7eefec961b68bef54889ac80da81562825",
+    "interop.txt": "8f679c5764240ab79cfd279d16c209c168180b8fbbcc27e003a1389f50b93549",
+    "library-local.json": "e49412e1add6dbf4b84e64e97454959bfc1c036a2ff5caa5f2bc29fec8c10467",
+    "library-main.json": "bd277b2cce7b66d0a5f9d775f67b1e13fb9f029772520c8f8a18b401732902a4",
+    "library-worker.json": "d8aeb371238630ded9433baf34f1827329e5babef86109770ea566dc9c8eacf7",
+    "local.json": "cf0a8edaeaceec4109dab4b07a7fad2feafb48d58c4ec565ee2a935f993a97bd",
+    "native-suite.txt": "0ded92e84ea8930596dc7c13f43e786923372a1b2a34da77abd91f22261170aa",
+    "promise-context-worker.json": "c9c58180e8fa8df29658088aeab44282d620f5142ec497c39bce9d366560d3fe",
+    "promise-context-worker.txt": "3ac048aa95c70ceec22511c677bceb05a02856daa9f07def99806cee92e4ae08",
+    "trealla-unit.txt": "1b904a851251df115acd10f436fa2589b2eb9bd6f5c8dd7f2421186c50cd377a",
+    "wasm-full-suite.json": "1e2ec3a37b0d07ce87bd086825c6816a8a9a3db023a3d9d145ee9cdfc606ac82",
+    "wasm-main.json": "8a2c030a90f5a76a177b34dc84c53a97e5b1c52ea419e851e73637c908d65e8d",
+    "wasm-package-manifest.json": "0fa9ebbcaca68b70f6a695984f5e83a707788fc276be56abd89f2040f945fb3e",
+    "wasm-schema-equivalence.txt": "dc527e011e2a847758848ee6681cdcc733569f99ff8f5c742f1612eb5f05c9f5",
+    "wasm-semantic-contracts.txt": "7ec5814296a36ec4b97e3c480f2e7505ac3098edbd18e47b27556087207f0fe0",
+    "wasm-standalone.txt": "07f74fce34ff8f37488d6e59004f89ef24c2f67eebb8558690e64253410bdbf5",
+    "wasm-statechart-unit.txt": "a1c059dbedf11c5be339f7c2dfa15e44731891397475ab8e1b4951c2934afc76",
+    "wasm-worker-mailbox.txt": "7f7fca869a91bd5c2462bbd33e349eddfe8f23e099edb40aa297a13d326a8bb3",
+    "wasm-worker.json": "d4bdbd9a135c27bc6a4ae1ab913c9ed3cd01a36f788770b1bd208ba87dd3fef0"
+  },
+  "coverage_validation": "353 source units validated against manuscript hashes; seven validator guard tests passed"
+}
