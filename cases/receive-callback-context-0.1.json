@@ -71,6 +71,13 @@
       "transport": "query",
       "goal": "self(S),spawn(rc_copied(S),P,[src_predicates([rc_copied/1]),monitor(true)]),receive({rc_copied_ok->true},[timeout(3),on_timeout(throw(receive_copied_reply_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(receive_copied_down_missing))])",
       "source": "rc_copied(Owner):-self(S),send(S,rc_probe),receive({rc_probe if runtime_property(persistent(true))->send(Owner,rc_copied_ok)},[timeout(0),on_timeout(throw(receive_copied_api_missing))])."
+    },
+    {
+      "id": "RC-012",
+      "title": "A receive enumerated in a sourced toplevel keeps the API, private source and body bindings",
+      "transport": "query",
+      "goal": "self(S),send(S,rc_probe),findall(X,receive({rc_probe if rc_private(_)->runtime_property(persistent(true)),rc_pair(X,ok)},[timeout(0),on_timeout(throw(receive_enumerated_body_missing))]),Xs),Xs==[ok]",
+      "source": "rc_private(ok). rc_pair(X,X)."
     }
   ]
 }

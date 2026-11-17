@@ -183,6 +183,38 @@
           "expect_json_type": "error"
         }
       ]
+    },
+    {
+      "id": "IB-011",
+      "title": "Supplied source may not run a goal directive",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "baseline_q(X)",
+            "format": "prolog",
+            "template": "X",
+            "src_text": ":- true. baseline_q(a)."
+          },
+          "expect_prolog_error_formal": "permission_error(load,directive,true)"
+        }
+      ]
+    },
+    {
+      "id": "IB-012",
+      "title": "Supplied source may declare a dynamic predicate",
+      "transport": "http",
+      "requests": [
+        {
+          "params": {
+            "goal": "baseline_q(X)",
+            "format": "prolog",
+            "template": "X",
+            "src_text": ":- dynamic(baseline_d/1). baseline_q(a)."
+          },
+          "expect_prolog": "success([a],false)."
+        }
+      ]
     }
   ]
 }

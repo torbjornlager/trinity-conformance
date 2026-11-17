@@ -1,6 +1,6 @@
 # Receive callback source context
 
-The eleven cases in `receive-callback-context-0.1.json` run unchanged on native
+The twelve cases in `receive-callback-context-0.1.json` run unchanged on native
 SWI and Trealla in blacklist, whitelist and owner-off modes through
 `adapters/local_runtime_contracts.py`. The existing source-copy selection adds
 SCOPY-006: a copied controller creates a second-generation child whose guard
@@ -12,7 +12,9 @@ Trealla's receive callback API dispatcher and copied-source restoration must
 land alongside validated private-helper admission before requiring these cases.
 Patterns remain ordinary data, bindings from unsuccessful guards roll back,
 ordinary exceptions do not consume unmatched messages, and body alternatives
-belong to a single consumed message. The port-specific native unit group also
+belong to a single consumed message. RC-012 repeats the
+enumerated body in a toplevel with private source: a receive nested in
+`findall/3` must keep the same callback context as one called directly. The port-specific native unit group also
 rejects forbidden copied guards and access to private implementation bridges.
 
 This selection checks ordinary guard exceptions. It does not replace the separate
