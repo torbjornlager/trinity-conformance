@@ -175,11 +175,14 @@ python3 runner/run.py \
   --candidate node-name
 ```
 
-Nodes with public engine-start limits, such as N7 (20 starts per client per
-minute), answer HTTP 429 when a case opens several sessions in quick succession.
+Nodes with public engine-start limits answer HTTP 429 when a case opens
+several sessions in quick succession. The [admission contract](profiles/admission-0.1.md)
+describes configurable budgets and the finite `runner/admission.py` probe.
+N7 previously allowed 20 starts per client per minute; the new public preset
+allows 120. Consult the live `/node_info` admission object before choosing pacing.
 `--session-interval SECONDS` (also on `runner/baseline.py`) spaces the start of
-every WebSocket session the process opens; 4 seconds keeps the worker cases on
-N7 within its limit. Assertions and deadlines are unchanged.
+every WebSocket session the process opens; choose an interval from the advertised budget and account for other clients
+sharing that budget. The earlier 20/minute N7 selection used four-second spacing. Assertions and deadlines are unchanged.
 
 Use `--case AC-004` to select one case. Failure classifications can be added
 with `--classifications path/to/classifications.json`; see
