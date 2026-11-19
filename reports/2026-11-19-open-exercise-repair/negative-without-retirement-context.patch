@@ -1,0 +1,17 @@
+--- a/prolog/web_prolog/node_glue.pl
++++ b/prolog/web_prolog/node_glue.pl
+@@ -138,14 +138,6 @@
+     ;   StartGoal = StartGoal2
+     ).
+ 
+-% Thread at-exit callbacks run after the inherited start-goal context is
+-% erased. Retain the creating node here so identity, registry retirement,
+-% monitor delivery and lifecycle hooks cannot fall back to another listener.
+-:- multifile actors:hook_stop_context/2.
+-actors:hook_stop_context(StopGoal,
+-        node_runtime_state:with_node_port_context(NodePort,StopGoal)) :-
+-    current_node_port(NodePort).
+-
+ %  Registry/visibility namespace (was current_public_execution_namespace
+ %  read directly by actor.pl).
+ :- multifile actors:hook_namespace/1.

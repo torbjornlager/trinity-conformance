@@ -1,0 +1,96 @@
+{
+  "suite": "demonstrator-open-exercises-0.1",
+  "authentication": "none",
+  "scope": "Visible drawer query sequences on owned OPEN loopback nodes",
+  "native_root": "/Users/lager/trinity-demonstrator/.trinity/naming-release-20261119-native",
+  "inventory": [
+    {
+      "path": "/examples/actors/13 parallel.pl",
+      "sha256": "68b246784c33853bd1ea96cd5b5905aeed67d80046b5cade256914beb760e628"
+    }
+  ],
+  "results": [
+    {
+      "path": "/examples/actors/13 parallel.pl",
+      "query": 1,
+      "goal": "time(myparallel([(X=a,sleep(1)),(Y=b,sleep(3)),(Z=c,sleep(2))]))",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 7735042064,
+        "data": "timed out"
+      },
+      "events": [],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/actors/13 parallel.pl",
+      "query": 2,
+      "goal": "time(myparallel([(X=a,sleep(1)),(Y=b,fail),(Z=c,sleep(2))]))",
+      "expected": "failure",
+      "event": {
+        "type": "timeout",
+        "pid": 9161640013,
+        "data": "timed out"
+      },
+      "events": [],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/actors/13 parallel.pl",
+      "query": 3,
+      "goal": "time(myparallel([(X=a,sleep(1)),(Y=b,sleep(a)),(Z=c,sleep(2))]))",
+      "expected": "error",
+      "event": {
+        "type": "timeout",
+        "pid": 7930552041,
+        "data": "timed out"
+      },
+      "events": [],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/actors/13 parallel.pl",
+      "query": 4,
+      "goal": "time(myfirst_solution(X, [(sleep(2),X=a),(sleep(1),X=b)]))",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "X": "b"
+          }
+        ],
+        "more": false,
+        "pid": 3952469086,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "% 89,957 inferences in 1.030 seconds",
+            "kind": "timing",
+            "pid": 3952469086,
+            "type": "output"
+          },
+          "request_id": "621d9fc665139252164120602f0087a521238c3396ac5e86a7be8dcdca5ba482",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "X": "b"
+            }
+          ],
+          "more": false,
+          "pid": 3952469086,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 1,
+    "fail": 3
+  }
+}

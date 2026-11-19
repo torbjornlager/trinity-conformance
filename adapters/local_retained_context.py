@@ -4,6 +4,7 @@
 No live nodes, installed engines, release pins or runtime implementations change.
 Every failed, blocked or errored observation causes a nonzero exit.
 """
+import http.cookiejar
 import argparse,contextlib,hashlib,json,os,re,secrets,socket,subprocess,sys,tempfile,time,urllib.parse,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
@@ -23,8 +24,13 @@ def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--swipl',required=True);p.add_argument('--tpl',required=True)
  p.add_argument('--swi-root',type=Path,required=True);p.add_argument('--trealla-root',type=Path,required=True)
+ p.add_argument('--anonymous-http-sessions',action='store_true',help='omit client credentials and retain separate anonymous visitor cookies; requires --http-session-context-only')
+ p.add_argument('--http-session-context-only',action='store_true',help='run only shared retained-HTTP-session isolation checks; enable disposable Trealla session routes')
  p.add_argument('--controlled-promises',action='store_true',help='add six barrier-controlled timeout/ownership checks, including public-style self routes')
  p.add_argument('--output',type=Path,required=True);p.add_argument('--routes',nargs='*',default=['swi-a:swi-b','swi-a:trealla-b','trealla-a:swi-b','trealla-a:trealla-b'],choices=['swi-a:swi-b','swi-a:trealla-b','trealla-a:swi-b','trealla-a:trealla-b']);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
+ if a.anonymous_http_sessions and not a.http_session_context_only:p.error('--anonymous-http-sessions requires --http-session-context-only')
+ if a.http_session_context_only and a.controlled_promises:p.error('--http-session-context-only cannot be combined with --controlled-promises')
+ if a.http_session_context_only:a.routes=[]
  ports={name:port() for name in ['swi-a','swi-b','swi-c','trealla-a','trealla-b']}
  urls={name:('http://localhost:' if name.startswith('swi-') else 'http://127.0.0.1:')+str(n) for name,n in ports.items()};rows=[];processes=[];logs=[]
  sources={}
@@ -32,7 +38,7 @@ def main():
   files=(root/'prolog').rglob('*.pl') if name=='swi' else root.glob('*.pl')
   sources[name]=dict(root=str(root),revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),diff_sha256=hashlib.sha256(subprocess.check_output(['git','diff'],cwd=root)).hexdigest(),files_sha256={str(f.relative_to(root)):sha(f) for f in sorted(files)})
  def save():
-  report=dict(suite='native-retained-context-audit-0.1',scope='Scoped audit: retained WSS and fresh HTTP on SWI/Trealla; explicitly selected remote routes; no live services changed',routes=a.routes,adapter_sha256=sha(__file__),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail','blocked','error']})
+  report=dict(suite=('http-session-context-0.1' if a.http_session_context_only else 'native-retained-context-audit-0.1'),scope=('Retained HTTP promise isolation on SWI/Trealla; Trealla HTTP ACTOR naming extension; no live services changed' if a.http_session_context_only else 'Scoped audit: retained WSS and fresh HTTP on SWI/Trealla; explicitly selected remote routes; no live services changed'),authentication=(('anonymous' if a.anonymous_http_sessions else 'execute-only credential') if a.http_session_context_only else 'execution credential plus anonymous HTTP controls'),routes=a.routes,adapter_sha256=sha(__file__),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ['pass','fail','blocked','error']})
   (a.output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
  def record(candidate,id,title,fn,requirements):
   row=dict(candidate=candidate,id=id,title=title,requirements=requirements)
@@ -97,10 +103,11 @@ def main():
    for name in ['swi-a','swi-b','swi-c']:wait(name,swi)
    credentials=json.loads(creds.read_text());client=credentials['client'];peer=credentials['peer']
    for name in ['trealla-a','trealla-b']:
-    launcher=tmp/(name+'.pl');launcher.write_text(':- use_module(distribution).\naudit_main :- web_prolog:web_prolog_node('+str(ports[name])+',[max_call_requests_per_window(1000),peer_transport_tokens(['+','.join(literal(u)+'-'+literal(peer) for u in urls.values())+']),bearer_token(audit_client,'+literal(client)+',[execute]),bearer_token(\'node:context-audit\','+literal(peer)+',[execute,internal_transport])]).\n')
+    session_options='http_sessions(true),' if a.http_session_context_only else ''
+    launcher=tmp/(name+'.pl');launcher.write_text(':- use_module(distribution).\naudit_main :- web_prolog:web_prolog_node('+str(ports[name])+',['+session_options+'max_call_requests_per_window(1000),peer_transport_tokens(['+','.join(literal(u)+'-'+literal(peer) for u in urls.values())+']),bearer_token(audit_client,'+literal(client)+',[execute]),bearer_token(\'node:context-audit\','+literal(peer)+',[execute,internal_transport])]).\n')
     te=dict(env,TPL_LIBRARY_PATH=str(Path(a.tpl).parent/'library'))
     proc=start(name+'-fixture',[a.tpl,'-g',f'consult({literal(launcher)}),audit_main'],a.trealla_root,te);wait(name,proc)
-   for name in ['swi-a','trealla-a']:
+   for name in ([] if a.http_session_context_only else ['swi-a','trealla-a']):
     candidate=name.split('-')[0];url=urls[name]
     with contextlib.ExitStack() as stack:
      h=stack.enter_context(harness(name,client));h.spawn_shell()
@@ -151,7 +158,56 @@ def main():
      return observed,all(e.get('type')=='success' for e in observed.values())
     finally:
      for pid in sessions:post('toplevel_halt',dict(pid=pid))
-   record('swi','CTX-020','retained HTTP session preserves promises across requests and isolates another session with equal credentials',retained_http_session,['B-004','B-296','B-304'])
+   if not a.http_session_context_only:record('swi','CTX-020','retained HTTP session preserves promises across requests and isolates another session with equal credentials',retained_http_session,['B-004','B-296','B-304'])
+   if a.http_session_context_only:
+    def session_check(name,scenario):
+     url=urls[name];sessions=[];session_clients={};observed={}
+     def post(route,params,opener=None):
+      json_body=route=='toplevel_spawn'
+      data=(json.dumps(params).encode() if json_body else urllib.parse.urlencode(dict(params,format='json')).encode())
+      headers={'Content-Type':('application/json' if json_body else 'application/x-www-form-urlencoded')}
+      if not a.anonymous_http_sessions:headers['Authorization']='Bearer '+client
+      request=urllib.request.Request(url+'/'+route,data=data,headers=headers)
+      opener=opener or session_clients[params['pid']]
+      with opener.open(request,timeout=8) as response:return json.load(response)
+     def call(pid,goal):
+      return post('toplevel_call',dict(pid=pid,goal='('+goal+'),AuditCheck=passed',limit=1))
+     try:
+      for _ in range(2):
+       opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+       pid=post('toplevel_spawn',dict(options='[session(true)]'),opener)['pid']
+       sessions.append(pid);session_clients[pid]=opener
+      if scenario=='promises':
+       with ControlledPromisePeer() as peer:
+        created=call(sessions[0],f'promise({literal(peer.url)},true,R,[template(mark)])');observed['created']=created
+        ref=row_value(created,'R')
+        if not ref.isdigit():raise RuntimeError('unbound HTTP session promise reference')
+        if not peer.arrived.wait(4):raise RuntimeError('HTTP producer arrival missing')
+        observed['foreign_pending']=call(sessions[1],missing(ref))
+        observed['foreign_cleanup']=call(sessions[1],f'promise_cleanup({ref})')
+        observed['owner_still_pending']=call(sessions[0],f'yield({ref},timeout,[timeout(0)])')
+        observed['producer_held']=not peer.release.is_set() and not peer.sent.is_set()
+        peer.release.set()
+        observed['owner_collect']=call(sessions[0],f'yield({ref},success([mark],false),[timeout(3)])')
+        observed['producer_requests']=len(peer.requests)
+        observed['producer_errors']=list(peer.errors)
+        ok=observed['producer_held'] and observed['producer_requests']==1 and not peer.errors
+        events=[e for e in observed.values() if isinstance(e,dict)]
+      else:
+       name1='http_context_'+secrets.token_hex(6)
+       observed['first_register']=call(sessions[0],f'self(S),register({name1},S)')
+       observed['other_hidden_and_duplicate']=call(sessions[1],f'whereis({name1},undefined),self(S),register({name1},S)')
+       observed['owner_lookup']=call(sessions[0],f'self(S),whereis({name1},S)')
+       observed['other_withdraw']=call(sessions[1],f'unregister({name1})')
+       observed['owner_preserved']=call(sessions[0],f'self(S),whereis({name1},S)')
+       observed['other_removed']=call(sessions[1],f'whereis({name1},undefined)')
+       ok=True;events=list(observed.values())
+      return observed,ok and all(e.get('type')=='success' and e.get('more') is False for e in events)
+     finally:
+      for pid in sessions:post('toplevel_halt',dict(pid=pid))
+    for name in ['swi-a','trealla-a']:
+     record(name.split('-')[0],'HCTX-001','retained HTTP promises isolate equal-credential sessions and survive foreign cleanup',lambda name=name:session_check(name,'promises'),['B-004','B-296','B-304','B-305'])
+     if name=='trealla-a':record(name.split('-')[0],'HCTX-002','retained HTTP ordinary names isolate lookup, uniqueness and withdrawal',lambda name=name:session_check(name,'names'),['B-004','B-058','B-062','B-064'])
    for home in ['swi-a','trealla-a']:
     for dest in ['swi-b','trealla-b']:
      if home+':'+dest not in a.routes:continue

@@ -1,0 +1,176 @@
+{
+  "suite": "demonstrator-open-exercises-0.1",
+  "authentication": "none",
+  "scope": "Visible drawer query sequences on owned OPEN loopback nodes",
+  "native_root": "/Users/lager/trinity-demonstrator/.trinity/naming-release-20261119-native",
+  "inventory": [
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "sha256": "18df9fa7e69427907b817229d547906f07420cabd696f489802aaa851e0f30f6"
+    }
+  ],
+  "results": [
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 1,
+      "goal": "supervisor_spawn([\n       child(fridge, [\n           start(server(fridge, [initial_state([])])),\n           restart(permanent)\n       ])\n   ], Sup, [\n       src_predicates([fridge/4])\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Sup": "4844497158@'http://localhost:54134'"
+          }
+        ],
+        "more": false,
+        "pid": 1922933400,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Sup": "4844497158@'http://localhost:54134'"
+            }
+          ],
+          "more": false,
+          "pid": 1922933400,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 2,
+      "goal": "server_request(fridge, store(milk), Response)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Response": "ok"
+          }
+        ],
+        "more": false,
+        "pid": 1922933400,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Response": "ok"
+            }
+          ],
+          "more": false,
+          "pid": 1922933400,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 3,
+      "goal": "server_request(fridge, take(milk), Response)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Response": "ok(milk)"
+          }
+        ],
+        "more": false,
+        "pid": 1922933400,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Response": "ok(milk)"
+            }
+          ],
+          "more": false,
+          "pid": 1922933400,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 4,
+      "goal": "server_promise(fridge, store(meat), Ref)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Ref": "1325801512"
+          }
+        ],
+        "more": false,
+        "pid": 1922933400,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Ref": "1325801512"
+            }
+          ],
+          "more": false,
+          "pid": 1922933400,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 5,
+      "goal": "server_yield(1325801512, Response)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Response": "ok"
+          }
+        ],
+        "more": false,
+        "pid": 1922933400,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Response": "ok"
+            }
+          ],
+          "more": false,
+          "pid": 1922933400,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/actors/16 fridge_server.pl",
+      "query": 6,
+      "goal": "whereis(fridge, Previous),\n   catch(server_request(fridge, sore(milk), Response), server_down(Reason),\n         (wait_for_fridge_restart(Previous, 500), throw(server_down(Reason))))",
+      "expected": "error",
+      "event": {
+        "type": "timeout",
+        "pid": 1922933400,
+        "data": "timed out"
+      },
+      "events": [],
+      "status": "fail"
+    }
+  ],
+  "counts": {
+    "pass": 5,
+    "fail": 1
+  }
+}

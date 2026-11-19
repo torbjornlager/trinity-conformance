@@ -36,8 +36,9 @@ The common [client-context naming contract](profiles/client-naming-0.1.md)
 now requires ordinary names to be isolated between clients on every ACTOR node.
 The [naming alignment report](reports/2026-11-19-client-naming/REPORT.md) records
 Trealla's candidate repair and shared SWI/Trealla/ECLiPSe/browser observations.
-These candidate changes are not deployed; explicitly published services retain
-their separate node-wide registry.
+That report retains its pre-deployment boundary; Trealla `6041ea3` is now
+selected on N5. Explicitly published services retain their separate node-wide
+registry.
 
 The [connection-cleanup follow-up](reports/2026-11-19-connection-cleanup/REPORT.md)
 traces the earlier missed notification to delayed cleanup in the Prolog test
@@ -45,6 +46,23 @@ client. The repaired harness verifies termination of roots, unlinked children
 and toplevels for WebSocket close and stream EOF, with an independent connection
 remaining usable. All 69 interoperability groups pass; runtime and deployment
 inputs are unchanged.
+
+The [HTTP context follow-up](reports/2026-11-19-http-context/REPORT.md) records
+Trealla's retained HTTP session namespace gap and its original controls.
+The shared promise checks and Trealla HTTP naming extension pass 3/3; both
+Trealla controls fail on unchanged source. That checkpoint also retains a
+cache-cleanup timeout observed on unchanged source.
+
+The [OPEN compatibility checkpoint](reports/2026-11-19-open-http-contract/REPORT.md)
+implements candidate fresh-request isolation and verifies anonymous retained
+sessions. Its HTTP and normal consumer gates pass. The stricter drawer run
+retains ten timeouts also found on unchanged OPEN source; that checkpoint preceded the retirement repair below. Production pins are unchanged.
+
+The [OPEN exercise repair](reports/2026-11-19-open-exercise-repair/REPORT.md)
+resolves all ten earlier timeouts by preserving the actor's creating node during
+retirement. All 34 visible entries and 136 checks pass anonymously. Fresh-request
+isolation and retained-session sharing pass on both native runtimes. The fixes
+are pushed upstream; production pins and live nodes remain unchanged.
 
 The [current coverage matrix](CURRENT_COVERAGE.md),
 [per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json) and

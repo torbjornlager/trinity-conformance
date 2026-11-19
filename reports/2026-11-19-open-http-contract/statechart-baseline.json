@@ -1,0 +1,3998 @@
+{
+  "suite": "demonstrator-open-exercises-0.1",
+  "authentication": "none",
+  "scope": "Visible drawer query sequences on owned OPEN loopback nodes",
+  "native_root": "/Users/lager/trinity-demonstrator/.trinity/naming-release-20261119-native",
+  "inventory": [
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "sha256": "564290077924232236b8ddf020e7f6ebfbc96ed125500e910ebe3727ec8f7916"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "sha256": "5173b78447639cf356141842521c47c5c962d86fecc2a8d0425344bb3c4e908f"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "sha256": "f9e59591fafddc9a7fb94dc1cbf3ab9c4e7c85f24cede807cb805fc7d59e0871"
+    },
+    {
+      "path": "/examples/statecharts/04 clock.xml",
+      "sha256": "ee276919d45b66e3a6d0775da996ce1db8e98c1818a30be192dcd0a1053e3d5a"
+    },
+    {
+      "path": "/examples/statecharts/05 pingpong.xml",
+      "sha256": "e53409ac5edef7d9622f61c74d333184343d287ac00a8f889ab68ff011fe5fc9"
+    },
+    {
+      "path": "/examples/statecharts/06 parallel.xml",
+      "sha256": "f4313445e9f3dc88fd7ce2706f6f60c946470a6d635034d9a54d967dd94e9d2a"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "sha256": "48531fafe029cfb238898e424e79504f24ff370447166330f58f08aba0357b89"
+    },
+    {
+      "path": "/examples/statecharts/08 closure.xml",
+      "sha256": "32ce631f7851bf3069425903ce0eec19a0a9cb54041f075479ead86acdfcdbcd"
+    },
+    {
+      "path": "/examples/statecharts/09 gcd.xml",
+      "sha256": "e7e7646448416811bf6a7a59185bbf73a9d84243dba5e8fb12c6c0044c1d9495"
+    },
+    {
+      "path": "/examples/statecharts/10 shared-database.xml",
+      "sha256": "453c90f2b2a7dd5fc464d8db2bccc32d1565ae6d8e9606a0484da2d121eeddb2"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "sha256": "f3eb7289e74313f42230b123195d2d14b76e37f80bc73b1b2f706ac4f425d80c"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "sha256": "faf09e3187d0481f30be38de0f2bc52506f71da97f89c25e3ad32004acecdda6"
+    },
+    {
+      "path": "/examples/statecharts/13 spawn-actor.xml",
+      "sha256": "9a6374d8374f5e75a58dee452ea507a136a2bf3ee5c78263d0fee9d6e664a0a8"
+    },
+    {
+      "path": "/examples/statecharts/14 spawn-toplevel.xml",
+      "sha256": "51b207c04ffd44cbe4c11ef8442368867d0ecc6a7c727c870dfe645173d5d8d9"
+    }
+  ],
+  "results": [
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Pause and resume: hierarchy and history states.\n\n    A compound state can remember which of its substates was active when\n    it was last exited, and return there later. The `play` region cycles\n    between s1 and s2 on the `play` and `reset` events. A `pause` event\n    leaves that region for `interrupted`; `resume` goes to the history\n    state `h`, which restores whichever of s1 or s2 was active when the\n    pause happened, instead of starting over at s1. The `stop` event runs\n    the whole machine to its final state. Watch the trace to see the\n    remembered substate come back on resume.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"game\">\n    <state id=\"game\" initial=\"play\">\n        <state id=\"play\" initial=\"s1\">\n            <history id=\"h\">\n                <go to=\"s1\" />\n            </history>\n            <state id=\"s1\">\n                <go to=\"s2\" on=\"play\" />\n            </state>\n            <state id=\"s2\">\n                <go to=\"s1\" on=\"reset\" />\n            </state>\n            <go to=\"interrupted\" on=\"pause\" />\n        </state>\n        <state id=\"interrupted\">\n            <go to=\"h\" on=\"resume\" />\n        </state>\n        <go to=\"final\" on=\"stop\" />\n    </state>\n    <final id=\"final\" />\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! play.\n\n?- $Pid ! reset.\n\n?- $Pid ! pause.\n\n?- $Pid ! resume.\n\n?- $Pid ! stop.\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "3641703989@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "3641703989@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 2,
+      "goal": "3641703989@'http://localhost:54667' ! play",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 3,
+      "goal": "3641703989@'http://localhost:54667' ! reset",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 4,
+      "goal": "3641703989@'http://localhost:54667' ! pause",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 5,
+      "goal": "3641703989@'http://localhost:54667' ! resume",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([game,play,s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "2480a288c48e43b7f93d0ad6fc0e5846afe4ea37f1eee4c9a11c67c1616acf10",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 6,
+      "goal": "3641703989@'http://localhost:54667' ! stop",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 5718101453,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(play))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "91c969ff7eada788e1346a8640c425131bbccab8502980375bd0fb39f6136a30",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 5718101453,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/01 pause-and-resume.xml",
+      "query": 7,
+      "goal": "statechart_halt(3641703989@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 5718101453,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(s1,[s2],[s1],[s2]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "1695c014eabac2e6cc89f4d689eeb5c1684e20c2a77da04469fed94001da74a7",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1],[s2]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "118d68f1a0ce990045bddae38cf50ce05338c77c9049f4a57c8bd687c1f26260",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([game,play,s2]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "c542953f2f22a3c35a9b5a0e4f5590e0028a9e7180e8c33b8e4685ebd914c84d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(reset))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "7d5e2a4cd96e4a45f657a4aca3e1b427a955dfe76e306ad857d6a754ef6ea6fe",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s2,[s1],[s2],[s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "a62201b471f8844c9e1a42a501b94c4b85643ede791a57aa3b448dab96921c44",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s2],[s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "08568366c244689866f8b06c2f60eb4c7dd74b98531a802555fe3165b541a1d5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([game,play,s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "0ed7feb7465e034c3323d39c70c3217a439d266cc2a971a3f625206a9e312207",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(pause))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "3fbac8d07d33a677fa24f13345983c296b3be73739904f160655a87e71ce423f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(play,[interrupted],[play,s1],[interrupted]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "21b25e7766e348d074571628bca1fd020d595f612698672153ecdfa2d7f29669",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([play,s1],[interrupted]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "fa33fdd00a4662a41fe03500391814fee1df9d1af848a5e7d159234cac238d0a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([game,interrupted]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "217a4dbf20cf96ebdaa32bcb75f7a7cc66e14160d3c11e94996d946f0183a31f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(resume))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "79510b5378187753f88e8687c968bcff7780b5812518d65921cbb15e9cbedc90",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(interrupted,[h],[interrupted],[play,s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "90ca37074bbd6b114aa8bfc252925aef546a441a5f0e6839c2f135c0d6178ff4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([interrupted],[play,s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "9ecce108b78bd7aa8fbe373eef50f9ec95c5bba5553ea20208da61e30979e516",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([game,play,s1]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "6ab51e64b2d058ef407b87fce625f4fd7cc77d267481923ff5ec50dd489c5679",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(stop))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "16dfa40db93919d60c586e0736ab79e29dcbdca152ee9f3d2f323baaab35343d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(game,[final],[game,play,s1],[final]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "005492f412d183929cde1d61c3ed3f54600ce1a54b39cadeaea98e72195ef302",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([game,play,s1],[final]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "f4b8cc9cb14afb156cc5276093470d5ef566c07d3ba4a879682217821aaf4ad5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([final]))",
+            "pid": 3641703989,
+            "type": "output"
+          },
+          "request_id": "9f7efbc2f01eda3d33cd0afba49bf48824078c3eecb4bd1a85bc76a01aface5e",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Spaghetti: transition selection in a deeply nested chart.\n\n    A deliberately tangled hierarchy (the classic statechart torture\n    test), with states nested three deep and transitions on the events a\n    through h criss-crossing between levels. Its purpose is to exercise\n    the rules that decide, for a given event, which transition fires and\n    exactly which states are exited and entered on the way. Send the\n    events in different orders and follow the trace as the active\n    configuration moves through the tree; event h reaches the final\n    state f.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"s0\">\n    <state id=\"s0\" initial=\"s1\">\n        <state id=\"s1\" initial=\"s11\">\n            <state id=\"s11\">\n                <go to=\"s211\" on=\"g\" />\n            </state>\n            <go to=\"s1\" on=\"a\" />\n            <go to=\"s11\" on=\"b\" />\n            <go to=\"s2\" on=\"c\" />\n            <go to=\"s0\" on=\"d\" />\n            <go to=\"s211\" on=\"f\" />\n        </state>\n        <state id=\"s2\" initial=\"s21\">\n            <state id=\"s21\" initial=\"s211\">\n                <state id=\"s211\">\n                    <go to=\"s21\" on=\"d\" />\n                    <go to=\"s0\" on=\"g\" />\n                    <go to=\"f\" on=\"h\" />\n                </state>\n                <go to=\"s211\" on=\"b\" />\n            </state>\n            <go to=\"s1\" on=\"c\" />\n            <go to=\"s11\" on=\"f\" />\n        </state>\n        <go to=\"s211\" on=\"e\" />\n    </state>\n    <final id=\"f\" />\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! a.\n\n?- $Pid ! b.\n\n?- $Pid ! c.\n\n?- $Pid ! d.\n\n?- $Pid ! e.\n\n?- $Pid ! f.\n\n?- $Pid ! g.\n\n?- $Pid ! h.\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "2235781358@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "2235781358@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 2,
+      "goal": "2235781358@'http://localhost:54667' ! a",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "aa1c189d60360d8e6cabcc73feab642db051097d67502148c2345abca36e0391",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 3,
+      "goal": "2235781358@'http://localhost:54667' ! b",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(a))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "58b833cfb7aab0927621ca2322c869280baeff5eeab415fe4dbe7571e04c0856",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 4,
+      "goal": "2235781358@'http://localhost:54667' ! c",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(s1,[s1],[s1,s11],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "ae7ca5f4fd18110930bd47ba5da997399ada3f2ea468bf7fcf8b3cd3f75a8162",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 5,
+      "goal": "2235781358@'http://localhost:54667' ! d",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1,s11],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "f50d2d66864c8233c4f88779e492c7e7416e9d9980aab88d2d524a8399b3ad4d",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 6,
+      "goal": "2235781358@'http://localhost:54667' ! e",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "08ada6453c6c4b508b549d37ee05dee7107495bb662e06008370d27e843525da",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 7,
+      "goal": "2235781358@'http://localhost:54667' ! f",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(b))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "53bf1a2e4d6b8fcfb55f1a2d3c0fdc80745ddae8521f001a98152c0605047076",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 8,
+      "goal": "2235781358@'http://localhost:54667' ! g",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(s1,[s11],[s1,s11],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "80a3d956661f1118d60599a147e9acae5572d7ccb78c548b79ce4113e85e9450",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 9,
+      "goal": "2235781358@'http://localhost:54667' ! h",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3886724730,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1,s11],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "cd076591d790de21d64554a79b5504258cdf89f69bdc48671fb90d2a74a3aa3d",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3886724730,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/02 spaghetti.xml",
+      "query": 10,
+      "goal": "statechart_halt(2235781358@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 3886724730,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "ee723fd2997623e137ccb77d4b9703ab70ff3afcf80c1c3aab9f8c48e1daca3e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(c))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "e252a0e02008ac89146eb1f67f610446415b40291e68838f3d492ee12c1c2fff",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s1,[s2],[s1,s11],[s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "e8aafc7f0a5c1a29d96aab1610a79b96fb4a0a3640b03d3694fda400cc862b83",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1,s11],[s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "aa228fe3f7ad825d9582ed9425905d3a7ffa2a674bb45f18e44e3ce2cbf8206c",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "fbd431f008051055ec2dcad1cf9879f176e41e30b24cb9b340938b3f2ecfdf17",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(d))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "6ca4e3993b449f96a615532b89a71df57d503b1816d1d0b68582f19c6dbf37cb",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s211,[s21],[s21,s211],[s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "c27c7601d986b3b950512ae25f5e5dda2d18b133c711aec7587356687f205b19",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s21,s211],[s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "c07782beea9a47cd595d5ac5072db7bc1992019e4aaff3bae0ef0ce9fed520bc",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "69231a80b7552a1c8d95eebd8c24eaa7fd27e5c35e5713315bcffda7410883fd",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(e))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "758b36cfe961295f00a0b0239fa376148c1d4234c4e778ab043e5ad58ed57912",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s0,[s211],[s0,s2,s21,s211],[s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "3572ee3b1391249115d932f272a50cf1f7a1206039ea38c2ca49b5481f6b783b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s0,s2,s21,s211],[s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "0271c09f010bce37fbf11c9b5967b68e44ccbe6c12060517a76b6f797eda773b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "7ea9bc7473194611360216eae90bc38a2728a3a66baf479db9ab854fddcdc6c5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(f))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "41da6814e79872f4936db64384be095061d1fe8db987650aad1aa9db8d47d329",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s2,[s11],[s2,s21,s211],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "1cd3ef8bd3f4170dc20284786dabd461c6faa0bcf038d5260bb6a5b00dd0aa39",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s2,s21,s211],[s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "c4f5f274ef60acef6f15b56482adfaa9759b0626aedce5f43d7b61d4f1ee3e04",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s1,s11]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "82ece875e4219cc8124beaf62efdecd0890bc5c9cbd618fbaaea002ee73e4f37",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(g))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "b3ab6e06328680280ebef7043eadf9922b7e966e5fb2bb51efdab84b25d33012",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s11,[s211],[s1,s11],[s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "225505dbb64d4057718833ef53a150333b1e173f347538b2a2ce522e129697a1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1,s11],[s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "182937698037022f84c7b842340c124949b2ffc7201c6eb81d197daa66230961",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s0,s2,s21,s211]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "5ceb9283205d7a2d77962adce997f47a5c66646c704b219a1c70890ad48d06e3",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(h))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "3cedaeb3860d532862ae851775e65b308d3fdeeb3cc9a5c72a6648ad7ff23c06",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s211,[f],[s0,s2,s21,s211],[f]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "5f7d2369d2fae6fa7c601d87dabcea61ce66ddd340682f765bfb25c3a5dbfeff",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s0,s2,s21,s211],[f]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "555fe05923cc02dc16ff95ac2d0a461ff1f2604cc3c80df9878ddb528cfeb7f3",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([f]))",
+            "pid": 2235781358,
+            "type": "output"
+          },
+          "request_id": "856e8f9c797f89b800350854e50278aafe9d83b872cc50ebc284f0504df13c11",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Emotions: orthogonal (parallel) regions reacting together.\n\n    An agent''s inner state is split into regions that are all active at\n    once. Two emotion dimensions run in parallel (anger/fear and\n    anticipation/surprise), alongside a behavior region (attacking or\n    fleeing). Because the regions are orthogonal, one event is offered to\n    all of them at the same time: sending `e` can advance every region at\n    once, while `d` and `f` move individual regions back. This is how a\n    statechart captures several independent aspects of one actor without\n    a combinatorial explosion of states.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"agent\">\n    <parallel id=\"agent\">\n        <parallel id=\"emotions\">\n            <state id=\"AF-dimension\" initial=\"anger\">\n                <state id=\"anger\">\n                    <go to=\"fear\" on=\"e\"/>\n                </state>\n                <state id=\"fear\">\n                    <go to=\"anger\" on=\"d\"/>\n                </state>\n            </state>\n            <state id=\"AS-dimension\" initial=\"anticipation\">\n                <state id=\"anticipation\">\n                    <go to=\"surprise\" on=\"e\"/>\n                </state>\n                <state id=\"surprise\">\n                    <go to=\"anticipation\" on=\"f\"/>\n                </state>\n            </state>\n        </parallel>\n        <state id=\"behavior\" initial=\"attacking\">\n            <state id=\"attacking\">\n                <go to=\"fleeing\" on=\"e\"/>\n            </state>\n            <state id=\"fleeing\">\n                <go to=\"attacking\" on=\"d\"/>\n            </state>\n        </state>\n    </parallel>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! e.\n\n?- $Pid ! d.\n\n?- $Pid ! f.\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "2700181420@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 6428553091,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "2700181420@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 6428553091,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "query": 2,
+      "goal": "2700181420@'http://localhost:54667' ! e",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6428553091,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([agent,emotions,'AF-dimension',anger,'AS-dimension',anticipation,behavior,attacking]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "2c1cfb4d67da4310a70cfc9d2d5ed32814365f31da407e9aa0fee4e26e26aef9",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 6428553091,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "query": 3,
+      "goal": "2700181420@'http://localhost:54667' ! d",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6428553091,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(e))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "f5e0c2e1568a035bde21cac48bfd20a03e1403e5d837f222cf37f7cfcd451b77",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 6428553091,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "query": 4,
+      "goal": "2700181420@'http://localhost:54667' ! f",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 6428553091,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(anger,[fear],[anger],[fear]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "df9d31030d056ba6f10ff905cc7059e7d897dc66fada288f25574eec4f8405f0",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 6428553091,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/03 emotions.xml",
+      "query": 5,
+      "goal": "statechart_halt(2700181420@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 6428553091,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(anticipation,[surprise],[anticipation],[surprise]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "480dbc8b2bbff360b69616972fe73de25e9ecabf082f8c373bfce1fe542d353a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(attacking,[fleeing],[attacking],[fleeing]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "1d7aecb86fd571a35f92482878604faf4ba843ce4a7b20006421795dbbf3318d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([anger,anticipation,attacking],[fear,surprise,fleeing]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "83c7d9534d525ca2e539434f01715a571c9694fac697ffe25f0ae0905f4a05c2",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([agent,emotions,'AF-dimension',fear,'AS-dimension',surprise,behavior,fleeing]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "5e44a6eb877437c03e6226b9ec41cd98026531e19842d0ccae8bc428d79c2d12",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(d))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "156f2f187c325fd83e084c3dd1339af96cbb9eac9f4e5db449517c74e9416ff9",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(fear,[anger],[fear],[anger]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "ff704386c1ab0227fdbe78344ad133bcbd0be583ceb8dfa80c4e72b7b0006a31",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(fleeing,[attacking],[fleeing],[attacking]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "22957e0ada119318a3869a5e68f17a858ea10afcf1b555275c4dbcfe1b3daf57",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([fear,fleeing],[anger,attacking]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "3ab3995d0bf3eddbf3a93e225f2312ccbb4be8ca80f5b1f72f1b9104f7281db2",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([agent,emotions,'AF-dimension',anger,'AS-dimension',surprise,behavior,attacking]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "f52415f53bf95cf5a4a7d3f3dcf4e2eb4af898b1ecf1ed0256ceb13e03ea5a88",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(f))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "41d7292200fe78a126bdcfeb8b82e209a05dd425928b86ab78f705d4d4c4c7af",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(surprise,[anticipation],[surprise],[anticipation]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "8b6e3f22e7ee441310b5ee17cd23b6a1ca4b8358282451e68297762e16ba7dc0",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([surprise],[anticipation]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "63eba016996d3219980230246f2d9ce9f6075e7544e85cb6095e04630b77b8b2",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([agent,emotions,'AF-dimension',anger,'AS-dimension',anticipation,behavior,attacking]))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "61a26743d306b49dd4ff0ea32fe19488935ab961d0833db2e0384811d295aa39",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(6428553091@'http://localhost:54667')))",
+            "pid": 2700181420,
+            "type": "output"
+          },
+          "request_id": "a0f229816589e353970581c991f32f4c8683ec2d61f6fe8cf885a3ad8e34f642",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 6428553091,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/04 clock.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Clock: internal events broadcast across parallel regions.\n\n    Two regions run in parallel. The Clock region drives itself: its two\n    child states alternate on one-second timers and raise an internal `tick`\n    on each entry. The Listener region reacts to the same tick events.\n    Timers let startup return and leave the event loop available for halt.\n    Internal events still broadcast to every parallel region, not just the\n    region that raised them.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"Start\">\n    <parallel id=\"Start\">\n        <state id=\"Clock\" initial=\"tick\">\n            <state id=\"tick\">\n                <onentry>raise(tick)</onentry>\n                <go after=\"1\" to=\"tock\"/>\n            </state>\n            <state id=\"tock\">\n                <onentry>raise(tick)</onentry>\n                <go after=\"1\" to=\"tick\"/>\n            </state>\n        </state>\n        <state id=\"Listener\">\n            <go on=\"tick\">\n                writeln(''Heard a tick!'')\n            </go>\n        </state>\n    </parallel>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "4075962025@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 6020281554,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "4075962025@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 6020281554,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/04 clock.xml",
+      "query": 2,
+      "goal": "statechart_halt(4075962025@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 6020281554,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(execution(raise(tick)))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "6dc766da332231ea6b9b8771e4dc2c0192a83ac675e51e9abc778890590e308f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Start','Clock',tick,'Listener']))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "3e6f339294697a331aad475c3c4a2b77c8dd28b7422c097cc3c38e1af9a8d0c0",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(internal_event(tick))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "af59aa1e45d7bc63c77ca7f923be8829082567b4ad1d92529a21f99d636fda2a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition('Listener',[],[],[]))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "fd5f169ca0484a31718dcb379fcba268903c70be8ac716491a76c62e5c5a4076",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "374c9ad2ed493206b406d3b52b686a1c46acbb08866d96706f7f3e9821809dbe",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('Heard a tick!')))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "8057b3843b37b639af2363603747a5773c3ac00cbb0db9a68cde678f030c7a4a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Heard a tick!",
+            "pid": 4075962025,
+            "stdout": "Heard a tick!\n",
+            "type": "output"
+          },
+          "request_id": "591e2fd72a0c3a2ddd0604c887c0a58c6190fb86e1ca6486cf8377c422a0350b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Start','Clock',tick,'Listener']))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "2af72cd524d017bc7353069eecc162b4e6d8864c090511b134faf563622f8b31",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(6020281554@'http://localhost:54667')))",
+            "pid": 4075962025,
+            "type": "output"
+          },
+          "request_id": "a81eaebcada971c7b4c31bfda446ac1e7a4670251b97f4d394c1066658298a19",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 6020281554,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/05 pingpong.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Ping-pong between two parallel regions.\n\n    Two orthogonal regions, Pinger and Ponger, rally by raising internal\n    events. Pinger waits one second, prints Ping and raises ping; Ponger\n    then waits one second, prints Pong and raises pong. The timers yield\n    between volleys, so startup returns and halt remains available in a\n    browser worker as well as on a native node. No outside input is needed.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"Start\">\n    <parallel id=\"Start\">\n        <state id=\"Pinger\" initial=\"serving\">\n            <state id=\"serving\">\n                <go after=\"1\" to=\"waiting_for_pong\">\n                    writeln(''Ping''), raise(ping)\n                </go>\n            </state>\n            <state id=\"waiting_for_pong\">\n                <go on=\"pong\" to=\"serving\"/>\n            </state>\n        </state>\n        <state id=\"Ponger\" initial=\"waiting_for_ping\">\n            <state id=\"waiting_for_ping\">\n                <go on=\"ping\" to=\"returning\"/>\n            </state>\n            <state id=\"returning\">\n                <go after=\"1\" to=\"waiting_for_ping\">\n                    writeln(''Pong''), raise(pong)\n                </go>\n            </state>\n        </state>\n    </parallel>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "7194515383@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 5380502172,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "7194515383@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 5380502172,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/05 pingpong.xml",
+      "query": 2,
+      "goal": "statechart_halt(7194515383@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 5380502172,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Start','Pinger',serving,'Ponger',waiting_for_ping]))",
+            "pid": 7194515383,
+            "type": "output"
+          },
+          "request_id": "d462c09b2248da4c495486c58b319399ed5b0c065a3147daefdad804d5a33c1c",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(5380502172@'http://localhost:54667')))",
+            "pid": 7194515383,
+            "type": "output"
+          },
+          "request_id": "d065d75f08a25df18000225f225ba0caa1030f51ac63a36ff1c982a44d28088b",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 5380502172,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/06 parallel.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Parallel completion: waiting for every region to finish.\n\n    Two orthogonal regions, s1 and s2, each step through a chain of\n    states on the event `e` and end in their own final state. A parallel\n    state counts as done only once all of its regions have reached their\n    finals; at that moment the chart raises the completion event done(p),\n    which the outer transition is waiting for before moving on to the\n    top-level final state. Send `e` repeatedly and watch both regions\n    advance in lock-step until done(p) fires.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"p\">\n    <parallel id=\"p\">\n        <state id=\"s1\" initial=\"s1c1\">\n            <state id=\"s1c1\">\n                <go to=\"s1c2\" on=\"e\" />\n            </state>\n            <state id=\"s1c2\">\n                <go to=\"s1c3\" on=\"e\" />\n            </state>\n            <state id=\"s1c3\">\n                <go to=\"s1c4\" on=\"e\" />\n            </state>\n            <final id=\"s1c4\" />\n        </state>\n        <state id=\"s2\" initial=\"s2c1\">\n            <state id=\"s2c1\">\n                <go to=\"s2c2\" on=\"e\" />\n            </state>\n            <state id=\"s2c2\">\n                <go to=\"s2c3\" on=\"e\" />\n            </state>\n            <state id=\"s2c3\">\n                <go to=\"s2c4\" on=\"e\" />\n            </state>\n            <final id=\"s2c4\" />\n        </state>\n        <go to=\"f\" on=\"done(p)\" />\n    </parallel>\n    <final id=\"f\" />\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! e.\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "2290588509@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 1399646214,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "2290588509@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 1399646214,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/06 parallel.xml",
+      "query": 2,
+      "goal": "2290588509@'http://localhost:54667' ! e",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 1399646214,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([p,s1,s1c1,s2,s2c1]))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "f94d7ef539a07c3c386a1734b611c122e5efb8dc78ff37eaef1acb6944b875dd",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 1399646214,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/06 parallel.xml",
+      "query": 3,
+      "goal": "statechart_halt(2290588509@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 1399646214,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(e))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "2442e9c0a782a4c8d79db0aca503a08050b2267d772bb8bec95c0d38d0fbf131",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s1c1,[s1c2],[s1c1],[s1c2]))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "297ee961f4b8e01118cb84385b29637681e92886746c746d2fb65b9cee4ca43b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s2c1,[s2c2],[s2c1],[s2c2]))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "13a60d9fd4f1abeda382c18d8345bffb27813b98707dd2771a066f5c69f0118a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s1c1,s2c1],[s1c2,s2c2]))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "69460d214b2f845225bc6865520b852d93fd55a2a3cb30ce67fab405e3ac0da2",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([p,s1,s1c2,s2,s2c2]))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "d91c96f940d65f2eee80409b95212a2a564d86219f188be76f1e0563f208f218",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(1399646214@'http://localhost:54667')))",
+            "pid": 2290588509,
+            "type": "output"
+          },
+          "request_id": "51aba106e039a4caf8cab328911af4b461546a9b030989c5ecebe401b9a20d6f",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 1399646214,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Deferred events: postponing what a state cannot yet handle.\n\n    A state can mark certain events to be kept for later rather than\n    dropped. In the initialising state, command/1 events match <defer>,\n    so any that arrive are held in arrival order instead of being\n    discarded. The initialised event then moves the chart to the ready\n    state, where the deferred commands are re-offered, and handled,\n    before any newer external event is accepted. Send two command/1\n    events first, then initialised, and watch the held commands run in\n    the order they came in.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"initialising\">\n    <state id=\"initialising\">\n        <onentry>\n            writeln(''Initialising...'')\n        </onentry>\n        <defer on=\"command(_)\"/>\n        <go to=\"ready\" on=\"initialised\"/>\n    </state>\n\n    <state id=\"ready\">\n        <onentry>\n            writeln(''Ready.'')\n        </onentry>\n        <go on=\"command(Command)\">\n            format(''Performing ~p.~n'', [Command])\n        </go>\n    </state>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! command(open).\n\n?- $Pid ! command(close).\n\n?- $Pid ! initialised.\n\n?- $Pid ! command(status).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "7477569320@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "7477569320@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 2,
+      "goal": "7477569320@'http://localhost:54667' ! command(open)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('Initialising...')))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "c51f72b08c297c631605aaf8c7b1576a180848d123ce93da6387f6ed02af9e8c",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 3,
+      "goal": "7477569320@'http://localhost:54667' ! command(close)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "Initialising...",
+            "pid": 7477569320,
+            "stdout": "Initialising...\n",
+            "type": "output"
+          },
+          "request_id": "78a6c5919e87d5136830334b01c1352bdfa10dbdc608858badfa41b7b723fbcd",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 4,
+      "goal": "7477569320@'http://localhost:54667' ! initialised",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([initialising]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "534e01159d2ecdedd7e2d1825ef4a9ecc1ca142eb4c239377afe4878efb3362d",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 5,
+      "goal": "7477569320@'http://localhost:54667' ! command(status)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(command(open)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "0ed1f5efa82ab3e33a6a8201e2d9e5f7c4672d43de01978c08ca31b09b861822",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/07 deferred-events.xml",
+      "query": 6,
+      "goal": "statechart_halt(7477569320@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 9265264820,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(deferred(command(open)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "a53cf5e6ca7656fb391d81a08a6ae9e6b4d24b86b0efbfdcfd4058e385cb7747",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(command(close)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "079b19b5491aad14fd4f5445dd6ecd7cb92e90aec4d5d96d3797737fb8f726f1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(deferred(command(close)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "93b2784c1219c85e72f63d18ac014144f317033963282c06d8d845bb21fae6d9",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(initialised))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "9c80c6b3629685f29b03fc8691267f99891e450dbceb368e17aa42019069bea5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(initialising,[ready],[initialising],[ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "f76f8dcc5ae01ef56c0efda4be92f4f0cf93451398a68f17278a0a8b252d21e5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([initialising],[ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "5475649c3c15c5b09ecfd48fb3f921e2827ef87fcd2e96bee92c489e191d7658",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('Ready.')))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "7967fbea1628a09a283e9e2bf7d35dc006146941ef5fe7b3956f5cd558f4d4f5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Ready.",
+            "pid": 7477569320,
+            "stdout": "Ready.\n",
+            "type": "output"
+          },
+          "request_id": "767a5f3d443c85d669c5de33c0a9485a956f68c1b050a42f30588847cecfe966",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "1e538f7f1f31acff5bd50499ce277fca8060a4de94c5a5d7e03e3aa8b35f09a4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(reoffered([command(open),command(close)]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "9d4030a2d58cb6ceed79e0adb1530de101ee79509e151e28a846e0a9ad9b3444",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(internal_event(command(open)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "3672475ee9088955fd634d62ebb175fe3106ee3c72f109b8d0d2d2fee98ed793",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(ready,[],[],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "4a0c95ed27e49f4d037e107bc5a1e8c62a54e5af85b17fc86e43a035fdbb4e5d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "069720fda554160bf869ed4a9b04cbc10e52769a5a898e94b63bc02296f49943",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(format('Performing ~p.~n',[open])))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "42f918f28203fbdd238526330a63d1972056e4eb56ef61e123ae74d89af59a6a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Performing open.",
+            "pid": 7477569320,
+            "stdout": "Performing open.\n",
+            "type": "output"
+          },
+          "request_id": "56f4ea8cb5f9c7505752f13f422d790ca3b179bcdf5b4cc767508446345cd39f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "28b16405a2fea2a93eafc5bd18a4d9582636d7ec2c5dc59a9b92a010051686c5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(internal_event(command(close)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "f13e7ce1f3c4d06de6de7a30ffa3e2ef9a2d86fe3d030850e3c47aa2d9ef4067",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(ready,[],[],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "4e1e6306d02031bbd6ee1473efc5b8e6bd1c8e7c411c382ac6ee8ad9ddd946ce",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "cc10d6f154b7336a5202f8253f32ba04aee0f8e94ec3ebf3bb96e72ef817ba63",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(format('Performing ~p.~n',[close])))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "0a2cce6807e04a5b0b8c19f16fe828008b0a1601aa3bc0fcb96aa88ca9463d60",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Performing close.",
+            "pid": 7477569320,
+            "stdout": "Performing close.\n",
+            "type": "output"
+          },
+          "request_id": "a2f64aeee932a117a247e1c9d559f18fc9e08030c8ceced08a8ac7d33533e947",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "f0c235c45e56db1a329d5c69e7d9f359115276f21bc55d95c9b87ce477a982fb",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(command(status)))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "536c538baf8365ede588a59112385264ac858353c3e357560d6ef2bfdceca282",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(ready,[],[],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "7ca2a9247c778df3050d465d355b92944e4b90ddfc2d979635383573771736c6",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "84cb9e0e6363e0db9b95980351f03a4b9e98da6b25a8ed8463c39947df9040c1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(format('Performing ~p.~n',[status])))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "423795cba1546e156bc5129b1d1c675faeda97b6e3ce68f16e9a47e53df6c4be",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Performing status.",
+            "pid": 7477569320,
+            "stdout": "Performing status.\n",
+            "type": "output"
+          },
+          "request_id": "e46cdc2dd9845099488fdbb423282f56c60a5b09e316125c5a1abaf21fa8db2f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([ready]))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "f7e2db964ee432ea7eea5716219acd7ecf5aa1e52041c3f40ea410838f002333",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(9265264820@'http://localhost:54667')))",
+            "pid": 7477569320,
+            "type": "output"
+          },
+          "request_id": "069c6fe6414ebe78e6db2f16a08d5fa830550dd3a30667f0d6d2be961201dcd5",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 9265264820,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/08 closure.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Transitive closure with eventless transitions.\n\n    A chart can compute, not only react. The <datamodel> seeds the Prolog\n    facts p(a,b), p(b,c), p(c,d). The single working state has an\n    eventless transition whose guard looks for a missing link (p(X,Y) and\n    p(Y,Z) but not yet p(X,Z)) and whose body asserts it. Needing no\n    event, the chart keeps taking that transition, adding one new edge\n    each time, until the guard can no longer be satisfied. A second\n    guarded transition then collects the finished relation and moves to\n    the final state. It demonstrates eventless (automatic) transitions,\n    guards that run real Prolog queries, and the chart''s own logical\n    database used as working memory.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n    \n-->\n\n<statechart version=\"0.2\" initial=\"s\">\n    <datamodel>\n        p(a,b). \n        p(b,c). \n        p(c,d).\n    </datamodel>\n    <state id=\"s\">\n        <go if=\"p(X,Y), p(Y,Z), \\\\+p(X,Z)\">\n            assert(p(X,Z))\n        </go>\n        <go to=\"f\" if=\"findall(p(X,Y), p(X,Y), List)\">\n            format(\"Closure: ~w\", [List])\n        </go>\n    </state>\n    <final id=\"f\"/>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "2708048540@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 6949943636,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "2708048540@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 6949943636,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/08 closure.xml",
+      "query": 2,
+      "goal": "statechart_halt(2708048540@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 6949943636,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "1ca591c138122afb2786d8fbf790a995ba8ea31a3166861c111c811172c31dd3",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s,[],[],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "7737031829a64e292dc18f1f161583ca6880f3cb4d11f2064d3710e00ce0fd33",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "6394931338822d4d318161b815b529e68f611c0c2b370172471526c88bdc0a8f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(p(a,c))))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "b4c3a94172e8f28f1bc704a3ad5254e54731c6749566a8406d517665666fe2f3",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "859b3e8934088f0e0956a8aec42c180edaf1e0fd7a22bfcb8aaaabfde525e53f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s,[],[],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "2f22ba4a36ceeff18b4a7681884c98d068fb75ffe76fa1149499a141de954d00",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "ed024a25c7654951ccc398b7f651486015eae3d75ff4877affa539d5fa3b3055",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(p(b,d))))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "cf4b694e881f003af0b360d82223245839566dc68a733dc846775f584741f3e9",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "a07552f67d98f8d930ca7449550989399716b4b8bfcdbf6b8089ddced6710584",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s,[],[],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "7beefb1aa0ec6d5f3082ca2eb1e16469c97e3eb9fd5db8814589a063411c1642",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "5556a32ab55d4fa7438f2544487460341c17c06679828a69d42c8b83978ffda4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(p(a,d))))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "f11c5f1016163bb84e63f99cbc7ad9e776ad0087e56f9f9ac7228c6f2eec2b07",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([s]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "6abf4a6f922dfb6bdbc6daf564d02a46789496b4f3095ef6924b3801530fd01a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(s,[f],[s],[f]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "a0855ba1a47d0e6ae2c9718a9368d8e4b6e3777e97d6436931ad7b76ccd34954",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([s],[f]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "a2590744ad6ac8d299c5212b6683872d4fcefb443cd66be3a7d5f987dce8ea39",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(format(['C',l,o,s,u,r,e,:,' ',~,w],[[p(a,b),p(b,c),p(c,d),p(a,c),p(b,d),p(a,d)]])))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "fe1c6d75965291c9ff02158f53ad02e9e8217cc6bc8de40f5fb5a20b3332b9cf",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Closure: [p(a,b),p(b,c),p(c,d),p(a,c),p(b,d),p(a,d)]",
+            "pid": 2708048540,
+            "stdout": "Closure: [p(a,b),p(b,c),p(c,d),p(a,c),p(b,d),p(a,d)]",
+            "type": "output"
+          },
+          "request_id": "122dd31a94caeb056d8968fb987d0775af21aa71fee763ffc7f26f65a5d03bf6",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([f]))",
+            "pid": 2708048540,
+            "type": "output"
+          },
+          "request_id": "2220bd0e3137c87fbe2b2f05ee4e10c6a7532e22f9cf49454c30d78bdb91c22b",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/09 gcd.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Greatest common divisor by Euclid''s subtractive algorithm.\n\n    A computation expressed as a statechart. The <datamodel> declares a\n    dynamic int/1 relation; the event integers(List) seeds it with a set\n    of numbers. In the `run` state, an eventless transition repeatedly\n    finds two stored numbers where one is larger and replaces the larger\n    by their difference. When no such pair remains, a single value is\n    left: the GCD of the whole set, which the last transition prints.\n    Like the closure example, it drives itself forward with guarded\n    eventless transitions over the Prolog database.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"init\">\n    <datamodel>\n        :- dynamic int/1.\n    </datamodel>\n    <state id=\"init\">\n        <go on=\"integers(List)\" to=\"run\">\n            forall(member(X, List), asserta(int(X)))\n        </go>\n    </state>\n    <state id=\"run\">\n        <go if=\"int(X), int(Y), X > Y\">\n            Z is X-Y,\n            retract(int(X)),\n            assert(int(Z))\n        </go>\n        <go to=\"stop\" if=\"int(X)\">\n            writeln(X)\n        </go>\n    </state>\n    <final id=\"stop\" />\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! integers([25, 10, 15, 30]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "5749982458@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 3386862618,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "5749982458@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 3386862618,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/09 gcd.xml",
+      "query": 2,
+      "goal": "5749982458@'http://localhost:54667' ! integers([25, 10, 15, 30])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3386862618,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([init]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "d68eaba08a95649f6eb424323bba0bd06122d829242a641f80f3a49e23124f4c",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3386862618,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/09 gcd.xml",
+      "query": 3,
+      "goal": "statechart_halt(5749982458@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 3386862618,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(integers([25,10,15,30])))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "eddaeff11e8376f88fb26fdaf195bdcb555173e8b8b73cd17b9366f6f1f52b87",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(init,[run],[init],[run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "521b99cd41769f58d7b8f133b01e284e319ea34718883867e10b156c22a43d53",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([init],[run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "546ccde73750c7169ebf0028d2d12dc7440c73407d732495b0a5d64d7a5cd9f0",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(forall(member(_,[25,10,15,30]),asserta(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "4f3726d70341d370e9f868a39cad056cb853141bec388c5b30c3d54766382569",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "8298ac410041d0342ca248e487a3f01dc3630e11c3a08058cf3c882c5be76454",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "19e7f64d5b5a32d660cbfea66e08ad20d95c6f57a8947133fd0fd1c6660519a5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "8a0bb563281719a92b79b3fc81e9e77b330733662614048ca6b7517495f18e79",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 30-15,retract(int(30)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "578887f68101275c67d4ed81c9732b731370354a8ebe2f0a889c591f2afefd4b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "943d6ad5527d56c55f8f53437190951fa702b4d82c0ff8b017dd0317eb479347",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "134ae4c9d610524b989110df54e94249d91383972ff4e5e0da4a95ad4b7ac7ae",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "d01725e40b8ce300ff2e1dc7273124dee1e92c0fdca0042138cab916445d74bf",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 15-10,retract(int(15)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "4e1915bccb2488566ab16305f2edb93f6a14f83620fefefb07a91fc6d1191de6",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "0c9514616e7aedf06139b26ad57ed3e6a098510973524527249ae3a0ab1b008e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "5ce7040e292334c84c96876321d7ffcdd55ce0629167f3fed716a3253a9937ce",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "2fdbdf0126f47b8744d03db9fef3662619f798b5eeea19b6e9ce48c49e844cea",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 10-5,retract(int(10)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "83935da7d1cd0dc8fab6e4e6d35b2624d7c85685d0c1beaa4d305f4294ccfec7",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "924b706d8c8a6b0210505197d3908b535e66973da08ec294d578ae9e42984fbc",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "26de29971d18801cf24b114de9be921a0e722f002d9c9a70309e219fa5150587",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "267952a61f83137f83d984e70bb359e6db3270a60ae2dc58adeca3b1f028f4e4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 25-15,retract(int(25)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "a051c07d6b731f86388865fa8cf20dabfbcd2acd6dc72e338dffe2cbe7ed0a21",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "0a54e83c5ad9ede12f6c5a911de132f3741e1e37a4ceca32ddc1841957562a02",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "2f52feb88f8061f1f51b14d72cd48adae7edd02fd7283db27a5c2fcb7135949b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "35f9fbe505ae7e4f542846ea2bcc454fab83bdd32070cbe604c7dda3f3368da1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 15-5,retract(int(15)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "bb060ac0a7e42b77ca9a1503431e6c7ac7ec2b2a780ec90f3b3bdbc953250484",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "43eb404fcf83f29dc7008418b196d245b78b040cb1154d424fd6e36c886957ed",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "e00c88c43f8e260816f26b376b7034112a40b63675f46a2e09ea45414f0b56c4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "641c023b7fae0829933c0edff138b5a42ce5550c12660f02edcb5cec956763d5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 10-5,retract(int(10)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "05fb5936da54524dd97659bb47b804db5dc35534773bfbcebe4c38ea93cefc0d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "266d616f4fc0b67791bdd3d5c538c85c00933ff94df598260e50dc8ab1aaac88",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[],[],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "e13b107ea434fd7a9bbf646aafae5719a739833e1dc2ac0ae28818da008bdf51",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([],[]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "fe776f861723435967a41291b1f961be96694c191843048e77a94b8cd6c6346b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((_ is 10-5,retract(int(10)),assert(int(_)))))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "d7d6f458fe66df05380030ce5917de27cb926485ae13ac896e06a57eb8053056",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([run]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "56291ea92d4afc5e7073c7836e162100d679421762a280a92ecf9ae90e21b965",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(run,[stop],[run],[stop]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "0c7f1677d1f4dfcd993fc5acc9c55f228570c632c1eb76f455b508a0794b2d31",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([run],[stop]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "0cd467d33cf3ce799e1420d8368aecc80e666c8397b7e9a41b74a56c2e78544b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln(5)))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "13fef23dceb75f9059c1bd733b9148585958b2854f51ed2d7e3d8adc24df81b9",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "5",
+            "pid": 5749982458,
+            "stdout": "5\n",
+            "type": "output"
+          },
+          "request_id": "5ebd9dca2d79707fbdc56a58f86ac941a758785305c6356f8d7352933c8d0e30",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([stop]))",
+            "pid": 5749982458,
+            "type": "output"
+          },
+          "request_id": "e08048abe7bc418ac4d6be85b74553f0650c8f417a64bd1d8091291dbed0aac8",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/10 shared-database.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Shared database: reaching node knowledge from a chart.\n\n    A statechart''s executable content runs in an actor whose logical\n    environment includes the node''s shared database, so a chart can build\n    on knowledge it did not define itself. Here summary/2 and\n    local_label/1 are local to the chart, but summary/2 also calls\n    shared_fact/1, which lives in the node database, and local_label/1\n    shadows a predicate of the same name there, so the local clause wins.\n    An eventless guard likewise consults the shared predicate\n    shared_transition_enabled/0 to decide when to move on. It shows how\n    local and shared knowledge combine, and how a local definition takes\n    precedence over a shared one.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"start\">\n    <datamodel> \n        local_label(statechart_datamodel).\n        \n        summary(Node, Local) :-\n            shared_fact(Node),\n            local_label(Local).\n    </datamodel>\n\n    <state id=\"start\">\n        <onentry>\n            summary(Node, Local),\n            output(result(Node, Local))\n        </onentry>\n        <go if=\"shared_transition_enabled\" to=\"done\" />\n    </state>\n\n    <final id=\"done\">\n        <onentry>output(''DONE'')</onentry>\n    </final>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]),\n   sleep(0.1),\n   flush.\n\n-->\n')\n   ]),\n   sleep(0.1),\n   flush",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "7171856086@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 4202561790,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(execution((summary(_,_),output(result(_,_)))))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "d4a5c39230cafd9957e77642cfdf4b4b3bc496ace19362f85515b9de3b0668ee",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([start]))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "001b411364fbae78ad3b1e2556a05cd2ec793b44a8846e71e38eaee2e72d21a5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(start,[done],[start],[done]))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "6fcb6781aa40c05609321952046f92879fb8279e2b6fcc5e52b225a3c016d36e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([start],[done]))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "99dec6926e7206d7796dba4132930a4ff7d942346c19dc1ea9f02b755796991f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(output('DONE')))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "a4f6f4482e92aa564f36becca7a562015daffc1bf3630278307e21504fbc45f4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([done]))",
+            "pid": 7171856086,
+            "type": "output"
+          },
+          "request_id": "2b0fc774c98bf9e76e8f4ef93e65ac44a7a8792a9c7ec8c2e111bdd95c6a6fa2",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Shell got output(7171856086@'http://localhost:54667',result(open_fixture,statechart_datamodel))",
+            "pid": 4202561790,
+            "type": "output"
+          },
+          "request_id": "f1228c2acb65ae801762d79826de78311063a4f32ee8953ce1b395ae4f400b1b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "Shell got output(7171856086@'http://localhost:54667','DONE')",
+            "pid": 4202561790,
+            "type": "output"
+          },
+          "request_id": "c0f2a6190f84e3fd9205e96c5f28e6c28df2f6f7126f6963e55c87b52f55a5cc",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Pid": "7171856086@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 4202561790,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Box shop: a conversational agent parsing input with a DCG.\n\n    A small dialogue agent. Its <datamodel> holds a DCG grammar, and each\n    state uses phrase/2 in a transition guard to parse what the user\n    typed into a colour or a size, storing the result with assert. If the\n    input does not parse, a fall-through transition returns to the\n    history state `h`, which re-enters the question the agent was asking\n    so the user can try again. When both slots are filled the agent\n    reaches its final state and reports the order. It combines guards that\n    run a DCG, a history state for retrying, and onentry actions that\n    prompt.\n\n    Run the chart and send it events from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"start\">\n    <datamodel>\n        :- dynamic color/1, size/1.\n            \n        np(Attr) --> adj(Attr).\n        np(Attr) --> [a], adj(Attr), [box].\n    \n        adj(color(red)) --> [red].\n        adj(color(blue)) --> [blue].\n        adj(size(small)) --> [small].\n        adj(size(big)) --> [big].\n        \n    </datamodel>\n    <state id=\"start\" initial=\"color\">\n        <history id=\"h\">\n            <go to=\"color\"/>\n        </history>\n        <state id=\"color\">\n            <onentry> \n                writeln(''What color do you want?'')\n            </onentry>\n            <go to=\"size\"\n                on=\"input(Input)\" \n                if=\"phrase(np(color(Color)), Input)\"> \n                    assert(color(Color))\n            </go>\n        </state>\n        <state id=\"size\">\n            <onentry> \n                writeln(''What size do you want?'')\n            </onentry>\n            <go to=\"final\"\n                on=\"input(Input)\" \n                if=\"phrase(np(size(Size)), Input)\"> \n                    assert(size(Size))\n            </go>\n        </state>\n        <go to=\"h\" on=\"input(Input)\">\n            writeln(''I did not understand.'')\n        </go>\n    </state>\n    <final id=\"final\">\n        <onentry>\n            size(Size), color(Color),\n            format(''You want a ~p ~p box!\\\\n'', [Size, Color])\n        </onentry>        \n    </final>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! input([a, red, box]).\n\n?- $Pid ! input([blue]).\n\n?- $Pid ! input([a, big, box]).\n\n?- $Pid ! input([a, small, box]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "6765852383@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 4616264492,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "6765852383@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 4616264492,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 2,
+      "goal": "6765852383@'http://localhost:54667' ! input([a, red, box])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4616264492,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What color do you want?')))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "90e653de3d9b309f7f10f4c0a23ae807b5a1abd7cf5251157b0084a32c2cbd6c",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 4616264492,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 3,
+      "goal": "6765852383@'http://localhost:54667' ! input([blue])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4616264492,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "What color do you want?",
+            "pid": 6765852383,
+            "stdout": "What color do you want?\n",
+            "type": "output"
+          },
+          "request_id": "b65ccd9c796a761beef66e3babd2f9bec04b6378e96e2a13bbb3cc369676128d",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 4616264492,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 4,
+      "goal": "6765852383@'http://localhost:54667' ! input([a, big, box])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4616264492,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([start,color]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "ebc04033759258fd2e606744b60564166f8a3adc38eb4d7a55d37cdc9aea02ee",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 4616264492,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 5,
+      "goal": "6765852383@'http://localhost:54667' ! input([a, small, box])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 4616264492,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(external_event(input([a,red,box])))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "1f43b563d246f3cd6406257f7233dd219d1568af65a744b69ad3de68af789b36",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 4616264492,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/11 boxshop-1.xml",
+      "query": 6,
+      "goal": "statechart_halt(6765852383@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 4616264492,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(color,[size],[color],[size]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "d12cc448a7f2f04c5a9d9a7af21fe5507a175ed28b153d49a2eb1dd41a9fedb1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([color],[size]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "a4fbb423a48e51e01c5d7153f124fa81bb06fa1f57e12a83ce91765a06076512",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(color(red))))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "599c27b0b055334cee8a6e371a310247f52f4b40d2e3c0f0d9916acdc28e5488",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What size do you want?')))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "e367e7c676c72e3d728af4a5d61092cf3b40fe71a8030ec0b010b4e22bf03be1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "What size do you want?",
+            "pid": 6765852383,
+            "stdout": "What size do you want?\n",
+            "type": "output"
+          },
+          "request_id": "2410bc4ae6884454892774a186c4a28b0f0eee7a1278880b6f2770cc04ed691a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([start,size]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "a71af831f279064da7d9edcd887ed070ec70363494f0896f27eb30ad5f9a15ca",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(input([blue])))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "d6dec1bb5b969b559e4b4816b56c4506042f0c06f6d95d76c0b3d49b155d0ada",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(start,[h],[start,size],[start,color]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "eedc5ef0b2f89370175d5fbb1dcafd5fe45deea68cf4a9fbcb7bbf0881942107",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([start,size],[start,color]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "587543a8518eddc643e07dadd41037d21cc5d35543a2c9d0ba71da4073768e05",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('I did not understand.')))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "06d9b84ac4f2fdbbb72e3b1dfb90a33b24db04c07de4480637ea10675680a29d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "I did not understand.",
+            "pid": 6765852383,
+            "stdout": "I did not understand.\n",
+            "type": "output"
+          },
+          "request_id": "7b7406b9787ade82245ba3cc63c821f6986b7e65bd1865e9dafdb6044b586150",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What size do you want?')))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "8470a020f031769f6c3f43707d6c2a8513f9bbaab3005e06b99858659a2744ba",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "What size do you want?",
+            "pid": 6765852383,
+            "stdout": "What size do you want?\n",
+            "type": "output"
+          },
+          "request_id": "8c08d03ad40da7c39353647ba0a8bc29b7f1be9f0a34f1bd342baa4771949a55",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([start,size]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "51249b033fe217cb62e123906ca0b5b69512fb7382a1e560a23854caed66781e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(input([a,big,box])))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "6990c8f36b916a654b2802924fc69d82b10b19a663ce45c8ae32696e21e84294",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(size,[final],[start,size],[final]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "3ea10cedaa4038196ea2114404035209827d196c60f416ce76d1ff13bf06593e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([start,size],[final]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "fee1a902cf67977032c346f841f6d7baa79f5b939455d65277cdfcc502ef140d",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(size(big))))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "390d4b9e7ccc0a22d79c35899a1e347bf52820d2668ac7b7396da0e65bdaa20b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((size(_),color(_),format('You want a ~p ~p box!\\n',[_,_]))))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "296e8f4000052cbd5c52ba08eb2fe66d1c4234d2e38010501ec57e6416575054",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "You want a big red box!",
+            "pid": 6765852383,
+            "stdout": "You want a big red box!\n",
+            "type": "output"
+          },
+          "request_id": "5a9373b21c206f52b745c8482cdf7b46e19a6cdbf80f9c428dd1fe9cafcd01ec",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([final]))",
+            "pid": 6765852383,
+            "type": "output"
+          },
+          "request_id": "8ad459282f2024fc4582fe3d966653acd47f5a62863a456303de49466d7a1c09",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Box shop, form-filling style.\n\n    The same task as boxshop-1, built as a form rather than a scripted\n    dialogue. A central selectFormItem state uses eventless guarded\n    transitions to pick the next unfilled slot (welcome, then colour,\n    then size), visits the state that fills it, and returns. Each\n    question state also has an `after` transition that fires if the user\n    stays silent too long, giving the agent a timeout. When every slot is\n    filled the form is complete and the agent reports the order. It shows\n    the form pattern: a dispatcher of eventless transitions together with\n    timed `after` transitions.\n\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"form\">\n    <state id=\"form\" initial=\"selectFormItem\">\n        <datamodel>\n            :- dynamic \n                welcome/0,\n                color/1,\n                size/1.\n        </datamodel>\n        <state id=\"selectFormItem\">\n            <go to=\"Welcome\" if=\"\\\\+ welcome\"/>\n            <go to=\"Color\"   if=\"\\\\+ color(_)\"/>\n            <go to=\"Size\"    if=\"\\\\+ size(_)\"/>\n            <go to=\"Respond\"/>\n        </state>\n        <state id=\"Welcome\">\n            <onentry>\n                writeln(''Welcome to the box shop!''),\n                assert(welcome)\n            </onentry>\n            <go to=\"selectFormItem\"/>\n        </state>\n        <state id=\"Color\">\n            <onentry>\n                writeln(''What color do you want?'')\n            </onentry>\n            <go to=\"selectFormItem\" on=\"says(color(Color))\">\n                assert(color(Color))\n            </go>\n            <go to=\"selectFormItem\" after=\"8\">\n                writeln(''I did not hear you.'')\n            </go>\n        </state>\n        <state id=\"Size\">\n            <onentry>\n                writeln(''What size do you want?'')\n            </onentry>\n            <go to=\"selectFormItem\" on=\"says(size(Size))\">\n                assert(size(Size))\n            </go>\n            <go to=\"selectFormItem\" after=\"8\">\n                writeln(''I did not hear you.'')\n            </go>\n        </state>\n        <go to=\"selectFormItem\" on=\"says(_)\">\n            writeln(''I did not understand.'')\n        </go>\n    </state>\n    <final id=\"Respond\">\n        <onentry>\n            size(Size), color(Color),\n            format(''You want a ~p ~p box!\\\\n'', [Size, Color])\n        </onentry>\n    </final>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- $Pid ! says(color(red)).\n\n?- $Pid ! says(color(blue)).\n\n?- $Pid ! says(size(small)).\n\n?- $Pid ! says(size(big)).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "6310997843@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 3353318169,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "6310997843@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 3353318169,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 2,
+      "goal": "6310997843@'http://localhost:54667' ! says(color(red))",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3353318169,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "54aa2d9aa151d923e448edc44d7a50edab4bb84acc40c7637c0ac637cb6758df",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3353318169,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 3,
+      "goal": "6310997843@'http://localhost:54667' ! says(color(blue))",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3353318169,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(transition(selectFormItem,['Welcome'],[selectFormItem],['Welcome']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "6b0b5942001efe446372d9b9d320b025b87c05ddc208db57b124ea8d79381bc7",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3353318169,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 4,
+      "goal": "6310997843@'http://localhost:54667' ! says(size(small))",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3353318169,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(microstep([selectFormItem],['Welcome']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "675fc08a9b439e52e63be6cddc2a7be21c4b5cae57c0f4a1ea78a1b69b683b42",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3353318169,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 5,
+      "goal": "6310997843@'http://localhost:54667' ! says(size(big))",
+      "expected": "success",
+      "event": {
+        "data": [
+          {}
+        ],
+        "more": false,
+        "pid": 3353318169,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(execution((writeln('Welcome to the box shop!'),assert(welcome))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "daa75c0254597aa2003fc74040ecb6b430a40cbbb784f461d01fe0881d6e4939",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {}
+          ],
+          "more": false,
+          "pid": 3353318169,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/12 boxshop-2.xml",
+      "query": 6,
+      "goal": "statechart_halt(6310997843@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "type": "timeout",
+        "pid": 3353318169,
+        "data": "timed out"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "Welcome to the box shop!",
+            "pid": 6310997843,
+            "stdout": "Welcome to the box shop!\n",
+            "type": "output"
+          },
+          "request_id": "1fcbdb203297342580ac234c47084382fb1c5126602e0095c4aa62ea15205319",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,'Welcome']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "c89c634fbfffd02ed60e96318f731e6fdd64e9a61e92cc0989e0d988f625dcc5",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition('Welcome',[selectFormItem],['Welcome'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "4d2eabf61aa1f4ce99b226ab8e9138bbdb300770d657c6f55d4bc8f4614f0ba7",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep(['Welcome'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "79d72721c931160a4a83311ffe3208fef16091299325f494e4e10638cd365669",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "13cbebd0aa2f192706760b1d1bf06284c8f6ccee37cb02374a7f6acaab909a1e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(selectFormItem,['Color'],[selectFormItem],['Color']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "40ce4e19ac5df79eb0b92683ddb39a5b3f02d8ed1255009b873d5ac3a7953c33",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([selectFormItem],['Color']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "343d1c8b4bb49760dbfe4d6b2ce5349ae1bda43c68e824e2cab9e473d0009a81",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What color do you want?')))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "1177d758bbb24749172c29bc0640b333222a1481f4cb696fa9454665f88770df",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "What color do you want?",
+            "pid": 6310997843,
+            "stdout": "What color do you want?\n",
+            "type": "output"
+          },
+          "request_id": "630fc4252398bfe26b9ea48b23493464d38afe563e4627db49a075dc0ea7fc80",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,'Color']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "e76985761dcb0314b09435b5e5ac4b01ba8aecb552be91f8c60f3427417cbd8b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(says(color(red))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "c72577e9d132d5bb0e72d748c77b5c69dcd17aeab03e2a17455d75f981f85e14",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition('Color',[selectFormItem],['Color'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "874395790f6115c476f6f074b5f50628b3ec0adfdcdc02a2e135bdbe43a1bff3",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep(['Color'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "34689bafe13f511f89bfb70dd9c2e4049e31a7f550012125c329546c15bb17a1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(color(red))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "ed703bc071d09b46a44aacfbd6166df59fce2aa3778f03080ec9f1fe3648e624",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "5c6d552f74ac0715130899eb64cb3dfdb32cee59426c985fa6fed5051f7569c9",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(selectFormItem,['Size'],[selectFormItem],['Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "20472ea90475aab2948bb7a1f21e92223c7335ed6a674f88d1af5c8745842338",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([selectFormItem],['Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "15e3b86b618ec63a99fe1e8b00d854531292d84f9341cdc7641db7b0b6fa5d6e",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What size do you want?')))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "a6b92f5d753bc61022dbe52d6e24df1cf2a7e42d9cdc98d9ae6490e134a7f61c",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "What size do you want?",
+            "pid": 6310997843,
+            "stdout": "What size do you want?\n",
+            "type": "output"
+          },
+          "request_id": "9e8e9db34333d0d903716bd0d2c3aa0793c00fbf1172258857ea700888c2afce",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,'Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "c32ed23ec7a502af76e3e3cb2d5b1bbd457fcd3935987e89340ff4bee35d362c",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(says(color(blue))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "beb2290277bef262c590fc76495e90d9a878971d45642718053e4adc7a651076",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(form,[selectFormItem],[form,'Size'],[form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "db43b4f0377a86ec399c28c662d11d2b7381687dfbe0e3b389c08bf13e9c225a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([form,'Size'],[form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "a8f5bf706bdc8342965574c79da070db8fab1f2f589a467044d7cedce0c9c28b",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('I did not understand.')))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "cbf0c025dae759dcaf38996632d8ad4cadfc37ffb3a4116d722c652ffcd5a41a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "I did not understand.",
+            "pid": 6310997843,
+            "stdout": "I did not understand.\n",
+            "type": "output"
+          },
+          "request_id": "7c389edbb1f4cd03153a67618ce336f79f06b879bfbd60deba816fdd4b0b0c48",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "92efc6b598032cc3cbbbf0fa0f4e6b122b768841ce36fa5e5837098d305803b0",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(selectFormItem,['Size'],[selectFormItem],['Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "314919249a0b8ddc4ff3b0120bf93c65ed3155c68f32fc09bc644ff7d09c46db",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([selectFormItem],['Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "19a9f5d88983cb96e01c92c4236c1158ded1c2c4d10def053760dcaeae7c3662",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(writeln('What size do you want?')))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "344b386ddc27baa969f65e606055d330c4302967a5ea208b5d0dad1947bc0f2a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "What size do you want?",
+            "pid": 6310997843,
+            "stdout": "What size do you want?\n",
+            "type": "output"
+          },
+          "request_id": "c580ec3e39f6be44f6e30d9579036564b4e032955644218cfeb99fac940faec4",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,'Size']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "3e17660b1d5b991fd5cc7330a87561874f1926168d44311d218c34c70b2fdf28",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event(says(size(small))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "5ceff7c4f6147151c5a035bc8b53d46174bf5db05bbdfe4bac9786c62826e8fc",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition('Size',[selectFormItem],['Size'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "47e606d8537dabc4e110db6b02cf880782210ce6d2d8fdcdc4839be4804c0986",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep(['Size'],[selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "dda54116816cf8077803a19dda416e2307c1f6ebc40cd6913e73fc2e1a0aeff1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(assert(size(small))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "f3e8070dd70a676a01b2f0f63fda27426ff3596e2ce50816dc4de12d5daec1b6",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration([form,selectFormItem]))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "5584111bec2599d5577c7871ca752d079f4da95bb488a170c8e2d58975c54c50",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(selectFormItem,['Respond'],[form,selectFormItem],['Respond']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "45c99a55204e94f3010f0e42b3c461f32d76a29f10671222c32de3e217da6992",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([form,selectFormItem],['Respond']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "725004d036c80ac4d21aa99798ff85a390b7713a1e43d1191b90098ace0cb108",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((size(_),color(_),format('You want a ~p ~p box!\\n',[_,_]))))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "02483bb429e44df33acb164b79d5d1b83d6c9d75cc68cb081371c5bcdbea2af8",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "You want a small red box!",
+            "pid": 6310997843,
+            "stdout": "You want a small red box!\n",
+            "type": "output"
+          },
+          "request_id": "5496e6151795f468fc034058264808b552ad017d3caa974d702cd99ad9efc9bf",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Respond']))",
+            "pid": 6310997843,
+            "type": "output"
+          },
+          "request_id": "59b442e675869b4497843f1c51a1174759a4fb07b07ab35e8308f0036c4f02ee",
+          "type": "io_request"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "path": "/examples/statecharts/13 spawn-actor.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Spawning a plain actor from a statechart.\n\n    The <spawn> element lets a statechart create and oversee an ordinary\n    Web Prolog actor. Here the chart spawns a `ponger` actor, whose code\n    is given inline, and learns its pid through the spawned(Pid) event. It\n    registers that pid under the name `ponger` and then plays ping-pong\n    with it: the Pinger state sends ping and, on each pong reply, waits\n    and sends another. It bridges the two worlds of this demonstrator, a\n    statechart on one side and a bare receive-loop actor on the other,\n    talking by message.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"Pingpong\">\n    <state id=\"Pingpong\" initial=\"Init\">\n        <spawn type=\"actor\" goal=\"ponger\" options=\"[monitor(true)]\">\n            ponger :-\n                receive({\n                    ping(Pid) ->\n                        sleep(1),\n                        Pid ! pong,\n                        ponger\n                 }).\n        </spawn>\n        <state id=\"Init\">\n            <go to=\"Pinger\" on=\"spawned(Pid)\">\n                register(ponger, Pid)\n            </go>\n        </state>\n        <state id=\"Pinger\">\n            <onentry>\n                self(Self),\n                ponger ! ping(Self)\n            </onentry>\n            <go on=\"pong\">\n                writeln(''Received Pong''),\n                sleep(1),\n                self(Self),\n                ponger ! ping(Self)\n            </go>\n        </state>\n    </state>\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "6640901831@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 5021905041,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "6640901831@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 5021905041,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/13 spawn-actor.xml",
+      "query": 2,
+      "goal": "statechart_halt(6640901831@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 5021905041,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Pingpong','Init']))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "9ddad27a5b24d0722c7e854ae6794316b575d439046ac985dc0b097eecb25261",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(invoked(actor,1769285495@'http://localhost:54667','Pingpong'))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "46067385f09f1272e088d0459fd805c9574009fbd615717cdc9946101ecb22f1",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(internal_event(spawned(1769285495@'http://localhost:54667')))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "cd512f6cae67bcdf71acb0b7ebbb9a81b3042cc00b3064b88ba494bcd26a3998",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition('Init',['Pinger'],['Init'],['Pinger']))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "fe391ea84f8a091e7078a136939d5abc0b8fd909721556c2b06f9e1a7ab8120a",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep(['Init'],['Pinger']))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "dcbab772f48c09f23536a554afb75cdf09e47dd220c1f7a35342dd5464a58f88",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(register(ponger,1769285495@'http://localhost:54667')))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "e0059da31fc57500fd781def3c75a1a697084e562116a74c5597cca614941cdc",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution((self(_),ponger!ping(_))))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "3cbeac829c311f2aec0f31afefdc034e1616659a8049ea3ca512be7baa9b2f06",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['Pingpong','Pinger']))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "9fdcb3563f0bd2dbd0a7ffa0fa7d6530c583fa92f0ffc96395e264193a0645fe",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(5021905041@'http://localhost:54667')))",
+            "pid": 6640901831,
+            "type": "output"
+          },
+          "request_id": "b16c8e4e43f64452fc9c7c90123b0fa3735fdfbc5ad548397dd15e5f3a438802",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 5021905041,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/14 spawn-toplevel.xml",
+      "query": 1,
+      "goal": "statechart_spawn(Pid, [\n       src_text('<!--\n\n    Driving a toplevel actor from a statechart.\n\n    Another use of <spawn>: this chart spawns a `toplevel` actor\n    preloaded with a small program (q/1 over the facts p(a) to p(d)) and\n    then drives its backtracking search by message. The `ask` state calls\n    the toplevel for one solution; each success(Pid, Data, true) event\n    prints an answer and asks for the next with toplevel_next, until a\n    success(_, Data, false) event signals the last solution and the chart\n    finishes. It is the statechart-level view of getting answers one at a\n    time from a running goal.\n\n    Run the chart from the Queries menu.\n    Keep the Logger open and SXML trace selected.\n\n-->\n\n<statechart version=\"0.2\" initial=\"spawn-ask-collect\">\n    <state id=\"spawn-ask-collect\" initial=\"ask\">\n        <spawn type=\"toplevel\" options=\"[time_limit(30)]\">\n            q(X) :- p(X).\n            p(a). p(b). p(c). p(d).\n        </spawn>\n        <state id=\"ask\">\n            <go to=\"collect\" on=\"spawned(Pid)\">\n                toplevel_call(Pid, q(X), [\n                    limit(1)\n                ])\n            </go>\n        </state>\n        <state id=\"collect\">\n            <go to=\"collect\" on=\"success(Pid, Data, true)\">\n                writeln(Data),\n                toplevel_next(Pid)\n            </go>\n            <go to=\"final\" on=\"success(_, Data, false)\">\n                writeln(Data)\n            </go>\n        </state>\n    </state>\n    <final id=\"final\" />\n</statechart>\n\n\n<!-- <examples>\n\n?- statechart_spawn(Pid, [\n       src_text(<editor>)\n   ]).\n\n?- statechart_halt($Pid, Reply, 1).\n\n-->\n')\n   ])",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Pid": "2333843818@'http://localhost:54667'"
+          }
+        ],
+        "more": false,
+        "pid": 2189372699,
+        "type": "success"
+      },
+      "events": [
+        {
+          "data": [
+            {
+              "Pid": "2333843818@'http://localhost:54667'"
+            }
+          ],
+          "more": false,
+          "pid": 2189372699,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "path": "/examples/statecharts/14 spawn-toplevel.xml",
+      "query": 2,
+      "goal": "statechart_halt(2333843818@'http://localhost:54667', Reply, 1)",
+      "expected": "success",
+      "event": {
+        "data": [
+          {
+            "Reply": "true"
+          }
+        ],
+        "more": false,
+        "pid": 2189372699,
+        "type": "success"
+      },
+      "events": [
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['spawn-ask-collect',ask]))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "8746a972b341400f7c87a22538fe28e56c5c974fdf46bc9ee7ccd3172b3cf094",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(invoked(toplevel,4853229836@'http://localhost:54667','spawn-ask-collect'))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "dd0a28e05be171a325b5ab2315111f590f059c7e2ce46e7dba5be448d6813127",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(internal_event(spawned(4853229836@'http://localhost:54667')))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "4404dce6a0432ccad3ea08f08a06f2806977f5c47b049b1e53d10fc8ceb332ff",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(transition(ask,[collect],[ask],[collect]))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "58b01110267086a601491ca1345da07e4633510a45501ff22873314478fec93f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(microstep([ask],[collect]))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "09aaa5b4277509ec09c176a2165c8d09ccbd2ab7c5cb33474ec05b8e09022050",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(execution(toplevel_call(4853229836@'http://localhost:54667',q(_),[limit(1)])))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "0e0f3aca49bc3ae00476a672966a55c226e38bb94840b0520101cc515e5b370f",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(configuration(['spawn-ask-collect',collect]))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "39f691044ec12fa4d5585faf6fc7075eed3ec43846f1b24ed6a6b03ad5c491f8",
+          "type": "io_request"
+        },
+        {
+          "event": {
+            "data": "statechart_trace(external_event('$stop'(2189372699@'http://localhost:54667')))",
+            "pid": 2333843818,
+            "type": "output"
+          },
+          "request_id": "a837bd41dc01e3ed384a235ebf8363af0ac4b30c6fcde8efea0b917fafd3e54f",
+          "type": "io_request"
+        },
+        {
+          "data": [
+            {
+              "Reply": "true"
+            }
+          ],
+          "more": false,
+          "pid": 2189372699,
+          "type": "success"
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 51,
+    "fail": 6
+  }
+}

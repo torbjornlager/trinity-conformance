@@ -1,0 +1,260 @@
+diff --git a/docs/WEB_PROLOG_BUILTINS.md b/docs/WEB_PROLOG_BUILTINS.md
+index c9d4c30..b37d7a3 100644
+--- a/docs/WEB_PROLOG_BUILTINS.md
++++ b/docs/WEB_PROLOG_BUILTINS.md
+@@ -882,17 +882,27 @@ node. Late worker completion is ignored without writing to a destroyed queue.
+ Failed initialisation rolls back allocated local resources. Explicit cleanup
+ remains idempotent. This is local disposal, not guaranteed remote cancellation.
+ 
++Public `link(false)` in a live retained WebSocket, delegated or HTTP interactive
++namespace declines the immediate parent link while retaining the client's
++ownership and resource account. It grants no node-owner authority; ending the
++client lifetime still follows its normal teardown policy. A stateless HTTP
++request or public execution without a live retained namespace cannot use this
++to leave unlinked work behind. Trusted node-owner detachment remains separate.
++
+ Native node composition records a ground owner key with each promise and
+ checks it under the lifecycle mutex before a collector claims the promise:
+ 
+ - WebSocket, HTTP interactive-session and delegated transport calls use their
+   existing client namespace, scoped to the node. Sharing a principal does not
+   merge separate session namespaces.
+-- Authenticated stateless HTTP calls use principal identity scoped to the node,
+-  allowing collection in a later request by that principal.
+-- Anonymous stateless HTTP calls use the existing distinct request identity,
+-  including when an anonymous per-IP identity is configured. A later anonymous
+-  request cannot collect; use a session or authentication across requests.
++- Stateless HTTP computations use a fresh request context, including when
++  authenticated requests share a principal or anonymous requests share an IP.
++  A later fresh request cannot collect or dispose of the earlier computation's
++  promises. Create and collect in one computation, or use an explicit retained
++  WebSocket or HTTP interactive session for sharing across queries. OPEN mode
++  supports those anonymous retained sessions without login.
++- Principal identity still aggregates authenticated resource quotas. It does
++  not merge request contexts or separate retained session namespaces.
+ - Trusted local/standalone code retains sharing across threads and actors.
+   It has no implicit override for public clients' promises, and public clients
+   cannot collect trusted local promises.
+diff --git a/prolog/web_prolog/node_glue.pl b/prolog/web_prolog/node_glue.pl
+index cd5c680..2b2e03e 100644
+--- a/prolog/web_prolog/node_glue.pl
++++ b/prolog/web_prolog/node_glue.pl
+@@ -256,7 +256,7 @@ rpc:prepare_timeout_callback(Module, Goal0, Goal) :-
+     isolation:prepared_goal(Module, Goal0, Goal).
+ 
+ % Promise ownership is a client boundary, not the collecting thread's id.
+-% Session namespaces take precedence over principal-wide HTTP identity.
++% Retained session namespaces take precedence over request-local HTTP identity.
+ :- multifile rpc:hook_promise_owner/1.
+ rpc:hook_promise_owner(Owner) :- promise_client_owner(Owner).
+ 
+@@ -288,8 +288,8 @@ promise_client_owner(Owner) :-
+     ->  (ground(Namespace)
+         -> node_lifetime:scope(Scope), Owner = client_namespace(Scope,Namespace)
+         ;  Owner = unavailable)
+-    ;   Context = some(ctx(Scope,Id,_,_,http_call))
+-    ->  (ground(Scope-Id) -> Owner = http_client(Scope,Id); Owner = unavailable)
++    ;   Context = some(ctx(Scope,_,Lineage,_,http_call))
++    ->  (ground(Scope-Lineage) -> Owner = http_client(Scope,Lineage); Owner = unavailable)
+     ;   current_public_execution_profile(_)
+     ->  Owner = unavailable
+     ;   Context = some(ctx(_,_,_,false,_))
+diff --git a/prolog/web_prolog/node_lifetime.pl b/prolog/web_prolog/node_lifetime.pl
+index dbd187b..15b282d 100644
+--- a/prolog/web_prolog/node_lifetime.pl
++++ b/prolog/web_prolog/node_lifetime.pl
+@@ -61,7 +61,10 @@ with_owner_context(Principal, Carrier, Lineage0, Goal) :-
+         (cpu_account(Scope, Id, _, _) -> true;
+          get_time(Now), assertz(cpu_account(Scope, Id, Now, 0)))),
+     (   Lineage0 == local
+-    ->  with_mutex(node_lineage, lineage_for(Scope, tree(Id, Carrier), Lineage))
++    ->  (   Carrier == http_call
++        ->  fresh_lineage(Lineage)
++        ;   with_mutex(node_lineage, lineage_for(Scope, tree(Id, Carrier), Lineage))
++        )
+     ;   Lineage = Lineage0
+     ),
+     (principal_has_capability(Principal, admin) -> Owner = true; Owner = false),
+@@ -92,9 +95,14 @@ prune_accounts :-
+ 
+ lineage_for(Scope, Id, Token) :- principal_lineage(Scope, Id, Token), !.
+ lineage_for(Scope, Id, Token) :-
+-    crypto_n_random_bytes(16, Bytes),
+-    phrase(hex_bytes(Bytes), Codes), atom_codes(Token, Codes),
++    fresh_lineage(Token),
+     assertz(principal_lineage(Scope, Id, Token)).
++
++% A stateless HTTP producer gets a fresh context even for an authenticated
++% principal. Keep its resource account separate: quotas still aggregate by Id.
++fresh_lineage(Token) :-
++    crypto_n_random_bytes(16, Bytes),
++    phrase(hex_bytes(Bytes), Codes), atom_codes(Token, Codes).
+ hex_bytes([]) --> [].
+ hex_bytes([B|Bs]) --> { H is B >> 4, L is B /\ 15,
+                        code_type(HC, xdigit(H)), code_type(LC, xdigit(L)) },
+@@ -117,12 +125,20 @@ run_owned_actor(Key, Context, Goal) :-
+ check_spawn(Options) :-
+     (   option(link(false), Options), current_public_execution_profile(_),
+         \+ connection_spawn,
+-        \+ current_owner_context(ctx(_, _, _, true, _))
++        \+ current_owner_context(ctx(_, _, _, true, _)),
++        \+ retained_client_namespace
+     ->  throw(error(permission_error(spawn, detached_actor, link(false)),
+-                    context(actors:spawn/3, 'only the node owner may detach work')))
++                    context(actors:spawn/3, 'unlinking requires a retained client session or the node owner')))
+     ;   true
+     ).
+ 
++% Declining a parent link does not detach a public actor from its client.
++% Only a live retained namespace supplies that lifetime; a fresh HTTP request
++% cannot leave unlinked work behind. Non-owner accounting remains unchanged.
++retained_client_namespace :-
++    current_public_execution_namespace(Namespace),
++    node_execution_context:client_namespace_status(Namespace,open).
++
+ actor_key(Pid, Key) :- actors:canonical_pid(Pid, Key).
+ 
+ check_exit(Pid) :-
+diff --git a/tests/tiers/node/lifetime_authority_tests.plt b/tests/tiers/node/lifetime_authority_tests.plt
+index a7f67dd..2b78a32 100644
+--- a/tests/tiers/node/lifetime_authority_tests.plt
++++ b/tests/tiers/node/lifetime_authority_tests.plt
+@@ -165,6 +165,26 @@ test(full_watcher_mailbox_does_not_prevent_retirement) :-
+        assertion(\+ actors:resolve_actor_thread(Target, _))),
+       (kill_wait(Watcher), kill_wait(Target), set_setting(node_lifetime:max_mailbox_messages, Old))).
+ 
++test(retained_client_can_decline_parent_link_without_becoming_owner) :-
++    NS=ws_client(public_unlink_test),principal("public-unlink",Principal),
++    setup_call_cleanup(open_client_namespace(NS),
++      with_public_execution_context(actor,NS,
++        with_owner_context(Principal,public_unlink_carrier,local,
++          setup_call_cleanup(
++            spawn(hold,Pid,[link(false),monitor(true),
++                src_text('hold :- receive({stop -> true}).')]),
++            (node_lifetime:actor_key(Pid,Key),node_lifetime:actor_owner(Key,Child),
++             assertion(Child=ctx(_,"public-unlink",_,false,public_unlink_carrier))),
++            kill_wait(Pid)))),
++      close_client_namespace(NS)).
++
++test(closed_client_namespace_does_not_authorize_unlinking,
++     [throws(error(permission_error(spawn,detached_actor,link(false)),_))]) :-
++    NS=ws_client(closed_unlink_test),principal("public-unlink",Principal),
++    with_public_execution_context(actor,NS,
++        with_owner_context(Principal,public_unlink_carrier,local,
++            node_lifetime:check_spawn([link(false)]))).
++
+ test(anonymous_http_accounts_are_independent) :-
+     with_owner_context(anonymous, http_call, local, current_owner_context(A)),
+     with_owner_context(anonymous, http_call, local, current_owner_context(B)),
+diff --git a/tests/tiers/node/node_tests.pl b/tests/tiers/node/node_tests.pl
+index 023528d..7dcdc9b 100644
+--- a/tests/tiers/node/node_tests.pl
++++ b/tests/tiers/node/node_tests.pl
+@@ -891,8 +891,8 @@ test(isobase_call_rejects_promise_from_another_anonymous_request,
+                 (rpc:promise_queue_key(Ref,Key),rpc:promise_transaction(rpc:dispose_promise_locked(Key))))
+         )).
+ 
+-test(isobase_call_preserves_promise_between_authenticated_stateless_requests,
+-     true(Answer == success([success([a], false)], false))) :-
++test(isobase_call_rejects_promise_from_another_authenticated_request,
++     true(Answer = error(error(existence_error(promise,Ref),_)))) :-
+     with_node_server_options([profile(isobase), sandbox(blacklist), auth(dev),
+                               dev_principal("promise-test-owner"),dev_capabilities([execute])], URI,
+         (
+@@ -903,7 +903,8 @@ test(isobase_call_preserves_promise_between_authenticated_stateless_requests,
+             read_answer(PromiseURL, success([Ref], false)),
+             format(atom(YieldGoal), 'yield(~w, Answer)', [Ref]),
+             call_url(URI, YieldGoal, 'Answer', 0, 1, '', none, YieldURL),
+-            read_answer(YieldURL, Answer)
++            setup_call_cleanup(true,read_answer(YieldURL, Answer),
++                (rpc:promise_queue_key(Ref,Key),rpc:promise_transaction(rpc:dispose_promise_locked(Key))))
+         )).
+ 
+ test(isobase_call_runs_loaded_promise_and_yield_example,
+diff --git a/tests/tiers/node/promise_ownership_tests.pl b/tests/tiers/node/promise_ownership_tests.pl
+index ec5c722..2c2db93 100644
+--- a/tests/tiers/node/promise_ownership_tests.pl
++++ b/tests/tiers/node/promise_ownership_tests.pl
+@@ -17,8 +17,9 @@ in_namespace(Port,NS,Goal) :-
+     with_node_port_context(Port,with_public_execution_context(isobase,NS,Goal)).
+ in_http(Port,Id,Goal) :-
+     Principal=principal{id:Id,capabilities:[execute],unknown:false},
+-    with_node_port_context(Port,with_public_execution_profile(isobase,
+-        with_owner_context(Principal,http_call,local,Goal))).
++    with_node_port_context(Port,without_public_execution_context(
++        with_public_execution_profile(isobase,
++            with_owner_context(Principal,http_call,local,Goal)))).
+ with_pending(Ref,Key,Goal) :-
+     setup_call_cleanup(
+       open_fixture_namespace(NS),
+@@ -143,13 +144,29 @@ test(foreign_caller_does_not_learn_that_an_owner_is_already_collecting) :-
+           (rpc:promise_transaction(rpc:dispose_promise_locked(Key)),thread_join(Thread,_))),
+         message_queue_destroy(Events)))).
+ 
+-test(authenticated_http_requests_share_principal_but_not_other_principals) :-
+-    with_pending_for_http("alice",Ref,Key),
+-    setup_call_cleanup(true,
+-      (in_http(19101,"bob",(foreign_yield(Ref),promise_cleanup(Ref))),
++test(authenticated_http_requests_are_isolated_and_foreign_cleanup_preserves_owner) :-
++    in_http(19101,"alice",with_pending(Ref,Key,
++      (in_http(19101,"alice",(foreign_yield(Ref),promise_cleanup(Ref))),
++       in_http(19101,"bob",(foreign_yield(Ref),promise_cleanup(Ref))),
+        in_http(19102,"alice",foreign_yield(Ref)),
+-       in_http(19101,"alice",collect(Key,Ref))),
+-      rpc:promise_transaction(rpc:dispose_promise_locked(Key))).
++       collect(Key,Ref)))).
++
++test(http_descendant_inherits_original_request_owner) :-
++    in_http(19101,"alice",with_pending(Ref,Key,
++      (rpc:deliver_promise_answer(Key,failure),actors:self(Self),
++       without_public_execution_context(
++         actors:spawn((rpc:yield(Ref,Answer),actors:send(Self,http_request_answer(Answer))),
++                      Pid,[monitor(true)])),
++       actors:receive({http_request_answer(failure)->true},
++                      [timeout(3),on_timeout(throw(missing_http_child_answer))]),
++       actors:receive({down(Pid,Pid,_)->true},
++                      [timeout(3),on_timeout(throw(missing_http_child_down))])))).
++
++test(equal_http_credentials_keep_one_resource_account_but_distinct_promise_owners) :-
++    in_http(19101,"alice",(node_lifetime:current_owner_context(A),rpc:promise_owner_context(OA))),
++    in_http(19101,"alice",(node_lifetime:current_owner_context(B),rpc:promise_owner_context(OB))),
++    A=ctx(Scope,Id,_,false,http_call),B=ctx(Scope,Id,_,false,http_call),
++    assertion(Id=="alice"),assertion(OA\==OB).
+ 
+ test(anonymous_http_requests_have_distinct_owners,
+      [forall(member(Id,[anonymous,"anon:per-ip-or-connection-id"]))]) :-
+@@ -250,7 +267,7 @@ test(teardown_preserves_other_namespace_node_http_and_trusted_promises) :-
+                  in_namespace(19101,NS,foreign_yield(Ref)),
+                  in_namespace(19102,NS,collect(NodeKey,NodeRef)),
+                  in_namespace(19101,ws_client(other_promise_owner),collect(OtherKey,OtherRef)),
+-                 in_http(19101,"alice",collect(HttpKey,HttpRef)),
++                 collect(HttpKey,HttpRef),
+                  assertion(rpc:promise_state(LocalKey,_,_,_,_,_,trusted_local)))
+               )
+             )
+@@ -342,9 +359,9 @@ test(public_clients_cannot_collect_trusted_local_promises) :-
+       (in_namespace(19101,ws_client(public),(foreign_yield(Ref),promise_cleanup(Ref))),collect(Key,Ref))).
+ 
+ test(trusted_local_context_cannot_collect_or_dispose_client_promises) :-
+-    with_pending_for_http("alice",Ref,Key),
++    with_pending_for_http("alice",Ref,Key,RequestContext),
+     setup_call_cleanup(true,
+-      (foreign_yield(Ref),promise_cleanup(Ref),in_http(19101,"alice",collect(Key,Ref))),
++      (foreign_yield(Ref),promise_cleanup(Ref),node_lifetime:with_context(RequestContext,test_promise_ownership:collect(Key,Ref))),
+       rpc:promise_transaction(rpc:dispose_promise_locked(Key))).
+ 
+ test(missing_identity_cannot_borrow_an_outer_http_owner_frame) :-
+@@ -380,9 +397,11 @@ test(public_cleanup_disposes_the_owners_promise_idempotently) :-
+ 
+ :- end_tests(promise_ownership).
+ 
+-with_pending_for_http(Id,Ref,Key) :-
++with_pending_for_http(Id,Ref,Key) :- with_pending_for_http(Id,Ref,Key,_).
++with_pending_for_http(Id,Ref,Key,Context) :-
+     in_http(19101,Id,
+-      (rpc:make_reference(Ref),rpc:promise_queue_key(Ref,Key),
++      (node_lifetime:current_owner_context(Context),
++       rpc:make_reference(Ref),rpc:promise_queue_key(Ref,Key),
+        with_mutex(promise_lifecycle,rpc:new_promise_state(Key,_)))).
+ 
+ wait_for_claim(Key) :- call_with_time_limit(3,wait_for_claim_loop(Key)).

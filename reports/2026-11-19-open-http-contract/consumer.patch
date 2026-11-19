@@ -1,0 +1,280 @@
+diff --git a/DEVIATIONS.md b/DEVIATIONS.md
+index aeebc3a..80c66c7 100644
+--- a/DEVIATIONS.md
++++ b/DEVIATIONS.md
+@@ -299,3 +299,24 @@ The experimental portable-text profile remains separate from cumulative profiles
+ Author-directed migration. Pinned by `portable_text_worker` and
+ `portable_text_main` in `tests/wasm/swi_wasm_contracts.js`; boundary and UI evidence
+ is in `docs/verification/wasm-character-text-2026-10-25/REPORT.md`.
++
++## Candidate HTTP context and OPEN exercise qualification (2026-11-19)
++
++The upstream candidate isolates promises between fresh stateless HTTP
++computations even when credentials match. Create and collect within one
++computation, or use an explicit retained WebSocket/HTTP session to share across
++queries. Anonymous retained sessions remain available in OPEN mode. Principal
++resource accounting remains separate from client state.
++
++The SWI candidate also permits `link(false)` within an open retained client
++namespace, preserving client ownership, quotas and teardown policy. It declines
++the immediate parent link without granting node-owner detachment authority.
++Stateless HTTP and public contexts without a live retained namespace retain
++their restriction. This makes the drawer's links exercise available anonymously.
++
++These are intentional candidate behavior changes, not changes to the pinned or
++deployed runtime. Qualification uses private dependency pins with unchanged
++browser engine/runtime code. Normal integration suites pass; the new OPEN
++exercise driver also retains existing parallel, fridge-recovery and statechart
++halt failures instead of claiming that every teaching query completes. See
++`trinity-conformance/reports/2026-11-19-open-http-contract/REPORT.md`.
+diff --git a/examples/actors/19 promise-and-yield.pl b/examples/actors/19 promise-and-yield.pl
+index 86ba0b6..1f82819 100644
+--- a/examples/actors/19 promise-and-yield.pl	
++++ b/examples/actors/19 promise-and-yield.pl	
+@@ -73,7 +73,8 @@ asynch_test_4(Answer1, Answer2) :-
+ 
+ % Return early with Answer = timeout. This does not cancel the promise;
+ % keep Ref so that a later yield can collect success([a], false).
+-% Collect it in the same query: promise lifetime across queries is runtime-specific.
++% Collect it in the same query here. For sharing across queries, use an explicit
++% retained WebSocket or HTTP interactive session; OPEN mode needs no login.
+ % A timeout is a result, not ordinary failure. An on_timeout(fail) callback
+ % instead raises error(timeout_callback_failed(Ref), _).
+ 
+--- /dev/null
++++ b/tools/test_open_exercises.py
+@@ -0,0 +1,234 @@
++#!/usr/bin/env python3
++"""Run the visible drawer exercises anonymously on owned loopback SWI nodes.
++
++External node/source URLs are mapped to disposable local fixtures. Intentional
++failure/error examples keep their expected outcomes. No live services are used.
++"""
++import argparse
++import hashlib
++import http.server
++import importlib.util
++import json
++import os
++from pathlib import Path
++import re
++import socket
++import subprocess
++import tempfile
++import threading
++import time
++from urllib.parse import quote
++from urllib.request import urlopen
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def free_port():
++    with socket.socket() as sock:
++        sock.bind(('127.0.0.1', 0))
++        return sock.getsockname()[1]
++
++
++def queries(text):
++    """Use the drawer's markers and blank-line query boundaries."""
++    marker = '/** <examples>' if '/** <examples>' in text else '<!-- <examples>'
++    if marker not in text:
++        raise ValueError('example has no query block')
++    block = text.split(marker, 1)[1].split('*/' if marker.startswith('/') else '-->', 1)[0]
++    block = re.sub(r'^\s*%.*$', '', block, flags=re.M)
++    return [part.strip().removesuffix('.') for part in
++            re.split(r'^\s*\?-\s*', block, flags=re.M)[1:] if part.strip()]
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--swipl', required=True)
++    parser.add_argument('--native-root', type=Path, required=True)
++    parser.add_argument('--runner', type=Path, required=True)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--only', help='one relative catalogue path or folder, for a focused control')
++    args = parser.parse_args()
++    args.native_root = args.native_root.resolve(strict=True)
++    args.output.mkdir(parents=True, exist_ok=False)
++    spec = importlib.util.spec_from_file_location('open_exercise_wire', args.runner)
++    wire = importlib.util.module_from_spec(spec)
++    import sys
++    sys.modules[spec.name] = wire
++    spec.loader.exec_module(wire)
++    lit = wire.prolog_quote_atom
++    rows, inventory = [], []
++    home, peer = free_port(), free_port()
++    url, peer_url = f'http://localhost:{home}', f'http://localhost:{peer}'
++    source_text = b'ancestor_descendant(alice,bob). ancestor_descendant(bob,carol).\n'
++
++    class Source(http.server.BaseHTTPRequestHandler):
++        def log_message(self, *unused):
++            pass
++
++        def do_GET(self):
++            self.send_response(200)
++            self.send_header('Content-Type', 'text/x-prolog; charset=utf-8')
++            self.send_header('Content-Length', str(len(source_text)))
++            self.end_headers()
++            self.wfile.write(source_text)
++
++    source = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Source)
++    source_url = f'http://127.0.0.1:{source.server_port}'
++    threading.Thread(target=source.serve_forever, daemon=True).start()
++
++    def adapt(text):
++        for number in [1, 3, 4]:
++            text = text.replace(f'https://n{number}.elfenbenstornet.se', peer_url)
++        return text.replace('https://n2.elfenbenstornet.se', source_url)
++
++    def save():
++        (args.output/'results.json').write_text(json.dumps(dict(
++            suite='demonstrator-open-exercises-0.1', authentication='none',
++            scope='Visible drawer query sequences on owned OPEN loopback nodes',
++            native_root=str(args.native_root), inventory=inventory, results=rows,
++            counts={s: sum(r['status'] == s for r in rows) for s in ['pass', 'fail']}
++        ), indent=2)+'\n')
++
++    def harness():
++        return wire.Harness(wire.Candidate(url.replace('http:', 'ws:')+'/ws',
++                            'actor', 15, None, url, False, ()))
++
++    def call(h, goal):
++        h.call(goal, '[limit(1),once(true)]')
++        events = []
++        deadline = time.monotonic() + 15
++        original_read = h.ws._recv_exact
++
++        def bounded_read(count):
++            remaining = deadline - time.monotonic()
++            if remaining <= 0:
++                raise TimeoutError('query exceeded its 15-second deadline')
++            h.ws.sock.settimeout(remaining)
++            return original_read(count)
++
++        # Enforce the deadline across transport ping/pong frames as well.
++        h.ws._recv_exact = bounded_read
++        try:
++            while time.monotonic() < deadline:
++                event = h.recv()
++                events.append(event)
++                if event.get('type') in ['success', 'failure', 'error'] and event.get('pid') == h.shell:
++                    return event, events
++                if event.get('type') == 'prompt':
++                    h.send(dict(command='toplevel_respond', pid=event['pid'],
++                                prompt_ref=event['prompt_ref'], input='yes'))
++                else:
++                    h.acknowledge_output(event)
++            raise TimeoutError('query exceeded its 15-second deadline')
++        except (TimeoutError, socket.timeout) as error:
++            return dict(type='timeout', pid=h.shell, data=str(error)), events
++        finally:
++            h.ws._recv_exact = original_read
++
++
++    try:
++        with tempfile.TemporaryDirectory(prefix='open-exercises-') as tmp:
++            boot = Path(tmp)/'node.pl'
++            shared = 'human(socrates). mortal(X):-human(X). shared_fact(open_fixture). shared_transition_enabled.'
++            options = (f'[auth(open),profile(actor),sandbox(blacklist),'
++                       f'max_call_requests_per_window(1000),max_ws_actors_per_principal(256),'
++                       f'load_shared_db_text({lit(shared)}),'
++                       f'load_uri_allowed_origins([{lit(source_url)}]),'
++                       f'load_uri_allowed_ip_ranges([\'127.0.0.0/8\'])]')
++            boot.write_text(f":- use_module({lit(str(args.native_root/'prolog/web_prolog.pl'))}).\n"
++                            ":- initialization(main,main).\n"
++                            f'main :- node({home},{options}),node({peer},{options}),thread_get_message(stop).\n')
++            env = dict(os.environ, WP_ASSET_ROOT=str(ROOT))
++            for key in ['SWI_HOME_DIR', 'SWIPL_HOME_DIR', 'WP_NATIVE_STATE']:
++                env.pop(key, None)
++            with (args.output/'fixture.log').open('w') as log:
++                process = subprocess.Popen([args.swipl, '-f', 'none', '-q', str(boot)],
++                                           env=env, stdout=log, stderr=log)
++                try:
++                    for _ in range(200):
++                        if process.poll() is not None:
++                            raise RuntimeError('OPEN fixture exited; inspect fixture.log')
++                        try:
++                            with urlopen(url+'/node_info', timeout=.2) as response:
++                                info = json.load(response)
++                            break
++                        except OSError:
++                            time.sleep(.04)
++                    else:
++                        raise RuntimeError('OPEN fixture readiness timeout')
++                    assert info['auth'] == 'open', info
++                    with urlopen(url+'/examples_index', timeout=5) as response:
++                        index = json.load(response)
++                    html = (ROOT/'web/demonstrator.html').read_text()
++                    curated = 'var HIDE_EXPERIMENTAL_EXAMPLES = true;' in html
++                    hidden = {'actors': {21, 22, 23, 24, 25}, 'statecharts': {15, 16, 17, 18, 19, 20}}
++                    for kind in ['actors', 'statecharts']:
++                        for example in index[kind]:
++                            number = int(example['name'].split(' ', 1)[0])
++                            if curated and number in hidden[kind]:
++                                continue
++                            path = example['url']
++                            if args.only:
++                                selection = '/examples/'+args.only
++                                if path != selection and not (selection.endswith('/') and path.startswith(selection)):
++                                    continue
++                            with urlopen(url+quote(path, safe='/'), timeout=5) as response:
++                                original = response.read().decode()
++                            inventory.append(dict(path=path, sha256=hashlib.sha256(original.encode()).hexdigest()))
++                            bindings = {}
++                            with harness() as h:
++                                source_code = adapt(original) if kind == 'actors' else ''
++                                h.spawn_shell('[session(true),src_text('+lit(source_code)+')]')
++                                for i, query in enumerate(queries(original), 1):
++                                    query = re.sub(r'\$([A-Z][A-Za-z0-9_]*)', lambda m: bindings[m[1]], adapt(query))
++                                    query = query.replace('<editor>', lit(adapt(original)))
++                                    expected = 'failure' if number == 13 and kind == 'actors' and i == 2 else 'success'
++                                    if kind == 'actors' and (number, i) in [(13, 3), (16, 6)]:
++                                        expected = 'error'
++                                    if kind == 'actors' and number == 13:
++                                        # These independent combinator queries document intentional
++                                        # failure/error paths; isolate each from residual teaching-code mail.
++                                        with harness() as independent:
++                                            independent.spawn_shell('[session(true),src_text('+lit(source_code)+')]')
++                                            event, events = call(independent, query)
++                                    else:
++                                        event, events = call(h, query)
++                                    passed = event['type'] == expected
++                                    if expected == 'error':
++                                        passed = passed and ('type_error' if number == 13 else 'server_down(false)') in str(event)
++                                    if event['type'] == 'success' and event.get('data'):
++                                        bindings.update(event['data'][0])
++                                    rows.append(dict(path=path, query=i, goal=query, expected=expected,
++                                                     event=event, events=events, status='pass' if passed else 'fail'))
++                                    save()
++                                    if not passed and not (kind == 'actors' and number == 13):
++                                        break
++                                if kind == 'actors' and number == 10:
++                                    goal = ('self(S),spawn((spawn((receive({ping(F)->send(F,pong)}),'
++                                            'receive({finish->true})),Child,[link(false)]),send(S,child(Child))),'
++                                            'Parent,[monitor(true)]),receive({child(C)->true},[timeout(3)]),'
++                                            'receive({down(Parent,Parent,true)->true},[timeout(3)]),'
++                                            'send(C,ping(S)),receive({pong->true},[timeout(3)]),send(C,finish)')
++                                    event, events = call(h, goal)
++                                    rows.append(dict(path=path, query='unlink-survives-parent', goal=goal,
++                                                     event=event, events=events,
++                                                     status='pass' if event['type'] == 'success' else 'fail'))
++                                    save()
++                            print(path, 'checked', flush=True)
++                finally:
++                    process.terminate()
++                    try:
++                        process.wait(timeout=5)
++                    except subprocess.TimeoutExpired:
++                        process.kill()
++                        process.wait()
++    finally:
++        source.shutdown()
++        source.server_close()
++        save()
++    print(json.dumps(dict(entries=len(inventory), checks=len(rows), failed=sum(r['status']=='fail' for r in rows))))
++    return int(any(r['status'] != 'pass' for r in rows))
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())

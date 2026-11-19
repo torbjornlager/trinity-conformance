@@ -1,0 +1,160 @@
+diff --git a/README.md b/README.md
+index d677f5a..c73842f 100644
+--- a/README.md
++++ b/README.md
+@@ -454,7 +454,13 @@ Halt also interrupts an in-flight Call, Next or Poll. The waiting request
+ returns HTTP 404 with code `session_lost`.
+ Open HTTP sessions belong to the visitor cookie issued by `/node_info` or
+ `/toplevel_spawn`. Clients must keep that cookie for subsequent requests.
+-Authenticated sessions belong to the authenticated principal. The existing
++Authenticated sessions belong to the authenticated principal for HTTP route
++access. Each session has its own client namespace: equal credentials do not
++share ordinary names or promises between sessions. Local descendants inherit
++that namespace. Later requests to the same session retain its state; halt or
++session retirement removes its names and disposes of its promises. Surviving
++unlinked actors cannot register names or create promises in the retired scope.
++The existing
+ per-principal actor limit also bounds simultaneous HTTP sessions, with
+ anonymous admission grouped by client IP. Deployments can enable these
+ routes with `WP_HTTP_SESSIONS=true`.
+diff --git a/actors.pl b/actors.pl
+index d6b1d8d..f459095 100644
+--- a/actors.pl
++++ b/actors.pl
+@@ -821,7 +821,7 @@ register(Name, Pid) :-
+ % Trusted standalone callers share none; explicitly published services stay node-wide.
+ registration_namespace(Namespace) :-
+     current_actor_namespace(Scope),
+-    ( nonvar(Scope), (Scope=ws_client(_);Scope=ws_lineage(_,_)), ground(Scope) -> Namespace=Scope
++    ( nonvar(Scope), (Scope=ws_client(_);Scope=ws_lineage(_,_);Scope=isotope_session(_)), ground(Scope) -> Namespace=Scope
+     ; Namespace=none ).
+ 
+ % Context-aware lookup is also used by named sends and monitors. Cleanup that
+@@ -837,7 +837,7 @@ ensure_registry_namespace_open(Namespace) :-
+ 
+ retire_registry_namespace(Namespace) :-
+     must_be(ground,Namespace),
+-    ( (Namespace=ws_client(_);Namespace=ws_lineage(_,_)) -> true
++    ( (Namespace=ws_client(_);Namespace=ws_lineage(_,_);Namespace=isotope_session(_)) -> true
+     ; throw(error(domain_error(websocket_namespace,Namespace),retire_registry_namespace/1)) ),
+     with_mutex('$actor_registry',
+         ( (closed_registry_namespace(Namespace) -> true
+diff --git a/http_sessions.pl b/http_sessions.pl
+index 03077b9..3df9ee1 100644
+--- a/http_sessions.pl
++++ b/http_sessions.pl
+@@ -7,6 +7,8 @@
+                                 toplevel_halt/2]).
+ :- use_module(sandbox_policy, [sandbox_prepare_session_call/7]).
+ :- use_module(isolation, [actor_module/2]).
++:- use_module(actor_authority, []).
++:- use_module(rpc, []).
+ :- use_module(resource_policy, [check_term_text_size/2]).
+ :- use_module(governance_policy, [reserve_http_session_capacity/3,
+                                    release_capacity_reservation/1]).
+@@ -75,9 +77,23 @@ admit_session(Port, session_access(Owner, Principal, Identity), Reply) :-
+     catch(reserve_http_session_capacity(Principal, Identity, Reservation),
+           Error, (thread_send_message(Reply, Error), fail)),
+     setup_call_cleanup(true,
+-        session_worker(Port, Owner, Reply),
++        http_sessions:session_context(Port, Owner, Principal, Reply),
+         release_capacity_reservation(Reservation)).
+ 
++% The bearer principal owns the HTTP route; the session owns language state.
++% Different sessions must not inherit the trusted-local name/promise store.
++session_context(Port, Owner, Principal, Reply) :-
++    self(Relay),Namespace=isotope_session(Relay),
++    setup_call_cleanup(actor_authority:open_namespace(Namespace,Principal),
++        actors:with_actor_namespace(Namespace,
++            once(http_sessions:session_worker(Port, Owner, Reply))),
++        call_cleanup(http_sessions:retire_session_namespace(Namespace),
++                     actor_authority:close_namespace(Namespace))).
++
++retire_session_namespace(Namespace) :-
++    setup_call_cleanup(true,once(actors:retire_registry_namespace(Namespace)),
++        rpc:dispose_namespace_promises(Namespace)).
++
+ session_worker(Port, Owner, Reply) :-
+     self(Relay),
+     setup_call_cleanup(
+diff --git a/rpc.pl b/rpc.pl
+index 5d0bac0..6b9818f 100644
+--- a/rpc.pl
++++ b/rpc.pl
+@@ -564,7 +564,7 @@ dispose_accessible_promise(Reference,Owner) :-
+ % mutex. Signal workers and wait for collector release only after unlocking.
+ dispose_namespace_promises(Namespace) :-
+     must_be(ground,Namespace),
+-    ((Namespace=ws_client(_);Namespace=ws_lineage(_,_)) -> true
++    ((Namespace=ws_client(_);Namespace=ws_lineage(_,_);Namespace=isotope_session(_)) -> true
+     ; throw(error(domain_error(websocket_namespace,Namespace),dispose_namespace_promises/1))),
+     setup_call_cleanup(
+         promise_transaction(retire_namespace_promises(Namespace,Jobs)),
+diff --git a/tools/test.sh b/tools/test.sh
+index afdabc4..91248b1 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -123,6 +123,8 @@ run_unit() {
+     run_with_timeout "Owner RPC execution endpoints" \
+         "$TPL" -g "consult('$ROOT/rpc_topology_tests.pl'),(catch(rpc_topology_tests:run($rpc_topology_port),E,(writeq(E),nl,fail))->halt;halt(1))"
+ 
++    run_with_timeout "HTTP session client-context isolation and teardown" \
++        "$TPL" -g "consult('$ROOT/http_session_context_tests.pl'),(catch(http_session_context_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
+     run_with_timeout "HTTP session and native actor routing lock order" \
+         "$TPL" -g "consult('$ROOT/http_session_route_tests.pl'),(http_session_route_tests:run->halt;halt(1))"
+ 
+--- /dev/null
++++ b/http_session_context_tests.pl
+@@ -0,0 +1,52 @@
++% SPDX-License-Identifier: MIT
++:- module(http_session_context_tests,[run/0]).
++:- use_module(web_prolog).
++:- use_module(http_sessions, []).
++:- use_module(actors, []).
++:- use_module(rpc_namespace_tests, []).
++
++access(session_access(context_test,principal(context_test,[execute]),context_test)).
++new_session(Pid) :-
++    access(Access),
++    http_sessions:session_request(19999,Access,actor,blacklist,toplevel_spawn,
++        pairs([]),200,spawned(Pid)).
++command(Pid,Command,Fields,Event) :-
++    access(Access),atom_number(Text,Pid),
++    http_sessions:session_request(19999,Access,actor,blacklist,Command,
++        [pid=Text|Fields],200,Event).
++query(Pid,Goal) :-
++    command(Pid,toplevel_call,[goal=Goal,limit='1'],success(Pid,_,false)).
++halt_session(Pid) :- command(Pid,toplevel_halt,[],_).
++
++run :-
++    setup_call_cleanup(new_session(A),
++      setup_call_cleanup(new_session(B),once(check_sessions(A,B)),halt_session(B)),
++      catch(ignore(halt_session(A)),_,true)),
++    writeln('HTTP sessions: separate names/promises, owner collection and teardown: ok').
++
++check_sessions(A,B) :-
++    actors:actor_namespace(A,NA),NA=isotope_session(_),
++    actors:actor_namespace(B,NB),NB=isotope_session(_),NA\==NB,
++    query(A,'self(S),register(http_context_test,S)'),
++    query(B,'whereis(http_context_test,undefined),self(S),register(http_context_test,S)'),
++    query(A,'self(S),whereis(http_context_test,S)'),
++    query(B,'self(S),whereis(http_context_test,S)'),
++    actors:self(Self),
++    actors:with_actor_namespace(NA,
++        rpc_namespace_tests:create_test_promise(Self)),
++    actors:receive({test_promise(_,Ref,Resources)->true},[timeout(2),on_timeout(fail)]),
++    actors:with_actor_namespace(NB,
++        (rpc_namespace_tests:expect_missing(Ref),rpc:promise_cleanup(Ref))),
++    actors:with_actor_namespace(NA,
++        (rpc:yield(Ref,timeout,[timeout(0)]))),
++    % Definitive HTTP session retirement must release its promises and names.
++    halt_session(A),
++    rpc_namespace_tests:await(rpc_namespace_tests:assert_disposed(Ref,Resources),200),
++    \+actors:registered(NA,http_context_test,_),
++    query(B,'self(S),whereis(http_context_test,S)'),
++    catch(actors:with_actor_namespace(NA,actors:register(late_http_context,123)),E,true),
++    nonvar(E),E=error(permission_error(register,closed_namespace,NA),_),
++    catch(actors:with_actor_namespace(NA,
++        (actors:make_ref(NewRef),rpc:start_promise_setup(NewRef,true))),CreateError,true),
++    nonvar(CreateError),
++    CreateError=error(permission_error(create,promise,client_namespace(NA)),_).

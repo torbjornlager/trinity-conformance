@@ -34,6 +34,25 @@ unlinked children and toplevels, with positive survivor controls. All 69
 interoperability groups pass. This is a harness repair; no runtime or deployed
 inputs changed, and original full-run totals below remain unchanged.
 
+The [HTTP context follow-up](reports/2026-11-19-http-context/REPORT.md) adds
+candidate Trealla retained-session namespaces. Its versioned selection passes
+3/3, with 69 passing interoperability groups and one retained baseline unit
+timeout. Stateless authenticated HTTP sharing and remote resumption are
+unchanged; the [remote design](profiles/remote-client-context-design.md) separates
+outbound client isolation from return-context restoration. No deployment changed.
+
+The [OPEN contract candidate](reports/2026-11-19-open-http-contract/REPORT.md)
+passes the 23 local context checks and six authenticated/anonymous HTTP-session
+executions. All normal native and selected consumer tiers pass. The separate
+34-entry drawer check retains ten baseline timeouts, so there is no green
+all-exercises claim or live adoption at this checkpoint.
+
+The [published OPEN repair](reports/2026-11-19-open-exercise-repair/REPORT.md)
+now passes the full 34-entry, 136-check visible drawer sequence. The earlier ten
+baseline timeouts were a retirement-context defect, now covered by positive and
+controlled-negative regressions. HTTP isolation/session checks and broad native
+and consumer gates pass. Deployment pins remain unchanged.
+
 ## Current deployed observations
 
 | Node | Surface | Fresh selection |
