@@ -7,6 +7,13 @@ another runtime.
 
 ## Current consolidated results
 
+The later [admission rollout](reports/2026-11-19-public-admission/REPORT.md)
+adds configurable 120-entry public presets across the server runtimes, with
+explicit accounting units and unchanged concurrency/resource bounds. Its 980
+live finite HTTP probes and paced prompt checks pass; all 136 owned OPEN
+exercise checks pass. Browser-local execution has no server admission budget.
+The full conformance sweep below retains its earlier scope and findings.
+
 The [fresh live-node run](reports/2026-11-19-upgraded-live-conformance/REPORT.md)
 covers all **78 manifests / 1,984 main input rows** after deployment of native
 `a2ff186` and Trealla `3a5b761`. **It is not all-green.** Live applicable cases,

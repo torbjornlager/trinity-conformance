@@ -1,12 +1,26 @@
 # Current Web Prolog conformance coverage
 
-Updated **19 November 2026**, after the HTTP-context and actor-retirement fixes were deployed. The refreshed run covers **78 manifests / 1,984 main input rows** at suite revision `58cbd6b`. **It is not all-green.** Every row has current observations or explicit blocked/applicability outcomes; four retained-context return assertions remain blocked. Repeated historical packs, modes and routes are not independent language features.
+Updated **20 November 2026**, after the admission rollout; the complete sweep below ran on 19 November after the HTTP-context and actor-retirement fixes were deployed. The refreshed run covers **78 manifests / 1,984 main input rows** at suite revision `58cbd6b`. **It is not all-green.** Every row has current observations or explicit blocked/applicability outcomes; four retained-context return assertions remain blocked. Repeated historical packs, modes and routes are not independent language features.
 
 [Full report](reports/2026-11-19-upgraded-live-conformance/REPORT.md) · [per-file results](reports/2026-11-19-upgraded-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-19-upgraded-live-conformance/verification.json) · [exact inputs](reports/2026-11-19-upgraded-live-conformance/suite-inputs.json).
 
-## Current public observations
+## Later admission rollout
 
-Native SWI N0–N4 runs `a2ff186` / 11.0.0; Trealla N5 runs `3a5b761` / 3.14.20. N6 and N7 are unchanged comparative deployments. Public N0 is RELATION, N1/N6 ISOBASE, N2 ISOTOPE and N3/N4/N5/N7 ACTOR. Private-only ownership and unbounded controls use owned image-backed fixtures; the private admin endpoint is not certified by this sweep.
+The [configurable admission rollout](reports/2026-11-19-public-admission/REPORT.md)
+selects native `e25b230`, Trealla `2d5042b`, ECLiPSe adapter `31dcdfc` and browser
+package `0d024e5`, preserving all engine bytes and existing resource bounds.
+Public N1–N7 use explicit 120-entry presets with their documented accounting
+units. All 980 live finite HTTP probes pass; paced HTTP prompt checks pass
+19/19 each on N2/N3/N4/N5. The owned OPEN exercise check passes 34 entries /
+136 checks at the public preset and 16 actor/session slots.
+
+This separate regression qualification does not repeat all 78 manifests. The
+full-sweep tables below retain the earlier source/configuration scope and
+failures, including context restoration and the live Trealla cut finding.
+
+## Full-sweep public observations
+
+At that full sweep, native SWI N0–N4 ran `a2ff186` / 11.0.0 and Trealla N5 ran `3a5b761` / 3.14.20. At that sweep, N6 and N7 were unchanged comparative deployments. Public N0 is RELATION, N1/N6 ISOBASE, N2 ISOTOPE and N3/N4/N5/N7 ACTOR. Private-only ownership and unbounded controls use owned image-backed fixtures; the private admin endpoint is not certified by this sweep.
 
 | Node | Primary public selection |
 |---|---|

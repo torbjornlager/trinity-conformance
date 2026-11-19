@@ -14,7 +14,7 @@ this object also describes limits enforced outside the Prolog engine.
 | `rate_identity` | `principal` or proxy-verified `client_ip`; never a caller-supplied identity |
 | `window_policy` | `fixed`, `rolling` or `leaky_bucket` |
 | `rate_window_seconds` | Window length, or the time unit for the advertised refill rate |
-| `max_call_requests_per_window` | Call requests admitted per identity in a fixed/rolling window |
+| `max_call_requests_per_window` | Requests charged to the call budget per identity/window; native SWI includes `/call`, `/toplevel_call` and `/toplevel_next` |
 | `max_session_spawns_per_window` | Session creations admitted per identity in a fixed/rolling window |
 | `max_engine_starts_per_window` | Shared fresh-engine budget across HTTP calls, HTTP-session creation and WebSocket connections |
 | `requests_per_minute`, `burst` | Leaky-bucket refill rate and additional burst allowance; not a strict rolling-minute maximum |
@@ -50,3 +50,9 @@ rolling-window rate delay can be calculated from the oldest charged admission.
 
 Historical conformance observations remain immutable. New budgets and passing
 paced controls do not erase earlier admission refusals.
+
+The live native SWI HTTP-IP layer also charges retained query/page commands to
+the call budget. Session-creation capacity is not an allowance for unlimited
+queries inside those sessions. The maintained prompt stress pack uses paced
+session creation without delaying its reply/abort/halt races. A refused case
+remains a refusal in its original attempt, even if a paced control later passes.
