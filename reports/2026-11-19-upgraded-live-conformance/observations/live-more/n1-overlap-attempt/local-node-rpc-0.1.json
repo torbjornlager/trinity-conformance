@@ -1,0 +1,69 @@
+{
+  "suite": "local-node-rpc-0.1",
+  "candidate": "n1",
+  "profile": "isobase",
+  "endpoint": "https://n1.elfenbenstornet.se",
+  "manifest_sha256": "7f38269eebb9d7475d1ab153e9c3fc56a817f69adc8f93871a92ff14959e5bc2",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "LOCAL-001",
+      "case_index": 0,
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1292
+    },
+    {
+      "id": "LOCAL-002",
+      "case_index": 1,
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1294
+    },
+    {
+      "id": "LOCAL-003",
+      "case_index": 2,
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1304
+    },
+    {
+      "id": "LOCAL-004",
+      "case_index": 3,
+      "title": "Local promise failure remains an answer term",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1311
+    },
+    {
+      "id": "LOCAL-005",
+      "case_index": 4,
+      "title": "Local promise exception remains an answer term",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1303
+    },
+    {
+      "id": "LOCAL-006",
+      "case_index": 5,
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1302
+    },
+    {
+      "id": "LOCAL-007",
+      "case_index": 6,
+      "title": "Local promise prepares URI source in the caller",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'error(error(rate_limit_exceeded(\"http-ip:172.18.0.1\",call_requests,60,60),context(:(node_rate_limits,/(enforce_call_request_rate_limit,1)),\\'principal exceeded the /call rate limit\\'))).\\n'",
+      "duration_ms": 1297
+    }
+  ],
+  "counts": {
+    "fail": 7
+  }
+}

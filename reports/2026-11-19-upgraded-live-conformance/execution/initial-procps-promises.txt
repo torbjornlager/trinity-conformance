@@ -1,0 +1,23 @@
+{
+  "repository": "https://github.com/torbjornlager/swi-prolog-node.git",
+  "revision": "a2ff1868dab405e29b5f47b9a288839ba7ee7156",
+  "native_root": "/opt/swi-prolog-node",
+  "pack": "web_prolog"
+}
+Traceback (most recent call last):
+  File "/work/suite/adapters/local_promises.py", line 125, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "/work/suite/adapters/local_promises.py", line 72, in main
+    inputs={str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'cases/promise-yield-0.1.json',ROOT/'cases/promise-diagnostics-0.1.json',ROOT/'profiles/promise-yield-0.1.md',ROOT/'cases/interop-http-0.1.json',ROOT/'runner/baseline.py',ROOT/'runner/run.py',Path(__file__),*([a.local_manifest] if a.local_manifest else [])]},
+                                     ~~~^^^
+  File "/work/suite/adapters/local_promises.py", line 16, in sha
+    def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                                     ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/suite/profiles/promise-yield-0.1.md'

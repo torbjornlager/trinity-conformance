@@ -1,119 +1,64 @@
 # Current Web Prolog conformance coverage
 
-Updated **19 November 2026**, after deploying native SWI-Prolog 11.0.0.
-The full run exercised **76 manifests / 1,973 main case rows** at suite revision
-`3c5315c`. **It is not all-green.** Every main case ID has execution evidence,
-but failures remain and auxiliary instrumentation blocks complete qualification.
-Repeated library versions, routes, diagnostics and controls are not independent
-features and must not be converted into a language-conformance percentage.
+Updated **19 November 2026**, after the HTTP-context and actor-retirement fixes were deployed. The refreshed run covers **78 manifests / 1,984 main input rows** at suite revision `58cbd6b`. **It is not all-green.** Every row has current observations or explicit blocked/applicability outcomes; four retained-context return assertions remain blocked. Repeated historical packs, modes and routes are not independent language features.
 
-Read the [full report](reports/2026-11-19-deployed-conformance/REPORT.md),
-[per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json),
-[verified inventory](reports/2026-11-19-deployed-conformance/verification.json)
-and [exact inputs](reports/2026-11-19-deployed-conformance/suite-inputs.json).
-Historical reports remain unchanged.
+[Full report](reports/2026-11-19-upgraded-live-conformance/REPORT.md) · [per-file results](reports/2026-11-19-upgraded-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-19-upgraded-live-conformance/verification.json) · [exact inputs](reports/2026-11-19-upgraded-live-conformance/suite-inputs.json).
 
-The [first repair follow-up](reports/2026-11-19-conformance-repairs/REPORT.md)
-records candidate source-loading, entry-fixture and public cleanup API fixes.
-These are **not deployed**. The targeted controlled context rerun records
-42 pass / 15 fail / 4 blocked, and all three native noncompletion probes pass.
-The tables below remain the original full-run observations.
+## Current public observations
 
-The subsequent [naming alignment](reports/2026-11-19-client-naming/REPORT.md)
-implements client-context ordinary names in candidate Trealla code. The shared
-pack passes 8/8 on SWI, patched Trealla and live ECLiPSe N7, and 7/7 applicable
-checks in browser Worker/main (one unsupported multi-toplevel API operation per
-mode). Trealla `6041ea3` is now [deployed on N5](reports/2026-11-19-live-n5-naming/REPORT.md),
-with a fresh 8/8 live naming result and eight passing smoke groups. Node-wide published services remain
-a separate registry; HTTP-session naming is outside this measured selection.
+Native SWI N0–N4 runs `a2ff186` / 11.0.0; Trealla N5 runs `3a5b761` / 3.14.20. N6 and N7 are unchanged comparative deployments. Public N0 is RELATION, N1/N6 ISOBASE, N2 ISOTOPE and N3/N4/N5/N7 ACTOR. Private-only ownership and unbounded controls use owned image-backed fixtures; the private admin endpoint is not certified by this sweep.
 
-The [connection-cleanup follow-up](reports/2026-11-19-connection-cleanup/REPORT.md)
-resolves the naming report's missed-notification probe as delayed test-client
-cleanup. Both close modes pass direct independent-monitor checks for roots,
-unlinked children and toplevels, with positive survivor controls. All 69
-interoperability groups pass. This is a harness repair; no runtime or deployed
-inputs changed, and original full-run totals below remain unchanged.
-
-The [HTTP context follow-up](reports/2026-11-19-http-context/REPORT.md) adds
-candidate Trealla retained-session namespaces. Its versioned selection passes
-3/3, with 69 passing interoperability groups and one retained baseline unit
-timeout. Stateless authenticated HTTP sharing and remote resumption are
-unchanged; the [remote design](profiles/remote-client-context-design.md) separates
-outbound client isolation from return-context restoration. No deployment changed.
-
-The [OPEN contract candidate](reports/2026-11-19-open-http-contract/REPORT.md)
-passes the 23 local context checks and six authenticated/anonymous HTTP-session
-executions. All normal native and selected consumer tiers pass. The separate
-34-entry drawer check retains ten baseline timeouts, so there is no green
-all-exercises claim or live adoption at this checkpoint.
-
-The [published OPEN repair](reports/2026-11-19-open-exercise-repair/REPORT.md)
-now passes the full 34-entry, 136-check visible drawer sequence. The earlier ten
-baseline timeouts were a retirement-context defect, now covered by positive and
-controlled-negative regressions. HTTP isolation/session checks and broad native
-and consumer gates pass. Deployment pins remain unchanged.
-
-## Current deployed observations
-
-| Node | Surface | Fresh selection |
-|---|---|---|
-| N0 | Public RELATION, SWI 11.0.0 | 1/1 error admission; not full RELATION |
-| N1 | Public ISOBASE, SWI 11.0.0 / native 26e1ce7 | 12/12 HTTP |
-| N2 | Public ISOTOPE, SWI 11.0.0 / native 26e1ce7 | 12/12 HTTP subset; not full ISOTOPE |
-| N3 | Public ACTOR, SWI 11.0.0 / native 26e1ce7 | 106/106 ACTOR + 12/12 HTTP |
-| N4 | Public ACTOR, SWI 11.0.0 / native 26e1ce7 | 106/106 ACTOR + 12/12 HTTP |
-| N5 | Public ACTOR, deployed Trealla image | 106/106 ACTOR + 12/12 HTTP |
-| N6 | Public contained ISOBASE, GNU | 12/12 HTTP + 1/1 error admission |
-| N7 | Public isolated ACTOR, ECLiPSe 7.2.13 | 94/106 ACTOR + 12/12 HTTP initially; twelve 429 refusals pass paced controls |
-
-Directed public ACTOR interoperability passes **36/36** across twelve ordered
-pairs among N3/N4/N5/N7. Additional public selections record 18 successful rows
-per ACTOR node, including diagnostics; DEMO-019 passes on N3. First-attempt N7
-failures remain in the record alongside unchanged paced controls. No live
-service was restarted or reconfigured during this conformance run; baseline
-Compose container IDs and image IDs were preserved.
-
-## Isolated native and browser coverage
-
-| Selection | Fresh observation |
+| Node | Primary public selection |
 |---|---|
-| Exact deployed SWI N1/N3/N4 image, private ACTOR | 45/45 release + 7/7 source-directives |
-| Exact deployed SWI N2 image, private ACTOR | 45/45 + 7/7; not live N2 ACTOR certification |
-| Exact deployed Trealla N5 image, private ACTOR | 45/45 + 7/7 |
-| Library versions 0.1–0.4, seven modes | All pass; latest pack 295 × 7 = 2,065 case executions |
-| Native and Chrome receive guard controls | 16/16 native + 16/16 browser |
-| Native retained-context matrix | 39 pass / 18 fail / 4 blocked; closure 6/6; attachment controls did not execute |
-| Shared monitor matrix | 94 pass / 4 fail native; 94 pass / 4 fail browser; native barriers 2/2; strict remote group blocked by instrumentation |
-| Library noncompletion | Trealla/GNU and Chrome pass; SWI fails entry control, so its target operation was not measured |
-| Embedded WASM source directives | 5 pass / 2 unsupported per mode, per current `goal_sandbox` applicability |
-| Runner unit tests | 111 pass, outside conformance case counts |
+| N0 | 1 pass |
+| N1 | 12 pass |
+| N2 | 12 pass |
+| N3 | 118 pass |
+| N4 | 118 pass |
+| N5 | 118 pass |
+| N6 | 12 pass |
+| N7 | 113 pass, 5 fail |
 
-Seven library modes means SWI HTTP/WSS, Trealla HTTP/WSS, GNU HTTP and real
-Chrome Worker/main. Browser runtime package `0363b38b…` still contains SWI
-10.1.19 / swipl-wasm 8.2.5. The engine payload was not upgraded to SWI 11.
-Embedded Node assertions, browser session API tests and public UI tests are
-different boundaries; this run does not certify the whole browser UI.
+N3/N4/N5 each pass all 118 selected ACTOR/HTTP cases. N7’s five original 429 refusals remain in the files; all five pass after the requested 61-second quiet period and 15-second pauses. Its remaining primary cases used the longer pauses.
 
-## Current findings and limits
+## Live library versions 0.1–0.4
 
-Retained-context failures and blocked controls keep its gate red. Monitor
-MC-028/029 conflict with newer URI text acceptance; their failures remain as
-written. Source-aware Chrome tests retain callback-context, local naming and
-unregistered-name error differences. Native URI I/O, RPC deadlines, Trealla
-local-node RPC and HTTP options, statechart document fixtures, prompt HTTP and
-portable-text 0.2 have unresolved failures. The dated report links observations,
-source-aware reruns, original invalid fixture attempts and applicability notes.
+The four versions contain 842 input rows per transport. Each selected mode checks the original helper source, deterministic finite results and bounded prefixes with recovery. Retained WebSocket controls also stop their producer; stateless HTTP recovery alone does not prove reclamation.
 
-Every main manifest was exercised, including older library packs and native
-supporting/diagnostic packs. This does not establish complete ISO coverage,
-complete RELATION/ISOTOPE semantics, all runtime/configuration combinations,
-hostile security qualification, or passing auxiliary attachment and strict
-return-barrier controls. Nothing unexecuted is counted as passing.
+| Node | HTTP | Retained WSS |
+|---|---|---|
+| N1 | 842 pass | not exposed |
+| N2 | 842 pass | not exposed |
+| N3 | 842 pass | 842 pass |
+| N4 | 842 pass | 842 pass |
+| N5 | 842 pass | 842 pass |
+| N6 | 838 pass, 4 fail | not exposed |
+| N7 | 842 pass | 842 pass |
 
-The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md) and
-[library clause gaps](docs/LIBRARY_TEST_GAPS.md) retain obligation-level limits.
-The [16 November report](reports/2026-11-16-deployed-conformance/REPORT.md),
-[15 November report](reports/2026-11-15-deployed-conformance/REPORT.md) and
-[older 1 November matrix](https://github.com/torbjornlager/trinity-conformance/blob/34557d322518941ba13a3e4486736e3d41d73c81/CURRENT_COVERAGE.md)
-remain evidence for their original sources and configurations. Current passes
-must not silently rewrite their failures; both software and suite inputs changed.
+N6 retains four original HTTP 503 query-capacity refusals on STDLIB-292–295. All four unchanged assertions pass in separate paused controls; the final quiet period and recovery check exceed the verified 300-second idle lifetime. Original refusals remain in the table.
+
+N7 stateless requests each create a public engine. Its 20-starts/minute rule requires slower HTTP traffic; final HTTP completion pauses four seconds after each request. Original capacity refusals and carried-forward observations remain explicit. No live limit was changed.
+
+## Additional current evidence
+
+- All 19 live HTTP prompt cases pass on N2/N3/N4/N5 with session-creation pacing; race requests are unchanged.
+- Live N5 retained HTTP ordinary names pass HCTX-002. Its supplementary ready-producer promise isolation/collection control also passes. Pending-producer barriers remain controlled-fixture measurements.
+- The three exact-image private gates each pass 45 ACTOR cases plus seven source-directive cases with separate execution-only principals.
+- Owned authenticated/anonymous HTTP context controls pass 3/3 each; native naming passes 16/16; all three bounded noncompletion controls pass; enabled HTTP prompt fixtures pass 19/19 per native runtime.
+- The source-aware native monitor selection records 94 pass / 4 fail; preflight records 44 pass / 4 fail. MC-028/029 conflict with documented URI text acceptance.
+- Real Chromium Worker/main browser-only compatibility records 4 pass / 2 fail (B-SV-006) using package `ce96659`, engine 10.1.19. This is not public UI certification.
+- Runner tooling unit tests pass 114/114, outside conformance case counts.
+
+## Findings and limits
+
+The retained-context matrix remains red at **46 pass / 11 fail / 4 blocked**, with six passing closure controls. Trealla outbound-client isolation and controlled promise routes fail; automatic origin-context return remains unresolved. Attachment instrumentation still fails its setup boundary.
+
+Live Trealla SR-015 fails in the extended run and unchanged repeats while the owned fixture passes. Diagnostic lists retain both inner alternatives at all three wait settings; this is a public execution-path cut finding. URI/deadline/HTTP/document supporting selections retain failures. TXT-019/026 reach an invalid prompt-reference response before their text comparison. The report separates those protocol/fixture limits, exact-profile admission expectations, original wrong-transport attempts, and real assertion outcomes.
+
+No runtime source, versioned assertion, installed engine, live configuration or quota changed during the run. Persistent service container/image identities were preserved. Main input rows are accounted for, but blocked operations are never passes, and this is not complete ISO, every configuration, every browser mode, admin, UI or security certification.
+
+## Historical evidence
+
+The [earlier full SWI 11 run](reports/2026-11-19-deployed-conformance/REPORT.md), [repair checkpoint](reports/2026-11-19-conformance-repairs/REPORT.md), [naming alignment](reports/2026-11-19-client-naming/REPORT.md), [connection-cleanup diagnosis](reports/2026-11-19-connection-cleanup/REPORT.md), [HTTP context checkpoint](reports/2026-11-19-http-context/REPORT.md), and [OPEN repair](reports/2026-11-19-open-exercise-repair/REPORT.md) remain unchanged. Their pre-deployment boundaries describe their dates, not current live selection.
+
+The [Appendix B matrix](docs/APPENDIX_B_COVERAGE.md) and [library clause inventory](docs/LIBRARY_TEST_GAPS.md) retain their scoped obligation evidence. Current observations do not silently rewrite historical failures or expand those claims.

@@ -1,0 +1,61 @@
+{
+  "suite": "browser-local-compatibility-0.1",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "154a0cd7e16f69e879c420474156acde95059d055723639d9c169cffd7c01ed1",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "B-LN-002",
+      "case_index": 0,
+      "title": "Occupied names and already named pids preserve original registrations",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'pid': 8643604252, 'type': 'failure'}; preceding events were []",
+      "duration_ms": 2044
+    },
+    {
+      "id": "B-LN-006",
+      "case_index": 1,
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Absent": "undefined",
+            "BaselineResult": "passed",
+            "Children": "[]",
+            "Failed": "Failed",
+            "Failure": "error(permission_error(load,source_uri,'file:///definitely-missing-local-naming-conformance.pl'),context(source_utils:open_source_uri/2,'src_uri target must resolve to an allowlisted HTTP(S) origin'))",
+            "Found": "2098217733@'https://n4.elfenbenstornet.se'",
+            "From": "From",
+            "Gone": "undefined",
+            "Loser": "Loser",
+            "Name": "ln_case_006",
+            "P": "2098217733@'https://n4.elfenbenstornet.se'",
+            "Published": "9467445224@'https://n4.elfenbenstornet.se'",
+            "S": "4248980241@'https://n4.elfenbenstornet.se'",
+            "Sup": "9467445224@'https://n4.elfenbenstornet.se'",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),context(actors:register/2,'ordinary registration conflict'))"
+          }
+        ],
+        "more": false,
+        "pid": 4248980241,
+        "type": "success"
+      },
+      "duration_ms": 2176
+    },
+    {
+      "id": "B-SV-006",
+      "case_index": 2,
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'pid': 1782835718, 'type': 'failure'}; preceding events were []",
+      "duration_ms": 2021
+    }
+  ],
+  "counts": {
+    "fail": 2,
+    "pass": 1
+  }
+}

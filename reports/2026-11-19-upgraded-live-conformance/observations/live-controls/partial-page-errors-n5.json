@@ -1,0 +1,179 @@
+{
+  "suite": "partial-page-errors-0.1",
+  "candidate": "n5",
+  "manifest_sha256": "b66c80c0fd00bff6cf14447355f73046e9e0b80fd7c58d9ba21583063eef19eb",
+  "scope": "Controlled unchanged assertion rerun with correct WSS URL base; original orchestration outcomes preserved",
+  "results": [
+    {
+      "id": "PE-009",
+      "title": "Toplevel preserves a short partial page before an exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2724339482,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 2724339482,
+          "data": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-010",
+      "title": "Toplevel delivers a pending exception after an exact full page",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 1205636897,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 1205636897,
+          "data": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-011",
+      "title": "Toplevel stop discards a pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 3073053384,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "stop",
+          "pid": 3073053384
+        },
+        {
+          "type": "success",
+          "pid": 3073053384,
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false
+        }
+      ]
+    },
+    {
+      "id": "PE-012",
+      "title": "A session accepts a fresh call after delivering the pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2811134865,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 2811134865,
+          "data": "page_boom"
+        },
+        {
+          "type": "success",
+          "pid": 2811134865,
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false
+        }
+      ]
+    },
+    {
+      "id": "PE-013",
+      "title": "Toplevel reports an exception before any solution immediately",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "error",
+          "pid": 2189212569,
+          "data": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-016",
+      "title": "An omitted toplevel limit reports the exception without a partial page",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "error",
+          "pid": 1200704440,
+          "data": "page_boom"
+        }
+      ]
+    },
+    {
+      "id": "PE-018",
+      "title": "A very large explicit toplevel limit remains finite",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 3072929567,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 3072929567,
+          "data": "page_boom"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "pass": 7
+  }
+}

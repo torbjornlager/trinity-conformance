@@ -1,0 +1,82 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "selective-receive-0.1",
+  "scope": "required",
+  "candidate": "n7",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "manifest_sha256": "45c3b1cc6528e1134cbd528d962db38c8cba990cdcd9a10980263fd44d858646",
+  "counts": {
+    "pass": 2,
+    "fail": 4
+  },
+  "results": [
+    {
+      "id": "SR-001",
+      "title": "One-sided matching preserves message variables and sharing",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 4997
+    },
+    {
+      "id": "SR-002",
+      "title": "Deferred messages retain order across deferred and native queues",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 5020
+    },
+    {
+      "id": "SR-003",
+      "title": "Failing and ordinarily throwing guards retain messages and roll back bindings",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 4982
+    },
+    {
+      "id": "SR-004",
+      "title": "A guard uses only its first solution and shares bindings with the body",
+      "status": "fail",
+      "detail": "ProtocolError: WebSocket upgrade failed: HTTP/1.1 429 Too Many Requests",
+      "duration_ms": 5022
+    },
+    {
+      "id": "SR-005",
+      "title": "Selected body failure and exception consume only their selected messages",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5303744612,
+        "data": [
+          {
+            "S": "5303744612@'https://n7.elfenbenstornet.se'",
+            "Error": "sr_body",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 5054
+    },
+    {
+      "id": "SR-006",
+      "title": "A selected body cut cannot prune caller alternatives",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1767330980,
+        "data": [
+          {
+            "Choice": "Choice",
+            "S": "S",
+            "V": "V",
+            "Choices": "[one,two]",
+            "Me": "1767330980@'https://n7.elfenbenstornet.se'",
+            "Fallback": "kept",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 4973
+    }
+  ]
+}

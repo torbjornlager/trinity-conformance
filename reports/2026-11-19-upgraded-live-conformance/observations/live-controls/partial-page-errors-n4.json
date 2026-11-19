@@ -1,0 +1,185 @@
+{
+  "suite": "partial-page-errors-0.1",
+  "candidate": "n4",
+  "manifest_sha256": "b66c80c0fd00bff6cf14447355f73046e9e0b80fd7c58d9ba21583063eef19eb",
+  "scope": "Controlled unchanged assertion rerun with correct WSS URL base; original orchestration outcomes preserved",
+  "results": [
+    {
+      "id": "PE-009",
+      "title": "Toplevel preserves a short partial page before an exception",
+      "status": "pass",
+      "observation": [
+        {
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true,
+          "pid": 6456491714,
+          "type": "success"
+        },
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 6456491714,
+          "type": "error"
+        }
+      ]
+    },
+    {
+      "id": "PE-010",
+      "title": "Toplevel delivers a pending exception after an exact full page",
+      "status": "pass",
+      "observation": [
+        {
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true,
+          "pid": 7879089052,
+          "type": "success"
+        },
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 7879089052,
+          "type": "error"
+        }
+      ]
+    },
+    {
+      "id": "PE-011",
+      "title": "Toplevel stop discards a pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true,
+          "pid": 3684122558,
+          "type": "success"
+        },
+        {
+          "pid": 3684122558,
+          "type": "stop"
+        },
+        {
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false,
+          "pid": 3684122558,
+          "type": "success"
+        }
+      ]
+    },
+    {
+      "id": "PE-012",
+      "title": "A session accepts a fresh call after delivering the pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true,
+          "pid": 8837766382,
+          "type": "success"
+        },
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 8837766382,
+          "type": "error"
+        },
+        {
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false,
+          "pid": 8837766382,
+          "type": "success"
+        }
+      ]
+    },
+    {
+      "id": "PE-013",
+      "title": "Toplevel reports an exception before any solution immediately",
+      "status": "pass",
+      "observation": [
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 7861640943,
+          "type": "error"
+        }
+      ]
+    },
+    {
+      "id": "PE-016",
+      "title": "An omitted toplevel limit reports the exception without a partial page",
+      "status": "pass",
+      "observation": [
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 3587530113,
+          "type": "error"
+        }
+      ]
+    },
+    {
+      "id": "PE-018",
+      "title": "A very large explicit toplevel limit remains finite",
+      "status": "pass",
+      "observation": [
+        {
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true,
+          "pid": 9614955904,
+          "type": "success"
+        },
+        {
+          "data": "Unknown message: page_boom",
+          "details": "page_boom",
+          "pid": 9614955904,
+          "type": "error"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "pass": 7
+  }
+}

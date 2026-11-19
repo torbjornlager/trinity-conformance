@@ -1,0 +1,74 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "server-waits-0.1",
+  "scope": "required",
+  "candidate": "n7",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "manifest_sha256": "24b8fc86bce9668f8262c7a6de4d4ad4fc87831fee2241fd58acbdbfa29bf066",
+  "counts": {
+    "pass": 3,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1000521483,
+        "data": [
+          {
+            "P": "9868780084@'https://n7.elfenbenstornet.se'",
+            "R1": "7273250135",
+            "R2": "3911591709",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 4991
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5896116815,
+        "data": [
+          {
+            "P": "5720238476@'https://n7.elfenbenstornet.se'",
+            "R1": "6983643717",
+            "R2": "5141494166",
+            "Barrier": "9454950421",
+            "Again": "consumed",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 5008
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3334234431,
+        "data": [
+          {
+            "S": "3334234431@'https://n7.elfenbenstornet.se'",
+            "P": "8943439713@'https://n7.elfenbenstornet.se'",
+            "R": "2134584139",
+            "Early": "waiting",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 4994
+    }
+  ]
+}

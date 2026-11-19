@@ -1,0 +1,591 @@
+{
+  "suite": "client-naming-0.1",
+  "candidate": "n3",
+  "profile": "actor",
+  "endpoint": "https://n3.elfenbenstornet.se",
+  "manifest_sha256": "149c45ad3169799ab3616beffe1bf7ff747ec9490ec98a5cd30aa8c6bae49e8f",
+  "scope": "required",
+  "results": [
+    {
+      "id": "CN-001",
+      "case_index": 0,
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "4372027278@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 4372027278,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "whereis(__NAME__,P),P==undefined"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "undefined",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 6946050558,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4019
+    },
+    {
+      "id": "CN-002",
+      "case_index": 1,
+      "title": "Equal names can identify different actors in independent contexts",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "1354032193@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1354032193,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "1069288382@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1069288382,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),whereis(__NAME__,Found),Found==S"
+            },
+            "observation": {
+              "data": [
+                {
+                  "Found": "1354032193@'https://n3.elfenbenstornet.se'",
+                  "S": "1354032193@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1354032193,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),whereis(__NAME__,Found),Found==S"
+            },
+            "observation": {
+              "data": [
+                {
+                  "Found": "1069288382@'https://n3.elfenbenstornet.se'",
+                  "S": "1069288382@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1069288382,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4273
+    },
+    {
+      "id": "CN-003",
+      "case_index": 2,
+      "title": "Foreign unregister leaves the owner binding intact",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "6186517472@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 6186517472,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "unregister(__NAME__)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1000859700,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),whereis(__NAME__,Found),Found==S"
+            },
+            "observation": {
+              "data": [
+                {
+                  "Found": "6186517472@'https://n3.elfenbenstornet.se'",
+                  "S": "6186517472@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 6186517472,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4196
+    },
+    {
+      "id": "CN-004",
+      "case_index": 3,
+      "title": "Named sends resolve the caller context",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "3911303902@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3911303902,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "2980205852@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 2980205852,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "__NAME__!scope_marker(a),receive({scope_marker(a)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3911303902,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "__NAME__!scope_marker(b),receive({scope_marker(b)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 2980205852,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4213
+    },
+    {
+      "id": "CN-005",
+      "case_index": 4,
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "8869968911@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3700020902,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "7507857317@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 9872054357,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "8869968911@'https://n3.elfenbenstornet.se'",
+                  "R": "3267207361",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3700020902,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "7507857317@'https://n3.elfenbenstornet.se'",
+                  "R": "3104056130",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 9872054357,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4243
+    },
+    {
+      "id": "CN-006",
+      "case_index": 5,
+      "title": "Local descendants inherit ordinary-name visibility",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "2008280585@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 2008280585,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "3696758323@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3696758323,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "2008280585@'https://n3.elfenbenstornet.se'",
+                  "S": "2008280585@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 2008280585,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "P": "3696758323@'https://n3.elfenbenstornet.se'",
+                  "S": "3696758323@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 3696758323,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4182
+    },
+    {
+      "id": "CN-007",
+      "case_index": 6,
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "spawn(receive({ping(From)->From!scope_pong}),P,[]),register(__NAME__,P)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "From": "From",
+                  "P": "2637866506@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1102777010,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "action": "new_toplevel"
+            },
+            "observation": {
+              "new_toplevel": true
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),__NAME__!ping(S),receive({scope_pong->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "5208632346@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 5208632346,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4220
+    },
+    {
+      "id": "CN-008",
+      "case_index": 7,
+      "title": "Disconnecting one context preserves another context with the same name",
+      "status": "pass",
+      "observation": {
+        "status": "pass",
+        "trace": [
+          {
+            "step": {
+              "client": "a",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "5148629923@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 5148629923,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),register(__NAME__,S)"
+            },
+            "observation": {
+              "data": [
+                {
+                  "S": "1783987250@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1783987250,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "a",
+              "action": "close"
+            },
+            "observation": {
+              "closed": true
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "self(S),whereis(__NAME__,Found),Found==S"
+            },
+            "observation": {
+              "data": [
+                {
+                  "Found": "1783987250@'https://n3.elfenbenstornet.se'",
+                  "S": "1783987250@'https://n3.elfenbenstornet.se'",
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1783987250,
+              "type": "success"
+            }
+          },
+          {
+            "step": {
+              "client": "b",
+              "goal": "__NAME__!scope_still_live,receive({scope_still_live->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+            },
+            "observation": {
+              "data": [
+                {
+                  "ScopeCheck": "passed"
+                }
+              ],
+              "more": false,
+              "pid": 1783987250,
+              "type": "success"
+            }
+          }
+        ]
+      },
+      "duration_ms": 4211
+    }
+  ],
+  "counts": {
+    "pass": 8
+  }
+}

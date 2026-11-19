@@ -7,69 +7,41 @@ another runtime.
 
 ## Current consolidated results
 
-The [19 November full conformance run](reports/2026-11-19-deployed-conformance/REPORT.md)
-exercises all 76 manifests (1,973 main case rows) after the native SWI-Prolog
-11.0.0 upgrade. It is **not all-green**: retained-context, browser callback,
-URI/timeout and supporting fixture failures remain, and attachment/return-barrier
-instrumentation blocks auxiliary controls. Every main case ID has execution
-evidence; this does not mean every configuration passes or every gate completed.
+The [fresh live-node run](reports/2026-11-19-upgraded-live-conformance/REPORT.md)
+covers all **78 manifests / 1,984 main input rows** after deployment of native
+`a2ff186` and Trealla `3a5b761`. **It is not all-green.** Live applicable cases,
+owned-image private controls, supporting diagnostics, blocked assertions and
+superseded harness attempts are reported separately. Every input row is
+accounted for; four context-return assertions remain blocked.
 
-The public ACTOR/HTTP selection passes 118/118 on N3/N4/N5. N7 records 106/118
-initially, with all twelve HTTP 429 cases passing paced controls. Directed public
-interoperability passes 36/36. The three exact-image private release gates pass
-45/45 plus 7/7 source-directives each. All four library pack versions pass across
-seven selected modes, including the latest 295-case pack. The runner's 111 unit
-tests pass. Browser WASM remains on SWI 10.1.19; this upgrade changed native SWI.
+N3/N4/N5 pass the 118-case ACTOR/HTTP primary selection. N7's five initial 429
+refusals pass with the requested quiet period and longer pauses; the originals
+remain visible. All four historical library versions ran on the live HTTP and
+selected retained WebSocket endpoints. N6's four initial query-capacity
+refusals also have separate passing paused controls. HTTP prompt tests pass 19/19 on each
+N2/N3/N4/N5 with paced creation. The three image-backed private gates pass
+45+7 each, and the runner's 114 unit tests pass.
 
-The [first repair batch](reports/2026-11-19-conformance-repairs/REPORT.md) fixes
-helper-source loading, noncompletion entry accounting and SWI's public promise
-cleanup API. Its candidate changes are not deployed; the controlled context
-selection remains red at 42 pass / 15 fail / 4 blocked. The later naming alignment selects a common isolation contract; promise and
-remote round-trip requirements remain separate open questions.
+The wider context matrix remains red at 46 pass / 11 fail / 4 blocked. The run
+also exposes a reproducible public Trealla receive-body cut difference, retains
+URI/deadline/document and prompt-reference findings, and records browser
+B-SV-006 failures in both real Chromium modes. No runtime, assertion, installed
+engine, live service configuration or quota was changed by this test run.
 
-The [live N5 deployment](reports/2026-11-19-live-n5-naming/REPORT.md) now selects
-Trealla `6041ea3`. All eight naming checks and all eight deployment smoke groups
-pass; other services and security settings were preserved. The older reports
-below retain their original pre-deployment boundaries.
+[Current matrix](CURRENT_COVERAGE.md),
+[per-file observations](reports/2026-11-19-upgraded-live-conformance/SUMMARY.json),
+[case inventory](reports/2026-11-19-upgraded-live-conformance/verification.json)
+and [input hashes](reports/2026-11-19-upgraded-live-conformance/suite-inputs.json)
+make the scope reviewable. These repeated versions/modes are not a percentage
+of language conformance. Public browser UI, private admin operations and all
+configuration/security boundaries are not certified here.
 
-The common [client-context naming contract](profiles/client-naming-0.1.md)
-now requires ordinary names to be isolated between clients on every ACTOR node.
-The [naming alignment report](reports/2026-11-19-client-naming/REPORT.md) records
-Trealla's candidate repair and shared SWI/Trealla/ECLiPSe/browser observations.
-That report retains its pre-deployment boundary; Trealla `6041ea3` is now
-selected on N5. Explicitly published services retain their separate node-wide
-registry.
-
-The [connection-cleanup follow-up](reports/2026-11-19-connection-cleanup/REPORT.md)
-traces the earlier missed notification to delayed cleanup in the Prolog test
-client. The repaired harness verifies termination of roots, unlinked children
-and toplevels for WebSocket close and stream EOF, with an independent connection
-remaining usable. All 69 interoperability groups pass; runtime and deployment
-inputs are unchanged.
-
-The [HTTP context follow-up](reports/2026-11-19-http-context/REPORT.md) records
-Trealla's retained HTTP session namespace gap and its original controls.
-The shared promise checks and Trealla HTTP naming extension pass 3/3; both
-Trealla controls fail on unchanged source. That checkpoint also retains a
-cache-cleanup timeout observed on unchanged source.
-
-The [OPEN compatibility checkpoint](reports/2026-11-19-open-http-contract/REPORT.md)
-implements candidate fresh-request isolation and verifies anonymous retained
-sessions. Its HTTP and normal consumer gates pass. The stricter drawer run
-retains ten timeouts also found on unchanged OPEN source; that checkpoint preceded the retirement repair below. Production pins are unchanged.
-
-The [OPEN exercise repair](reports/2026-11-19-open-exercise-repair/REPORT.md)
-resolves all ten earlier timeouts by preserving the actor's creating node during
-retirement. All 34 visible entries and 136 checks pass anonymously. Fresh-request
-isolation and retained-session sharing pass on both native runtimes. The fixes
-are pushed upstream; production pins and live nodes remain unchanged.
-
-The [current coverage matrix](CURRENT_COVERAGE.md),
-[per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json) and
-[verified inventory](reports/2026-11-19-deployed-conformance/verification.json)
-separate boundaries, diagnostic observations, failed attempts and controls.
-The [16 November report](reports/2026-11-16-deployed-conformance/REPORT.md) and
-older records remain unchanged. No live services were changed by this run.
+The common [client naming contract](profiles/client-naming-0.1.md) keeps ordinary
+names client scoped and published services node-wide. The
+[deployment and smoke record](https://github.com/torbjornlager/trinity-demonstrator/blob/84cc9b02a0ef7860d1f04c64080719f55e6652aa/docs/verification/http-context-live-2026-11-19/REPORT.md)
+identifies the live release. The [earlier full run](reports/2026-11-19-deployed-conformance/REPORT.md)
+and all repair/naming/OPEN checkpoints retain their original failures and
+pre-deployment boundaries. The fixes have since been deployed.
 
 The following earlier qualification records retain their dated scope; current
 failures and incomplete controls are described in the 19 November report.

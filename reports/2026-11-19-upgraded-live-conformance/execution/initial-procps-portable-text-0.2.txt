@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/work/suite/adapters/local_portable_text.py", line 190, in <module>
+    if __name__ == '__main__': main()
+                               ~~~~^^
+  File "/work/suite/adapters/local_portable_text.py", line 59, in main
+    'inputs': {str(p.relative_to(ROOT)): sha(p) for p in inputs},
+                                         ~~~^^^
+  File "/work/suite/adapters/local_promises.py", line 16, in sha
+    def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                                     ~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/suite/profiles/portable-text-0.2.md'
