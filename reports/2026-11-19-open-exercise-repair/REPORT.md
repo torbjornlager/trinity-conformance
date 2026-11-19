@@ -97,6 +97,10 @@ commits and deploying them remains a separate release step. Demonstrator CI
 checks its current production pins; candidate runtime qualification is the
 explicit local evidence above.
 
+[Demonstrator CI](https://github.com/torbjornlager/trinity-demonstrator/actions/runs/44571437167)
+completed successfully for `2c4283e`: both `test` and `wasm` passed. The
+[CI record](ci.json) identifies the exact commit, jobs and run.
+
 ## Reproduction
 
 ```sh
