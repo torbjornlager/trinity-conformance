@@ -27,6 +27,11 @@ cleanup API. Its candidate changes are not deployed; the controlled context
 selection remains red at 42 pass / 15 fail / 4 blocked. The later naming alignment selects a common isolation contract; promise and
 remote round-trip requirements remain separate open questions.
 
+The [live N5 deployment](reports/2026-11-19-live-n5-naming/REPORT.md) now selects
+Trealla `6041ea3`. All eight naming checks and all eight deployment smoke groups
+pass; other services and security settings were preserved. The older reports
+below retain their original pre-deployment boundaries.
+
 The common [client-context naming contract](profiles/client-naming-0.1.md)
 now requires ordinary names to be isolated between clients on every ACTOR node.
 The [naming alignment report](reports/2026-11-19-client-naming/REPORT.md) records

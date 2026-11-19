@@ -23,7 +23,8 @@ The subsequent [naming alignment](reports/2026-11-19-client-naming/REPORT.md)
 implements client-context ordinary names in candidate Trealla code. The shared
 pack passes 8/8 on SWI, patched Trealla and live ECLiPSe N7, and 7/7 applicable
 checks in browser Worker/main (one unsupported multi-toplevel API operation per
-mode). No live Trealla deployment changed. Node-wide published services remain
+mode). Trealla `6041ea3` is now [deployed on N5](reports/2026-11-19-live-n5-naming/REPORT.md),
+with a fresh 8/8 live naming result and eight passing smoke groups. Node-wide published services remain
 a separate registry; HTTP-session naming is outside this measured selection.
 
 ## Current deployed observations
