@@ -1,0 +1,11 @@
+--- a/swi_lineage_compat.pl
++++ b/swi_lineage_compat.pl
+@@ -30,7 +30,7 @@
+     sub_string(Denied.data,_,_,_,"permission"),
+     peer_options(Opts),
+     setup_call_cleanup(websocket:http_open_websocket(WSURL,WS,Opts),
+-        once(swi_lineage_compat:wire_checks(WS,Observer,O.pid)),
++        swi_lineage_compat:wire_checks(WS,Observer,O.pid),
+         (websocket:ws_close(WS,1000,"done"),Closed=true)),
+     cleanup_completed(Closed),
+     reconnected_scope(WSURL),

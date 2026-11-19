@@ -27,6 +27,13 @@ mode). Trealla `6041ea3` is now [deployed on N5](reports/2026-11-19-live-n5-nami
 with a fresh 8/8 live naming result and eight passing smoke groups. Node-wide published services remain
 a separate registry; HTTP-session naming is outside this measured selection.
 
+The [connection-cleanup follow-up](reports/2026-11-19-connection-cleanup/REPORT.md)
+resolves the naming report's missed-notification probe as delayed test-client
+cleanup. Both close modes pass direct independent-monitor checks for roots,
+unlinked children and toplevels, with positive survivor controls. All 69
+interoperability groups pass. This is a harness repair; no runtime or deployed
+inputs changed, and original full-run totals below remain unchanged.
+
 ## Current deployed observations
 
 | Node | Surface | Fresh selection |

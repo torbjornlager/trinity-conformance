@@ -39,6 +39,13 @@ Trealla's candidate repair and shared SWI/Trealla/ECLiPSe/browser observations.
 These candidate changes are not deployed; explicitly published services retain
 their separate node-wide registry.
 
+The [connection-cleanup follow-up](reports/2026-11-19-connection-cleanup/REPORT.md)
+traces the earlier missed notification to delayed cleanup in the Prolog test
+client. The repaired harness verifies termination of roots, unlinked children
+and toplevels for WebSocket close and stream EOF, with an independent connection
+remaining usable. All 69 interoperability groups pass; runtime and deployment
+inputs are unchanged.
+
 The [current coverage matrix](CURRENT_COVERAGE.md),
 [per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json) and
 [verified inventory](reports/2026-11-19-deployed-conformance/verification.json)

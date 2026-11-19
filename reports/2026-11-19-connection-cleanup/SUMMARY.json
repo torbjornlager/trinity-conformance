@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-19",
+  "scope": "Disposable loopback delegated-transport connection cleanup; no live deployment",
+  "trealla_base_revision": "6041ea36bfeec553f9888b770cb47e7759c2c9cb",
+  "native_swi_revision": "26e1ce7d712afafe440e3f87388baec4490232ec",
+  "trealla_engine": "3.14.20",
+  "swi_engine": "11.0.0",
+  "lab_image": "sha256:93daa029dbdabb5777fc72cbcd6afdcc2593e54ea5ce65286ce34e0aeb2ebe2d",
+  "test_source_sha256": "da9008fa72ce14436784ac33f0848ed029bbc5d820b533a3879bb912a60eeeb1",
+  "interop_source_sha256": "a7ca7b138184c169dd4d088314bcf2ea4104840cfe8c78ab3b7ba861527f2a5f",
+  "interop_log_sha256": "24880b538126d645a1630d04de00d7612aa21ecbef35cec507563c419896a7ba",
+  "interop_groups": 69,
+  "interop_exit_code": 0,
+  "final_focused_exit_code": 0,
+  "negative_controls": [
+    {
+      "mutation": "Remove only once/1 around original wire_checks/3 body",
+      "expected_exit_code": 1,
+      "expected_error": "connection_cleanup_still_pending",
+      "actual_exit_code": 1
+    },
+    {
+      "mutation": "Keep closing connection open instead of closing stream",
+      "expected_exit_code": 1,
+      "expected_error": "missing_root_down",
+      "actual_exit_code": 1
+    }
+  ],
+  "close_modes": [
+    "WebSocket close handshake",
+    "stream EOF without WebSocket close frame"
+  ],
+  "actors_per_connection": [
+    "root",
+    "unlinked child",
+    "toplevel"
+  ],
+  "independent_connection_control": "same peer credential and same lineage token; distinct connection; root and child pongs plus toplevel query; then all three monitored down",
+  "receive_timeout_seconds": 5,
+  "live_changes": false,
+  "runtime_changes": false,
+  "committed": true,
+  "executable_sha256": {
+    "/opt/trealla/tpl": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a",
+    "/usr/bin/swipl": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a"
+  },
+  "trealla_harness_revision": "7946acd83291e2c6217cbb2f891c08d2d0faef99"
+}

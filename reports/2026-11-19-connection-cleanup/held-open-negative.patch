@@ -1,0 +1,11 @@
+--- a/swi_lineage_compat.pl
++++ b/swi_lineage_compat.pl
+@@ -197,7 +197,7 @@
+ cleanup_completed(Closed) :-
+     ( Closed==true -> true ; throw(connection_cleanup_still_pending) ).
+ 
+-close_probe_socket(graceful,WS) :- websocket:ws_close(WS,1000,"done").
++close_probe_socket(graceful,_WS).
+ close_probe_socket(eof,WS) :- close(WS).
+ 
+ cleanup_family(WS,C,O,Tag,Root) :-
