@@ -1,0 +1,181 @@
+{
+  "suite": "client-naming-0.1",
+  "status": "draft",
+  "scope": "required",
+  "minimum_profile": "actor",
+  "contract": "Ordinary names are client-context scoped; equal credentials do not merge contexts. Local descendants and toplevels on one retained connection share the namespace. Published services occupy an independent node-wide registry.",
+  "cases": [
+    {
+      "id": "CN-001",
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "whereis(__NAME__,P),P==undefined"
+        }
+      ]
+    },
+    {
+      "id": "CN-002",
+      "title": "Equal names can identify different actors in independent contexts",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "a",
+          "goal": "self(S),whereis(__NAME__,Found),Found==S"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),whereis(__NAME__,Found),Found==S"
+        }
+      ]
+    },
+    {
+      "id": "CN-003",
+      "title": "Foreign unregister leaves the owner binding intact",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "unregister(__NAME__)"
+        },
+        {
+          "client": "a",
+          "goal": "self(S),whereis(__NAME__,Found),Found==S"
+        }
+      ]
+    },
+    {
+      "id": "CN-004",
+      "title": "Named sends resolve the caller context",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "a",
+          "goal": "__NAME__!scope_marker(a),receive({scope_marker(a)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        },
+        {
+          "client": "b",
+          "goal": "__NAME__!scope_marker(b),receive({scope_marker(b)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        }
+      ]
+    },
+    {
+      "id": "CN-005",
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+        },
+        {
+          "client": "b",
+          "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+        },
+        {
+          "client": "a",
+          "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        },
+        {
+          "client": "b",
+          "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        }
+      ]
+    },
+    {
+      "id": "CN-006",
+      "title": "Local descendants inherit ordinary-name visibility",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "a",
+          "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        }
+      ]
+    },
+    {
+      "id": "CN-007",
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "spawn(receive({ping(From)->From!scope_pong}),P,[]),register(__NAME__,P)"
+        },
+        {
+          "client": "a",
+          "action": "new_toplevel"
+        },
+        {
+          "client": "a",
+          "goal": "self(S),__NAME__!ping(S),receive({scope_pong->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        }
+      ]
+    },
+    {
+      "id": "CN-008",
+      "title": "Disconnecting one context preserves another context with the same name",
+      "transport": "client-context",
+      "steps": [
+        {
+          "client": "a",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),register(__NAME__,S)"
+        },
+        {
+          "client": "a",
+          "action": "close"
+        },
+        {
+          "client": "b",
+          "goal": "self(S),whereis(__NAME__,Found),Found==S"
+        },
+        {
+          "client": "b",
+          "goal": "__NAME__!scope_still_live,receive({scope_still_live->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+        }
+      ]
+    }
+  ]
+}

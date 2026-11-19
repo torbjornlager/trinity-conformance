@@ -1,0 +1,163 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "source-directives-0.1",
+  "scope": "required",
+  "candidate": "swi-n2",
+  "counts": {
+    "pass": 7,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SD-001",
+      "title": "A source directive that fails makes spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "8593497842@'http://127.0.0.1:58045'",
+            "D": "fail",
+            "E": "error(directive_failed(fail),_)",
+            "P": "P",
+            "S": "8593497842@'http://127.0.0.1:58045'",
+            "SDOptions1": "[src_text(':- fail.')]"
+          }
+        ],
+        "more": false,
+        "pid": 8593497842,
+        "type": "success"
+      },
+      "duration_ms": 56
+    },
+    {
+      "id": "SD-002",
+      "title": "A failing goal directive after earlier clauses is reported unqualified, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "2079810131@'http://127.0.0.1:58045'",
+            "D": "sd_fact(b)",
+            "E": "error(directive_failed(sd_fact(b)),_)",
+            "P": "P",
+            "SDOptions1": "[src_text('sd_fact(a). :- sd_fact(b).')]"
+          }
+        ],
+        "more": false,
+        "pid": 2079810131,
+        "type": "success"
+      },
+      "duration_ms": 56
+    },
+    {
+      "id": "SD-003",
+      "title": "The first of several failing directives is reported, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "9127909767@'http://127.0.0.1:58045'",
+            "D": "fail",
+            "E": "error(directive_failed(fail),_)",
+            "P": "P",
+            "SDOptions1": "[src_text(':- fail. :- sd_never_defined_goal_probe = other.')]"
+          }
+        ],
+        "more": false,
+        "pid": 9127909767,
+        "type": "success"
+      },
+      "duration_ms": 57
+    },
+    {
+      "id": "SD-004",
+      "title": "Dynamic declarations and clauses still create a working actor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "3818248091@'http://127.0.0.1:58045'",
+            "P": "7770959906@'http://127.0.0.1:58045'",
+            "R": "yes",
+            "S": "3818248091@'http://127.0.0.1:58045'",
+            "SDOptions1": "[src_text(':- dynamic sd_dyn/1. sd_ok(yes).'),monitor(true)]",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 3818248091,
+        "type": "success"
+      },
+      "duration_ms": 61
+    },
+    {
+      "id": "SD-005",
+      "title": "A failing directive makes toplevel_spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "5936025135@'http://127.0.0.1:58045'",
+            "D": "fail",
+            "E": "error(directive_failed(fail),_)",
+            "P": "P",
+            "SDOptions1": "[src_text(':- fail.')]"
+          }
+        ],
+        "more": false,
+        "pid": 5936025135,
+        "type": "success"
+      },
+      "duration_ms": 56
+    },
+    {
+      "id": "SD-006",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by spawn/3 and never runs",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "3736926458@'http://127.0.0.1:58045'",
+            "E": "error(permission_error(execute,sandboxed_directive,(:-open('/dev/null',read,_),close(_),assertz(sd_forbidden_ran))),context(node_sandbox:reject_forbidden_directive_goal/3,'directive calls a goal disabled in sandbox mode'))",
+            "Me": "3736926458@'http://127.0.0.1:58045'",
+            "R": "R",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 3736926458,
+        "type": "success"
+      },
+      "duration_ms": 59
+    },
+    {
+      "id": "SD-007",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by toplevel_spawn/2 and never runs",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVSelf": "8293679619@'http://127.0.0.1:58045'",
+            "E": "error(permission_error(execute,sandboxed_directive,(:-open('/dev/null',read,_),close(_),assertz(sd_forbidden_ran))),context(node_sandbox:reject_forbidden_directive_goal/3,'directive calls a goal disabled in sandbox mode'))",
+            "P": "P",
+            "R": "R",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 8293679619,
+        "type": "success"
+      },
+      "duration_ms": 57
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 2,
+  "baseline": "0.1",
+  "suite": "source-directives-0.1",
+  "scope": "required",
+  "candidate": "swi-wasm-worker",
+  "advertised_profile": "actor",
+  "endpoint": "embedded-worker",
+  "peer": null,
+  "started_at": "2026-11-19T13:03:00.192Z",
+  "duration_ms": 2582,
+  "counts": {
+    "pass": 5,
+    "fail": 0,
+    "unsupported": 2,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "SD-001",
+      "title": "A source directive that fails makes spawn raise directive_failed, or is refused by the sandbox",
+      "observation": "success(@(1234567890,localhost),[passed],false)",
+      "status": "pass",
+      "duration_ms": 145
+    },
+    {
+      "id": "SD-002",
+      "title": "A failing goal directive after earlier clauses is reported unqualified, or refused by the sandbox",
+      "observation": "success(@(1234567890,localhost),[passed],false)",
+      "status": "pass",
+      "duration_ms": 145
+    },
+    {
+      "id": "SD-003",
+      "title": "The first of several failing directives is reported, or refused by the sandbox",
+      "observation": "success(@(1234567890,localhost),[passed],false)",
+      "status": "pass",
+      "duration_ms": 134
+    },
+    {
+      "id": "SD-004",
+      "title": "Dynamic declarations and clauses still create a working actor",
+      "observation": "success(@(1234567890,localhost),[passed],false)",
+      "status": "pass",
+      "duration_ms": 145
+    },
+    {
+      "id": "SD-005",
+      "title": "A failing directive makes toplevel_spawn raise directive_failed, or is refused by the sandbox",
+      "observation": "success(@(1234567890,localhost),[passed],false)",
+      "status": "pass",
+      "duration_ms": 147
+    },
+    {
+      "id": "SD-006",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by spawn/3 and never runs",
+      "status": "unsupported",
+      "detail": "requires goal_sandbox (engine runs sandbox(off))"
+    },
+    {
+      "id": "SD-007",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by toplevel_spawn/2 and never runs",
+      "status": "unsupported",
+      "detail": "requires goal_sandbox (engine runs sandbox(off))"
+    }
+  ]
+}

@@ -1,104 +1,92 @@
 # Current Web Prolog conformance coverage
 
-Updated **16 November 2026**, after the directive and sandbox release. The fresh
-selection is **not all-green**. It records **681 passes / 29 failures as written
-across 710 case executions**, with separate passing controls and classified
-contract/admission/applicability observations. These are case executions across
-configurations, not 710 independent features. The draft source-directives pack
-passes 7/7 on every sandboxed configuration.
+Updated **19 November 2026**, after deploying native SWI-Prolog 11.0.0.
+The full run exercised **76 manifests / 1,973 main case rows** at suite revision
+`3c5315c`. **It is not all-green.** Every main case ID has execution evidence,
+but failures remain and auxiliary instrumentation blocks complete qualification.
+Repeated library versions, routes, diagnostics and controls are not independent
+features and must not be converted into a language-conformance percentage.
 
-Read the [full report](reports/2026-11-16-deployed-conformance/REPORT.md),
-[machine-readable summary](reports/2026-11-16-deployed-conformance/SUMMARY.json)
-and [15 November report](reports/2026-11-15-deployed-conformance/REPORT.md).
-Original older reports remain unchanged. Source inputs for this refresh are
-`e3285ec`, identified by file hashes.
+Read the [full report](reports/2026-11-19-deployed-conformance/REPORT.md),
+[per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json),
+[verified inventory](reports/2026-11-19-deployed-conformance/verification.json)
+and [exact inputs](reports/2026-11-19-deployed-conformance/suite-inputs.json).
+Historical reports remain unchanged.
 
-## Current deployed surfaces and fresh observations
+The [first repair follow-up](reports/2026-11-19-conformance-repairs/REPORT.md)
+records candidate source-loading, entry-fixture and public cleanup API fixes.
+These are **not deployed**. The targeted controlled context rerun records
+42 pass / 15 fail / 4 blocked, and all three native noncompletion probes pass.
+The tables below remain the original full-run observations.
 
-| Node | Current surface | Fresh selection |
+The subsequent [naming alignment](reports/2026-11-19-client-naming/REPORT.md)
+implements client-context ordinary names in candidate Trealla code. The shared
+pack passes 8/8 on SWI, patched Trealla and live ECLiPSe N7, and 7/7 applicable
+checks in browser Worker/main (one unsupported multi-toplevel API operation per
+mode). No live Trealla deployment changed. Node-wide published services remain
+a separate registry; HTTP-session naming is outside this measured selection.
+
+## Current deployed observations
+
+| Node | Surface | Fresh selection |
 |---|---|---|
-| N0 | Public RELATION registry/discovery | Metadata only; no RELATION conformance claim |
-| N1 | Public ISOBASE, SWI native 74022a6 | 10/10 ISOBASE HTTP |
-| N2 | Public ISOTOPE, SWI native 74022a6 overlay | 10/10 ISOBASE HTTP; not complete ISOTOPE |
-| N3 | Public ACTOR, SWI native 74022a6 | 104/105 public ACTOR (SD 7/7); 10/10 HTTP |
-| N4 | Public ACTOR, SWI native 74022a6 | 104/105 public ACTOR (SD 7/7); 10/10 HTTP |
-| N5 | **Public ACTOR**, Trealla 3d876ef | 103/105 public ACTOR (SD 7/7); 10/10 HTTP |
-| N6 | Public contained ISOBASE, GNU 1.6.0 | 10/10 ISOBASE HTTP |
-| N7 | **Public isolated ACTOR**, ECLiPSe 7.2.13, package cc060af1 | 95/105 public ACTOR (SD 7/7); 10/10 HTTP; separate worker/prompt controls pass |
+| N0 | Public RELATION, SWI 11.0.0 | 1/1 error admission; not full RELATION |
+| N1 | Public ISOBASE, SWI 11.0.0 / native 26e1ce7 | 12/12 HTTP |
+| N2 | Public ISOTOPE, SWI 11.0.0 / native 26e1ce7 | 12/12 HTTP subset; not full ISOTOPE |
+| N3 | Public ACTOR, SWI 11.0.0 / native 26e1ce7 | 106/106 ACTOR + 12/12 HTTP |
+| N4 | Public ACTOR, SWI 11.0.0 / native 26e1ce7 | 106/106 ACTOR + 12/12 HTTP |
+| N5 | Public ACTOR, deployed Trealla image | 106/106 ACTOR + 12/12 HTTP |
+| N6 | Public contained ISOBASE, GNU | 12/12 HTTP + 1/1 error admission |
+| N7 | Public isolated ACTOR, ECLiPSe 7.2.13 | 94/106 ACTOR + 12/12 HTTP initially; twelve 429 refusals pass paced controls |
 
-N5 is no longer the old SSO-only backend path. N7's UI is
-[https://n7.elfenbenstornet.se/demonstrator](https://n7.elfenbenstornet.se/demonstrator).
-Current safe metadata, image provenance and exact source selection are linked
-from the dated report and the shared project handover. The images are the
-candidates of coordinated release `sandbox-20261116-b29a5ad-r2`. No pin or
-deployed image was changed for this test run.
+Directed public ACTOR interoperability passes **36/36** across twelve ordered
+pairs among N3/N4/N5/N7. Additional public selections record 18 successful rows
+per ACTOR node, including diagnostics; DEMO-019 passes on N3. First-attempt N7
+failures remain in the record alongside unchanged paced controls. No live
+service was restarted or reconfigured during this conformance run; baseline
+Compose container IDs and image IDs were preserved.
 
-## Isolated release gate and browser scope
+## Isolated native and browser coverage
 
-| Configuration | Fresh result |
+| Selection | Fresh observation |
 |---|---|
-| Deployed SWI N1/N3/N4 image, disposable private ACTOR | 45/45; source-directives 7/7 |
-| Deployed SWI N2 image, disposable private ACTOR | 45/45; source-directives 7/7 |
-| Deployed Trealla N5 image, transport-ready disposable private ACTOR | 45/45; source-directives 7/7 |
-| SWI-WASM Worker, packaged 82aac08 under Node | 7/7 shared language; source-directives 5/7 |
-| SWI-WASM main, same package under Node | 7/7 shared language; source-directives 5/7 |
-| Conformance runner self-tests | 55 pass; separate from case totals |
+| Exact deployed SWI N1/N3/N4 image, private ACTOR | 45/45 release + 7/7 source-directives |
+| Exact deployed SWI N2 image, private ACTOR | 45/45 + 7/7; not live N2 ACTOR certification |
+| Exact deployed Trealla N5 image, private ACTOR | 45/45 + 7/7 |
+| Library versions 0.1–0.4, seven modes | All pass; latest pack 295 × 7 = 2,065 case executions |
+| Native and Chrome receive guard controls | 16/16 native + 16/16 browser |
+| Native retained-context matrix | 39 pass / 18 fail / 4 blocked; closure 6/6; attachment controls did not execute |
+| Shared monitor matrix | 94 pass / 4 fail native; 94 pass / 4 fail browser; native barriers 2/2; strict remote group blocked by instrumentation |
+| Library noncompletion | Trealla/GNU and Chrome pass; SWI fails entry control, so its target operation was not measured |
+| Embedded WASM source directives | 5 pass / 2 unsupported per mode, per current `goal_sandbox` applicability |
+| Runner unit tests | 111 pass, outside conformance case counts |
 
-The current `actor-release-0.2` resolves to 45 cases, including SCOPY-006.
-The 1 November 44-case record remains accurate for its older input hashes.
-The fresh native gate uses distinct execution-only principals and loopback
-fixtures; it is not a public-proxy/security certification. The live public
-selection excludes ownership-lifecycle and adds selected behaviour, supervisor,
-worker, language, receive, prompt and source-directive packs: 105 cases/node. No full 45-case gate is
-claimed for ECLiPSe or the browser. Browser Node assertions are distinct from
-browser UI/network tests and historical implementation CI results.
+Seven library modes means SWI HTTP/WSS, Trealla HTTP/WSS, GNU HTTP and real
+Chrome Worker/main. Browser runtime package `0363b38b…` still contains SWI
+10.1.19 / swipl-wasm 8.2.5. The engine payload was not upgraded to SWI 11.
+Embedded Node assertions, browser session API tests and public UI tests are
+different boundaries; this run does not certify the whole browser UI.
 
-## Remaining findings
+## Current findings and limits
 
-- **SD-006/SD-007 on SWI-WASM (new):** the browser engine runs `sandbox(off)`,
-  so the forbidden-goal directive runs and creation succeeds. The pack needs an
-  applicability condition (sandboxed nodes only); four failed rows are retained.
-- **N5 RC-009:** missing `runtime_property/1` in the combined receive-body plus
-  `findall` assertion; three exact fresh repetitions fail, while four narrower
-  controls pass.
-- **Inbound remote toplevels on N7:** IX001/2/3 fail from N3/N4/N5 because the
-  trusted peer command handler omits `toplevel_*`. Nine failed executions.
-- **N7→N5 synchronous toplevels:** IX001/3 fail; asynchronous IX002 passes.
-  Diagnostic calls explicitly confirm unbound synchronous answer variables,
-  while remote creation, halt and down notification work.
-- **N7 default prompt mode:** the four native PW assertions fail without
-  capability negotiation and pass unchanged with explicit
-  `prompt_correlation:true`. Keep the default/applicability difference visible.
-- **SC-001 on all four ACTOR nodes:** old asynchronous initial-supervisor
-  failure expectation conflicts with the current manual's synchronous startup
-  exception. All four failed rows remain; reconcile the test contract before
-  proposing a runtime repair.
-- **Five N7 worker admission failures** (WC-008 added on 16 November): original
-  429 rows are retained. All five pass when every inner WebSocket session is
-  paced, without changed assertions, deadlines or public limits. Do not relabel
-  the original 95/105 result.
+Retained-context failures and blocked controls keep its gate red. Monitor
+MC-028/029 conflict with newer URI text acceptance; their failures remain as
+written. Source-aware Chrome tests retain callback-context, local naming and
+unregistered-name error differences. Native URI I/O, RPC deadlines, Trealla
+local-node RPC and HTTP options, statechart document fixtures, prompt HTTP and
+portable-text 0.2 have unresolved failures. The dated report links observations,
+source-aware reruns, original invalid fixture attempts and applicability notes.
 
-The three-case ACTOR interoperability pack passes **25/36** across 12 directed
-pairs. Inbound-N7 and N7→N5 failures above account for its 11 failed executions.
-The earlier 36-check bare actor output/reply/prompt audit covers different
-operations and remains valid within that scope.
+Every main manifest was exercised, including older library packs and native
+supporting/diagnostic packs. This does not establish complete ISO coverage,
+complete RELATION/ISOTOPE semantics, all runtime/configuration combinations,
+hostile security qualification, or passing auxiliary attachment and strict
+return-barrier controls. Nothing unexecuted is counted as passing.
 
-## Evidence and accounting
-
-See the dated report's `observations/` for canonical CLI reports and direct
-runner observation files, `diagnostics/` for controls, `attempts/` for retained
-fixture failures, `suite-inputs.json` for frozen hashes, and `verification.json`
-for schema/case-ID/count checks. All raw public failures remain failures in the
-primary 710-case selection. Repeated/negotiated/paced controls are separate.
-
-This refresh does not run every draft/native-only manifest in the repository:
-full native-specific helper/admission/library contracts, experimental text,
-resource stress, GNU's broader ISO inventory/mode audit, complete RELATION and
-ISOTOPE contracts, browser admission parity and hostile security qualifications
-remain outside its scope. Nothing unexecuted is counted as passing.
-
-The older [1 November matrix](https://github.com/torbjornlager/trinity-conformance/blob/34557d322518941ba13a3e4486736e3d41d73c81/CURRENT_COVERAGE.md)
-retains its dated 88-case isolated and 132-case deployed selections, CI links and
-broader historical index. Those source/configuration claims do not describe
-today's public N5/N7 selection. The baseline remains a scoped draft, not complete
-language/profile/security certification.
+The [Appendix B source-unit matrix](docs/APPENDIX_B_COVERAGE.md) and
+[library clause gaps](docs/LIBRARY_TEST_GAPS.md) retain obligation-level limits.
+The [16 November report](reports/2026-11-16-deployed-conformance/REPORT.md),
+[15 November report](reports/2026-11-15-deployed-conformance/REPORT.md) and
+[older 1 November matrix](https://github.com/torbjornlager/trinity-conformance/blob/34557d322518941ba13a3e4486736e3d41d73c81/CURRENT_COVERAGE.md)
+remain evidence for their original sources and configurations. Current passes
+must not silently rewrite their failures; both software and suite inputs changed.

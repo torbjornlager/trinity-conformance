@@ -8,6 +8,26 @@ const pack=JSON.parse(fs.readFileSync(manifest,'utf8'));
 const capabilities=new Set();
 const unmet=c=>(c.requires||[]).filter(r=>!capabilities.has(r));
 async function main(){
+ // The embedded coordinator has no source-loading API. Use the maintained
+ // session adapter rather than executing source-dependent goals without helpers.
+ if(!caseId && (pack.source || pack.cases.some(c=>c.source))){
+  const child=spawnSync(process.execPath,[path.join(__dirname,'wasm_actor_cases.cjs')],{
+   env:{...process.env,LIBRARY_RUNTIME_ROOT:path.resolve(root),LIBRARY_MANIFEST:path.resolve(manifest),LIBRARY_REPORT:path.resolve(report),LIBRARY_MODES:mode},
+   stdio:'inherit'
+  });
+  if(child.error)throw child.error;
+  if(child.status!==0 && fs.existsSync(report)){
+   const observed=JSON.parse(fs.readFileSync(report,'utf8'));
+   // Exit 1 is expected when recorded assertions fail; keep other passes.
+   // A nonzero exit with only passing rows is an infrastructure failure.
+   if(!observed.results.some(r=>r.status==='fail'))for(const row of observed.results)if(row.status==='pass')Object.assign(row,{status:'fail',detail:'source-aware adapter exited '+child.status});
+   observed.counts={...observed.counts,pass:observed.results.filter(r=>r.status==='pass').length,fail:observed.results.filter(r=>r.status==='fail').length};
+   fs.writeFileSync(report,JSON.stringify(observed,null,2)+'\n');
+  }
+  process.exitCode=child.status===null?2:child.status;
+  return;
+ }
+
  const started=new Date().toISOString(),clock=Date.now();let results=[];
  if(caseId){
   const c=pack.cases.find(c=>c.id===caseId);if(!c)throw Error('unknown case '+caseId);

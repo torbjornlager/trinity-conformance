@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "baseline": "0.1",
+  "suite": "server-waits-0.1",
+  "scope": "required",
+  "candidate": "swi-wasm-worker",
+  "advertised_profile": "actor",
+  "endpoint": "embedded-worker",
+  "peer": null,
+  "started_at": "2026-11-19T13:07:02.091Z",
+  "duration_ms": 13104,
+  "counts": {
+    "pass": 0,
+    "fail": 6,
+    "unsupported": 0,
+    "observed": 0,
+    "diagnostic_error": 0
+  },
+  "results": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "status": "fail",
+      "detail": "error(@(1234567890,localhost),mc_missing_reply)",
+      "duration_ms": 2145
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "fail",
+      "detail": "error(@(1234567890,localhost),mc_missing_reply)",
+      "duration_ms": 2145
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "fail",
+      "detail": "error(@(1234567890,localhost),mc_missing_message)",
+      "duration_ms": 2147
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "status": "fail",
+      "detail": "error(@(1234567890,localhost),mc_missing_message)",
+      "duration_ms": 2143
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "status": "fail",
+      "detail": "failure(@(1234567890,localhost))",
+      "duration_ms": 140
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "status": "fail",
+      "detail": "error(@(1234567890,localhost),mc_missing_message)",
+      "duration_ms": 2153
+    }
+  ]
+}

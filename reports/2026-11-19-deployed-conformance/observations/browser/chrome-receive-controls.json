@@ -1,0 +1,653 @@
+{
+  "suite": "receive-control-0.1",
+  "scope": "Real guard controls after held RPC entry; same-actor recovery for abort/time limit. Main abort runs directly; configured PTCP limits and termination run in worker children under either coordinator.",
+  "manifest_sha256": "8a63aea14906eabb115dc067cfb1a324a0f8a6b49408c76a0fc868514bb86f3a",
+  "adapter_sha256": "285b751fad38752651064008fe9f3532fe7d420cde757bab8167bf9e177ef4b2",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-001",
+      "title": "Abort propagates through an entered guard and retains the original mailbox",
+      "status": "pass",
+      "observation": {
+        "guard_target": "worker-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "abort",
+          "pid": 2889078345
+        },
+        "recovery": {
+          "type": "success",
+          "pid": 2889078345,
+          "data": [
+            {
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 2889078345,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-002",
+      "title": "Configured execution limit propagates through an entered guard with the formal time error and retained mailbox",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "pid": 8946956781,
+          "data": [
+            {
+              "Target": "7051937837@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-toplevel",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_and_recovery": {
+          "type": "success",
+          "pid": 8946956781,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "formal_error_checked": "error(resource_error(time),_)",
+        "health": {
+          "type": "success",
+          "pid": 8946956781,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-003",
+      "title": "Actor termination proceeds through an entered guard without releasing its RPC",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "pid": 6884349237,
+          "data": [
+            {
+              "Target": "4721843034@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-actor",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "success",
+          "pid": 6884349237,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 6884349237,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-004",
+      "title": "Ordinary RPC error is a guard non-match with all tentative bindings and mailbox changes rolled back",
+      "status": "pass",
+      "observation": {
+        "guard_target": "worker-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "ordinary_response": {
+          "type": "success",
+          "pid": 6562239099,
+          "data": [
+            {
+              "LibraryEntryURI": "'http://127.0.0.1:38349/entry/worker-RG-004'",
+              "S": "6562239099@localhost",
+              "GuardOutcome": "nonmatch",
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 6562239099,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-005",
+      "title": "Private source: Abort propagates through an entered guard and retains the original mailbox",
+      "status": "pass",
+      "observation": {
+        "guard_target": "worker-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "abort",
+          "pid": 6201673700
+        },
+        "recovery": {
+          "type": "success",
+          "pid": 6201673700,
+          "data": [
+            {
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 6201673700,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-006",
+      "title": "Private source: Configured execution limit propagates through an entered guard with the formal time error and retained mailbox",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "pid": 7409046644,
+          "data": [
+            {
+              "Target": "2371222688@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-toplevel",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_and_recovery": {
+          "type": "success",
+          "pid": 7409046644,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "formal_error_checked": "error(resource_error(time),_)",
+        "health": {
+          "type": "success",
+          "pid": 7409046644,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-007",
+      "title": "Private source: Actor termination proceeds through an entered guard without releasing its RPC",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "pid": 3035385429,
+          "data": [
+            {
+              "Target": "1157209443@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-actor",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "success",
+          "pid": 3035385429,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 3035385429,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RG-008",
+      "title": "Private source: Ordinary RPC error is a guard non-match with all tentative bindings and mailbox changes rolled back",
+      "status": "pass",
+      "observation": {
+        "guard_target": "worker-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "ordinary_response": {
+          "type": "success",
+          "pid": 8775679996,
+          "data": [
+            {
+              "LibraryEntryURI": "'http://127.0.0.1:38349/entry/worker-RG-008'",
+              "S": "8775679996@localhost",
+              "GuardOutcome": "nonmatch",
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "pid": 8775679996,
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-001",
+      "title": "Abort propagates through an entered guard and retains the original mailbox",
+      "status": "pass",
+      "observation": {
+        "guard_target": "main-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "abort",
+          "more": false
+        },
+        "recovery": {
+          "type": "success",
+          "data": [
+            {
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-002",
+      "title": "Configured execution limit propagates through an entered guard with the formal time error and retained mailbox",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "data": [
+            {
+              "Target": "8228983403@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-toplevel",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_and_recovery": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "formal_error_checked": "error(resource_error(time),_)",
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-003",
+      "title": "Actor termination proceeds through an entered guard without releasing its RPC",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "data": [
+            {
+              "Target": "4943103147@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-actor",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-004",
+      "title": "Ordinary RPC error is a guard non-match with all tentative bindings and mailbox changes rolled back",
+      "status": "pass",
+      "observation": {
+        "guard_target": "main-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "ordinary_response": {
+          "type": "success",
+          "data": [
+            {
+              "S": "main@localhost",
+              "LibraryEntryURI": "'http://127.0.0.1:38349/entry/main-RG-004'",
+              "GuardOutcome": "nonmatch",
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-005",
+      "title": "Private source: Abort propagates through an entered guard and retains the original mailbox",
+      "status": "pass",
+      "observation": {
+        "guard_target": "main-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "abort",
+          "more": false
+        },
+        "recovery": {
+          "type": "success",
+          "data": [
+            {
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-006",
+      "title": "Private source: Configured execution limit propagates through an entered guard with the formal time error and retained mailbox",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "data": [
+            {
+              "Target": "7371991441@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-toplevel",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_and_recovery": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "formal_error_checked": "error(resource_error(time),_)",
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-007",
+      "title": "Private source: Actor termination proceeds through an entered guard without releasing its RPC",
+      "status": "pass",
+      "observation": {
+        "setup": {
+          "type": "success",
+          "data": [
+            {
+              "Target": "3950248862@localhost",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "guard_target": "worker-child-actor",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "control_response": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RG-008",
+      "title": "Private source: Ordinary RPC error is a guard non-match with all tentative bindings and mailbox changes rolled back",
+      "status": "pass",
+      "observation": {
+        "guard_target": "main-primary-session",
+        "entry_count": 1,
+        "peer_held_at_control": true,
+        "ordinary_response": {
+          "type": "success",
+          "data": [
+            {
+              "S": "main@localhost",
+              "LibraryEntryURI": "'http://127.0.0.1:38349/entry/main-RG-008'",
+              "GuardOutcome": "nonmatch",
+              "M1": "rg_before",
+              "M3": "rg_after",
+              "GuardRecovered": "passed",
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "health": {
+          "type": "success",
+          "data": [
+            {
+              "ControlCheck": "passed"
+            }
+          ],
+          "more": false
+        },
+        "close_confirmed": true
+      }
+    }
+  ],
+  "counts": {
+    "pass": 16,
+    "fail": 0
+  }
+}

@@ -129,7 +129,7 @@ def main():
                 for original in pack['cases']:
                     case = dict(original)
                     if pack.get('source'):
-                        case['source'] = pack['source']
+                        case['source'] = pack['source'] + '\n' + case.get('source', '')
                     if case.get('candidate_error_formals'):
                         case['expected_formal'] = case['candidate_error_formals'][name]
                         case['expected_error_names'] = [case['expected_formal'].split('(')[0]]

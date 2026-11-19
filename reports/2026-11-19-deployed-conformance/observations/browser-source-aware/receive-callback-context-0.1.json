@@ -1,0 +1,310 @@
+{
+  "suite": "receive-callback-context-0.1",
+  "manifest_sha256": "8916b14faaaf2f0d5ff6dfdf9bd12edd41d4aab340815fc09beed1cfb7abafa3",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-001",
+      "title": "Source-free guard resolves the public runtime API",
+      "observation": {
+        "type": "error",
+        "pid": 4502414436,
+        "data": "receive_api_guard_missing"
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"pid\":4502414436,\"data\":\"receive_api_guard_missing\"}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-002",
+      "title": "Selected body resolves the public runtime API and leaves the message consumed",
+      "observation": {
+        "type": "failure",
+        "pid": 9746656378
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":9746656378}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-003",
+      "title": "Source-free timeout callback resolves the same API",
+      "observation": {
+        "type": "failure",
+        "pid": 5630469730
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":5630469730}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-004",
+      "title": "Message patterns shaped like API calls remain data",
+      "observation": {
+        "type": "failure",
+        "pid": 3287677163
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":3287677163}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-005",
+      "title": "Private guard inference is available to the selected body",
+      "observation": {
+        "type": "error",
+        "pid": 3168272945,
+        "data": "receive_private_guard_missing"
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"pid\":3168272945,\"data\":\"receive_private_guard_missing\"}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-006",
+      "title": "Private timeout callbacks retain the caller source",
+      "observation": {
+        "type": "failure",
+        "pid": 6097539626
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":6097539626}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-007",
+      "title": "A failed guard rolls back its bindings before the fallback",
+      "observation": {
+        "type": "success",
+        "pid": 1147792450,
+        "data": [
+          {
+            "W": "ok",
+            "S": "1147792450@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-008",
+      "title": "An ordinary guard exception preserves the unmatched message for fallback",
+      "observation": {
+        "type": "success",
+        "pid": 7995057993,
+        "data": [
+          {
+            "S": "7995057993@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-009",
+      "title": "The selected body retains both solutions without consuming another message",
+      "observation": {
+        "type": "failure",
+        "pid": 2999633664
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":2999633664}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-010",
+      "title": "Nested on_timeout goals retain runtime API dispatch",
+      "observation": {
+        "type": "failure",
+        "pid": 1713953017
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":1713953017}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-011",
+      "title": "Copied private callbacks retain the API in a child",
+      "observation": {
+        "type": "error",
+        "pid": 6858519293,
+        "data": "receive_copied_reply_missing"
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"pid\":6858519293,\"data\":\"receive_copied_reply_missing\"}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "RC-012",
+      "title": "A receive enumerated in a sourced toplevel keeps the API, private source and body bindings",
+      "observation": {
+        "type": "failure",
+        "pid": 1107160003
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":1107160003}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-001",
+      "title": "Source-free guard resolves the public runtime API",
+      "observation": {
+        "type": "error",
+        "data": "receive_api_guard_missing",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"data\":\"receive_api_guard_missing\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-002",
+      "title": "Selected body resolves the public runtime API and leaves the message consumed",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-003",
+      "title": "Source-free timeout callback resolves the same API",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-004",
+      "title": "Message patterns shaped like API calls remain data",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-005",
+      "title": "Private guard inference is available to the selected body",
+      "observation": {
+        "type": "error",
+        "data": "receive_private_guard_missing",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"data\":\"receive_private_guard_missing\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-006",
+      "title": "Private timeout callbacks retain the caller source",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-007",
+      "title": "A failed guard rolls back its bindings before the fallback",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "W": "ok",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-008",
+      "title": "An ordinary guard exception preserves the unmatched message for fallback",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-009",
+      "title": "The selected body retains both solutions without consuming another message",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-010",
+      "title": "Nested on_timeout goals retain runtime API dispatch",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-011",
+      "title": "Copied private callbacks retain the API in a child",
+      "observation": {
+        "type": "error",
+        "data": "receive_copied_reply_missing",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"data\":\"receive_copied_reply_missing\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "RC-012",
+      "title": "A receive enumerated in a sourced toplevel keeps the API, private source and body bindings",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    }
+  ],
+  "counts": {
+    "pass": 4,
+    "fail": 20
+  }
+}

@@ -66,7 +66,9 @@ def main():
 
         def do_GET(self):
             parsed = urllib.parse.urlsplit(self.path)
-            key = parsed.path.removesuffix('/call').strip('/')
+            # RPC clients may replace the base URI path with /call.
+            # Correlate by this phase's dedicated listener, not URL path.
+            key = self.server.case_key
             with lock:
                 item = entries.setdefault(key, dict(count=0, finished=False, requests=[]))
                 item['count'] += 1
@@ -80,15 +82,21 @@ def main():
             with lock:
                 item['finished'] = True
 
-    peer = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Peer)
-    thread = threading.Thread(target=peer.serve_forever, daemon=True)
-    thread.start()
-    base = f'http://127.0.0.1:{peer.server_port}'
+    peers = []
+
+    def entry_uri(key):
+        peer = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Peer)
+        peer.case_key = key
+        thread = threading.Thread(target=peer.serve_forever, daemon=True)
+        thread.start()
+        peers.append((peer, thread))
+        return f'http://127.0.0.1:{peer.server_port}'
+
     rows, sources = [], {}
     try:
         with tempfile.TemporaryDirectory(prefix='countall-noncompletion-') as tmp:
             policy = Path(tmp) / 'outbound-policy'
-            policy.write_text(f'http 127.0.0.1 {peer.server_port} 127.0.0.1\n')
+            policy.write_text('')
             policy.chmod(0o600)
             env = dict(os.environ, TPL_LIBRARY_PATH=str(Path(args.tpl).parent / 'library'), ISO_OUTBOUND_POLICY=str(policy))
             for name in ('swi', 'trealla', 'gnu'):
@@ -100,11 +108,13 @@ def main():
                 scope = root / 'prolog' if name == 'swi' else root / 'isobase' if name == 'gnu' else root
                 sources[name]['prolog_sha256'] = {str(p.relative_to(root)): sha(p) for p in sorted(scope.rglob('*.pl') if name == 'swi' else scope.glob('*.pl')) if p.is_file()}
 
-                def command(goal):
+                def command(goal, uri):
+                    port = urllib.parse.urlsplit(uri).port
+                    policy.write_text(f'http 127.0.0.1 {port} 127.0.0.1\n')
                     if name == 'swi':
                         return [executable, '-f', 'none', '-q', '-g', f'use_module({atom(root / "prolog/web_prolog.pl")}),use_module({atom(root / "prolog/web_prolog/standard_library.pl")}),(catch(({goal}),E,(writeq(E),nl,fail))->write(control_passed),nl,halt;halt(1))']
                     if name == 'trealla':
-                        return [executable, '-g', f'use_module(actors),use_module(rpc),source_policy:configure_source_policy([load_uri_allowed_origins([{atom(base)}]),load_uri_allowed_ip_ranges([\'127.0.0.0/8\'])],_),(catch(({goal}),E,(writeq(E),nl,fail))->write(control_passed),nl,halt;halt(1))']
+                        return [executable, '-g', f'use_module(actors),use_module(rpc),source_policy:configure_source_policy([load_uri_allowed_origins([{atom(uri)}]),load_uri_allowed_ip_ranges([\'127.0.0.0/8\'])],_),(catch(({goal}),E,(writeq(E),nl,fail))->write(control_passed),nl,halt;halt(1))']
                     return [executable, 'query((' + goal + '),control_passed)', '1']
 
                 def entry(key):
@@ -113,8 +123,9 @@ def main():
 
                 def control(case, phase):
                     key = name + '-' + case['id'] + '-' + phase
-                    goal = 'LibraryEntryURI=' + atom(base + '/' + key) + ',(' + case['warmup_goal'] + ')'
-                    result = subprocess.run(command(goal), cwd=root, env=env, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=8)
+                    uri = entry_uri(key)
+                    goal = 'LibraryEntryURI=' + atom(uri) + ',(' + case['warmup_goal'] + ')'
+                    result = subprocess.run(command(goal, uri), cwd=root, env=env, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=8)
                     correct = result.stdout.strip() == 'control_passed' if name != 'gnu' else json.loads(result.stdout) == dict(type='success', answers=['control_passed'], more=False)
                     marker = entry(key)
                     observed = dict(passed=result.returncode == 0 and correct and not result.stderr,
@@ -131,8 +142,9 @@ def main():
                         window, entry_timeout, _ = bounds(case)
                         observed['warmup'] = control(case, 'warmup')
                         key = name + '-' + case['id'] + '-probe'
-                        goal = 'LibraryEntryURI=' + atom(base + '/' + key) + ',(' + case['goal'] + ')'
-                        process = subprocess.Popen(command(goal), cwd=root, env=env, stdin=subprocess.DEVNULL,
+                        uri = entry_uri(key)
+                        goal = 'LibraryEntryURI=' + atom(uri) + ',(' + case['goal'] + ')'
+                        process = subprocess.Popen(command(goal, uri), cwd=root, env=env, stdin=subprocess.DEVNULL,
                                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
                         entry_deadline = time.monotonic() + entry_timeout / 1000
                         while not entry(key)['finished']:
@@ -163,9 +175,10 @@ def main():
                     rows.append(row)
                     print(name, case['id'], row['status'], flush=True)
     finally:
-        peer.shutdown()
-        peer.server_close()
-        thread.join(timeout=1)
+        for peer, thread in peers:
+            peer.shutdown()
+            peer.server_close()
+            thread.join(timeout=1)
     report = dict(suite=pack['suite'], scope='Standalone native APIs/private GNU worker; externally terminated processes, not public-node transport',
                   manifest_sha256=sha(args.manifest), adapter_sha256=sha(__file__), validator_sha256=sha(ROOT / 'runner/library_noncompletion.py'),
                   sources=sources, results=rows, counts={s: sum(r['status'] == s for r in rows) for s in ('pass', 'fail')})

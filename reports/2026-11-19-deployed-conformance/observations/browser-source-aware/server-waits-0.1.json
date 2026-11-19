@@ -1,0 +1,280 @@
+{
+  "suite": "server-waits-0.1",
+  "manifest_sha256": "24b8fc86bce9668f8262c7a6de4d4ad4fc87831fee2241fd58acbdbfa29bf066",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "observation": {
+        "type": "success",
+        "pid": 4959177951,
+        "data": [
+          {
+            "P": "3884012764@localhost",
+            "R1": "8789727890",
+            "R2": "2808792685",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "observation": {
+        "type": "success",
+        "pid": 5385120198,
+        "data": [
+          {
+            "P": "3629556664@localhost",
+            "R1": "3458307832",
+            "R2": "8271944173",
+            "Barrier": "9038868017",
+            "Again": "consumed",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "observation": {
+        "type": "success",
+        "pid": 7338768594,
+        "data": [
+          {
+            "P": "9954066045@localhost",
+            "R": "2233067317",
+            "S": "7338768594@localhost",
+            "Early": "waiting",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "observation": {
+        "type": "success",
+        "pid": 8242949328,
+        "data": [
+          {
+            "Error": "wait_callback",
+            "Bound": "bound",
+            "P": "4409632086@localhost",
+            "R": "9748011072",
+            "S": "8242949328@localhost",
+            "Values": "[one,two]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "observation": {
+        "type": "success",
+        "pid": 9534606493,
+        "data": [
+          {
+            "E": "server_down(sw_death)",
+            "Mon": "6909933180",
+            "P": "1270434634@localhost",
+            "R": "5839825467",
+            "S": "9534606493@localhost",
+            "Other": "8948295285",
+            "Q": "2152636050@localhost",
+            "Other2": "3066100122",
+            "E2": "server_down(sw_death)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "observation": {
+        "type": "success",
+        "pid": 7071004943,
+        "data": [
+          {
+            "E": "sw_timeout",
+            "B": "5234904296",
+            "Mon": "7905851061",
+            "P": "9416755336@localhost",
+            "R": "8344431215",
+            "S": "7071004943@localhost",
+            "Other": "9563832543",
+            "Early": "waiting",
+            "R2": "7074397275",
+            "M2": "5632782187",
+            "R3": "4724136402",
+            "M3": "7504655216",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "P": "2951032354@localhost",
+            "R1": "1918517697",
+            "R2": "4210007983",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "P": "9744036155@localhost",
+            "R1": "6781388283",
+            "R2": "3799403247",
+            "Barrier": "9976008201",
+            "Again": "consumed",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "8347077326@localhost",
+            "R": "1385850567",
+            "Early": "waiting",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Error": "wait_callback",
+            "Bound": "bound",
+            "S": "main@localhost",
+            "P": "4082099362@localhost",
+            "R": "7177454219",
+            "Values": "[one,two]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "E": "server_down(sw_death)",
+            "S": "main@localhost",
+            "Mon": "2338225638",
+            "P": "9750564312@localhost",
+            "R": "1676463747",
+            "Q": "7806373724@localhost",
+            "Other": "2740911963",
+            "Other2": "3719988936",
+            "E2": "server_down(sw_death)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "E": "sw_timeout",
+            "S": "main@localhost",
+            "B": "7511563196",
+            "Mon": "4434983086",
+            "P": "1401667779@localhost",
+            "R": "7294731524",
+            "Other": "4860142514",
+            "Early": "waiting",
+            "R2": "8999385338",
+            "M2": "8296714583",
+            "R3": "9116676759",
+            "M3": "4208068090",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 12,
+    "fail": 0
+  }
+}

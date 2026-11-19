@@ -1,0 +1,1028 @@
+{
+  "suite": "monitor-preflight-0.1",
+  "manifest_sha256": "51b9bee5caec0516228c84d7ae368136af3f1bf91b2301393d7e75a1277d4383",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-001",
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "observation": {
+        "type": "success",
+        "pid": 1553643934,
+        "data": [
+          {
+            "C": "7741316603",
+            "A": "6933280067",
+            "B": "7749568665",
+            "Rs": "[6933280067]",
+            "P": "9906189850@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-002",
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "observation": {
+        "type": "success",
+        "pid": 1604204166,
+        "data": [
+          {
+            "F": "1333838869@localhost",
+            "P": "8778445405@localhost",
+            "R": "1504672820",
+            "S": "1604204166@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-003",
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "observation": {
+        "type": "success",
+        "pid": 2564439522,
+        "data": [
+          {
+            "P": "9930677203@localhost",
+            "R": "7892098961",
+            "S": "2564439522@localhost",
+            "One": "[ok]",
+            "Two": "[ok]",
+            "Three": "[ok]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-004",
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "observation": {
+        "type": "success",
+        "pid": 1570973892,
+        "data": [
+          {
+            "F": "9754535289@localhost",
+            "P": "4135709789@localhost",
+            "R": "4330653691",
+            "S": "1570973892@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-005",
+      "title": "An uninstantiated monitor target is rejected even when a local name exists",
+      "observation": {
+        "type": "error",
+        "pid": 1697569378,
+        "data": "error(permission_error(run,goal,await(<js>(4,'Promise'),_11010)),_10996)",
+        "details": "error(permission_error(run,goal,await(<js>(4,'Promise'),_11010)),_)"
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"pid\":1697569378,\"data\":\"error(permission_error(run,goal,await(<js>(4,'Promise'),_11010)),_10996)\",\"details\":\"error(permission_error(run,goal,await(<js>(4,'Promise'),_11010)),_)\"}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-006",
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "observation": {
+        "type": "success",
+        "pid": 1534102921,
+        "data": [
+          {
+            "P": "2325557281@localhost",
+            "S": "1534102921@localhost",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-007",
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 4247077673,
+        "data": [
+          {
+            "MC1Self": "4247077673@localhost",
+            "MC1Pid": "2148950554@localhost",
+            "MC1Ref": "3427548315",
+            "MC1Variable": "true",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-008",
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 5297950980,
+        "data": [
+          {
+            "MC1Self": "5297950980@localhost",
+            "MC1Pid": "4082274751@localhost",
+            "MC1Ref": "1110624885",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|_11857]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-009",
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 1726404705,
+        "data": [
+          {
+            "MC1Self": "1726404705@localhost",
+            "MC1Pid": "4460323022@localhost",
+            "MC1Ref": "1156299572",
+            "MC1Variable": "false",
+            "MC1Before": "[_11893]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-010",
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 2830031122,
+        "data": [
+          {
+            "MC1Self": "2830031122@localhost",
+            "MC1Pid": "8610075772@localhost",
+            "MC1Ref": "8918927453",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,_11981]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-011",
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 2540981224,
+        "data": [
+          {
+            "MC1Self": "2540981224@localhost",
+            "MC1Pid": "8441085507@localhost",
+            "MC1Ref": "4809505174",
+            "MC1Variable": "false",
+            "MC1Before": "bad",
+            "MC1Outcome": "raised(type_error(list,bad))",
+            "MC1E": "type_error(list,bad)",
+            "MC1Actual": "type_error(list,bad)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-012",
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 8713687809,
+        "data": [
+          {
+            "MC1Self": "8713687809@localhost",
+            "MC1Pid": "4609439837@localhost",
+            "MC1Ref": "5357058649",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush|bad]))",
+            "MC1E": "type_error(list,[flush|bad])",
+            "MC1Actual": "type_error(list,[flush|bad])",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-013",
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 1331055838,
+        "data": [
+          {
+            "MC1Self": "1331055838@localhost",
+            "MC1Pid": "7963888795@localhost",
+            "MC1Ref": "8482144832",
+            "MC1Variable": "false",
+            "MC1Before": "[unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-014",
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 5008844427,
+        "data": [
+          {
+            "MC1Self": "5008844427@localhost",
+            "MC1Pid": "4959318592@localhost",
+            "MC1Ref": "6950717796",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(true)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(true)))",
+            "MC1E": "domain_error(demonitor_option,flush(true))",
+            "MC1Actual": "domain_error(demonitor_option,flush(true))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-015",
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 8631719309,
+        "data": [
+          {
+            "MC1Self": "8631719309@localhost",
+            "MC1Pid": "2136038566@localhost",
+            "MC1Ref": "4310070376",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(a,b)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(a,b)))",
+            "MC1E": "domain_error(demonitor_option,flush(a,b))",
+            "MC1Actual": "domain_error(demonitor_option,flush(a,b))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-016",
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 5897351052,
+        "data": [
+          {
+            "MC1Self": "5897351052@localhost",
+            "MC1Pid": "3938958074@localhost",
+            "MC1Ref": "7707666919",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-017",
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 8868401149,
+        "data": [
+          {
+            "MC1Self": "8868401149@localhost",
+            "MC1Pid": "7576930354@localhost",
+            "MC1Ref": "9456937446",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(false)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(false)))",
+            "MC1E": "domain_error(demonitor_option,flush(false))",
+            "MC1Actual": "domain_error(demonitor_option,flush(false))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-018",
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "pid": 2188105793,
+        "data": [
+          {
+            "MC1Self": "2188105793@localhost",
+            "MC1Pid": "8273885838@localhost",
+            "MC1Ref": "3554808196",
+            "MC1Variable": "false",
+            "MC1Before": "[7]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,7))",
+            "MC1E": "domain_error(demonitor_option,7)",
+            "MC1Actual": "domain_error(demonitor_option,7)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-026",
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "observation": {
+        "type": "success",
+        "pid": 6408278675,
+        "data": [
+          {
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "MC2Outcome": "raised(instantiation_error)",
+            "MC2E": "instantiation_error",
+            "MC2Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-027",
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "success",
+        "pid": 8006240091,
+        "data": [
+          {
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-028",
+      "title": "Double-quoted URI text in monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "error",
+        "pid": 1685466987,
+        "data": "<js>(7,'Error')"
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"pid\":1685466987,\"data\":\"<js>(7,'Error')\"}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-029",
+      "title": "List node in monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "failure",
+        "pid": 1312675442
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":1312675442}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-030",
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "observation": {
+        "type": "success",
+        "pid": 3607967838,
+        "data": [
+          {
+            "MC1Self": "3607967838@localhost",
+            "MC1Pid": "5483273290@localhost",
+            "MC1Ref": "1225015036",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(_12049)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(_12063)))",
+            "MC1E": "domain_error(demonitor_option,flush(_12063))",
+            "MC1Actual": "domain_error(demonitor_option,flush(_12063))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "MC-031",
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "observation": {
+        "type": "success",
+        "pid": 3053932123,
+        "data": [
+          {
+            "Options": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Self": "3053932123@localhost",
+            "MC1Pid": "8599819677@localhost",
+            "MC1Ref": "2176530180",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]))",
+            "MC1E": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "MC1Actual": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-001",
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "C": "8990069117",
+            "A": "3026427331",
+            "B": "4493320602",
+            "Rs": "[3026427331]",
+            "P": "1070494672@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-002",
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "F": "1821228625@localhost",
+            "P": "2140247272@localhost",
+            "R": "1621944115",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-003",
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "8714632975@localhost",
+            "R": "4968244873",
+            "One": "[ok]",
+            "Two": "[ok]",
+            "Three": "[ok]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-004",
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "F": "4678526718@localhost",
+            "P": "6691960241@localhost",
+            "R": "2767402571",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-005",
+      "title": "An uninstantiated monitor target is rejected even when a local name exists",
+      "observation": {
+        "type": "error",
+        "data": "error(permission_error(run,goal,await(<js>(1,'Promise'),_2804)),_2790)",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"data\":\"error(permission_error(run,goal,await(<js>(1,'Promise'),_2804)),_2790)\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-006",
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "3151931758@localhost",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-007",
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "5450612069@localhost",
+            "MC1Ref": "3425921837",
+            "MC1Variable": "true",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-008",
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "1691280409@localhost",
+            "MC1Ref": "3586568579",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|_773]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-009",
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "1482354171@localhost",
+            "MC1Ref": "5180331903",
+            "MC1Variable": "false",
+            "MC1Before": "[_759]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-010",
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "3906323438@localhost",
+            "MC1Ref": "2194103838",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,_785]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-011",
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "7057138300@localhost",
+            "MC1Ref": "1201743697",
+            "MC1Variable": "false",
+            "MC1Before": "bad",
+            "MC1Outcome": "raised(type_error(list,bad))",
+            "MC1E": "type_error(list,bad)",
+            "MC1Actual": "type_error(list,bad)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-012",
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "2983217825@localhost",
+            "MC1Ref": "4884977303",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush|bad]))",
+            "MC1E": "type_error(list,[flush|bad])",
+            "MC1Actual": "type_error(list,[flush|bad])",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-013",
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "6933649066@localhost",
+            "MC1Ref": "4803287417",
+            "MC1Variable": "false",
+            "MC1Before": "[unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-014",
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "9741614220@localhost",
+            "MC1Ref": "7669467671",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(true)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(true)))",
+            "MC1E": "domain_error(demonitor_option,flush(true))",
+            "MC1Actual": "domain_error(demonitor_option,flush(true))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-015",
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "3452690835@localhost",
+            "MC1Ref": "6336880657",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(a,b)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(a,b)))",
+            "MC1E": "domain_error(demonitor_option,flush(a,b))",
+            "MC1Actual": "domain_error(demonitor_option,flush(a,b))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-016",
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "5394146910@localhost",
+            "MC1Ref": "8619949385",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-017",
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "6093579958@localhost",
+            "MC1Ref": "9409896529",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(false)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(false)))",
+            "MC1E": "domain_error(demonitor_option,flush(false))",
+            "MC1Actual": "domain_error(demonitor_option,flush(false))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-018",
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "9235615224@localhost",
+            "MC1Ref": "6241528364",
+            "MC1Variable": "false",
+            "MC1Before": "[7]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,7))",
+            "MC1E": "domain_error(demonitor_option,7)",
+            "MC1Actual": "domain_error(demonitor_option,7)",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-026",
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "MC2Outcome": "raised(instantiation_error)",
+            "MC2E": "instantiation_error",
+            "MC2Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-027",
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-028",
+      "title": "Double-quoted URI text in monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "error",
+        "data": "<js>(2,'Error')",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"error\",\"data\":\"<js>(2,'Error')\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-029",
+      "title": "List node in monitor target is rejected before returning a reference",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-030",
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "MC1Self": "main@localhost",
+            "MC1Pid": "7609039354@localhost",
+            "MC1Ref": "9974338385",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(_821)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(_831)))",
+            "MC1E": "domain_error(demonitor_option,flush(_831))",
+            "MC1Actual": "domain_error(demonitor_option,flush(_831))",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "MC-031",
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Options": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Self": "main@localhost",
+            "MC1Pid": "6752314020@localhost",
+            "MC1Ref": "7865901358",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]))",
+            "MC1E": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "MC1Actual": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 42,
+    "fail": 6
+  }
+}

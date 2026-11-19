@@ -1,0 +1,150 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "server-waits-0.1",
+  "scope": "required",
+  "candidate": "n7",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "manifest_sha256": "24b8fc86bce9668f8262c7a6de4d4ad4fc87831fee2241fd58acbdbfa29bf066",
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3247188259,
+        "data": [
+          {
+            "P": "2012276689@'https://n7.elfenbenstornet.se'",
+            "R1": "4885088252",
+            "R2": "2950549732",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3206
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8866814965,
+        "data": [
+          {
+            "P": "3573280733@'https://n7.elfenbenstornet.se'",
+            "R1": "7142467882",
+            "R2": "7148880557",
+            "Barrier": "1892593886",
+            "Again": "consumed",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3215
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4960735322,
+        "data": [
+          {
+            "S": "4960735322@'https://n7.elfenbenstornet.se'",
+            "P": "3342664277@'https://n7.elfenbenstornet.se'",
+            "R": "1650905463",
+            "Early": "waiting",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3198
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6292387170,
+        "data": [
+          {
+            "S": "6292387170@'https://n7.elfenbenstornet.se'",
+            "P": "7471643311@'https://n7.elfenbenstornet.se'",
+            "R": "8105974556",
+            "Bound": "bound",
+            "Error": "wait_callback",
+            "V": "V",
+            "Values": "[one,two]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3212
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8568294463,
+        "data": [
+          {
+            "S": "8568294463@'https://n7.elfenbenstornet.se'",
+            "P": "6219029019@'https://n7.elfenbenstornet.se'",
+            "Other": "8395820518",
+            "E": "server_down(sw_death)",
+            "Q": "4936302210@'https://n7.elfenbenstornet.se'",
+            "R": "4918358839",
+            "Mon": "6322709103",
+            "Other2": "2507489876",
+            "E2": "server_down(sw_death)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3201
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1811497198,
+        "data": [
+          {
+            "S": "1811497198@'https://n7.elfenbenstornet.se'",
+            "P": "5369463300@'https://n7.elfenbenstornet.se'",
+            "R": "2775112861",
+            "Mon": "8889376703",
+            "Other": "5778616017",
+            "Early": "waiting",
+            "R2": "8326714148",
+            "M2": "8567333908",
+            "B": "3704195459",
+            "R3": "8890336177",
+            "M3": "1230305709",
+            "E": "sw_timeout",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3212
+    }
+  ]
+}

@@ -30,9 +30,11 @@ creation under the same name checks release through public interfaces. Its
 zero-time check for an unwanted child startup message is a bounded observation,
 not proof against arbitrary delayed activation races.
 
-Ordinary namespace differences remain explicit: native SWI names belong to the
-caller's client namespace; native Trealla names are node-wide. These tests stay
-inside one client and do not assert cross-client isolation or merge namespaces.
+The common [client-context naming contract](client-naming-0.1.md) requires
+ordinary names to belong to the caller's context on every ACTOR implementation.
+This original pack stays inside one client; the separate client-naming pack
+checks cross-client isolation. Older reports retain Trealla's former node-wide
+behavior and its observed differences.
 Service registrations, remote aliases, concurrent name races, publication during
 startup, interruption, namespace teardown, browsers and GNU ACTOR are outside
 this pack. Public lifecycle observations do not certify resource reclamation.

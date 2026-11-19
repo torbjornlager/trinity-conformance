@@ -1,0 +1,150 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "server-waits-0.1",
+  "scope": "required",
+  "candidate": "n5",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "manifest_sha256": "24b8fc86bce9668f8262c7a6de4d4ad4fc87831fee2241fd58acbdbfa29bf066",
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1497910933,
+        "data": [
+          {
+            "P": "2282986870",
+            "R1": "1000048779",
+            "R2": "1000048780",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2121
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2996722791,
+        "data": [
+          {
+            "P": "1050681826",
+            "R1": "1000048794",
+            "R2": "1000048795",
+            "Barrier": "1000048796",
+            "Again": "consumed",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2135
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1128764887,
+        "data": [
+          {
+            "S": "1128764887@'https://n5.elfenbenstornet.se'",
+            "P": "1599872939",
+            "R": "1000048810",
+            "Early": "waiting",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2083
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1018849340,
+        "data": [
+          {
+            "S": "1018849340@'https://n5.elfenbenstornet.se'",
+            "P": "1678615069",
+            "R": "1000048824",
+            "Bound": "bound",
+            "Error": "wait_callback",
+            "V": "V",
+            "Values": "[one,two]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2123
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2065967841,
+        "data": [
+          {
+            "S": "2065967841@'https://n5.elfenbenstornet.se'",
+            "P": "2525014258",
+            "Other": "1000048840",
+            "E": "server_down(sw_death)",
+            "Q": "2431006604",
+            "R": "1000048846",
+            "Mon": "1000048845",
+            "Other2": "1000048847",
+            "E2": "server_down(sw_death)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2130
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1713475613,
+        "data": [
+          {
+            "S": "1713475613@'https://n5.elfenbenstornet.se'",
+            "P": "1069193910",
+            "R": "1000048864",
+            "Mon": "1000048863",
+            "Other": "1000048865",
+            "Early": "waiting",
+            "R2": "1000048867",
+            "M2": "1000048866",
+            "B": "1000048868",
+            "R3": "1000048870",
+            "M3": "1000048869",
+            "E": "sw_timeout",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2056
+    }
+  ]
+}

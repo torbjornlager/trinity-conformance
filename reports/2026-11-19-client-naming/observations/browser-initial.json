@@ -1,0 +1,578 @@
+{
+  "suite": "client-naming-0.1",
+  "manifest_sha256": "149c45ad3169799ab3616beffe1bf7ff747ec9490ec98a5cd30aa8c6bae49e8f",
+  "adapter_sha256": "288dfb32051c1319ad1eb4b98de59f3fe92fc877c9fdd1f2ce275645612ca7bd",
+  "scope": "Independent browser page/coordinator contexts; not multiple clients hosted inside one browser coordinator. No service-publication qualification.",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-001",
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6945891769,
+            "data": [
+              {
+                "S": "6945891769@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P==undefined"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1319386851,
+            "data": [
+              {
+                "P": "undefined",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-002",
+      "title": "Equal names can identify different actors in independent contexts",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8989174189,
+            "data": [
+              {
+                "S": "8989174189@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 2589229115,
+            "data": [
+              {
+                "S": "2589229115@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8989174189,
+            "data": [
+              {
+                "S": "8989174189@localhost",
+                "ScopeCheck": "passed",
+                "Found": "8989174189@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 2589229115,
+            "data": [
+              {
+                "S": "2589229115@localhost",
+                "ScopeCheck": "passed",
+                "Found": "2589229115@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-003",
+      "title": "Foreign unregister leaves the owner binding intact",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1701971426,
+            "data": [
+              {
+                "S": "1701971426@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "unregister(__NAME__)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 3316806368,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1701971426,
+            "data": [
+              {
+                "S": "1701971426@localhost",
+                "ScopeCheck": "passed",
+                "Found": "1701971426@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-004",
+      "title": "Named sends resolve the caller context",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6788123019,
+            "data": [
+              {
+                "S": "6788123019@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 2798709354,
+            "data": [
+              {
+                "S": "2798709354@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "__NAME__!scope_marker(a),receive({scope_marker(a)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6788123019,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_marker(b),receive({scope_marker(b)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 2798709354,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-005",
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 5291035328,
+            "data": [
+              {
+                "P": "5905551044@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7586652233,
+            "data": [
+              {
+                "P": "9216441517@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 5291035328,
+            "data": [
+              {
+                "P": "5905551044@localhost",
+                "R": "5562558676",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7586652233,
+            "data": [
+              {
+                "P": "9216441517@localhost",
+                "R": "7231384917",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-006",
+      "title": "Local descendants inherit ordinary-name visibility",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8071102812,
+            "data": [
+              {
+                "S": "8071102812@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1404542031,
+            "data": [
+              {
+                "S": "1404542031@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8071102812,
+            "data": [
+              {
+                "P": "8071102812@localhost",
+                "S": "8071102812@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1404542031,
+            "data": [
+              {
+                "P": "1404542031@localhost",
+                "S": "1404542031@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-007",
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "trace": [],
+      "status": "unsupported",
+      "detail": "Browser session API does not expose multiple toplevels on one retained connection"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-008",
+      "title": "Disconnecting one context preserves another context with the same name",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8403573728,
+            "data": [
+              {
+                "S": "8403573728@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6706357541,
+            "data": [
+              {
+                "S": "6706357541@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "action": "close"
+          },
+          "observation": {
+            "closed": true
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6706357541,
+            "data": [
+              {
+                "S": "6706357541@localhost",
+                "ScopeCheck": "passed",
+                "Found": "6706357541@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_still_live,receive({scope_still_live->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6706357541,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-001",
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-002",
+      "title": "Equal names can identify different actors in independent contexts",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-003",
+      "title": "Foreign unregister leaves the owner binding intact",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-004",
+      "title": "Named sends resolve the caller context",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-005",
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-006",
+      "title": "Local descendants inherit ordinary-name visibility",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-007",
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "trace": [],
+      "status": "unsupported",
+      "detail": "Browser session API does not expose multiple toplevels on one retained connection"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-008",
+      "title": "Disconnecting one context preserves another context with the same name",
+      "trace": [],
+      "status": "fail",
+      "detail": "page.evaluate: RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): unknown type form: 83 @+12). Build with -sASSERTIONS for more info.\n    at abort (http://127.0.0.1:38365/swipl-bundle.js:1:43961)\n    at instantiateArrayBuffer (http://127.0.0.1:38365/swipl-bundle.js:1:6265650)\n    at async createWasm (http://127.0.0.1:38365/swipl-bundle.js:1:6266231)\n    at async http://127.0.0.1:38365/swipl-bundle.js:1:6365853\n    at async eval (eval at evaluate (:370:30), <anonymous>:1:247)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/wasm_client_naming.cjs:25:201"
+    }
+  ],
+  "counts": {
+    "pass": 7,
+    "fail": 7
+  }
+}

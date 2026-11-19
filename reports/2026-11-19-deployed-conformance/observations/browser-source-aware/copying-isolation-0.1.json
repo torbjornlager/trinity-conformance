@@ -1,0 +1,254 @@
+{
+  "suite": "copying-isolation-0.1",
+  "manifest_sha256": "b7c0d35c88fbb9edbc4205a0e946767e5c97f4685645de9d40dca73f5fa0be19",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "observation": {
+        "type": "success",
+        "pid": 6929548189,
+        "data": [
+          {
+            "Self": "4904722544@localhost",
+            "P": "4904722544@localhost",
+            "S": "6929548189@localhost",
+            "Embedded": "4904722544@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "observation": {
+        "type": "success",
+        "pid": 1800071611,
+        "data": [
+          {
+            "Value": "child",
+            "X": "parent",
+            "P": "9570263742@localhost",
+            "S": "1800071611@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "observation": {
+        "type": "success",
+        "pid": 8431779475,
+        "data": [
+          {
+            "P": "9181805279@localhost",
+            "S": "8431779475@localhost",
+            "R1": "inside",
+            "R2": "inside",
+            "U": "parent_received",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "observation": {
+        "type": "success",
+        "pid": 7171369012,
+        "data": [
+          {
+            "P": "7245166201@localhost",
+            "S": "7171369012@localhost",
+            "Values": "[alpha,beta]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "observation": {
+        "type": "success",
+        "pid": 1086319023,
+        "data": [
+          {
+            "P": "1491508511@localhost",
+            "S": "1086319023@localhost",
+            "Rows": "[first-_9711-_9711,second-pair(_9699,_9707)]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "observation": {
+        "type": "success",
+        "pid": 1187746316,
+        "data": [
+          {
+            "Before": "[parent]",
+            "P": "7843795759@localhost",
+            "After": "[parent]",
+            "S": "1187746316@localhost",
+            "Changed": "[changed]",
+            "Q": "9772695262@localhost",
+            "Sibling": "[right]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Self": "3201370180@localhost",
+            "S": "main@localhost",
+            "P": "3201370180@localhost",
+            "Embedded": "3201370180@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Value": "child",
+            "S": "main@localhost",
+            "X": "parent",
+            "P": "5880924520@localhost",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "3435436878@localhost",
+            "R1": "inside",
+            "R2": "inside",
+            "U": "parent_received",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "2437480519@localhost",
+            "Values": "[alpha,beta]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "S": "main@localhost",
+            "P": "7967741874@localhost",
+            "Rows": "[first-_39385-_39385,second-pair(_39403,_39405)]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Before": "[parent]",
+            "S": "main@localhost",
+            "P": "7174749371@localhost",
+            "After": "[parent]",
+            "Q": "5283195069@localhost",
+            "Changed": "[changed]",
+            "Sibling": "[right]",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 12,
+    "fail": 0
+  }
+}

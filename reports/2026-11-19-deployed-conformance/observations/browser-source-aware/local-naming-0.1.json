@@ -1,0 +1,236 @@
+{
+  "suite": "local-naming-0.1",
+  "manifest_sha256": "692b0760bea1e9d2716ce099af372d039dc7282edc9d2e3c7a4cfeb02a659e3c",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-001",
+      "title": "Registration lookup and named message routing",
+      "observation": {
+        "type": "success",
+        "pid": 1580775400,
+        "data": [
+          {
+            "Name": "ln_case_001",
+            "P": "4601632623@localhost",
+            "S": "1580775400@localhost",
+            "Found": "4601632623@localhost",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "observation": {
+        "type": "failure",
+        "pid": 7019549567
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":7019549567}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-003",
+      "title": "Unregistration is idempotent and leaves the actor running",
+      "observation": {
+        "type": "success",
+        "pid": 5580998043,
+        "data": [
+          {
+            "Name": "ln_case_003",
+            "P": "3575094618@localhost",
+            "S": "5580998043@localhost",
+            "Absent": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-004",
+      "title": "Observed local termination removes registration and permits name reuse",
+      "observation": {
+        "type": "success",
+        "pid": 1384255286,
+        "data": [
+          {
+            "Name": "ln_case_004",
+            "P": "6336840377@localhost",
+            "Absent": "undefined",
+            "Q": "3646914068@localhost",
+            "Found": "3646914068@localhost",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-005",
+      "title": "Stale local pid registration is rejected without publishing a name",
+      "observation": {
+        "type": "failure",
+        "pid": 2106021498
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":2106021498}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "observation": {
+        "type": "success",
+        "pid": 2994609266,
+        "data": [
+          {
+            "Name": "ln_case_006",
+            "Published": "4247329255@localhost",
+            "P": "5711330737@localhost",
+            "Children": "[]",
+            "Sup": "4247329255@localhost",
+            "S": "2994609266@localhost",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),supervisor_spawn/3)",
+            "Found": "5711330737@localhost",
+            "Failure": "error(supervisor_startup_error('src_uri origin is not allowed in SWI-WASM: file://'),supervisor_spawn/3)",
+            "Absent": "undefined",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-001",
+      "title": "Registration lookup and named message routing",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_001",
+            "S": "main@localhost",
+            "P": "2798691679@localhost",
+            "Found": "2798691679@localhost",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-003",
+      "title": "Unregistration is idempotent and leaves the actor running",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_003",
+            "S": "main@localhost",
+            "P": "4388456447@localhost",
+            "Absent": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-004",
+      "title": "Observed local termination removes registration and permits name reuse",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_004",
+            "P": "6020930567@localhost",
+            "Q": "6403876223@localhost",
+            "Absent": "undefined",
+            "Found": "6403876223@localhost",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-005",
+      "title": "Stale local pid registration is rejected without publishing a name",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /Users/lager/trinity-conformance/adapters/wasm_actor_cases.cjs:34:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_006",
+            "S": "main@localhost",
+            "Published": "8049260609@localhost",
+            "P": "2237731613@localhost",
+            "Children": "[]",
+            "Sup": "8049260609@localhost",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),supervisor_spawn/3)",
+            "Found": "2237731613@localhost",
+            "Failure": "error(supervisor_startup_error('src_uri origin is not allowed in SWI-WASM: file://'),supervisor_spawn/3)",
+            "Absent": "undefined",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 8,
+    "fail": 4
+  }
+}

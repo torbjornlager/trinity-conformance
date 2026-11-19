@@ -1,0 +1,18 @@
+{
+  "runs": [
+    {
+      "command": "docker exec conformance-native-20261119 python3 /Users/lager/trinity-conformance/adapters/local_runtime_contracts.py --manifest /Users/lager/trinity-conformance/cases/boolean-boundary-diagnostics-0.1.json --swi-root /opt/swi-prolog-node --trealla-root /work/trealla --swipl /usr/bin/swipl --tpl /opt/trealla/tpl --mode off --output /Users/lager/trinity-demonstrator/.trinity/conformance-full-20261119/followup-native/boolean-owner-off",
+      "exit_code": 0,
+      "classification": "policy availability diagnostic; not language validation"
+    },
+    {
+      "command": "docker exec -e NODE_PATH=/modules -e CHROME_PATH=/usr/bin/chromium -e WP_WASM_SOURCE_DIR=/Users/lager/trinity-demonstrator/.trinity/conformance-full-20261119/browser-fixture conformance-browser-20261119 python3 /Users/lager/trinity-conformance/adapters/local_browser_context.py --swipl /usr/bin/swipl --tpl /opt/trealla/tpl --swi-root /opt/swi-prolog-node --trealla-root /work/trealla --runtime-root /runtime --node /usr/local/bin/node --output /Users/lager/trinity-demonstrator/.trinity/conformance-full-20261119/browser/remote-without-instrumentation",
+      "exit_code": 1,
+      "counts": {
+        "pass": 27,
+        "fail": 33
+      },
+      "classification": "supplementary uninstrumented transport contexts; excludes BN-013, does not replace strict return-barrier gate"
+    }
+  ]
+}

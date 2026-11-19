@@ -1,0 +1,513 @@
+{
+  "suite": "browser-native-context-0.1",
+  "adapter_sha256": "ce67f9e89583feb8ed6b65944d478cd161c9de4e7fc381b363b80c1f6bea0392",
+  "runtime_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-001-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((send(S,hello)),_,[node('http://localhost:54053')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"success\",\"pid\":9924360034,\"data\":[{\"S\":\"9924360034@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":9924360034,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":9924360034},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"9924360034\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9924360034 -> 9924360034: hello\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":9924360034,\"data\":[{\"S\":\"9924360034@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-002-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://localhost:54053')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"error\",\"pid\":3152540870,\"data\":\"no_forward_denial\"} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":3152540870,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":3152540870},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"3152540870\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":3152540870,\"data\":\"no_forward_denial\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:11:23)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-003-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query catch(yield(7587230211,_,[timeout(0)]),error(existence_error(promise,7587230211),_),Missing=true),Missing==true,self(S),spawn((yield(7587230211,A),send(S,collected(A))),_,[node('http://localhost:54053')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_native_collection))]) {\"type\":\"error\",\"pid\":4854676542,\"data\":\"no_native_collection\"} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":4854676542,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":4854676542},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"4854676542\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4854676542 -> 4854676542: created(7587230211)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":4854676542,\"data\":[{\"Ref\":\"7587230211\",\"S\":\"4854676542@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4854676542 -> 4854676542: collected(error(error(existence_error(url,'http://127.0.0.1:58293/call?goal=%28true%29&template=%28mark%29&offset=0&format=prolog'),context(_1,status(404,'Not Found')))))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":4854676542,\"data\":\"no_native_collection\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:15:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-004-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://localhost:54053')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"pid\":7344037673,\"data\":[{\"R\":\"6457668008\",\"S\":\"7344037673@localhost\",\"Local\":\"6704822844@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"shell_ready\",\"pid\":\"7344037673\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 6704822844 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6704822844 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6704822844 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7344037673 -> 6704822844: return(6457668008)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6704822844@localhost -> 7344037673: returned(success([mark],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6704822844 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":7344037673,\"data\":[{\"R\":\"6457668008\",\"S\":\"7344037673@localhost\",\"Local\":\"6704822844@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-005-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((catch(yield(8597908927,_,[timeout(0)]),E,true),promise_cleanup(8597908927),send(S,denied(E))),_,[node('http://localhost:54053')]),receive({denied(error(existence_error(promise,8597908927),_))->true},[timeout(3),on_timeout(throw(no_foreign_denial))]) {\"type\":\"error\",\"pid\":1298822435,\"data\":\"no_foreign_denial\"} [{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1298822435,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1298822435},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1298822435\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7915764813 -> 7915764813: created(8597908927)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":7915764813,\"data\":[{\"Ref\":\"8597908927\",\"S\":\"7915764813@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":1298822435,\"data\":\"no_foreign_denial\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:21:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-006-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-007-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-008-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/native/swi',X=mark,R,[template(v(X))]),yield(R,success([v(mark)],false)),rpc('http://127.0.0.1:58293/native/swi',(A=mark,B=A)),A==mark,B==mark {\"type\":\"success\",\"pid\":9013223110,\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"1311000440\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":9013223110,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":9013223110},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"9013223110\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":9013223110,\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"1311000440\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-009-swi",
+      "peer": "swi",
+      "observation": [
+        "ordinary browser cannot select a delegated scope",
+        "query self(S),spawn((send(S,still_open)),_,[node('http://localhost:54053')]),receive({still_open->true},[timeout(3),on_timeout(throw(forged_close_affected_owner))]) {\"type\":\"success\",\"pid\":2558833361,\"data\":[{\"S\":\"2558833361@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":2558833361,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":2558833361},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"2558833361\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2558833361 -> 2558833361: still_open\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":2558833361,\"data\":[{\"S\":\"2558833361@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-010-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-011-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-012-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,BR,[template(mark)]),self(S),spawn(receive({multi(Native)->self(Me),whereis(browser_home,Me),yield(BR,Browser),send(S,whole(Native,Browser))}),Local,[]),register(browser_home,Local),spawn((self(Owner),register(multihop_home,Owner),promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),spawn(spawn((whereis(multihop_home,Visible),Visible==Owner,yield(R,A),send(Owner,hop_result(A))),_,[node('http://localhost:54053')]),_,[node('http://127.0.0.1:60833')]),receive({hop_result(A)->send(Local,multi(A))})),Origin,[node('http://localhost:54053'),monitor(true)]),receive({whole(success([mark],false),success([mark],false))->true;down(Origin,Origin,Why) if Why\\==true->throw(multihop_root_down(Why))},[timeout(4),on_timeout(throw(no_multihop_return))]) {\"type\":\"error\",\"pid\":1693561336,\"data\":\"no_multihop_return\"} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1693561336,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1693561336},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1693561336\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 7872604938 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7872604938 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7872604938 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":1693561336,\"data\":\"no_multihop_return\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:64:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-014-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),toplevel_spawn(P,[node('http://localhost:54053'),session(true),monitor(true)]),monitor(P,Keep),monitor(P,Removed),monitor(P,Queued),send(S,down(P,Queued,already_queued)),demonitor(Queued),receive({down(P,Queued,already_queued)->true},[timeout(0)]),spawn((demonitor(Keep,[flush]),send(S,foreign_done)),F,[monitor(true)]),receive({foreign_done->true}),receive({down(F,F,true)->true}),send(S,down(P,Removed,queued_one)),send(S,down(P,Removed,queued_two)),send(S,kept_message),demonitor(Removed,[flush]),demonitor(Removed),toplevel_call_synch(P,true,A,[template(ok),timeout(3)]),nonvar(A),A=success(P,[ok],false),exit(P,kill),receive({down(P,P,Reason)->true},[timeout(3)]),receive({down(P,Keep,Reason)->true},[timeout(3)]),receive({down(_,Removed,_)->throw(withdrawn_monitor_delivered)},[timeout(0),on_timeout(true)]),receive({kept_message->true},[timeout(0)]) {\"type\":\"success\",\"pid\":1646715348,\"data\":[{\"Reason\":\"true\",\"A\":\"success(9456177772@'http://localhost:54053',[ok],false)\",\"F\":\"9560668432@localhost\",\"P\":\"9456177772@'http://localhost:54053'\",\"S\":\"1646715348@localhost\",\"Keep\":\"5514580521\",\"Removed\":\"5858684365\",\"Queued\":\"2247660111\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9560668432 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9560668432 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9560668432@localhost -> 1646715348: foreign_done\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1646715348 -> 1646715348: down(9560668432@localhost,9560668432@localhost,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9560668432 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1646715348 -> 1646715348: '$toplevel_reply'(1938858566,success(@(9456177772,'http://localhost:54053'),[ok],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1646715348 -> 1646715348: '$server_monitor_cleaned'(2739844156)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1646715348 -> 1646715348: down(9456177772@'http://localhost:54053',9456177772@'http://localhost:54053',true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1646715348 -> 1646715348: down(9456177772@'http://localhost:54053',5514580521,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1646715348,\"data\":[{\"Reason\":\"true\",\"A\":\"success(9456177772@'http://localhost:54053',[ok],false)\",\"F\":\"9560668432@localhost\",\"P\":\"9456177772@'http://localhost:54053'\",\"S\":\"1646715348@localhost\",\"Keep\":\"5514580521\",\"Removed\":\"5858684365\",\"Queued\":\"2247660111\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-015-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://localhost:54053'),session(true)]),monitor(P,R),assertz(loss_monitor(P,R)) {\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":6109533303,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":6109533303},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"6109533303\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query loss_monitor(P,R),receive({down(P,R,connection_closed)->true},[timeout(3),on_timeout(throw(no_observation_loss))]),demonitor(R,[flush]) {\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":6109533303,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":6109533303},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"6109533303\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6109533303 -> 6109533303: down(2398022438@'http://localhost:54053',8157295515,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query toplevel_spawn(New,[node('http://localhost:54053'),session(true)]),toplevel_halt(New),loss_monitor(_,R),receive({down(_,R,_)->throw(old_monitor_restored)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"R\":\"8157295515\",\"ContextCheck\":\"passed\",\"New\":\"3495721699@'http://localhost:54053'\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":6109533303,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":6109533303},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"6109533303\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"6109533303 -> 6109533303: down(2398022438@'http://localhost:54053',8157295515,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"P\":\"2398022438@'http://localhost:54053'\",\"R\":\"8157295515\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6109533303,\"data\":[{\"R\":\"8157295515\",\"ContextCheck\":\"passed\",\"New\":\"3495721699@'http://localhost:54053'\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-016-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://localhost:54053'),session(true)]),monitor(P,R),monitor(P,Keep),assertz(retry_monitor(P,R,Keep)) {\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1136799525,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1136799525},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1136799525\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query retry_monitor(P,R,_),self(S),send(S,down(P,R,before_timeout)),catch(demonitor(R,[flush]),error(remote_demonitor_timeout(P),_),Timed=true),Timed==true,receive({down(P,R,before_timeout)->true},[timeout(0),on_timeout(throw(timeout_flushed_mailbox))]) {\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"ContextCheck\":\"passed\",\"S\":\"1136799525@localhost\",\"Timed\":\"true\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1136799525,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1136799525},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1136799525\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"ContextCheck\":\"passed\",\"S\":\"1136799525@localhost\",\"Timed\":\"true\"}],\"more\":false}}]",
+        "timeout retains the monitor for retry",
+        "late timed-out withdrawal cannot remove retry state",
+        "query retry_monitor(P,R,Keep),demonitor(R,[flush]),demonitor(R),exit(P,kill),receive({down(P,Keep,_)->true},[timeout(3)]),receive({down(_,R,_)->throw(retry_left_monitor)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1136799525,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1136799525},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1136799525\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"ContextCheck\":\"passed\",\"S\":\"1136799525@localhost\",\"Timed\":\"true\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1136799525 -> 1136799525: down(8406811187@'http://localhost:54053',9884532403,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1136799525,\"data\":[{\"P\":\"8406811187@'http://localhost:54053'\",\"R\":\"1672384173\",\"Keep\":\"9884532403\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-001-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:60833')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"success\",\"pid\":2614762742,\"data\":[{\"S\":\"2614762742@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":2614762742,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":2614762742},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"2614762742\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2614762742 -> 2614762742: hello\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":2614762742,\"data\":[{\"S\":\"2614762742@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-002-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:60833')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"success\",\"pid\":4867280921,\"data\":[{\"R\":\"8202122326\",\"S\":\"4867280921@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":4867280921,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":4867280921},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"4867280921\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4867280921 -> 4867280921: denied(error(existence_error(promise,8202122326),context(rpc:yield/3,'unknown, consumed, or expired promise')))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":4867280921,\"data\":[{\"R\":\"8202122326\",\"S\":\"4867280921@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-003-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query self(S),spawn((promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:60833')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"success\",\"pid\":2536905350,\"data\":[{\"Ref\":\"1000000039\",\"S\":\"2536905350@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":2536905350,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":2536905350},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"2536905350\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2536905350 -> 2536905350: created(1000000039)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":2536905350,\"data\":[{\"Ref\":\"1000000039\",\"S\":\"2536905350@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "native reference returned",
+        "query catch(yield(1000000039,_,[timeout(0)]),error(existence_error(promise,1000000039),_),Missing=true),Missing==true,self(S),spawn((yield(1000000039,A),send(S,collected(A))),_,[node('http://127.0.0.1:60833')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_native_collection))]) {\"type\":\"success\",\"pid\":2536905350,\"data\":[{\"S\":\"2536905350@localhost\",\"ContextCheck\":\"passed\",\"Missing\":\"true\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":2536905350,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":2536905350},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"2536905350\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2536905350 -> 2536905350: created(1000000039)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":2536905350,\"data\":[{\"Ref\":\"1000000039\",\"S\":\"2536905350@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2536905350 -> 2536905350: collected(success([mark],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":2536905350,\"data\":[{\"S\":\"2536905350@localhost\",\"ContextCheck\":\"passed\",\"Missing\":\"true\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-004-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:60833')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"pid\":4876538828,\"data\":[{\"R\":\"1810878020\",\"S\":\"4876538828@localhost\",\"Local\":\"4233414208@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"shell_ready\",\"pid\":\"4876538828\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 4233414208 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4233414208 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4233414208 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4876538828 -> 4233414208: return(1810878020)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4233414208@localhost -> 4876538828: returned(success([mark],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"4233414208 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":4876538828,\"data\":[{\"R\":\"1810878020\",\"S\":\"4876538828@localhost\",\"Local\":\"4233414208@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-005-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-006-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-007-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-008-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/native/trealla',X=mark,R,[template(v(X))]),yield(R,success([v(mark)],false)),rpc('http://127.0.0.1:58293/native/trealla',(A=mark,B=A)),A==mark,B==mark {\"type\":\"success\",\"pid\":6445327473,\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"1170728475\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":6445327473,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":6445327473},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"6445327473\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":6445327473,\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"1170728475\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-009-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: forged close response missing\n    at eval (eval at evaluate (:370:30), <anonymous>:72:90)\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-010-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-011-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-012-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,BR,[template(mark)]),self(S),spawn(receive({multi(Native)->self(Me),whereis(browser_home,Me),yield(BR,Browser),send(S,whole(Native,Browser))}),Local,[]),register(browser_home,Local),spawn((self(Owner),register(multihop_home,Owner),promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),spawn(spawn((whereis(multihop_home,Visible),Visible==Owner,yield(R,A),send(Owner,hop_result(A))),_,[node('http://127.0.0.1:60833')]),_,[node('http://localhost:54053')]),receive({hop_result(A)->send(Local,multi(A))})),Origin,[node('http://127.0.0.1:60833'),monitor(true)]),receive({whole(success([mark],false),success([mark],false))->true;down(Origin,Origin,Why) if Why\\==true->throw(multihop_root_down(Why))},[timeout(4),on_timeout(throw(no_multihop_return))]) {\"type\":\"error\",\"pid\":8149689440,\"data\":\"no_multihop_return\"} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":8149689440,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":8149689440},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"8149689440\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 7870237991 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7870237991 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7870237991 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":8149689440,\"data\":\"no_multihop_return\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:64:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-014-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query self(S),toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true),monitor(true)]),monitor(P,Keep),monitor(P,Removed),monitor(P,Queued),send(S,down(P,Queued,already_queued)),demonitor(Queued),receive({down(P,Queued,already_queued)->true},[timeout(0)]),spawn((demonitor(Keep,[flush]),send(S,foreign_done)),F,[monitor(true)]),receive({foreign_done->true}),receive({down(F,F,true)->true}),send(S,down(P,Removed,queued_one)),send(S,down(P,Removed,queued_two)),send(S,kept_message),demonitor(Removed,[flush]),demonitor(Removed),toplevel_call_synch(P,true,A,[template(ok),timeout(3)]),nonvar(A),A=success(P,[ok],false),exit(P,kill),receive({down(P,P,Reason)->true},[timeout(3)]),receive({down(P,Keep,Reason)->true},[timeout(3)]),receive({down(_,Removed,_)->throw(withdrawn_monitor_delivered)},[timeout(0),on_timeout(true)]),receive({kept_message->true},[timeout(0)]) {\"type\":\"success\",\"pid\":9991452341,\"data\":[{\"Reason\":\"kill\",\"A\":\"success(1301067249@'http://127.0.0.1:60833',[ok],false)\",\"F\":\"7627011069@localhost\",\"P\":\"1301067249@'http://127.0.0.1:60833'\",\"S\":\"9991452341@localhost\",\"Keep\":\"7551935522\",\"Removed\":\"7589643597\",\"Queued\":\"4214896986\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7627011069 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7627011069 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7627011069@localhost -> 9991452341: foreign_done\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9991452341 -> 9991452341: down(7627011069@localhost,7627011069@localhost,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"7627011069 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9991452341 -> 9991452341: '$toplevel_reply'(4780469774,success(1301067249@'http://127.0.0.1:60833',[ok],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9991452341 -> 9991452341: '$server_monitor_cleaned'(3387400147)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9991452341 -> 9991452341: down(1301067249@'http://127.0.0.1:60833',7551935522,kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9991452341 -> 9991452341: down(1301067249@'http://127.0.0.1:60833',1301067249@'http://127.0.0.1:60833',kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":9991452341,\"data\":[{\"Reason\":\"kill\",\"A\":\"success(1301067249@'http://127.0.0.1:60833',[ok],false)\",\"F\":\"7627011069@localhost\",\"P\":\"1301067249@'http://127.0.0.1:60833'\",\"S\":\"9991452341@localhost\",\"Keep\":\"7551935522\",\"Removed\":\"7589643597\",\"Queued\":\"4214896986\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-015-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true)]),monitor(P,R),assertz(loss_monitor(P,R)) {\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1156384063,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1156384063},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1156384063\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query loss_monitor(P,R),receive({down(P,R,connection_closed)->true},[timeout(3),on_timeout(throw(no_observation_loss))]),demonitor(R,[flush]) {\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1156384063,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1156384063},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1156384063\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1156384063 -> 1156384063: down(1376748670@'http://127.0.0.1:60833',1908928650,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query toplevel_spawn(New,[node('http://127.0.0.1:60833'),session(true)]),toplevel_halt(New),loss_monitor(_,R),receive({down(_,R,_)->throw(old_monitor_restored)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"R\":\"1908928650\",\"ContextCheck\":\"passed\",\"New\":\"1806909592@'http://127.0.0.1:60833'\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":1156384063,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":1156384063},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"1156384063\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1156384063 -> 1156384063: down(1376748670@'http://127.0.0.1:60833',1908928650,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"P\":\"1376748670@'http://127.0.0.1:60833'\",\"R\":\"1908928650\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":1156384063,\"data\":[{\"R\":\"1908928650\",\"ContextCheck\":\"passed\",\"New\":\"1806909592@'http://127.0.0.1:60833'\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "BN-016-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true)]),monitor(P,R),monitor(P,Keep),assertz(retry_monitor(P,R,Keep)) {\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":3555706490,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":3555706490},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"3555706490\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query retry_monitor(P,R,_),self(S),send(S,down(P,R,before_timeout)),catch(demonitor(R,[flush]),error(remote_demonitor_timeout(P),_),Timed=true),Timed==true,receive({down(P,R,before_timeout)->true},[timeout(0),on_timeout(throw(timeout_flushed_mailbox))]) {\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"ContextCheck\":\"passed\",\"S\":\"3555706490@localhost\",\"Timed\":\"true\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":3555706490,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":3555706490},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"3555706490\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"ContextCheck\":\"passed\",\"S\":\"3555706490@localhost\",\"Timed\":\"true\"}],\"more\":false}}]",
+        "timeout retains the monitor for retry",
+        "late timed-out withdrawal cannot remove retry state",
+        "query retry_monitor(P,R,Keep),demonitor(R,[flush]),demonitor(R),exit(P,kill),receive({down(P,Keep,_)->true},[timeout(3)]),receive({down(_,R,_)->throw(retry_left_monitor)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":3555706490,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":3555706490},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"3555706490\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"ContextCheck\":\"passed\",\"S\":\"3555706490@localhost\",\"Timed\":\"true\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"3555706490 -> 3555706490: down(2606736552@'http://127.0.0.1:60833',1738160983,kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"pid\":3555706490,\"data\":[{\"P\":\"2606736552@'http://127.0.0.1:60833'\",\"R\":\"6139537855\",\"Keep\":\"1738160983\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-001-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),spawn((send(S,hello)),_,[node('http://localhost:54053')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: hello\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-002-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://localhost:54053')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"error\",\"data\":\"no_forward_denial\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_forward_denial\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:11:23)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-003-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query catch(yield(4723981319,_,[timeout(0)]),error(existence_error(promise,4723981319),_),Missing=true),Missing==true,self(S),spawn((yield(4723981319,A),send(S,collected(A))),_,[node('http://localhost:54053')]),receive({collected(success([mark],false))->true},[timeout(3),on_timeout(throw(no_native_collection))]) {\"type\":\"error\",\"data\":\"no_native_collection\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: created(4723981319)\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"Ref\":\"4723981319\",\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: collected(error(error(existence_error(url,'http://127.0.0.1:58293/call?goal=%28true%29&template=%28mark%29&offset=0&format=prolog'),context(_1,status(404,'Not Found')))))\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_native_collection\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:15:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-004-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://localhost:54053')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"7409693448\",\"Local\":\"3401685935@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 3401685935 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"3401685935 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"3401685935 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> 3401685935: return(7409693448)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"3401685935@localhost -> main: returned(success([mark],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"3401685935 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"7409693448\",\"Local\":\"3401685935@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-005-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((catch(yield(1243441489,_,[timeout(0)]),E,true),promise_cleanup(1243441489),send(S,denied(E))),_,[node('http://localhost:54053')]),receive({denied(error(existence_error(promise,1243441489),_))->true},[timeout(3),on_timeout(throw(no_foreign_denial))]) {\"type\":\"error\",\"pid\":9990190506,\"data\":\"no_foreign_denial\"} [{\"type\":\"ready\"},{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":9990190506,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":9990190506},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"9990190506\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: created(1243441489)\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"Ref\":\"1243441489\",\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"pid\":9990190506,\"data\":\"no_foreign_denial\"}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:21:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-006-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-007-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-008-swi",
+      "peer": "swi",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/native/swi',X=mark,R,[template(v(X))]),yield(R,success([v(mark)],false)),rpc('http://127.0.0.1:58293/native/swi',(A=mark,B=A)),A==mark,B==mark {\"type\":\"success\",\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"4330597626\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"4330597626\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-009-swi",
+      "peer": "swi",
+      "observation": [
+        "ordinary browser cannot select a delegated scope",
+        "query self(S),spawn((send(S,still_open)),_,[node('http://localhost:54053')]),receive({still_open->true},[timeout(3),on_timeout(throw(forged_close_affected_owner))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: still_open\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-010-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-011-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://localhost:54053\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-012-swi",
+      "peer": "swi",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,BR,[template(mark)]),self(S),spawn(receive({multi(Native)->self(Me),whereis(browser_home,Me),yield(BR,Browser),send(S,whole(Native,Browser))}),Local,[]),register(browser_home,Local),spawn((self(Owner),register(multihop_home,Owner),promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),spawn(spawn((whereis(multihop_home,Visible),Visible==Owner,yield(R,A),send(Owner,hop_result(A))),_,[node('http://localhost:54053')]),_,[node('http://127.0.0.1:60833')]),receive({hop_result(A)->send(Local,multi(A))})),Origin,[node('http://localhost:54053'),monitor(true)]),receive({whole(success([mark],false),success([mark],false))->true;down(Origin,Origin,Why) if Why\\==true->throw(multihop_root_down(Why))},[timeout(4),on_timeout(throw(no_multihop_return))]) {\"type\":\"error\",\"data\":\"no_multihop_return\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 2841128575 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2841128575 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"2841128575 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_multihop_return\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:64:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-014-swi",
+      "peer": "swi",
+      "observation": [
+        "query self(S),toplevel_spawn(P,[node('http://localhost:54053'),session(true),monitor(true)]),monitor(P,Keep),monitor(P,Removed),monitor(P,Queued),send(S,down(P,Queued,already_queued)),demonitor(Queued),receive({down(P,Queued,already_queued)->true},[timeout(0)]),spawn((demonitor(Keep,[flush]),send(S,foreign_done)),F,[monitor(true)]),receive({foreign_done->true}),receive({down(F,F,true)->true}),send(S,down(P,Removed,queued_one)),send(S,down(P,Removed,queued_two)),send(S,kept_message),demonitor(Removed,[flush]),demonitor(Removed),toplevel_call_synch(P,true,A,[template(ok),timeout(3)]),nonvar(A),A=success(P,[ok],false),exit(P,kill),receive({down(P,P,Reason)->true},[timeout(3)]),receive({down(P,Keep,Reason)->true},[timeout(3)]),receive({down(_,Removed,_)->throw(withdrawn_monitor_delivered)},[timeout(0),on_timeout(true)]),receive({kept_message->true},[timeout(0)]) {\"type\":\"success\",\"data\":[{\"Reason\":\"true\",\"S\":\"main@localhost\",\"A\":\"success(4076753922@'http://localhost:54053',[ok],false)\",\"F\":\"8028118502@localhost\",\"P\":\"4076753922@'http://localhost:54053'\",\"Keep\":\"6759602746\",\"Removed\":\"4165764783\",\"Queued\":\"5315836397\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(8028118502@localhost,8028118502@localhost,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"8028118502 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(4076753922,'http://localhost:54053'),4165764783,queued_one)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(4076753922,'http://localhost:54053'),4165764783,queued_two)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: kept_message\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: '$toplevel_reply'(2689726999,success(@(4076753922,'http://localhost:54053'),[ok],false))\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: '$server_monitor_cleaned'(2914623048)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(4076753922@'http://localhost:54053',4076753922@'http://localhost:54053',true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(4076753922@'http://localhost:54053',6759602746,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"Reason\":\"true\",\"S\":\"main@localhost\",\"A\":\"success(4076753922@'http://localhost:54053',[ok],false)\",\"F\":\"8028118502@localhost\",\"P\":\"4076753922@'http://localhost:54053'\",\"Keep\":\"6759602746\",\"Removed\":\"4165764783\",\"Queued\":\"5315836397\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-015-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://localhost:54053'),session(true)]),monitor(P,R),assertz(loss_monitor(P,R)) {\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query loss_monitor(P,R),receive({down(P,R,connection_closed)->true},[timeout(3),on_timeout(throw(no_observation_loss))]),demonitor(R,[flush]) {\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(4481578149@'http://localhost:54053',4981866922,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query toplevel_spawn(New,[node('http://localhost:54053'),session(true)]),toplevel_halt(New),loss_monitor(_,R),receive({down(_,R,_)->throw(old_monitor_restored)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"data\":[{\"R\":\"4981866922\",\"New\":\"4663038094@'http://localhost:54053'\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(4481578149@'http://localhost:54053',4981866922,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"4481578149@'http://localhost:54053'\",\"R\":\"4981866922\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"R\":\"4981866922\",\"New\":\"4663038094@'http://localhost:54053'\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-016-swi",
+      "peer": "swi",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://localhost:54053'),session(true)]),monitor(P,R),monitor(P,Keep),assertz(retry_monitor(P,R,Keep)) {\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query retry_monitor(P,R,_),self(S),send(S,down(P,R,before_timeout)),catch(demonitor(R,[flush]),error(remote_demonitor_timeout(P),_),Timed=true),Timed==true,receive({down(P,R,before_timeout)->true},[timeout(0),on_timeout(throw(timeout_flushed_mailbox))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(6164527087,'http://localhost:54053'),1471515552,before_timeout)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false}}]",
+        "timeout retains the monitor for retry",
+        "late timed-out withdrawal cannot remove retry state",
+        "query retry_monitor(P,R,Keep),demonitor(R,[flush]),demonitor(R),exit(P,kill),receive({down(P,Keep,_)->true},[timeout(3)]),receive({down(_,R,_)->throw(retry_left_monitor)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://localhost:54053.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(6164527087,'http://localhost:54053'),1471515552,before_timeout)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(6164527087@'http://localhost:54053',5543108829,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"6164527087@'http://localhost:54053'\",\"R\":\"1471515552\",\"Keep\":\"5543108829\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-001-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((send(S,hello)),_,[node('http://127.0.0.1:60833')]),receive({hello->true},[timeout(3),on_timeout(throw(no_browser_return))]) {\"type\":\"error\",\"data\":\"no_browser_return\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_browser_return\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:10:23)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-002-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn((catch(yield(R,_,[timeout(0)]),E,true),promise_cleanup(R),send(S,denied(E))),_,[node('http://127.0.0.1:60833')]),receive({denied(error(existence_error(promise,R),_))->true},[timeout(3),on_timeout(throw(no_forward_denial))]),yield(R,success([mark],false)) {\"type\":\"error\",\"data\":\"no_forward_denial\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_forward_denial\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:11:23)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-003-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:60833')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"data\":\"no_reference\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_reference\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:13:15)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-004-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),self(S),spawn(receive({return(R)->self(Me),whereis(origin_alias,Me),yield(R,A),S!returned(A)}),Local,[]),register(origin_alias,Local),spawn(send(Local,return(R)),_,[node('http://127.0.0.1:60833')]),receive({returned(success([mark],false))->true},[timeout(3),on_timeout(throw(no_return_context))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"3695515363\",\"Local\":\"1746077531@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 1746077531 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1746077531 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1746077531 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> 1746077531: return(3695515363)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1746077531@localhost -> main: returned(success([mark],false))\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"R\":\"3695515363\",\"Local\":\"1746077531@localhost\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-005-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query self(S),spawn((promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),send(S,created(R))),_,[node('http://127.0.0.1:60833')]),receive({created(Ref)->true},[timeout(3),on_timeout(throw(no_reference))]) {\"type\":\"error\",\"data\":\"no_reference\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"traffic\",\"message\":{\"command\":\"toplevel_spawn\",\"pid\":6438013504,\"options\":\"[session(true)]\"},\"direction\":\"request\"},{\"type\":\"traffic\",\"message\":{\"type\":\"spawned\",\"pid\":6438013504},\"direction\":\"response\"},{\"type\":\"shell_ready\",\"pid\":\"6438013504\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-WASM worker toplevel actor ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_reference\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:20:15)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-006-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-007-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-008-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query promise('http://127.0.0.1:58293/native/trealla',X=mark,R,[template(v(X))]),yield(R,success([v(mark)],false)),rpc('http://127.0.0.1:58293/native/trealla',(A=mark,B=A)),A==mark,B==mark {\"type\":\"success\",\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"3911172178\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"A\":\"mark\",\"B\":\"mark\",\"R\":\"3911172178\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-009-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: forged close response missing\n    at eval (eval at evaluate (:370:30), <anonymous>:72:90)\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-010-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-011-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: remote context closure is unsupported: http://127.0.0.1:60833\n    at http://127.0.0.1:58293/vendor/swi-wasm-node.js:1262:55\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-012-trealla",
+      "peer": "trealla",
+      "status": "fail",
+      "detail": "page.evaluate: Error: query promise('http://127.0.0.1:58293/answer',true,BR,[template(mark)]),self(S),spawn(receive({multi(Native)->self(Me),whereis(browser_home,Me),yield(BR,Browser),send(S,whole(Native,Browser))}),Local,[]),register(browser_home,Local),spawn((self(Owner),register(multihop_home,Owner),promise('http://127.0.0.1:58293/answer',true,R,[template(mark)]),spawn(spawn((whereis(multihop_home,Visible),Visible==Owner,yield(R,A),send(Owner,hop_result(A))),_,[node('http://127.0.0.1:60833')]),_,[node('http://localhost:54053')]),receive({hop_result(A)->send(Local,multi(A))})),Origin,[node('http://127.0.0.1:60833'),monitor(true)]),receive({whole(success([mark],false),success([mark],false))->true;down(Origin,Origin,Why) if Why\\==true->throw(multihop_root_down(Why))},[timeout(4),on_timeout(throw(no_multihop_return))]) {\"type\":\"error\",\"data\":\"no_multihop_return\",\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"spawn 1193774774 using SWI-WASM WebWorker.\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1193774774 ready.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"1193774774 started.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"error\",\"data\":\"no_multihop_return\",\"more\":false}}]\n    at check (eval at evaluate (:370:30), <anonymous>:3:43)\n    at run (eval at evaluate (:370:30), <anonymous>:6:105)\n    at async eval (eval at evaluate (:370:30), <anonymous>:64:7)\n    at async <anonymous>:381:23\n    at /Users/lager/trinity-conformance/adapters/browser_native_context.cjs:27:40"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-014-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query self(S),toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true),monitor(true)]),monitor(P,Keep),monitor(P,Removed),monitor(P,Queued),send(S,down(P,Queued,already_queued)),demonitor(Queued),receive({down(P,Queued,already_queued)->true},[timeout(0)]),spawn((demonitor(Keep,[flush]),send(S,foreign_done)),F,[monitor(true)]),receive({foreign_done->true}),receive({down(F,F,true)->true}),send(S,down(P,Removed,queued_one)),send(S,down(P,Removed,queued_two)),send(S,kept_message),demonitor(Removed,[flush]),demonitor(Removed),toplevel_call_synch(P,true,A,[template(ok),timeout(3)]),nonvar(A),A=success(P,[ok],false),exit(P,kill),receive({down(P,P,Reason)->true},[timeout(3)]),receive({down(P,Keep,Reason)->true},[timeout(3)]),receive({down(_,Removed,_)->throw(withdrawn_monitor_delivered)},[timeout(0),on_timeout(true)]),receive({kept_message->true},[timeout(0)]) {\"type\":\"success\",\"data\":[{\"Reason\":\"kill\",\"S\":\"main@localhost\",\"A\":\"success(1906182077@'http://127.0.0.1:60833',[ok],false)\",\"F\":\"9345409622@localhost\",\"P\":\"1906182077@'http://127.0.0.1:60833'\",\"Keep\":\"6943650050\",\"Removed\":\"7604220067\",\"Queued\":\"5917159853\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(9345409622@localhost,9345409622@localhost,true)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"9345409622 done.\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(1906182077,'http://127.0.0.1:60833'),7604220067,queued_one)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(1906182077,'http://127.0.0.1:60833'),7604220067,queued_two)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: kept_message\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"remote -> main: '$toplevel_reply'(5428121961,success(1906182077@'http://127.0.0.1:60833',[ok],false))\",\"scope\":\"swi-wasm\",\"direction\":\"response\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: '$server_monitor_cleaned'(1153855937)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(1906182077@'http://127.0.0.1:60833',6943650050,kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(1906182077@'http://127.0.0.1:60833',1906182077@'http://127.0.0.1:60833',kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"Reason\":\"kill\",\"S\":\"main@localhost\",\"A\":\"success(1906182077@'http://127.0.0.1:60833',[ok],false)\",\"F\":\"9345409622@localhost\",\"P\":\"1906182077@'http://127.0.0.1:60833'\",\"Keep\":\"6943650050\",\"Removed\":\"7604220067\",\"Queued\":\"5917159853\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-015-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true)]),monitor(P,R),assertz(loss_monitor(P,R)) {\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query loss_monitor(P,R),receive({down(P,R,connection_closed)->true},[timeout(3),on_timeout(throw(no_observation_loss))]),demonitor(R,[flush]) {\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(1542457754@'http://127.0.0.1:60833',4182112073,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query toplevel_spawn(New,[node('http://127.0.0.1:60833'),session(true)]),toplevel_halt(New),loss_monitor(_,R),receive({down(_,R,_)->throw(old_monitor_restored)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"data\":[{\"R\":\"4182112073\",\"New\":\"2382091880@'http://127.0.0.1:60833'\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(1542457754@'http://127.0.0.1:60833',4182112073,connection_closed)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"1542457754@'http://127.0.0.1:60833'\",\"R\":\"4182112073\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"R\":\"4182112073\",\"New\":\"2382091880@'http://127.0.0.1:60833'\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "BN-016-trealla",
+      "peer": "trealla",
+      "observation": [
+        "query toplevel_spawn(P,[node('http://127.0.0.1:60833'),session(true)]),monitor(P,R),monitor(P,Keep),assertz(retry_monitor(P,R,Keep)) {\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false}}]",
+        "query retry_monitor(P,R,_),self(S),send(S,down(P,R,before_timeout)),catch(demonitor(R,[flush]),error(remote_demonitor_timeout(P),_),Timed=true),Timed==true,receive({down(P,R,before_timeout)->true},[timeout(0),on_timeout(throw(timeout_flushed_mailbox))]) {\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(2288577286,'http://127.0.0.1:60833'),5415101090,before_timeout)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false}}]",
+        "timeout retains the monitor for retry",
+        "late timed-out withdrawal cannot remove retry state",
+        "query retry_monitor(P,R,Keep),demonitor(R,[flush]),demonitor(R),exit(P,kill),receive({down(P,Keep,_)->true},[timeout(3)]),receive({down(_,R,_)->throw(retry_left_monitor)},[timeout(0),on_timeout(true)]) {\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false} [{\"type\":\"loading\"},{\"type\":\"log\",\"level\":\"info\",\"text\":\"SWI-Prolog WASM runtime ready.\",\"scope\":\"swi-wasm\"},{\"type\":\"ready\"},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"SWI-WASM connected to remote actor node http://127.0.0.1:60833.\",\"scope\":\"swi-wasm\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(@(2288577286,'http://127.0.0.1:60833'),5415101090,before_timeout)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"S\":\"main@localhost\",\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"ContextCheck\":\"passed\",\"Timed\":\"true\"}],\"more\":false}},{\"type\":\"log\",\"level\":\"transport\",\"text\":\"main -> main: down(2288577286@'http://127.0.0.1:60833',7966682244,kill)\",\"scope\":\"swi-wasm\",\"direction\":\"request\"},{\"type\":\"answer\",\"message\":{\"type\":\"success\",\"data\":[{\"P\":\"2288577286@'http://127.0.0.1:60833'\",\"R\":\"5415101090\",\"Keep\":\"7966682244\",\"ContextCheck\":\"passed\"}],\"more\":false}}]"
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 27,
+    "fail": 33
+  }
+}

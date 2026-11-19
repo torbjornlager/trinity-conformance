@@ -1,0 +1,165 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "source-directives-0.1",
+  "scope": "required",
+  "candidate": "n7",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "manifest_sha256": "977fb9bd0e5cef8b10af80e36323ff61a1373ce6a2111752e44d998b071bd98b",
+  "counts": {
+    "pass": 7,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SD-001",
+      "title": "A source directive that fails makes spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4925855171,
+        "data": [
+          {
+            "CVSelf": "4925855171@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail.')]",
+            "S": "4925855171@'https://n7.elfenbenstornet.se'",
+            "P": "P",
+            "E": "error(directive_failed(fail),spawn/3)",
+            "D": "fail",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3109
+    },
+    {
+      "id": "SD-002",
+      "title": "A failing goal directive after earlier clauses is reported unqualified, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7941124234,
+        "data": [
+          {
+            "CVSelf": "7941124234@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text('sd_fact(a). :- sd_fact(b).')]",
+            "P": "P",
+            "E": "error(directive_failed(sd_fact(b)),spawn/3)",
+            "D": "sd_fact(b)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3160
+    },
+    {
+      "id": "SD-003",
+      "title": "The first of several failing directives is reported, or refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 9880424411,
+        "data": [
+          {
+            "CVSelf": "9880424411@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail. :- sd_never_defined_goal_probe = other.')]",
+            "P": "P",
+            "E": "error(directive_failed(fail),spawn/3)",
+            "D": "fail",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3219
+    },
+    {
+      "id": "SD-004",
+      "title": "Dynamic declarations and clauses still create a working actor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1519071974,
+        "data": [
+          {
+            "CVSelf": "1519071974@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- dynamic sd_dyn/1. sd_ok(yes).'),monitor(true)]",
+            "S": "1519071974@'https://n7.elfenbenstornet.se'",
+            "V": "V",
+            "P": "8143561875@'https://n7.elfenbenstornet.se'",
+            "R": "yes",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3200
+    },
+    {
+      "id": "SD-005",
+      "title": "A failing directive makes toplevel_spawn raise directive_failed, or is refused by the sandbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7519658288,
+        "data": [
+          {
+            "CVSelf": "7519658288@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- fail.')]",
+            "P": "P",
+            "E": "error(directive_failed(fail),spawn/3)",
+            "D": "fail",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3200
+    },
+    {
+      "id": "SD-006",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by spawn/3 and never runs",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3221050869,
+        "data": [
+          {
+            "CVSelf": "3221050869@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "Me": "3221050869@'https://n7.elfenbenstornet.se'",
+            "X": "X",
+            "R": "R",
+            "E": "error(directive_failed((open('/dev/null',read,S),close(S),assertz(sd_forbidden_ran))),spawn/3)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3207
+    },
+    {
+      "id": "SD-007",
+      "title": "A source directive calling a sandbox-forbidden goal is refused by toplevel_spawn/2 and never runs",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2531471328,
+        "data": [
+          {
+            "CVSelf": "2531471328@'https://n7.elfenbenstornet.se'",
+            "SDOptions1": "[src_text(':- open(\\'/dev/null\\',read,S), close(S), assertz(sd_forbidden_ran).')]",
+            "P": "P",
+            "X": "X",
+            "R": "R",
+            "E": "error(directive_failed((open('/dev/null',read,S),close(S),assertz(sd_forbidden_ran))),spawn/3)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 3204
+    }
+  ]
+}

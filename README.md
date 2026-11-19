@@ -7,22 +7,42 @@ another runtime.
 
 ## Current consolidated results
 
-The [16 November deployed and isolated refresh](reports/2026-11-16-deployed-conformance/REPORT.md),
-run after the directive and sandbox release, records 45/45 plus 7/7
-source-directives in each of three exact-image native release fixtures, 7/7
-source-directives on public N3/N4/N5/N7, 70/70 HTTP baseline executions and 7/7
-shared language cases in each packaged SWI-WASM mode. The broader public
-selection is not all-green: it retains the N5 callback-context, N7
-remote-toplevel and prompt-default findings, the outdated SC-001 expectation,
-controlled N7 admission observations, and a new SD-006/SD-007 applicability
-question for the sandbox-free SWI-WASM engine. The
-[15 November refresh](reports/2026-11-15-deployed-conformance/REPORT.md) is kept.
+The [19 November full conformance run](reports/2026-11-19-deployed-conformance/REPORT.md)
+exercises all 76 manifests (1,973 main case rows) after the native SWI-Prolog
+11.0.0 upgrade. It is **not all-green**: retained-context, browser callback,
+URI/timeout and supporting fixture failures remain, and attachment/return-barrier
+instrumentation blocks auxiliary controls. Every main case ID has execution
+evidence; this does not mean every configuration passes or every gate completed.
 
-The [current coverage matrix](CURRENT_COVERAGE.md) separates current public
-N0–N7 configurations, private release fixtures, browser Node assertions,
-original failures and diagnostic controls. Exact inputs and raw results are
-linked from the dated report. Earlier reports retain their historical scope;
-N5 is now public, and N7 is included explicitly. No live services were changed.
+The public ACTOR/HTTP selection passes 118/118 on N3/N4/N5. N7 records 106/118
+initially, with all twelve HTTP 429 cases passing paced controls. Directed public
+interoperability passes 36/36. The three exact-image private release gates pass
+45/45 plus 7/7 source-directives each. All four library pack versions pass across
+seven selected modes, including the latest 295-case pack. The runner's 111 unit
+tests pass. Browser WASM remains on SWI 10.1.19; this upgrade changed native SWI.
+
+The [first repair batch](reports/2026-11-19-conformance-repairs/REPORT.md) fixes
+helper-source loading, noncompletion entry accounting and SWI's public promise
+cleanup API. Its candidate changes are not deployed; the controlled context
+selection remains red at 42 pass / 15 fail / 4 blocked. The later naming alignment selects a common isolation contract; promise and
+remote round-trip requirements remain separate open questions.
+
+The common [client-context naming contract](profiles/client-naming-0.1.md)
+now requires ordinary names to be isolated between clients on every ACTOR node.
+The [naming alignment report](reports/2026-11-19-client-naming/REPORT.md) records
+Trealla's candidate repair and shared SWI/Trealla/ECLiPSe/browser observations.
+These candidate changes are not deployed; explicitly published services retain
+their separate node-wide registry.
+
+The [current coverage matrix](CURRENT_COVERAGE.md),
+[per-file results](reports/2026-11-19-deployed-conformance/SUMMARY.json) and
+[verified inventory](reports/2026-11-19-deployed-conformance/verification.json)
+separate boundaries, diagnostic observations, failed attempts and controls.
+The [16 November report](reports/2026-11-16-deployed-conformance/REPORT.md) and
+older records remain unchanged. No live services were changed by this run.
+
+The following earlier qualification records retain their dated scope; current
+failures and incomplete controls are described in the 19 November report.
 
 The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
 51-case matrix, six controlled promise cases and deterministic attachment
@@ -509,6 +529,12 @@ SD-006/SD-007 declare `"requires": ["goal_sandbox"]`; engines running
 
 Directives that raise exceptions, engine-specific unsupported directives,
 `src_uri`, statechart support source and remote creation are outside this pack.
+
+The WASM adapters require Node.js 22 and Playwright/Chromium for source-dependent
+packs. `adapters/wasm.cjs` keeps source-free assertions in independent embedded
+processes; packs with common or per-case helper source use the maintained real
+browser session adapter, loading both sources in the selected Worker/main mode.
+These are distinct execution boundaries, identified by the result candidate.
 
 ## Supervisor child-specification validation draft conformance
 

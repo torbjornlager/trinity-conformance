@@ -1,0 +1,993 @@
+{
+  "suite": "client-naming-0.1",
+  "manifest_sha256": "149c45ad3169799ab3616beffe1bf7ff747ec9490ec98a5cd30aa8c6bae49e8f",
+  "adapter_sha256": "2e69e1fb3ca4e37cbabcb810a15e498caec1f69ce6e472d65f0eb4acb970bd59",
+  "package_manifest_sha256": "00fb7161d9a61968da6238ebf6630416ab51ea25eeed93953879c2349ef0435a",
+  "scope": "Independent browser page/coordinator contexts; not multiple clients hosted inside one browser coordinator. No service-publication qualification.",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-001",
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 4409326133,
+            "data": [
+              {
+                "S": "4409326133@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P==undefined"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 4785264966,
+            "data": [
+              {
+                "P": "undefined",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-002",
+      "title": "Equal names can identify different actors in independent contexts",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6695615147,
+            "data": [
+              {
+                "S": "6695615147@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8535413302,
+            "data": [
+              {
+                "S": "8535413302@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6695615147,
+            "data": [
+              {
+                "S": "6695615147@localhost",
+                "ScopeCheck": "passed",
+                "Found": "6695615147@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 8535413302,
+            "data": [
+              {
+                "S": "8535413302@localhost",
+                "ScopeCheck": "passed",
+                "Found": "8535413302@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-003",
+      "title": "Foreign unregister leaves the owner binding intact",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7622950381,
+            "data": [
+              {
+                "S": "7622950381@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "unregister(__NAME__)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 9624371043,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7622950381,
+            "data": [
+              {
+                "S": "7622950381@localhost",
+                "ScopeCheck": "passed",
+                "Found": "7622950381@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-004",
+      "title": "Named sends resolve the caller context",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 3951321514,
+            "data": [
+              {
+                "S": "3951321514@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 3418411008,
+            "data": [
+              {
+                "S": "3418411008@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "__NAME__!scope_marker(a),receive({scope_marker(a)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 3951321514,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_marker(b),receive({scope_marker(b)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 3418411008,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-005",
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1412458777,
+            "data": [
+              {
+                "P": "2562434882@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 9519982724,
+            "data": [
+              {
+                "P": "2011472574@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 1412458777,
+            "data": [
+              {
+                "P": "2562434882@localhost",
+                "R": "1275413148",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 9519982724,
+            "data": [
+              {
+                "P": "2011472574@localhost",
+                "R": "2789493294",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-006",
+      "title": "Local descendants inherit ordinary-name visibility",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 4293134346,
+            "data": [
+              {
+                "S": "4293134346@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7700886597,
+            "data": [
+              {
+                "S": "7700886597@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 4293134346,
+            "data": [
+              {
+                "P": "4293134346@localhost",
+                "S": "4293134346@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7700886597,
+            "data": [
+              {
+                "P": "7700886597@localhost",
+                "S": "7700886597@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-007",
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "trace": [],
+      "status": "unsupported",
+      "detail": "Browser session API does not expose multiple toplevels on one retained connection"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "CN-008",
+      "title": "Disconnecting one context preserves another context with the same name",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 7238723741,
+            "data": [
+              {
+                "S": "7238723741@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6508179891,
+            "data": [
+              {
+                "S": "6508179891@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "action": "close"
+          },
+          "observation": {
+            "closed": true
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6508179891,
+            "data": [
+              {
+                "S": "6508179891@localhost",
+                "ScopeCheck": "passed",
+                "Found": "6508179891@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_still_live,receive({scope_still_live->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "pid": 6508179891,
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-001",
+      "title": "Ordinary names are hidden from independent clients with equal credentials",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P==undefined"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "P": "undefined",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-002",
+      "title": "Equal names can identify different actors in independent contexts",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed",
+                "Found": "main@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed",
+                "Found": "main@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-003",
+      "title": "Foreign unregister leaves the owner binding intact",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "unregister(__NAME__)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed",
+                "Found": "main@localhost"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-004",
+      "title": "Named sends resolve the caller context",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "__NAME__!scope_marker(a),receive({scope_marker(a)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_marker(b),receive({scope_marker(b)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-005",
+      "title": "Named monitors target the caller context and retirement preserves a same-named peer",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "P": "4234815635@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "spawn(receive({finish->true}),P,[monitor(true)]),register(__NAME__,P)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "P": "5049355590@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "P": "4234815635@localhost",
+                "R": "8183647755",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "whereis(__NAME__,P),P\\==undefined,monitor(__NAME__,R),__NAME__!finish,receive({down(P,R,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))]),receive({down(P,P,true)->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "P": "5049355590@localhost",
+                "R": "6656286006",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-006",
+      "title": "Local descendants inherit ordinary-name visibility",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "P": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),spawn((whereis(__NAME__,P),send(S,scope_seen(P))),_,[]),receive({scope_seen(P)->P==S},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "P": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-007",
+      "title": "Multiple toplevels on one retained connection share ordinary names",
+      "trace": [],
+      "status": "unsupported",
+      "detail": "Browser session API does not expose multiple toplevels on one retained connection"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "CN-008",
+      "title": "Disconnecting one context preserves another context with the same name",
+      "trace": [
+        {
+          "step": {
+            "client": "a",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),register(__NAME__,S)"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "a",
+            "action": "close"
+          },
+          "observation": {
+            "closed": true
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "self(S),whereis(__NAME__,Found),Found==S"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "S": "main@localhost",
+                "ScopeCheck": "passed",
+                "Found": "main@localhost"
+              }
+            ],
+            "more": false
+          }
+        },
+        {
+          "step": {
+            "client": "b",
+            "goal": "__NAME__!scope_still_live,receive({scope_still_live->true},[timeout(3),on_timeout(throw(client_naming_message_missing))])"
+          },
+          "observation": {
+            "type": "success",
+            "data": [
+              {
+                "ScopeCheck": "passed"
+              }
+            ],
+            "more": false
+          }
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 14,
+    "fail": 0,
+    "unsupported": 2
+  }
+}
