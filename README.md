@@ -7,14 +7,17 @@ another runtime.
 
 ## Current consolidated results
 
-The [focused regression follow-up](reports/2026-11-20-regression-triage/REPORT.md)
-rechecks 56 N6 assertions successfully after query expiry and identifies a
-pre-existing SWI actor-retirement race on both compared revisions. The source
-fix and deterministic regression test pass all native tiers plus 1,000
-unchanged NU-003 repetitions. The fix is pushed as `0c11f2c`; consumer pins
-and live images have not yet adopted it. Original full-sweep observations
-remain unchanged, and the earlier localhost transport-error cause remains
-unproven despite three passing replays.
+The [live retirement repair verification](reports/2026-11-20-retirement-live/REPORT.md)
+records deployment of native SWI `0c11f2c` on N0–N4 and admin. Both N3 and
+N4 pass all 118 primary ACTOR cases and 100 unchanged NU-003 repetitions;
+anonymous exercises, HTTP prompts and sustained smoke checks pass too.
+This is a focused follow-up, not a replacement for the complete sweep below.
+
+The [earlier regression triage](reports/2026-11-20-regression-triage/REPORT.md)
+records 56 passing N6 replays after query expiry and the pre-existing SWI
+race reproduction and source repair. The N6 localhost transport-error cause
+remains unproven despite three passing replays. Original full-sweep results
+remain unchanged.
 
 The [fresh 20 November sweep](reports/2026-11-20-live-conformance/REPORT.md)
 covers **78 manifests / 1,984 input rows** against the configurable admission

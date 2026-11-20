@@ -1,8 +1,25 @@
 # Current Web Prolog conformance coverage
 
-Updated **20 November 2026** after a fresh complete sweep of the admission release. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after focused live verification of the retirement repair. The latest complete sweep below predates this repair. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## Deployed retirement repair
+
+The [fresh live follow-up](reports/2026-11-20-retirement-live/REPORT.md)
+verifies native SWI `0c11f2c` on N0–N4 and admin: N3/N4 each pass all
+118 primary ACTOR cases and 100 unchanged NU-003 repetitions. All 30
+anonymous exercise checks, 57 HTTP prompt cases and 560 finite sustained
+requests pass. The deterministic regression passes in all four candidate
+images and the private ACTOR gate passes 45/45. Both GitHub CI jobs pass.
+The initial local WASM failure and its passing controls/recheck remain
+explicit in the report; the full WASM recheck retains its original assertions
+and deadlines.
+
+This focused follow-up resolves the SWI retirement finding on the deployed
+selection. It does not rerun the complete library/API suite or close the
+other findings below. The complete sweep below ran on predecessor SWI
+`e25b230`; its original observations remain immutable.
 
 ## Focused regression follow-up
 
@@ -18,13 +35,13 @@ NU-003 reproduces on both unchanged SWI revisions: 3/1,000 failures on
 `a2ff186`, 2/1,000 on `e25b230`. A deterministic barrier confirms the existing
 retirement-order race. Source fix `0c11f2c` retires PID mappings before monitor
 notification; its new regression test and all eight native tiers pass, and
-the original NU-003 passes 1,000/1,000. This candidate is committed and pushed;
-consumer pins and live images still select the preceding runtime. The full
-sweep and its original failures below remain immutable.
+the original NU-003 passes 1,000/1,000. At this triage stage the candidate was
+committed and pushed; the subsequent live verification above records its
+adoption. The full sweep and its original failures below remain immutable.
 
 ## Current release
 
-Native SWI `e25b230` / 11.0.0, Trealla `2d5042b` / 3.14.20, ECLiPSe adapter `31dcdfc` and browser package `0d024e5` are the selected sources. The [admission deployment](reports/2026-11-19-public-admission/REPORT.md) documents configurable public 120-entry presets and their distinct accounting units. Engine versions and concurrency/resource bounds are unchanged. Browser-local execution has no server admission budget.
+Native SWI `0c11f2c` / 11.0.0, Trealla `2d5042b` / 3.14.20, ECLiPSe adapter `31dcdfc` and browser package `b2fd3fe` are the selected sources. Demonstrator runtime source is `8318918`. The [admission deployment](reports/2026-11-19-public-admission/REPORT.md) documents configurable public 120-entry presets and their distinct accounting units. Engine versions and concurrency/resource bounds are unchanged. Browser-local execution has no server admission budget.
 
 ## Primary public selections
 
