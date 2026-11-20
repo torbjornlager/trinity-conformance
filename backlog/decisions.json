@@ -39,7 +39,7 @@
       "case_prefixes": [
         "RPC-TIME-"
       ],
-      "next_action": "Qualify numeric-option candidate fixes; preserve omitted defaults and review destination/transport separation."
+      "next_action": "Numeric-option failures are repaired/deployed; retain destination/transport timeout separation for further controlled-peer review."
     },
     {
       "id": "HTTP_OPTIONS",
@@ -1837,7 +1837,7 @@
           "status": "pass"
         }
       ],
-      "note": "SWI explicitly supplied variable/none timeouts now fail validation before dispatch; omitted defaults remain unchanged. Production findings remain open pending qualification/deployment."
+      "note": "At the baseline checkpoint: SWI explicitly supplied variable/none timeouts now fail validation before dispatch; omitted defaults remain unchanged. Production findings remain open pending qualification/deployment. See the later deployed decision for current status."
     },
     {
       "id": "RPC-NUMERIC-CANDIDATE-TREALLA",
@@ -1872,7 +1872,250 @@
           "status": "pass"
         }
       ],
-      "note": "Trealla explicitly supplied infinite timeouts are rejected as non-numeric. Production findings remain open pending qualification/deployment."
+      "note": "At the baseline checkpoint: Trealla explicitly supplied infinite timeouts are rejected as non-numeric. Production findings remain open pending qualification/deployment. See the later deployed decision for current status."
+    },
+    {
+      "id": "RPC-NUMERIC-DEPLOYED-SWI",
+      "selectors": [
+        {
+          "candidate_in": [
+            "swi",
+            "n1",
+            "n2",
+            "n3",
+            "n4"
+          ],
+          "case_id_in": [
+            "RPC-TIME-001",
+            "RPC-TIME-002",
+            "RPC-TIME-010",
+            "RPC-TIME-011"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_and_verified",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Committed repair deployed and verified on the corresponding runtime nodes. Exact-image and live unchanged assertions pass; omitted defaults remain unchanged. Original observations remain immutable."
+    },
+    {
+      "id": "RPC-NUMERIC-DEPLOYED-TREALLA",
+      "selectors": [
+        {
+          "candidate_in": [
+            "trealla",
+            "n5"
+          ],
+          "case_id_in": [
+            "RPC-TIME-003",
+            "RPC-TIME-012"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_and_verified",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-003",
+            "candidate": "n5"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-003",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-012",
+            "candidate": "n5"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-012",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Committed repair deployed and verified on the corresponding runtime nodes. Exact-image and live unchanged assertions pass; omitted defaults remain unchanged. Original observations remain immutable."
     }
   ],
   "additional_findings": [

@@ -3,9 +3,26 @@
 The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
 view. The dated sweep totals below retain their original observations.
 
-Updated **20 November 2026** after focused live verification of the retirement repair. The latest complete sweep below predates this repair. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after focused live verification of the RPC timeout repair. The latest complete sweep below predates this repair. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## Deployed RPC timeout validation
+
+The [fresh RPC validation follow-up](reports/2026-11-20-rpc-validation-live/REPORT.md)
+verifies native SWI `0bf7286` on N0–N4/admin and Trealla `e99126b` on N5,
+with demonstrator runtime source `ed70764` and browser provenance `ca8e689`.
+All 100 unchanged timeout assertions pass across N1–N5; both exact images
+pass all 20 timeout goals and the 45-case ACTOR release gate. All 36 local
+integration groups and both GitHub CI jobs pass. Public primary cases pass
+354/354, OPEN exercises 30/30, HTTP prompts 76/76 and finite sustained
+probes 700/700. Engine bytes, access modes and limits are unchanged.
+
+The inventory now marks 30 repeated timeout failure observations repaired
+and deployed: unresolved failed observations decrease from 241 to 211.
+These counts are evidence rows, not independent defects. The full sweep
+and its raw failures remain immutable; other work queues remain open.
+The browser pin changes provenance only; its executable/schema bytes match.
 
 ## Local cleanup qualification
 
@@ -14,8 +31,7 @@ clears both first-batch Trealla qualification blockers in local test source:
 all 111 unit groups pass on macOS and Linux with 30 seconds per check.
 The fixes use explicit descendant readiness and unconditional fixture cleanup,
 and isolate the five unchanged cache properties. The production cache capacity
-and runtime cleanup implementation are unchanged. This does not change the
-live source selection or close the remaining language findings.
+and runtime cleanup implementation are unchanged. That checkpoint preceded the RPC deployment above; it does not close other language findings.
 
 ## Deployed retirement repair
 

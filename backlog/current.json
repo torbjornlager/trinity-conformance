@@ -1,7 +1,7 @@
 {
   "format": 1,
   "source_report": "reports/2026-11-20-live-conformance",
-  "configuration_sha256": "62b58d267ddaf1d97c8521aaf1b2af653562ddaeb564b62b34f9881be7bfe839",
+  "configuration_sha256": "4ff31b94ea311d5abce318b1b41a487899e367e30d3aab8d634c1c1095db3d94",
   "accounting": "Families are work queues, not independently proven root causes. Case IDs and observations are not feature/defect counts. Candidate repairs do not close deployed findings.",
   "inputs_sha256": {
     "reports/2026-11-20-live-conformance/SUMMARY.json": "d899dbadfaf20f8d0cf4081114929836c9f431dd5217d9cdf5625b21cd234e34",
@@ -18,6 +18,12 @@
     "reports/2026-11-20-backlog-baseline/http-prompts.json": "87c46b57a79ae136f2867857c231eb24f911ff2bccce8153bc4ad8b21e5073ac",
     "reports/2026-11-20-backlog-baseline/prompt-disabled.json": "d6bde8103fb3e3ceed0c72c8e01f6945979e5adf6f36f6a0605daa7107a0293e",
     "reports/2026-11-20-backlog-baseline/validation-candidate.json": "f2f18ca972c66eaee77e9d21005d09080fae24a97d8faff411c20b4fc0ed5017",
+    "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json": "61714ed9eb830549242763b3e2e572f5c2458ca33985ca5fa20b2b0d422f8b18",
+    "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json": "a8b1842cc74bf6999cb2f2b9516037a0ee65bba4bfd7565dc12cc167ec6476c1",
+    "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json": "c517673588cfaa82fc443bd8daf4134ab430ca9ce82b9c3c419139b4ea8f4039",
+    "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json": "a689b9d0414146025e554bfcfa7273bf2a1dea04b94fce259c9437970b2531aa",
+    "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json": "149b6142f449f9985d0db93a801a501b8b8936017d1be1304a4cb6c25162e686",
+    "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json": "302cb5af80e0b3fe9d17384773fb6226bfbbaaeb7bee029c1be74ca7d728d6a7",
     "reports/2026-11-20-backlog-baseline/qualification-limitations.json": "e10ddb22aa66c2e6d302f38f4a168f5e3de80600a117aa14f19de581ee67f7d3",
     "reports/2026-11-20-cleanup-qualification/complete-unit-summary.json": "aee1901c5fce00bfd78e67126df76812d9408f13a5696dedc687620228b6815b",
     "reports/2026-11-20-cleanup-qualification/failure-controls.json": "c1e38089e42d7856b56108cb4fb88b9bc9c92ba026c36734b69bfca142d60652",
@@ -579,12 +585,12 @@
     {
       "id": "RPC_TIMEOUT",
       "title": "RPC/promise timeout validation",
-      "next_action": "Qualify numeric-option candidate fixes; preserve omitted defaults and review destination/transport separation.",
+      "next_action": "Numeric-option failures are repaired/deployed; retain destination/transport timeout separation for further controlled-peer review.",
       "original_statuses": {
         "fail": 30
       },
       "production_dispositions": {
-        "open": 30
+        "repaired_deployed": 30
       },
       "case_ids": [
         "RPC-TIME-001",
@@ -830,8 +836,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n1/rpc-timeout-0.1.json",
@@ -848,8 +858,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n1/rpc-timeout-0.1.json",
@@ -866,8 +880,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n1/rpc-timeout-0.1.json",
@@ -884,8 +902,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n2/library-noncompletion-0.1.json",
@@ -974,8 +996,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n2/rpc-timeout-0.1.json",
@@ -992,8 +1018,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n2/rpc-timeout-0.1.json",
@@ -1010,8 +1040,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n2/rpc-timeout-0.1.json",
@@ -1028,8 +1062,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n3/http-session-context-0.1.json",
@@ -3113,8 +3151,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n3/rpc-timeout-0.1.json",
@@ -3131,8 +3173,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n3/rpc-timeout-0.1.json",
@@ -3149,8 +3195,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n3/rpc-timeout-0.1.json",
@@ -3167,8 +3217,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n4/http-session-context-0.1.json",
@@ -5252,8 +5306,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n4/rpc-timeout-0.1.json",
@@ -5270,8 +5328,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n4/rpc-timeout-0.1.json",
@@ -5288,8 +5350,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n4/rpc-timeout-0.1.json",
@@ -5306,8 +5372,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-SWI"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n5/http-session-context-0.1.json",
@@ -7532,8 +7602,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n5/rpc-timeout-0.1.json",
@@ -7550,8 +7624,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "deployed_and_verified",
+      "decisions": [
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n5/selective-receive-0.2.json",
@@ -14378,11 +14456,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14400,11 +14479,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14422,11 +14502,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14444,11 +14525,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14466,11 +14548,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-TREALLA"
+        "RPC-NUMERIC-CANDIDATE-TREALLA",
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
       ]
     },
     {
@@ -14488,11 +14571,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-TREALLA"
+        "RPC-NUMERIC-CANDIDATE-TREALLA",
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
       ]
     },
     {
@@ -14732,11 +14816,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14754,11 +14839,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14776,11 +14862,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14798,11 +14885,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-SWI"
+        "RPC-NUMERIC-CANDIDATE-SWI",
+        "RPC-NUMERIC-DEPLOYED-SWI"
       ]
     },
     {
@@ -14874,11 +14962,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-TREALLA"
+        "RPC-NUMERIC-CANDIDATE-TREALLA",
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
       ]
     },
     {
@@ -14896,11 +14985,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "RPC_TIMEOUT",
-      "production_disposition": "open",
+      "production_disposition": "repaired_deployed",
       "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "candidate_disposition": "deployed_and_verified",
       "decisions": [
-        "RPC-NUMERIC-CANDIDATE-TREALLA"
+        "RPC-NUMERIC-CANDIDATE-TREALLA",
+        "RPC-NUMERIC-DEPLOYED-TREALLA"
       ]
     },
     {
@@ -17749,7 +17839,7 @@
           "status": "pass"
         }
       ],
-      "note": "SWI explicitly supplied variable/none timeouts now fail validation before dispatch; omitted defaults remain unchanged. Production findings remain open pending qualification/deployment."
+      "note": "At the baseline checkpoint: SWI explicitly supplied variable/none timeouts now fail validation before dispatch; omitted defaults remain unchanged. Production findings remain open pending qualification/deployment. See the later deployed decision for current status."
     },
     {
       "id": "RPC-NUMERIC-CANDIDATE-TREALLA",
@@ -17784,7 +17874,250 @@
           "status": "pass"
         }
       ],
-      "note": "Trealla explicitly supplied infinite timeouts are rejected as non-numeric. Production findings remain open pending qualification/deployment."
+      "note": "At the baseline checkpoint: Trealla explicitly supplied infinite timeouts are rejected as non-numeric. Production findings remain open pending qualification/deployment. See the later deployed decision for current status."
+    },
+    {
+      "id": "RPC-NUMERIC-DEPLOYED-SWI",
+      "selectors": [
+        {
+          "candidate_in": [
+            "swi",
+            "n1",
+            "n2",
+            "n3",
+            "n4"
+          ],
+          "case_id_in": [
+            "RPC-TIME-001",
+            "RPC-TIME-002",
+            "RPC-TIME-010",
+            "RPC-TIME-011"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_and_verified",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n1-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n1"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n2-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n2"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n3-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n3"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "n4"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Committed repair deployed and verified on the corresponding runtime nodes. Exact-image and live unchanged assertions pass; omitted defaults remain unchanged. Original observations remain immutable."
+    },
+    {
+      "id": "RPC-NUMERIC-DEPLOYED-TREALLA",
+      "selectors": [
+        {
+          "candidate_in": [
+            "trealla",
+            "n5"
+          ],
+          "case_id_in": [
+            "RPC-TIME-003",
+            "RPC-TIME-012"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_and_verified",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-003",
+            "candidate": "n5"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-003",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json",
+          "selector": {
+            "case_id": "RPC-TIME-012",
+            "candidate": "n5"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json",
+          "selector": {
+            "case_id": "RPC-TIME-012",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Committed repair deployed and verified on the corresponding runtime nodes. Exact-image and live unchanged assertions pass; omitted defaults remain unchanged. Original observations remain immutable."
     }
   ],
   "input_rows_without_execution": [
@@ -17866,10 +18199,10 @@
       "blocked": 387
     },
     "production_dispositions": {
-      "open": 241,
+      "open": 211,
       "blocked_precondition": 387,
+      "repaired_deployed": 32,
       "superseded_assertion": 32,
-      "repaired_deployed": 2,
       "passing_replay_cause_open": 1,
       "correct_preconditions_verified": 121,
       "fixture_precondition": 19

@@ -7,11 +7,18 @@ another runtime.
 
 ## Current consolidated results
 
+The [RPC timeout deployment follow-up](reports/2026-11-20-rpc-validation-live/REPORT.md)
+verifies the committed SWI/Trealla repairs on live N1–N5: all 100 unchanged
+timeout assertions pass. Primary ACTOR, OPEN exercise, prompt and throughput
+checks also pass. The current inventory records **211 unresolved failed
+observations**, down from 241; these are repeated evidence rows, not independent
+defects. This focused follow-up preserves the earlier complete sweep.
+
+
 The [cleanup qualification follow-up](reports/2026-11-20-cleanup-qualification/REPORT.md)
-resolves both first-batch Trealla qualification blockers in the local test
+previously resolved both first-batch Trealla qualification blockers in the local test
 harness. All 111 unit check groups pass on macOS and Linux. Runtime cleanup
-code, deployment pins and live services are unchanged; the pending RPC
-candidate is preserved. The earlier failed runs remain linked in the issue
+code was unchanged; that local checkpoint preceded the deployment above. The earlier failed runs remain linked in the issue
 inventory.
 
 Start with the [current issue inventory](CURRENT_ISSUES.md) for unresolved
