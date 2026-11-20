@@ -1,0 +1,6748 @@
+{
+  "format": "full-manifest-extra-observations-v1",
+  "results": [
+    {
+      "candidate": "swi",
+      "suite": "admission-marker-controls-0.1",
+      "id": "AMC-001",
+      "title": "Ordinary query exception retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5844256614,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5844256614,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(throw(admission_runtime_error))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Unknown message: admission_runtime_error",
+              "details": "admission_runtime_error",
+              "pid": 5844256614,
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5844256614,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 5844256614,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5844256614
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5844256614,
+              "reason": "true",
+              "ref": "5844256614@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5844256614,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": "Unknown message: admission_runtime_error",
+          "details": "admission_runtime_error",
+          "pid": 5844256614,
+          "type": "error"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5844256614,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 66
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-marker-controls-0.1",
+      "id": "AMC-002",
+      "title": "Ordinary logical failure retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3701748078,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3701748078,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(fail)),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3701748078,
+              "type": "failure"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3701748078,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 3701748078,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 3701748078
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3701748078,
+              "reason": "true",
+              "ref": "3701748078@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3701748078,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "pid": 3701748078,
+          "type": "failure"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 3701748078,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 54
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-001",
+      "title": "Valid initial children: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9398033079,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9398033079,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([child(probe,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7722834617,
+              "reason": "true",
+              "ref": "7722834617@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,5933598754@'http://127.0.0.1:45693',worker,temporary)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "9398033079@'http://127.0.0.1:45693'",
+                  "Sup": "7722834617@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 9398033079,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9398033079,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 9398033079,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9398033079
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9398033079,
+              "reason": "true",
+              "ref": "9398033079@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9398033079,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,5933598754@'http://127.0.0.1:45693',worker,temporary)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "9398033079@'http://127.0.0.1:45693'",
+              "Sup": "7722834617@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 9398033079,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9398033079,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 167
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-002",
+      "title": "Valid initial children: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3345879837,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3345879837,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!initial_specs([child(probe,[start(receive({never->true})),restart(temporary)])]),receive({initial_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),supervisor_spawn(Specs,Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9903123552,
+              "reason": "true",
+              "ref": "9903123552@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,9073181540@'http://127.0.0.1:45693',worker,temporary)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "3345879837@'http://127.0.0.1:45693'",
+                  "S": "3345879837@'http://127.0.0.1:45693'",
+                  "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+                  "Sup": "9903123552@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 3345879837,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3345879837,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 3345879837,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 3345879837
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3345879837,
+              "reason": "true",
+              "ref": "3345879837@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3345879837,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,9073181540@'http://127.0.0.1:45693',worker,temporary)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "3345879837@'http://127.0.0.1:45693'",
+              "S": "3345879837@'http://127.0.0.1:45693'",
+              "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+              "Sup": "9903123552@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 3345879837,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 3345879837,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 174
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-003",
+      "title": "Missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1783523856,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1783523856,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(supervisor_spawn([child(probe,[])],Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1783523856@'http://127.0.0.1:45693'",
+                  "Rejected": "Rejected"
+                }
+              ],
+              "more": false,
+              "pid": 1783523856,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1783523856,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1783523856,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1783523856
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1783523856,
+              "reason": "true",
+              "ref": "1783523856@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1783523856,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1783523856@'http://127.0.0.1:45693'",
+              "Rejected": "Rejected"
+            }
+          ],
+          "more": false,
+          "pid": 1783523856,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1783523856,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 68
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-004",
+      "title": "Missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9257719203,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9257719203,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!invalid_specs([child(probe,[])]),receive({invalid_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(supervisor_spawn(Specs,Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "9257719203@'http://127.0.0.1:45693'",
+                  "Rejected": "Rejected",
+                  "S": "9257719203@'http://127.0.0.1:45693'",
+                  "Specs": "[child(probe,[])]"
+                }
+              ],
+              "more": false,
+              "pid": 9257719203,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9257719203,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 9257719203,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9257719203
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9257719203,
+              "reason": "true",
+              "ref": "9257719203@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9257719203,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "9257719203@'http://127.0.0.1:45693'",
+              "Rejected": "Rejected",
+              "S": "9257719203@'http://127.0.0.1:45693'",
+              "Specs": "[child(probe,[])]"
+            }
+          ],
+          "more": false,
+          "pid": 9257719203,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9257719203,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 60
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-005",
+      "title": "Dynamic valid child: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7110914017,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7110914017,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[start(receive({never->true})),restart(temporary)]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 3447440783,
+              "reason": "shutdown",
+              "ref": "3447440783@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1225944301,
+              "reason": "true",
+              "ref": "1225944301@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,3447440783@'http://127.0.0.1:45693',worker,temporary)]",
+                  "Error": "Error",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "7110914017@'http://127.0.0.1:45693'",
+                  "Reply": "ok",
+                  "Sup": "1225944301@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 7110914017,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7110914017,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 7110914017,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 7110914017
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7110914017,
+              "reason": "true",
+              "ref": "7110914017@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7110914017,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,3447440783@'http://127.0.0.1:45693',worker,temporary)]",
+              "Error": "Error",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "7110914017@'http://127.0.0.1:45693'",
+              "Reply": "ok",
+              "Sup": "1225944301@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 7110914017,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 7110914017,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 167
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-006",
+      "title": "Dynamic valid child: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9096376633,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9096376633,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[start(receive({never->true})),restart(temporary)])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5136985593,
+              "reason": "shutdown",
+              "ref": "5136985593@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2757728762,
+              "reason": "true",
+              "ref": "2757728762@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,5136985593@'http://127.0.0.1:45693',worker,temporary)]",
+                  "Error": "Error",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "9096376633@'http://127.0.0.1:45693'",
+                  "Reply": "ok",
+                  "S": "9096376633@'http://127.0.0.1:45693'",
+                  "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+                  "Sup": "2757728762@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 9096376633,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9096376633,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 9096376633,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9096376633
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9096376633,
+              "reason": "true",
+              "ref": "9096376633@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9096376633,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,5136985593@'http://127.0.0.1:45693',worker,temporary)]",
+              "Error": "Error",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "9096376633@'http://127.0.0.1:45693'",
+              "Reply": "ok",
+              "S": "9096376633@'http://127.0.0.1:45693'",
+              "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+              "Sup": "2757728762@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 9096376633,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9096376633,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 157
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-007",
+      "title": "Dynamic missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8992236764,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 8992236764,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8798409121,
+              "reason": "true",
+              "ref": "8798409121@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "8992236764@'http://127.0.0.1:45693'",
+                  "Reply": "Reply",
+                  "Sup": "8798409121@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 8992236764,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 8992236764,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 8992236764,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 8992236764
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8992236764,
+              "reason": "true",
+              "ref": "8992236764@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8992236764,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "8992236764@'http://127.0.0.1:45693'",
+              "Reply": "Reply",
+              "Sup": "8798409121@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 8992236764,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 8992236764,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 101
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-008",
+      "title": "Dynamic missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6325547628,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 6325547628,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5329871833,
+              "reason": "true",
+              "ref": "5329871833@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "6325547628@'http://127.0.0.1:45693'",
+                  "Reply": "Reply",
+                  "S": "6325547628@'http://127.0.0.1:45693'",
+                  "Spec": "child(probe,[])",
+                  "Sup": "5329871833@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 6325547628,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 6325547628,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 6325547628,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 6325547628
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6325547628,
+              "reason": "true",
+              "ref": "6325547628@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 6325547628,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "6325547628@'http://127.0.0.1:45693'",
+              "Reply": "Reply",
+              "S": "6325547628@'http://127.0.0.1:45693'",
+              "Spec": "child(probe,[])",
+              "Sup": "5329871833@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 6325547628,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 6325547628,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 103
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-009",
+      "title": "Unknown option before missing source: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4687354436,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4687354436,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(spawn(true,Rejected,[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Domain error: spawn_option' expected, found unknown(admission_probe)' (invalid spawn option)",
+              "details": "error(domain_error(spawn_option,unknown(admission_probe)),_)",
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4687354436,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "no"
+                }
+              ],
+              "more": false,
+              "pid": 4687354436,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 4687354436
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4687354436,
+              "reason": "true",
+              "ref": "4687354436@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4687354436,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": "Domain error: spawn_option' expected, found unknown(admission_probe)' (invalid spawn option)",
+          "details": "error(domain_error(spawn_option,unknown(admission_probe)),_)",
+          "type": "error"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "no"
+            }
+          ],
+          "more": false,
+          "pid": 4687354436,
+          "type": "success"
+        },
+        "execution_entered": false
+      },
+      "duration_ms": 54
+    },
+    {
+      "candidate": "swi",
+      "suite": "admission-paths-0.1",
+      "id": "AP-010",
+      "title": "Unknown option before missing source: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9988920081,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9988920081,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!creation_options([src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),receive({creation_options(Options)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(spawn(true,Rejected,Options),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+                  "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "9988920081@'http://127.0.0.1:45693'",
+                  "Rejected": "Rejected",
+                  "S": "9988920081@'http://127.0.0.1:45693'"
+                }
+              ],
+              "more": false,
+              "pid": 9988920081,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9988920081,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 9988920081,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9988920081
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9988920081,
+              "reason": "true",
+              "ref": "9988920081@'http://127.0.0.1:45693'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9988920081,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+              "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "9988920081@'http://127.0.0.1:45693'",
+              "Rejected": "Rejected",
+              "S": "9988920081@'http://127.0.0.1:45693'"
+            }
+          ],
+          "more": false,
+          "pid": 9988920081,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9988920081,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 53
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-marker-controls-0.1",
+      "id": "AMC-001",
+      "title": "Ordinary query exception retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2156279593
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2156279593,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(throw(admission_runtime_error))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "error",
+              "pid": 2156279593,
+              "data": "admission_runtime_error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2156279593,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2156279593,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2156279593
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2156279593,
+              "ref": 2156279593,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2156279593,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "error",
+          "pid": 2156279593,
+          "data": "admission_runtime_error"
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2156279593,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 126
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-marker-controls-0.1",
+      "id": "AMC-002",
+      "title": "Ordinary logical failure retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2731478138
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2731478138,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(fail)),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "failure",
+              "pid": 2731478138
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2731478138,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2731478138,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2731478138
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2731478138,
+              "ref": 2731478138,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2731478138,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "failure",
+          "pid": 2731478138
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2731478138,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 117
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-001",
+      "title": "Valid initial children: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 1711193801
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1711193801,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([child(probe,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1711193801,
+              "data": [
+                {
+                  "ProbeSelf": "1711193801@'http://127.0.0.1:43287'",
+                  "Sup": "2881166626",
+                  "Children": "[info(probe,1701513701,worker,temporary)]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1711193801,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1711193801,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1711193801
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 1711193801,
+              "ref": 1711193801,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 1711193801,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 1711193801,
+          "data": [
+            {
+              "ProbeSelf": "1711193801@'http://127.0.0.1:43287'",
+              "Sup": "2881166626",
+              "Children": "[info(probe,1701513701,worker,temporary)]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 1711193801,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 261
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-002",
+      "title": "Valid initial children: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 1501367988
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1501367988,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!initial_specs([child(probe,[start(receive({never->true})),restart(temporary)])]),receive({initial_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),supervisor_spawn(Specs,Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1501367988,
+              "data": [
+                {
+                  "ProbeSelf": "1501367988@'http://127.0.0.1:43287'",
+                  "S": "1501367988@'http://127.0.0.1:43287'",
+                  "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+                  "Sup": "1326854834",
+                  "Children": "[info(probe,1630884762,worker,temporary)]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1501367988,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1501367988,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1501367988
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 1501367988,
+              "ref": 1501367988,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 1501367988,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 1501367988,
+          "data": [
+            {
+              "ProbeSelf": "1501367988@'http://127.0.0.1:43287'",
+              "S": "1501367988@'http://127.0.0.1:43287'",
+              "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+              "Sup": "1326854834",
+              "Children": "[info(probe,1630884762,worker,temporary)]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 1501367988,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 257
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-003",
+      "title": "Missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2796729358
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2796729358,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(supervisor_spawn([child(probe,[])],Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2796729358,
+              "data": [
+                {
+                  "ProbeSelf": "2796729358@'http://127.0.0.1:43287'",
+                  "Rejected": "Rejected",
+                  "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2796729358,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2796729358,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2796729358
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2796729358,
+              "ref": 2796729358,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2796729358,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 2796729358,
+          "data": [
+            {
+              "ProbeSelf": "2796729358@'http://127.0.0.1:43287'",
+              "Rejected": "Rejected",
+              "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2796729358,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 122
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-004",
+      "title": "Missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 1300320513
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1300320513,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!invalid_specs([child(probe,[])]),receive({invalid_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(supervisor_spawn(Specs,Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1300320513,
+              "data": [
+                {
+                  "ProbeSelf": "1300320513@'http://127.0.0.1:43287'",
+                  "S": "1300320513@'http://127.0.0.1:43287'",
+                  "Specs": "[child(probe,[])]",
+                  "Rejected": "Rejected",
+                  "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1300320513,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1300320513,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1300320513
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 1300320513,
+              "ref": 1300320513,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 1300320513,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 1300320513,
+          "data": [
+            {
+              "ProbeSelf": "1300320513@'http://127.0.0.1:43287'",
+              "S": "1300320513@'http://127.0.0.1:43287'",
+              "Specs": "[child(probe,[])]",
+              "Rejected": "Rejected",
+              "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 1300320513,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 125
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-005",
+      "title": "Dynamic valid child: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 1423364689
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1423364689,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[start(receive({never->true})),restart(temporary)]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1423364689,
+              "data": [
+                {
+                  "ProbeSelf": "1423364689@'http://127.0.0.1:43287'",
+                  "Sup": "2622957018",
+                  "PatternState": "literal",
+                  "Reply": "ok",
+                  "Error": "Error",
+                  "Children": "[info(probe,2421268609,worker,temporary)]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1423364689,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1423364689,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1423364689
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 1423364689,
+              "ref": 1423364689,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 1423364689,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 1423364689,
+          "data": [
+            {
+              "ProbeSelf": "1423364689@'http://127.0.0.1:43287'",
+              "Sup": "2622957018",
+              "PatternState": "literal",
+              "Reply": "ok",
+              "Error": "Error",
+              "Children": "[info(probe,2421268609,worker,temporary)]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 1423364689,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 250
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-006",
+      "title": "Dynamic valid child: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 3017653254
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3017653254,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[start(receive({never->true})),restart(temporary)])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 3017653254,
+              "data": [
+                {
+                  "ProbeSelf": "3017653254@'http://127.0.0.1:43287'",
+                  "Sup": "1474972524",
+                  "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+                  "PatternState": "unbound",
+                  "S": "3017653254@'http://127.0.0.1:43287'",
+                  "Matched": "yes",
+                  "Reply": "ok",
+                  "Error": "Error",
+                  "Children": "[info(probe,1509469522,worker,temporary)]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3017653254,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 3017653254,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 3017653254
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 3017653254,
+              "ref": 3017653254,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 3017653254,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 3017653254,
+          "data": [
+            {
+              "ProbeSelf": "3017653254@'http://127.0.0.1:43287'",
+              "Sup": "1474972524",
+              "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+              "PatternState": "unbound",
+              "S": "3017653254@'http://127.0.0.1:43287'",
+              "Matched": "yes",
+              "Reply": "ok",
+              "Error": "Error",
+              "Children": "[info(probe,1509469522,worker,temporary)]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 3017653254,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 268
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-007",
+      "title": "Dynamic missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2391372250
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2391372250,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2391372250,
+              "data": [
+                {
+                  "ProbeSelf": "2391372250@'http://127.0.0.1:43287'",
+                  "Sup": "2223791120",
+                  "PatternState": "literal",
+                  "Reply": "Reply",
+                  "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+                  "Children": "[]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2391372250,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2391372250,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2391372250
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2391372250,
+              "ref": 2391372250,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2391372250,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 2391372250,
+          "data": [
+            {
+              "ProbeSelf": "2391372250@'http://127.0.0.1:43287'",
+              "Sup": "2223791120",
+              "PatternState": "literal",
+              "Reply": "Reply",
+              "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+              "Children": "[]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2391372250,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 127
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-008",
+      "title": "Dynamic missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 1117890338
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1117890338,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1117890338,
+              "data": [
+                {
+                  "ProbeSelf": "1117890338@'http://127.0.0.1:43287'",
+                  "Sup": "2332452927",
+                  "Spec": "child(probe,[])",
+                  "PatternState": "unbound",
+                  "S": "1117890338@'http://127.0.0.1:43287'",
+                  "Matched": "yes",
+                  "Reply": "Reply",
+                  "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+                  "Children": "[]",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1117890338,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 1117890338,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1117890338
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 1117890338,
+              "ref": 1117890338,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 1117890338,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 1117890338,
+          "data": [
+            {
+              "ProbeSelf": "1117890338@'http://127.0.0.1:43287'",
+              "Sup": "2332452927",
+              "Spec": "child(probe,[])",
+              "PatternState": "unbound",
+              "S": "1117890338@'http://127.0.0.1:43287'",
+              "Matched": "yes",
+              "Reply": "Reply",
+              "Error": "error(existence_error(option,start(probe)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+              "Children": "[]",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 1117890338,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 124
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-009",
+      "title": "Unknown option before missing source: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2902051926
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2902051926,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(spawn(true,Rejected,[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2902051926,
+              "data": [
+                {
+                  "ProbeSelf": "2902051926@'http://127.0.0.1:43287'",
+                  "Rejected": "Rejected",
+                  "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2902051926,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2902051926,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2902051926
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2902051926,
+              "ref": 2902051926,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2902051926,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 2902051926,
+          "data": [
+            {
+              "ProbeSelf": "2902051926@'http://127.0.0.1:43287'",
+              "Rejected": "Rejected",
+              "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2902051926,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 119
+    },
+    {
+      "candidate": "trealla",
+      "suite": "admission-paths-0.1",
+      "id": "AP-010",
+      "title": "Unknown option before missing source: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "protocol": "web_prolog_browser_actor",
+              "io_ack": true,
+              "browser_pids": true,
+              "profile": "actor",
+              "sandbox": "blacklist",
+              "version": 1,
+              "answer_terms": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 2527745585
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2527745585,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!creation_options([src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),receive({creation_options(Options)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(spawn(true,Rejected,Options),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2527745585,
+              "data": [
+                {
+                  "ProbeSelf": "2527745585@'http://127.0.0.1:43287'",
+                  "S": "2527745585@'http://127.0.0.1:43287'",
+                  "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+                  "Rejected": "Rejected",
+                  "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+                  "ProbeComplete": "completed"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 2527745585,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 2527745585,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 2527745585
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "down",
+              "pid": 2527745585,
+              "ref": 2527745585,
+              "reason": "kill"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 2527745585,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "success",
+          "pid": 2527745585,
+          "data": [
+            {
+              "ProbeSelf": "2527745585@'http://127.0.0.1:43287'",
+              "S": "2527745585@'http://127.0.0.1:43287'",
+              "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+              "Rejected": "Rejected",
+              "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+              "ProbeComplete": "completed"
+            }
+          ],
+          "more": false
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 2527745585,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 118
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-http-0.1",
+      "id": "HC-001",
+      "title": "RPC preserves all pages",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([[a,b,c]],false).\n"
+        }
+      ],
+      "duration_ms": 36
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-http-0.1",
+      "id": "HC-002",
+      "title": "Promise preserves template sharing and caller independence",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([ok],false).\n"
+        }
+      ],
+      "duration_ms": 21
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-001",
+      "title": "Remote source, synchronous paging and spawn monitor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(1201396105@'http://127.0.0.1:45693',[a],true)",
+            "B": "success(1201396105@'http://127.0.0.1:45693',[b],false)",
+            "BaselineResult": "passed",
+            "P": "1201396105@'http://127.0.0.1:45693'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 8446840005,
+        "type": "success"
+      },
+      "duration_ms": 160
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-002",
+      "title": "Canonical asynchronous answers preserve shared variables and quoted atoms",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "A",
+            "BaselineResult": "passed",
+            "P": "7836110014@'http://127.0.0.1:45693'",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 6627911549,
+        "type": "success"
+      },
+      "duration_ms": 124
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-003",
+      "title": "Remote calls preserve an unrelated local monitor and message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(2875818764@'http://127.0.0.1:45693',[true],false)",
+            "BaselineResult": "passed",
+            "Other": "3200711974@'http://127.0.0.1:45693'",
+            "P": "2875818764@'http://127.0.0.1:45693'",
+            "S": "1629160038@'http://127.0.0.1:45693'"
+          }
+        ],
+        "more": false,
+        "pid": 1629160038,
+        "type": "success"
+      },
+      "duration_ms": 169
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-001",
+      "title": "Remote successor directions and determinism",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B": "2",
+            "BaselineResult": "passed",
+            "Rows": "[ok]",
+            "S": "3"
+          }
+        ],
+        "more": false,
+        "pid": 1498784419,
+        "type": "success"
+      },
+      "duration_ms": 65
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-002",
+      "title": "Remote float validation preserves culprit and unbound peer",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(type_error(integer,1.5),_)",
+            "E2": "error(type_error(integer,1.5),_)",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 6274758544,
+        "type": "success"
+      },
+      "duration_ms": 62
+    },
+    {
+      "candidate": "swi-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-003",
+      "title": "Remote private source uses the same successor contract",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(type_error(integer,1.5),_)"
+          }
+        ],
+        "more": false,
+        "pid": 1512999138,
+        "type": "success"
+      },
+      "duration_ms": 62
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-http-0.1",
+      "id": "HC-001",
+      "title": "RPC preserves all pages",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([[a,b,c]],false).\n"
+        }
+      ],
+      "duration_ms": 119
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-http-0.1",
+      "id": "HC-002",
+      "title": "Promise preserves template sharing and caller independence",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([ok],false).\n"
+        }
+      ],
+      "duration_ms": 124
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-001",
+      "title": "Remote source, synchronous paging and spawn monitor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(2748156040@'http://127.0.0.1:43287',[a],true)",
+            "B": "success(2748156040@'http://127.0.0.1:43287',[b],false)",
+            "BaselineResult": "passed",
+            "P": "2748156040@'http://127.0.0.1:43287'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 5478183290,
+        "type": "success"
+      },
+      "duration_ms": 200
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-002",
+      "title": "Canonical asynchronous answers preserve shared variables and quoted atoms",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "A",
+            "BaselineResult": "passed",
+            "P": "1686611245@'http://127.0.0.1:43287'",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 8153581756,
+        "type": "success"
+      },
+      "duration_ms": 184
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-003",
+      "title": "Remote calls preserve an unrelated local monitor and message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(2721067625@'http://127.0.0.1:43287',[true],false)",
+            "BaselineResult": "passed",
+            "Other": "4053368247@'http://127.0.0.1:45693'",
+            "P": "2721067625@'http://127.0.0.1:43287'",
+            "S": "1741289790@'http://127.0.0.1:45693'"
+          }
+        ],
+        "more": false,
+        "pid": 1741289790,
+        "type": "success"
+      },
+      "duration_ms": 221
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-001",
+      "title": "Remote successor directions and determinism",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B": "2",
+            "BaselineResult": "passed",
+            "Rows": "[ok]",
+            "S": "3"
+          }
+        ],
+        "more": false,
+        "pid": 2222433238,
+        "type": "success"
+      },
+      "duration_ms": 164
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-002",
+      "title": "Remote float validation preserves culprit and unbound peer",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(type_error(integer,1.5),must_be/2)",
+            "E2": "error(type_error(integer,1.5),must_be/2)",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 2565778782,
+        "type": "success"
+      },
+      "duration_ms": 163
+    },
+    {
+      "candidate": "swi-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-003",
+      "title": "Remote private source uses the same successor contract",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(type_error(integer,1.5),must_be/2)"
+          }
+        ],
+        "more": false,
+        "pid": 3222890400,
+        "type": "success"
+      },
+      "duration_ms": 177
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-http-0.1",
+      "id": "HC-001",
+      "title": "RPC preserves all pages",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([[a,b,c]],false).\n"
+        }
+      ],
+      "duration_ms": 120
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-http-0.1",
+      "id": "HC-002",
+      "title": "Promise preserves template sharing and caller independence",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([ok],false).\n"
+        }
+      ],
+      "duration_ms": 123
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-001",
+      "title": "Remote source, synchronous paging and spawn monitor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2813607907,
+        "data": [
+          {
+            "P": "3615079230@'http://127.0.0.1:45693'",
+            "X": "X",
+            "A": "success(3615079230@'http://127.0.0.1:45693',[a],true)",
+            "B": "success(3615079230@'http://127.0.0.1:45693',[b],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 197
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-002",
+      "title": "Canonical asynchronous answers preserve shared variables and quoted atoms",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2719377937,
+        "data": [
+          {
+            "P": "3455708428@'http://127.0.0.1:45693'",
+            "V": "V",
+            "A": "A",
+            "B": "A",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 185
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-actor-0.1",
+      "id": "IX-003",
+      "title": "Remote calls preserve an unrelated local monitor and message",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2319277353,
+        "data": [
+          {
+            "S": "2319277353@'http://127.0.0.1:43287'",
+            "Other": "1216985160",
+            "P": "8012194014@'http://127.0.0.1:45693'",
+            "A": "success(8012194014@'http://127.0.0.1:45693',[true],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 191
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-001",
+      "title": "Remote successor directions and determinism",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2618410194,
+        "data": [
+          {
+            "S": "3",
+            "B": "2",
+            "Rows": "[ok]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 126
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-002",
+      "title": "Remote float validation preserves culprit and unbound peer",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2097600925,
+        "data": [
+          {
+            "E": "error(type_error(integer,1.5),_)",
+            "V": "V",
+            "E2": "error(type_error(integer,1.5),_)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 127
+    },
+    {
+      "candidate": "trealla-to-swi",
+      "suite": "interop-successor-0.1",
+      "id": "SI-003",
+      "title": "Remote private source uses the same successor contract",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3021758531,
+        "data": [
+          {
+            "E": "error(type_error(integer,1.5),_)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 132
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-http-0.1",
+      "id": "HC-001",
+      "title": "RPC preserves all pages",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([[a,b,c]],false).\n"
+        }
+      ],
+      "duration_ms": 227
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-http-0.1",
+      "id": "HC-002",
+      "title": "Promise preserves template sharing and caller independence",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([ok],false).\n"
+        }
+      ],
+      "duration_ms": 221
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-001",
+      "title": "Remote source, synchronous paging and spawn monitor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2918912339,
+        "data": [
+          {
+            "P": "2376328606@'http://127.0.0.1:43287'",
+            "X": "X",
+            "A": "success(2376328606@'http://127.0.0.1:43287',[a],true)",
+            "B": "success(2376328606@'http://127.0.0.1:43287',[b],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 282
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-002",
+      "title": "Canonical asynchronous answers preserve shared variables and quoted atoms",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2347980690,
+        "data": [
+          {
+            "P": "1142163158@'http://127.0.0.1:43287'",
+            "V": "V",
+            "A": "A",
+            "B": "A",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 234
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-actor-0.1",
+      "id": "IX-003",
+      "title": "Remote calls preserve an unrelated local monitor and message",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2265391406,
+        "data": [
+          {
+            "S": "2265391406@'http://127.0.0.1:43287'",
+            "Other": "1446729549",
+            "P": "1614826821@'http://127.0.0.1:43287'",
+            "A": "success(1614826821@'http://127.0.0.1:43287',[true],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 231
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-001",
+      "title": "Remote successor directions and determinism",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2780858436,
+        "data": [
+          {
+            "S": "3",
+            "B": "2",
+            "Rows": "[ok]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 226
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-002",
+      "title": "Remote float validation preserves culprit and unbound peer",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2836747296,
+        "data": [
+          {
+            "E": "error(type_error(integer,1.5),must_be/2)",
+            "V": "V",
+            "E2": "error(type_error(integer,1.5),must_be/2)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 221
+    },
+    {
+      "candidate": "trealla-to-trealla",
+      "suite": "interop-successor-0.1",
+      "id": "SI-003",
+      "title": "Remote private source uses the same successor contract",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1727162787,
+        "data": [
+          {
+            "E": "error(type_error(integer,1.5),must_be/2)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 246
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-001",
+      "title": "memberchk is available and commits to the first match",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "appendix-library-probes-0.1",
+      "id": "LIB-002",
+      "title": "forall is available, preserves bindings, and detects a failing instance",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-001",
+      "title": "rpc rejects [request_header(H)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-002",
+      "title": "rpc rejects [request_header(bad)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-003",
+      "title": "rpc rejects [request_header(N=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-004",
+      "title": "rpc rejects [request_header(42=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-005",
+      "title": "rpc rejects [request_header('bad name'=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-006",
+      "title": "rpc rejects [request_header(''=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-007",
+      "title": "rpc rejects [request_header(x=V)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-008",
+      "title": "rpc rejects [request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-009",
+      "title": "rpc rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-010",
+      "title": "rpc rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-011",
+      "title": "rpc rejects [request_header(x=[ab])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-012",
+      "title": "rpc rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-013",
+      "title": "rpc rejects [authorization(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-014",
+      "title": "rpc rejects [authorization(digest(u,p))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-015",
+      "title": "rpc rejects [authorization(basic(u,P))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-016",
+      "title": "rpc rejects [authorization(basic(u,42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-017",
+      "title": "rpc rejects [authorization(bearer(T))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-018",
+      "title": "rpc rejects [authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-019",
+      "title": "rpc rejects [user_agent(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-020",
+      "title": "rpc rejects [user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-021",
+      "title": "rpc rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-022",
+      "title": "rpc rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-023",
+      "title": "rpc rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-027",
+      "title": "rpc rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-028",
+      "title": "promise rejects [request_header(H)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-029",
+      "title": "promise rejects [request_header(bad)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-030",
+      "title": "promise rejects [request_header(N=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-031",
+      "title": "promise rejects [request_header(42=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-032",
+      "title": "promise rejects [request_header('bad name'=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-033",
+      "title": "promise rejects [request_header(''=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-034",
+      "title": "promise rejects [request_header(x=V)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-035",
+      "title": "promise rejects [request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-036",
+      "title": "promise rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-037",
+      "title": "promise rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-038",
+      "title": "promise rejects [request_header(x=[ab])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-039",
+      "title": "promise rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-040",
+      "title": "promise rejects [authorization(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-041",
+      "title": "promise rejects [authorization(digest(u,p))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-042",
+      "title": "promise rejects [authorization(basic(u,P))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-043",
+      "title": "promise rejects [authorization(basic(u,42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-044",
+      "title": "promise rejects [authorization(bearer(T))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-045",
+      "title": "promise rejects [authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-046",
+      "title": "promise rejects [user_agent(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-047",
+      "title": "promise rejects [user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-048",
+      "title": "promise rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-049",
+      "title": "promise rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-050",
+      "title": "promise rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-054",
+      "title": "promise rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-055",
+      "title": "yield rejects request_header(x=value)",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-056",
+      "title": "yield rejects authorization(bearer(token))",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-057",
+      "title": "yield rejects user_agent(agent)",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-058",
+      "title": "rpc rejects empty-list field name consistently",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-FIELD-059",
+      "title": "promise rejects empty-list field name consistently",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-rpc-0",
+      "title": "rpc validates shadowed field containing control 0",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': 'error(representation_error(character_code),/(char_code,2))'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-rpc-13",
+      "title": "rpc validates shadowed field containing control 13",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-rpc-31",
+      "title": "rpc validates shadowed field containing control 31",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-rpc-127",
+      "title": "rpc validates shadowed field containing control 127",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-promise-0",
+      "title": "promise validates shadowed field containing control 0",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': 'error(representation_error(character_code),/(char_code,2))'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-promise-13",
+      "title": "promise validates shadowed field containing control 13",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-promise-31",
+      "title": "promise validates shadowed field containing control 31",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-fields-0.1",
+      "id": "HTTP-CTL-promise-127",
+      "title": "promise validates shadowed field containing control 127",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-001",
+      "title": "rpc rejects [request_header(H)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-002",
+      "title": "rpc rejects [request_header(bad)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-003",
+      "title": "rpc rejects [request_header(N=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-004",
+      "title": "rpc rejects [request_header(42=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-005",
+      "title": "rpc rejects [request_header('bad name'=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-006",
+      "title": "rpc rejects [request_header(''=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-007",
+      "title": "rpc rejects [request_header(x=V)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-008",
+      "title": "rpc rejects [request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-009",
+      "title": "rpc rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-010",
+      "title": "rpc rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-011",
+      "title": "rpc rejects [request_header(x=[ab])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-012",
+      "title": "rpc rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-013",
+      "title": "rpc rejects [authorization(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-014",
+      "title": "rpc rejects [authorization(digest(u,p))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-015",
+      "title": "rpc rejects [authorization(basic(u,P))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-016",
+      "title": "rpc rejects [authorization(basic(u,42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-017",
+      "title": "rpc rejects [authorization(bearer(T))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-018",
+      "title": "rpc rejects [authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-019",
+      "title": "rpc rejects [user_agent(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-020",
+      "title": "rpc rejects [user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-021",
+      "title": "rpc rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-022",
+      "title": "rpc rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-023",
+      "title": "rpc rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-024",
+      "title": "rpc rejects [redirect(true)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-025",
+      "title": "rpc rejects [max_redirect(3)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-026",
+      "title": "rpc rejects [cacert_file('ca.pem')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-027",
+      "title": "rpc rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-028",
+      "title": "promise rejects [request_header(H)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-029",
+      "title": "promise rejects [request_header(bad)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-030",
+      "title": "promise rejects [request_header(N=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-031",
+      "title": "promise rejects [request_header(42=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-032",
+      "title": "promise rejects [request_header('bad name'=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-033",
+      "title": "promise rejects [request_header(''=value)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-034",
+      "title": "promise rejects [request_header(x=V)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-035",
+      "title": "promise rejects [request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-036",
+      "title": "promise rejects [request_header(x=[118,97,108])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-037",
+      "title": "promise rejects [request_header(x=[a|Tail])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-038",
+      "title": "promise rejects [request_header(x=[ab])] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-039",
+      "title": "promise rejects [request_header(x='bad\\nvalue')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-040",
+      "title": "promise rejects [authorization(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-041",
+      "title": "promise rejects [authorization(digest(u,p))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-042",
+      "title": "promise rejects [authorization(basic(u,P))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-043",
+      "title": "promise rejects [authorization(basic(u,42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-044",
+      "title": "promise rejects [authorization(bearer(T))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-045",
+      "title": "promise rejects [authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-046",
+      "title": "promise rejects [user_agent(A)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-047",
+      "title": "promise rejects [user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-048",
+      "title": "promise rejects [request_header(x=ok),request_header(x=42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-049",
+      "title": "promise rejects [authorization(bearer(ok)),authorization(bearer(42))] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-050",
+      "title": "promise rejects [user_agent(ok),user_agent(42)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-051",
+      "title": "promise rejects [redirect(true)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 7
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-052",
+      "title": "promise rejects [max_redirect(3)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-053",
+      "title": "promise rejects [cacert_file('ca.pem')] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-054",
+      "title": "promise rejects [request_header('X_Forwarded_For'=spoof)] before source or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-055",
+      "title": "yield rejects request_header(x=value)",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-056",
+      "title": "yield rejects authorization(bearer(token))",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-057",
+      "title": "yield rejects user_agent(agent)",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-058",
+      "title": "rpc rejects empty-list field name consistently",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "http-transport-options-0.1",
+      "id": "HTTP-FIELD-059",
+      "title": "promise rejects empty-list field name consistently",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-001",
+      "title": "rpc rejects [timeout(T)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-002",
+      "title": "rpc rejects [timeout(none)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-003",
+      "title": "rpc rejects [timeout(infinite)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-004",
+      "title": "rpc rejects [http_timeout(T)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-005",
+      "title": "rpc rejects [http_timeout(none)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-006",
+      "title": "rpc rejects [timeout(1),timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-007",
+      "title": "rpc rejects [http_timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-008",
+      "title": "rpc rejects [timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-009",
+      "title": "rpc rejects [http_timeout(1),timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-010",
+      "title": "promise rejects [timeout(T)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-011",
+      "title": "promise rejects [timeout(none)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-012",
+      "title": "promise rejects [timeout(infinite)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-013",
+      "title": "promise rejects [http_timeout(T)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-014",
+      "title": "promise rejects [http_timeout(none)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-015",
+      "title": "promise rejects [timeout(1),timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-016",
+      "title": "promise rejects [http_timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-017",
+      "title": "promise rejects [timeout(1),http_timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-018",
+      "title": "promise rejects [http_timeout(1),timeout(bad)] without bindings or dispatch",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-019",
+      "title": "rpc validates every timeout before source fetching",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "rpc-timeout-0.1",
+      "id": "RPC-TIME-020",
+      "title": "promise validates every timeout before source fetching",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "runtime-introspection-0.1",
+      "id": "RT-001",
+      "title": "Enumerates exactly the five defined ground properties without duplicates",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "runtime-introspection-0.1",
+      "id": "RT-002",
+      "title": "Boolean capabilities each have one value and matching values succeed",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "runtime-introspection-0.1",
+      "id": "RT-003",
+      "title": "Isolation uses the portable independent/cooperative domain",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "runtime-introspection-0.1",
+      "id": "RT-004",
+      "title": "Implementation identity is not a language capability and failed matching preserves variables",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "runtime-introspection-0.1",
+      "id": "RT-005",
+      "title": "Unknown, malformed and nonmatching properties fail without raising or binding",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-001",
+      "title": "RPC rejects a non-text URI",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': 'error(type_error(atom,42),/(rpc,3))'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-002",
+      "title": "RPC does not accept authority shorthand",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': 'error(type_error(atom,:(localhost,8080)),/(rpc,3))'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-003",
+      "title": "Promise URI validation leaves variables unbound",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-004",
+      "title": "A character list is a URI value",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'failure'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-005",
+      "title": "A character list is a source URI value",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'failure'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-006",
+      "title": "A compound URI does not bind its components",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': 'error(type_error(atom,:(host,_557)),/(rpc,3))'}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "URI-010",
+      "title": "A list that is not text is not a URI value",
+      "status": "fail",
+      "detail": "ConformanceFailure: [{'type': 'error', 'term': \"error(type_error(atom,'.'(h,'.'(1.5,[]))),/(rpc,3))\"}]",
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "OPT-001",
+      "title": "Non-atom Boolean options raise an atom type error",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "OPT-002",
+      "title": "Invalid Boolean atoms raise a Boolean domain error",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    },
+    {
+      "candidate": "gnu-direct-api",
+      "suite": "uri-atoms-0.1",
+      "id": "OPT-003",
+      "title": "Later Boolean duplicates are validated",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "answers": [
+            "ok"
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 4
+    }
+  ]
+}

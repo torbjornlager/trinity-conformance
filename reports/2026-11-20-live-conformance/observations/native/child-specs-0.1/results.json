@@ -1,0 +1,294 @@
+{
+  "suite": "child-specs-0.1",
+  "mode": "blacklist",
+  "results": [
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-001",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(existence_error(option,start(a)),supervisor)",
+            "S": "6332719106@'http://localhost:35245'",
+            "Specs": "[child(a,[])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 6332719106,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-002",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(permission_error(duplicate,supervisor_child_id,a),_)",
+            "S": "3840364695@'http://localhost:35245'",
+            "Specs": "[child(a,[start(true)]),child(a,[start(true)])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 3840364695,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-003",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E1": "error(type_error(list,[child(a,[start(true)])|bad]),_)",
+            "E2": "error(type_error(list,[start(true)|bad]),_)",
+            "Inner": "[child(a,[start(true)|bad])]",
+            "Outer": "[child(a,[start(true)])|bad]",
+            "P": "P",
+            "Q": "Q",
+            "S": "1540789909@'http://localhost:35245'"
+          }
+        ],
+        "more": false,
+        "pid": 1540789909,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-004",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E1": "error(type_error(oneof([permanent,transient,temporary]),bad),_)",
+            "E2": "error(domain_error(supervisor_child_shutdown,-1),_)",
+            "Formal": "type_error(oneof([permanent,transient,temporary]),bad)",
+            "P": "P",
+            "Q": "Q",
+            "Restart": "[child(a,[start(true),restart(temporary),restart(bad)])]",
+            "S": "1808374759@'http://localhost:35245'",
+            "Shutdown": "[child(a,[start(true),shutdown(0),shutdown(-1)])]"
+          }
+        ],
+        "more": false,
+        "pid": 1808374759,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-005",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "After": "[6747581538@'http://localhost:35245']",
+            "BaselineResult": "passed",
+            "Before": "[6747581538@'http://localhost:35245']",
+            "E": "error(existence_error(option,start(inner)),supervisor)",
+            "S": "6747581538@'http://localhost:35245'",
+            "Sorted": "[6747581538@'http://localhost:35245']",
+            "Specs": "[child(probe,[start((6747581538@'http://localhost:35245'!unexpected_nested_start,receive({never->true})))]),child(outer,[start(start_sub_supervisor([child(inner,[])],[]))])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 6747581538,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SV-006",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Added": "ok",
+            "After": "[info(existing,8993524770@'http://localhost:35245',worker,temporary)]",
+            "BaselineResult": "passed",
+            "Before": "[info(existing,8993524770@'http://localhost:35245',worker,temporary)]",
+            "E": "error(existence_error(option,start(retry)),supervisor)",
+            "Existing": "8993524770@'http://localhost:35245'",
+            "Final": "[info(existing,8993524770@'http://localhost:35245',worker,temporary),info(retry,3328174298@'http://localhost:35245',worker,temporary)]",
+            "From": "From",
+            "From2": "From2",
+            "Invalid": "child(retry,[])",
+            "Me": "Me",
+            "New": "3328174298@'http://localhost:35245'",
+            "NewMe": "NewMe",
+            "R1": "9823462946",
+            "R2": "4650351897",
+            "Rejected": "Rejected",
+            "S": "3220846782@'http://localhost:35245'",
+            "Sup": "6747192825@'http://localhost:35245'"
+          }
+        ],
+        "more": false,
+        "pid": 3220846782,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-001",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1900928610,
+        "data": [
+          {
+            "S": "1900928610@'http://127.0.0.1:33679'",
+            "Specs": "[child(a,[])]",
+            "Sup": "Sup",
+            "E": "error(existence_error(option,start(a)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-002",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2051937098,
+        "data": [
+          {
+            "S": "2051937098@'http://127.0.0.1:33679'",
+            "Specs": "[child(a,[start(true)]),child(a,[start(true)])]",
+            "Sup": "Sup",
+            "E": "error(permission_error(duplicate,supervisor_child_id,a),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-003",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1394928015,
+        "data": [
+          {
+            "S": "1394928015@'http://127.0.0.1:33679'",
+            "Outer": "[child(a,[start(true)])|bad]",
+            "Inner": "[child(a,[start(true)|bad])]",
+            "P": "P",
+            "E1": "error(type_error(list,[child(a,[start(true)])|bad]),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "Q": "Q",
+            "E2": "error(type_error(list,[start(true)|bad]),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-004",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1634280600,
+        "data": [
+          {
+            "S": "1634280600@'http://127.0.0.1:33679'",
+            "Restart": "[child(a,[start(true),restart(temporary),restart(bad)])]",
+            "Shutdown": "[child(a,[start(true),shutdown(0),shutdown(-1)])]",
+            "P": "P",
+            "E1": "error(domain_error(supervisor_child_restart,bad),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "Formal": "domain_error(supervisor_child_restart,bad)",
+            "Q": "Q",
+            "E2": "error(domain_error(supervisor_child_shutdown,-1),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-005",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2814853012,
+        "data": [
+          {
+            "S": "2814853012@'http://127.0.0.1:33679'",
+            "Specs": "[child(probe,[start((2814853012@'http://127.0.0.1:33679'!unexpected_nested_start,receive({never->true})))]),child(outer,[start(start_sub_supervisor([child(inner,[])],[]))])]",
+            "Before": "[2814853012@'http://127.0.0.1:33679']",
+            "Sup": "Sup",
+            "E": "error(existence_error(option,start(inner)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "After": "[2814853012@'http://127.0.0.1:33679']",
+            "Sorted": "[2814853012@'http://127.0.0.1:33679']",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SV-006",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1628340052,
+        "data": [
+          {
+            "S": "1628340052@'http://127.0.0.1:33679'",
+            "Invalid": "child(retry,[])",
+            "Me": "Me",
+            "From": "From",
+            "From2": "From2",
+            "Sup": "2387750831",
+            "Existing": "1837474035",
+            "R1": "1000000061",
+            "Before": "[info(existing,1837474035,worker,temporary)]",
+            "Rejected": "Rejected",
+            "E": "error(existence_error(option,start(retry)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+            "After": "[info(existing,1837474035,worker,temporary)]",
+            "NewMe": "NewMe",
+            "Added": "ok",
+            "New": "2220644928",
+            "R2": "1000000072",
+            "Final": "[info(existing,1837474035,worker,temporary),info(retry,2220644928,worker,temporary)]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    }
+  ],
+  "swi_fixture_ws_command_budget": 1000,
+  "manifest_sha256": "29f7735457e889a3022f1b62d0d52b1e37d5ea616aa51f0ed802c2fe1f8a8208"
+}

@@ -1,0 +1,33 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 247B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/local/conformance-browser-lab:20261119
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/2] FROM docker.io/local/conformance-browser-lab:20261119@sha256:93daa029dbdabb5777fc72cbcd6afdcc2593e54ea5ce65286ce34e0aeb2ebe2d
+#4 resolve docker.io/local/conformance-browser-lab:20261119@sha256:93daa029dbdabb5777fc72cbcd6afdcc2593e54ea5ce65286ce34e0aeb2ebe2d done
+#4 DONE 0.0s
+
+#5 [2/2] RUN npm install --prefix /opt/conformance-tools --ignore-scripts --no-audit --no-fund playwright@1.62.1
+#5 0.075 /bin/sh: 1: npm: not found
+#5 ERROR: process "/bin/sh -c npm install --prefix /opt/conformance-tools --ignore-scripts --no-audit --no-fund playwright@1.62.1" did not complete successfully: exit code: 127
+------
+ > [2/2] RUN npm install --prefix /opt/conformance-tools --ignore-scripts --no-audit --no-fund playwright@1.62.1:
+0.075 /bin/sh: 1: npm: not found
+------
+Dockerfile:3
+--------------------
+   1 |     FROM local/conformance-browser-lab:20261119
+   2 |     USER root
+   3 | >>> RUN npm install --prefix /opt/conformance-tools --ignore-scripts --no-audit --no-fund playwright@1.62.1
+   4 |     ENV NODE_PATH=/opt/conformance-tools/node_modules
+   5 |
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c npm install --prefix /opt/conformance-tools --ignore-scripts --no-audit --no-fund playwright@1.62.1" did not complete successfully: exit code: 127

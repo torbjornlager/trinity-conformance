@@ -1,0 +1,146 @@
+{
+  "suite": "node-uri-io-0.1",
+  "candidate": "n3",
+  "profile": "actor",
+  "endpoint": "https://n3.elfenbenstornet.se",
+  "manifest_sha256": "f8d3ad3b68f932faa5a5c49badd54a7871666c16411baea021446bd340da323a",
+  "scope": "Identical public ACTOR assertions for native SWI and Trealla in both peer directions",
+  "results": [
+    {
+      "id": "NU-001",
+      "case_index": 0,
+      "title": "Own node URI without trailing slash",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'pid': 9806851140, 'type': 'failure'}",
+      "duration_ms": 2080
+    },
+    {
+      "id": "NU-002",
+      "case_index": 1,
+      "title": "Own node URI with trailing slash",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"241adfcae0247a07da9e5272ef56ab5f\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"241adfcae0247a07da9e5272ef56ab5f\\\\\"\\'\"),_)', 'pid': 7375911508, 'type': 'error'}",
+      "duration_ms": 2168
+    },
+    {
+      "id": "NU-003",
+      "case_index": 2,
+      "title": "Qualified local destination with trailing slash",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': \"Unknown message: actor_baseline_changed([8347637058@'https://n3.elfenbenstornet.se'],[1320199834@'https://n3.elfenbenstornet.se',8347637058@'https://n3.elfenbenstornet.se'])\", 'details': \"actor_baseline_changed([8347637058@'https://n3.elfenbenstornet.se'],[1320199834@'https://n3.elfenbenstornet.se',8347637058@'https://n3.elfenbenstornet.se'])\", 'pid': 8347637058, 'type': 'error'}",
+      "duration_ms": 2077
+    },
+    {
+      "id": "NU-004",
+      "case_index": 3,
+      "title": "Own node URI alias for a retained toplevel",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"c47bab6d01790e79dd34b14ce0afb6c8\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"c47bab6d01790e79dd34b14ce0afb6c8\\\\\"\\'\"),_)', 'pid': 9283982978, 'type': 'error'}",
+      "duration_ms": 2069
+    },
+    {
+      "id": "NU-005",
+      "case_index": 4,
+      "title": "Copied writeln/1 across the node boundary",
+      "status": "pass",
+      "observation": {
+        "outputs": [
+          "probe"
+        ],
+        "raw_output_data": [
+          "probe"
+        ],
+        "fresh_query": true
+      },
+      "duration_ms": 2216
+    },
+    {
+      "id": "NU-006",
+      "case_index": 5,
+      "title": "Copied writeln/1 with peer URI alias",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"4b01b43112100ecb8d884bb64ee2d5a8\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"4b01b43112100ecb8d884bb64ee2d5a8\\\\\"\\'\"),_)', 'pid': 8523120873, 'type': 'error'}",
+      "duration_ms": 2030
+    },
+    {
+      "id": "NU-007",
+      "case_index": 6,
+      "title": "Copied write/1 preserves the public operation",
+      "status": "pass",
+      "observation": {
+        "outputs": [
+          "probe"
+        ],
+        "raw_output_data": [
+          "probe"
+        ],
+        "fresh_query": true
+      },
+      "duration_ms": 2155
+    },
+    {
+      "id": "NU-008",
+      "case_index": 7,
+      "title": "Copied writeln/1 survives a second source transfer back to the origin",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'Unknown message: missing_nested_reply', 'details': 'missing_nested_reply', 'pid': 8411625145, 'type': 'error'}",
+      "duration_ms": 6024
+    },
+    {
+      "id": "NU-009",
+      "case_index": 8,
+      "title": "Local ponger and remote copied pinger with writeln(Self) and URI alias",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"5e89d3b4df79bca8f30ef85a63fe459b\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"5e89d3b4df79bca8f30ef85a63fe459b\\\\\"\\'\"),_)', 'pid': 8870212301, 'type': 'error'}",
+      "duration_ms": 139
+    },
+    {
+      "id": "NU-010",
+      "case_index": 9,
+      "title": "Copied format/1 remains a working control",
+      "status": "pass",
+      "observation": {
+        "outputs": [
+          "format probe."
+        ],
+        "raw_output_data": [
+          "format probe."
+        ],
+        "fresh_query": true
+      },
+      "duration_ms": 2215
+    },
+    {
+      "id": "NU-011",
+      "case_index": 10,
+      "title": "Public clause bodies preserve write/writeln and variable sharing",
+      "status": "pass",
+      "observation": {
+        "outputs": [],
+        "raw_output_data": [],
+        "fresh_query": true
+      },
+      "duration_ms": 2057
+    },
+    {
+      "id": "NU-012",
+      "case_index": 11,
+      "title": "Source-less remote writeln/1 uses the terminal protocol",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"ee4a44195b38fe01746a7114f26191f9\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"ee4a44195b38fe01746a7114f26191f9\\\\\"\\'\"),_)', 'pid': 8386341074, 'type': 'error'}",
+      "duration_ms": 2058
+    },
+    {
+      "id": "NU-013",
+      "case_index": 12,
+      "title": "Source-less remote call(writeln/1) uses the terminal protocol",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'data': 'actor:remote_request_spawn/3: Unknown error term: remote_spawn_failed(\"No permission to use transport_lineage \\\\\"bce68c89bcc9bea7f7cfdfd568df85d7\\\\\"\\'\") (remote node reported spawn failure)', 'details': 'error(remote_spawn_failed(\"No permission to use transport_lineage \\\\\"bce68c89bcc9bea7f7cfdfd568df85d7\\\\\"\\'\"),_)', 'pid': 7316049044, 'type': 'error'}",
+      "duration_ms": 2109
+    }
+  ],
+  "counts": {
+    "fail": 9,
+    "pass": 4
+  }
+}

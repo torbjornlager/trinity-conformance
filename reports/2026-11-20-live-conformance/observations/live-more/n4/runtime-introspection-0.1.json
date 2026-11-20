@@ -1,0 +1,186 @@
+{
+  "suite": "runtime-introspection-0.1",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "49424a92e86eb6b2bc5bd265a721d832fed3e5bbf6b6ccc9420e3fe29192c740",
+  "scope": "required",
+  "results": [
+    {
+      "id": "RT-001",
+      "case_index": 0,
+      "title": "Enumerates exactly the five defined ground properties without duplicates",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "K": "K",
+            "Keys": "[persistent,inbound_addressable,dom,actor_isolation,hard_termination]",
+            "P": "P",
+            "Ps": "[persistent(true),inbound_addressable(true),dom(false),actor_isolation(independent),hard_termination(true)]",
+            "Unique": "[actor_isolation(independent),dom(false),hard_termination(true),inbound_addressable(true),persistent(true)]"
+          }
+        ],
+        "more": false,
+        "pid": 2517631143,
+        "type": "success"
+      },
+      "duration_ms": 2114
+    },
+    {
+      "id": "RT-002",
+      "case_index": 1,
+      "title": "Boolean capabilities each have one value and matching values succeed",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B1": "B1",
+            "B2": "B2",
+            "B3": "B3",
+            "B4": "B4",
+            "BaselineResult": "passed",
+            "Other1": "false",
+            "Other2": "false",
+            "Other3": "true",
+            "Other4": "false",
+            "V1": "true",
+            "V2": "true",
+            "V3": "false",
+            "V4": "true"
+          }
+        ],
+        "more": false,
+        "pid": 7700700417,
+        "type": "success"
+      },
+      "duration_ms": 2074
+    },
+    {
+      "id": "RT-003",
+      "case_index": 2,
+      "title": "Isolation uses the portable independent/cooperative domain",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "I": "I",
+            "Value": "independent"
+          }
+        ],
+        "more": false,
+        "pid": 3677421653,
+        "type": "success"
+      },
+      "duration_ms": 2140
+    },
+    {
+      "id": "RT-004",
+      "case_index": 3,
+      "title": "Implementation identity is not a language capability and failed matching preserves variables",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "I": "I"
+          }
+        ],
+        "more": false,
+        "pid": 5649850181,
+        "type": "success"
+      },
+      "duration_ms": 2071
+    },
+    {
+      "id": "RT-005",
+      "case_index": 4,
+      "title": "Unknown, malformed and nonmatching properties fail without raising or binding",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "B",
+            "BaselineResult": "passed",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 3562826503,
+        "type": "success"
+      },
+      "duration_ms": 2098
+    },
+    {
+      "id": "RT-HTTP-001",
+      "case_index": 5,
+      "title": "Enumerates exactly the five defined ground properties without duplicates through HTTP",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([verified],false).\n"
+        }
+      ],
+      "duration_ms": 71
+    },
+    {
+      "id": "RT-HTTP-002",
+      "case_index": 6,
+      "title": "Boolean capabilities each have one value and matching values succeed through HTTP",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([verified],false).\n"
+        }
+      ],
+      "duration_ms": 802
+    },
+    {
+      "id": "RT-HTTP-003",
+      "case_index": 7,
+      "title": "Isolation uses the portable independent/cooperative domain through HTTP",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([verified],false).\n"
+        }
+      ],
+      "duration_ms": 839
+    },
+    {
+      "id": "RT-HTTP-004",
+      "case_index": 8,
+      "title": "Implementation identity is not a language capability and failed matching preserves variables through HTTP",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([verified],false).\n"
+        }
+      ],
+      "duration_ms": 768
+    },
+    {
+      "id": "RT-HTTP-005",
+      "case_index": 9,
+      "title": "Unknown, malformed and nonmatching properties fail without raising or binding through HTTP",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([verified],false).\n"
+        }
+      ],
+      "duration_ms": 818
+    }
+  ],
+  "counts": {
+    "pass": 10
+  }
+}

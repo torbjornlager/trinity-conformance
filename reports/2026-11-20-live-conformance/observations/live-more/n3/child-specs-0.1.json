@@ -1,0 +1,162 @@
+{
+  "suite": "child-specs-0.1",
+  "candidate": "n3",
+  "profile": "actor",
+  "endpoint": "https://n3.elfenbenstornet.se",
+  "manifest_sha256": "29f7735457e889a3022f1b62d0d52b1e37d5ea616aa51f0ed802c2fe1f8a8208",
+  "scope": "required",
+  "results": [
+    {
+      "id": "SV-001",
+      "case_index": 0,
+      "title": "Required start is rejected without creating a supervisor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(existence_error(option,start(a)),supervisor)",
+            "S": "6132975102@'https://n3.elfenbenstornet.se'",
+            "Specs": "[child(a,[])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 6132975102,
+        "type": "success"
+      },
+      "duration_ms": 2097
+    },
+    {
+      "id": "SV-002",
+      "case_index": 1,
+      "title": "Initial child identifiers must be unique",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(permission_error(duplicate,supervisor_child_id,a),_)",
+            "S": "7684151431@'https://n3.elfenbenstornet.se'",
+            "Specs": "[child(a,[start(true)]),child(a,[start(true)])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 7684151431,
+        "type": "success"
+      },
+      "duration_ms": 2075
+    },
+    {
+      "id": "SV-003",
+      "case_index": 2,
+      "title": "Malformed initial child and child-option lists are rejected",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E1": "error(type_error(list,[child(a,[start(true)])|bad]),_)",
+            "E2": "error(type_error(list,[start(true)|bad]),_)",
+            "Inner": "[child(a,[start(true)|bad])]",
+            "Outer": "[child(a,[start(true)])|bad]",
+            "P": "P",
+            "Q": "Q",
+            "S": "4307173373@'https://n3.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4307173373,
+        "type": "success"
+      },
+      "duration_ms": 2130
+    },
+    {
+      "id": "SV-004",
+      "case_index": 3,
+      "title": "Later restart and shutdown occurrences are validated",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E1": "error(type_error(oneof([permanent,transient,temporary]),bad),_)",
+            "E2": "error(domain_error(supervisor_child_shutdown,-1),_)",
+            "Formal": "type_error(oneof([permanent,transient,temporary]),bad)",
+            "P": "P",
+            "Q": "Q",
+            "Restart": "[child(a,[start(true),restart(temporary),restart(bad)])]",
+            "S": "3058429239@'https://n3.elfenbenstornet.se'",
+            "Shutdown": "[child(a,[start(true),shutdown(0),shutdown(-1)])]"
+          }
+        ],
+        "more": false,
+        "pid": 3058429239,
+        "type": "success"
+      },
+      "duration_ms": 2124
+    },
+    {
+      "id": "SV-005",
+      "case_index": 4,
+      "title": "Nested invalid specification is rejected before any initial startup",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "After": "[1289633271@'https://n3.elfenbenstornet.se']",
+            "BaselineResult": "passed",
+            "Before": "[1289633271@'https://n3.elfenbenstornet.se']",
+            "E": "error(existence_error(option,start(inner)),supervisor)",
+            "S": "1289633271@'https://n3.elfenbenstornet.se'",
+            "Sorted": "[1289633271@'https://n3.elfenbenstornet.se']",
+            "Specs": "[child(probe,[start((1289633271@'https://n3.elfenbenstornet.se'!unexpected_nested_start,receive({never->true})))]),child(outer,[start(start_sub_supervisor([child(inner,[])],[]))])]",
+            "Sup": "Sup"
+          }
+        ],
+        "more": false,
+        "pid": 1289633271,
+        "type": "success"
+      },
+      "duration_ms": 2104
+    },
+    {
+      "id": "SV-006",
+      "case_index": 5,
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Added": "ok",
+            "After": "[info(existing,3958482544@'https://n3.elfenbenstornet.se',worker,temporary)]",
+            "BaselineResult": "passed",
+            "Before": "[info(existing,3958482544@'https://n3.elfenbenstornet.se',worker,temporary)]",
+            "E": "error(existence_error(option,start(retry)),supervisor)",
+            "Existing": "3958482544@'https://n3.elfenbenstornet.se'",
+            "Final": "[info(existing,3958482544@'https://n3.elfenbenstornet.se',worker,temporary),info(retry,6030475133@'https://n3.elfenbenstornet.se',worker,temporary)]",
+            "From": "From",
+            "From2": "From2",
+            "Invalid": "child(retry,[])",
+            "Me": "Me",
+            "New": "6030475133@'https://n3.elfenbenstornet.se'",
+            "NewMe": "NewMe",
+            "R1": "6390967324",
+            "R2": "4159544514",
+            "Rejected": "Rejected",
+            "S": "5876316867@'https://n3.elfenbenstornet.se'",
+            "Sup": "9952951491@'https://n3.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 5876316867,
+        "type": "success"
+      },
+      "duration_ms": 2214
+    }
+  ],
+  "counts": {
+    "pass": 6
+  }
+}

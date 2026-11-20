@@ -7,51 +7,38 @@ another runtime.
 
 ## Current consolidated results
 
-The later [admission rollout](reports/2026-11-19-public-admission/REPORT.md)
-adds configurable 120-entry public presets across the server runtimes, with
-explicit accounting units and unchanged concurrency/resource bounds. Its 980
-live finite HTTP probes and paced prompt checks pass; all 136 owned OPEN
-exercise checks pass. Browser-local execution has no server admission budget.
-The full conformance sweep below retains its earlier scope and findings.
+The [fresh 20 November sweep](reports/2026-11-20-live-conformance/REPORT.md)
+covers **78 manifests / 1,984 input rows** against the configurable admission
+release, including **9,262 live library observations** across the selected
+transports. **It is not all-green.** All four ACTOR nodes pass their 118-case
+primary selection; wider API, context and browser findings remain explicit.
+The report also includes 95 paced HTTP prompt observations and 980 fresh
+finite admission probes, outside the manifest input-row count.
 
-The [fresh live-node run](reports/2026-11-19-upgraded-live-conformance/REPORT.md)
-covers all **78 manifests / 1,984 main input rows** after deployment of native
-`a2ff186` and Trealla `3a5b761`. **It is not all-green.** Live applicable cases,
-owned-image private controls, supporting diagnostics, blocked assertions and
-superseded harness attempts are reported separately. Every input row is
-accounted for; four context-return assertions remain blocked.
-
-N3/N4/N5 pass the 118-case ACTOR/HTTP primary selection. N7's five initial 429
-refusals pass with the requested quiet period and longer pauses; the originals
-remain visible. All four historical library versions ran on the live HTTP and
-selected retained WebSocket endpoints. N6's four initial query-capacity
-refusals also have separate passing paused controls. HTTP prompt tests pass 19/19 on each
-N2/N3/N4/N5 with paced creation. The three image-backed private gates pass
-45+7 each, and the runner's 114 unit tests pass.
-
-The wider context matrix remains red at 46 pass / 11 fail / 4 blocked. The run
-also exposes a reproducible public Trealla receive-body cut difference, retains
-URI/deadline/document and prompt-reference findings, and records browser
-B-SV-006 failures in both real Chromium modes. No runtime, assertion, installed
-engine, live service configuration or quota was changed by this test run.
+The run starts every observation fresh. Original N6 query-capacity refusals
+and separate paused controls are retained. Private identity and unbounded
+controls use owned fixtures, not public endpoint claims. The current-image
+private gates pass 45+7 cases each and the runner’s 114 unit tests pass.
+Four retained-context return assertions remain blocked.
 
 [Current matrix](CURRENT_COVERAGE.md),
-[per-file observations](reports/2026-11-19-upgraded-live-conformance/SUMMARY.json),
-[case inventory](reports/2026-11-19-upgraded-live-conformance/verification.json)
-and [input hashes](reports/2026-11-19-upgraded-live-conformance/suite-inputs.json)
-make the scope reviewable. These repeated versions/modes are not a percentage
-of language conformance. Public browser UI, private admin operations and all
-configuration/security boundaries are not certified here.
+[per-file observations](reports/2026-11-20-live-conformance/SUMMARY.json),
+[case inventory](reports/2026-11-20-live-conformance/verification.json) and
+[frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json) identify
+scope, provenance and failures. No live runtime, setting or quota was changed
+by the tests. Repeated versions and modes are not a conformance percentage.
 
-The common [client naming contract](profiles/client-naming-0.1.md) keeps ordinary
-names client scoped and published services node-wide. The
-[deployment and smoke record](https://github.com/torbjornlager/trinity-demonstrator/blob/84cc9b02a0ef7860d1f04c64080719f55e6652aa/docs/verification/http-context-live-2026-11-19/REPORT.md)
-identifies the live release. The [earlier full run](reports/2026-11-19-deployed-conformance/REPORT.md)
-and all repair/naming/OPEN checkpoints retain their original failures and
-pre-deployment boundaries. The fixes have since been deployed.
+The [admission deployment](reports/2026-11-19-public-admission/REPORT.md)
+records the selected runtime pins, configurable 120-entry public presets,
+unchanged engine/resource bounds and throughput qualification. Browser-local
+execution has no server admission budget. The [previous full sweep](reports/2026-11-19-upgraded-live-conformance/REPORT.md)
+retains its original pre-admission scope and findings.
+
+The common [client naming contract](profiles/client-naming-0.1.md) keeps
+ordinary names client scoped and published services node-wide.
 
 The following earlier qualification records retain their dated scope; current
-failures and incomplete controls are described in the 19 November report.
+failures and incomplete controls are described in the 20 November report.
 
 The [maintained context gate](profiles/retained-context-0.1.md) now runs the native
 51-case matrix, six controlled promise cases and deterministic attachment

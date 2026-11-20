@@ -1,0 +1,73 @@
+{
+  "suite": "promise-diagnostics-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "21cf3a50b2517b66b2391f97a66450768b3c38d22d65b18028c1344c23f2d1dc",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "PYD-001",
+      "case_index": 0,
+      "title": "Actor message sending outside a callback",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 2377101531,
+        "data": [
+          {
+            "S": "2377101531@'https://n5.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2069
+    },
+    {
+      "id": "PYD-002",
+      "case_index": 1,
+      "title": "Timeout callback using only unification",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 1531566879,
+        "data": [
+          {
+            "X": "X",
+            "R": "1000011967",
+            "Early": "waiting",
+            "A": "success([ok],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2710
+    },
+    {
+      "id": "PYD-003",
+      "case_index": 2,
+      "title": "Timeout callback invokes ordinary unification and exception control",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 2776589309,
+        "data": [
+          {
+            "X": "X",
+            "R": "1000011977",
+            "E": "callback_probe",
+            "A": "success([ok],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2099
+    }
+  ],
+  "counts": {
+    "observed": 3
+  }
+}

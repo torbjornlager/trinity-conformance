@@ -1,0 +1,253 @@
+{
+  "suite": "local-node-rpc-0.1",
+  "scope": "shared assertions through disposable local HTTP nodes; explicit fixture-only loopback grants; development sources",
+  "sources": {
+    "swi": {
+      "root": "/opt/swi-prolog-node",
+      "revision": "e25b2302017836ff89294999e8fb16f9667cfda6",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executable": "/usr/bin/swipl",
+      "executable_sha256": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a",
+      "changed_files": {}
+    },
+    "trealla": {
+      "root": "/work/trealla",
+      "revision": "163081ffa99db298d3cf12b0df39447b62bd3671",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executable": "/opt/trealla/tpl",
+      "executable_sha256": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a",
+      "changed_files": {}
+    },
+    "gnu": {
+      "root": "/work/gnu",
+      "revision": "9252132e8617d121a3f1ea321696c2fe5112e44d",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executable": "/work/gnu/isobase/isobase-node",
+      "executable_sha256": "9b2084bcf9386f7d99b02a459105ccb8d4a34f1c48844730d750dcc9c6280760",
+      "changed_files": {}
+    }
+  },
+  "results": [
+    {
+      "candidate": "swi",
+      "id": "LOCAL-001",
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-002",
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-003",
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-004",
+      "title": "Local promise failure remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-005",
+      "title": "Local promise exception remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-006",
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "swi",
+      "id": "LOCAL-007",
+      "title": "Local promise prepares URI source in the caller",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-001",
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got \"error(error(socket_error(eaddrnotavail,'advertised.invalid':443),'$client'/5)).\\n\""
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-002",
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got \"error(error(socket_error(eaddrnotavail,'advertised.invalid':443),'$client'/5)).\\n\""
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-003",
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got 'failure.\\n'"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-004",
+      "title": "Local promise failure remains an answer term",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got 'failure.\\n'"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-005",
+      "title": "Local promise exception remains an answer term",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got 'failure.\\n'"
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-006",
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got \"error(error(socket_error(eaddrnotavail,'advertised.invalid':443),'$client'/5)).\\n\""
+    },
+    {
+      "candidate": "trealla",
+      "id": "LOCAL-007",
+      "title": "Local promise prepares URI source in the caller",
+      "status": "fail",
+      "detail": "expected 'success([passed],false).', got 'failure.\\n'"
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-001",
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-002",
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-003",
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-004",
+      "title": "Local promise failure remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-005",
+      "title": "Local promise exception remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-006",
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    },
+    {
+      "candidate": "gnu",
+      "id": "LOCAL-007",
+      "title": "Local promise prepares URI source in the caller",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "pass": 14,
+    "fail": 7
+  }
+}

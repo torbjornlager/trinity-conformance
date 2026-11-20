@@ -1,0 +1,150 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "server-waits-0.1",
+  "scope": "required",
+  "candidate": "n4",
+  "endpoint": "wss://n4.elfenbenstornet.se/ws",
+  "manifest_sha256": "24b8fc86bce9668f8262c7a6de4d4ad4fc87831fee2241fd58acbdbfa29bf066",
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "SW-001",
+      "title": "Replies can be collected in a different order from requests",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "6803307313@'https://n4.elfenbenstornet.se'",
+            "R1": "7232961343",
+            "R2": "6509516558"
+          }
+        ],
+        "more": false,
+        "pid": 5992889229,
+        "type": "success"
+      },
+      "duration_ms": 2058
+    },
+    {
+      "id": "SW-002",
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Again": "consumed",
+            "Barrier": "4298610359",
+            "BaselineResult": "passed",
+            "P": "4507277708@'https://n4.elfenbenstornet.se'",
+            "R1": "3300381798",
+            "R2": "8643154268"
+          }
+        ],
+        "more": false,
+        "pid": 9593600345,
+        "type": "success"
+      },
+      "duration_ms": 2078
+    },
+    {
+      "id": "SW-003",
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Early": "waiting",
+            "P": "6976588540@'https://n4.elfenbenstornet.se'",
+            "R": "4819322604",
+            "S": "7543600521@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 7543600521,
+        "type": "success"
+      },
+      "duration_ms": 2148
+    },
+    {
+      "id": "SW-004",
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Bound": "bound",
+            "Error": "wait_callback",
+            "P": "4844507114@'https://n4.elfenbenstornet.se'",
+            "R": "3948425341",
+            "S": "3246328101@'https://n4.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[one,two]"
+          }
+        ],
+        "more": false,
+        "pid": 3246328101,
+        "type": "success"
+      },
+      "duration_ms": 2093
+    },
+    {
+      "id": "SW-005",
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "server_down(sw_death)",
+            "E2": "server_down(sw_death)",
+            "Mon": "1299336513",
+            "Other": "4024193476",
+            "Other2": "4577965460",
+            "P": "3973020756@'https://n4.elfenbenstornet.se'",
+            "Q": "8392655392@'https://n4.elfenbenstornet.se'",
+            "R": "9273079858",
+            "S": "9594664361@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 9594664361,
+        "type": "success"
+      },
+      "duration_ms": 2079
+    },
+    {
+      "id": "SW-006",
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B": "7250732444",
+            "BaselineResult": "passed",
+            "E": "sw_timeout",
+            "Early": "waiting",
+            "M2": "6980052627",
+            "M3": "9269044408",
+            "Mon": "5544736447",
+            "Other": "9477283009",
+            "P": "1231009958@'https://n4.elfenbenstornet.se'",
+            "R": "5100756810",
+            "R2": "8902532212",
+            "R3": "6958747912",
+            "S": "2390620560@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2390620560,
+        "type": "success"
+      },
+      "duration_ms": 2118
+    }
+  ]
+}
