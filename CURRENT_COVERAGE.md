@@ -3,9 +3,21 @@
 The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
 view. The dated sweep totals below retain their original observations.
 
-Updated **20 November 2026** after canonical URI and context qualification. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after canonical URI and context deployment. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## Canonical URI and context deployment
+
+The [canonical URI deployment](reports/2026-11-20-canonical-uri-live/REPORT.md)
+verifies **63/63 live URI/context checks** across N3/N4/N5, **44/44** against the
+exact SWI/Trealla images and all **136** visible OPEN exercise checks in the SWI
+image. Both CI jobs, all 36 integration groups and the broader live smoke gates
+pass. Nine unchanged failure observations are repaired and fifteen mixed
+address/visibility assertions are superseded with separate context controls.
+The inventory now has **183 unresolved failed observations**; these are repeated
+evidence rows, not independent defects. This focused replay preserves the
+historical full sweep. Other-runtime URI follow-up remains separate.
 
 ## Canonical URI and context candidate
 
@@ -18,10 +30,10 @@ scheme and port distinctions remain intact. Credentials, topology and controls
 share the canonical key. Client context assertions are now separate from
 address assertions, and Trealla's peer cache preserves ordinary-name isolation
 between hosted clients. Real-peer lifecycle checks observe remote reclamation
-through an independent connection. No production pins or services changed.
-The 207 unresolved historical failed observations remain open; candidate
-passes do not retire deployed findings. N6, N7 and browser URI follow-up and
-a fresh full sweep remain pending.
+through an independent connection. At that candidate checkpoint, production
+was unchanged and 207 failed observations remained unresolved. The deployed
+follow-up above reconciles only its individually reviewed observations.
+N6, N7 and browser URI follow-up and a fresh full sweep remain pending.
 
 ## URI/source repair candidate and fixture triage
 
@@ -29,14 +41,16 @@ The [URI/source follow-up](reports/2026-11-20-uri-source-triage/REPORT.md)
 qualifies Trealla `d1ad920`: public `clause/2` preserves submitted `write/1`
 and `writeln/1` bodies and variable sharing. All 112 unit groups pass on each
 of macOS and Linux. The final regression fails on the prior source and passes
-on the repair. N5 remains on `e99126b`; the candidate does not close its finding.
+on the repair. At that checkpoint N5 was still on `e99126b`; the deployed
+follow-up above now includes this repair.
 
-The owned adapter now authorizes both exact URL spellings it tests. With
-unchanged case goals, the final native selection records 17 pass / 9 fail on
-each platform. Four original owned credential-precondition failures are
-classified as fixture setup; no live finding is closed. The current inventory
-therefore has 207 unresolved failed observations, down from 211. The next candidate qualification above addresses canonical returned addresses,
-qualified local delivery and versioned self-URL context assertions. All prior reports stay immutable.
+That checkpoint authorized both exact URL spellings in its disposable fixture.
+With unchanged case goals, it recorded 17 pass / 9 fail on each platform. Four
+original owned credential-precondition failures were classified as fixture
+setup. It closed no live findings and retained 207 unresolved failed
+observations, down from 211. The later candidate qualification above addresses
+canonical returned addresses, qualified local delivery and versioned self-URL
+context assertions. All prior reports stay immutable.
 
 ## Deployed RPC timeout validation
 

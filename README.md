@@ -7,22 +7,32 @@ another runtime.
 
 ## Current consolidated results
 
+The [canonical URI deployment](reports/2026-11-20-canonical-uri-live/REPORT.md)
+verifies **63/63 live URI/context checks** across N3/N4/N5, **44/44** against the
+exact SWI/Trealla images and all **136** visible OPEN exercise checks in the SWI
+image. Both CI jobs, all 36 integration groups and the broader live smoke gates
+pass. Nine unchanged failure observations are repaired and fifteen mixed
+address/visibility assertions are superseded with separate context controls.
+The inventory now has **183 unresolved failed observations**; these are repeated
+evidence rows, not independent defects. This focused replay preserves the
+historical full sweep. Other-runtime URI follow-up remains separate.
+
 The [canonical URI qualification](reports/2026-11-20-canonical-uri-qualification/REPORT.md)
 records **44/44** version 0.2 URI/context checks on both macOS and Linux,
 compared with **32 pass / 12 fail** on the previous sources under the same
 case goals. Native SWI and Trealla canonicalize empty root paths together with
 peer credentials and topology. Explicit URL contexts remain separate, and
-Trealla's outgoing connections preserve client name isolation. This candidate
-is not deployed; the inventory still contains **207 unresolved failed
-observations**. Historical reports remain unchanged.
+Trealla's outgoing connections preserve client name isolation. That candidate-only
+checkpoint retained **207 unresolved failed observations** before the deployed
+follow-up above. Historical reports remain unchanged.
 
 The [URI/source follow-up](reports/2026-11-20-uri-source-triage/REPORT.md)
 records a qualified, committed Trealla clause-reflection repair and corrected
-owned-fixture peer credentials. The current inventory contains **207 unresolved
+owned-fixture peer credentials. That checkpoint retained **207 unresolved
 failed observations**. Four owned fixture observations are reconciled; no live
-finding is closed by this follow-up. The repair is not deployed. Its final
-112-group unit suites pass on macOS and Linux; the remaining URI/source pack
-still has nine failures per platform, with their separate causes retained.
+finding is closed by this follow-up. That checkpoint was candidate-only. Its final
+112-group unit suites passed on macOS and Linux; that earlier URI/source pack
+recorded nine failures per platform, with their separate causes retained.
 
 
 The [RPC timeout deployment follow-up](reports/2026-11-20-rpc-validation-live/REPORT.md)

@@ -1,7 +1,7 @@
 {
   "format": 1,
   "source_report": "reports/2026-11-20-live-conformance",
-  "configuration_sha256": "a2a611807f86bd7ec31fcc4609f50e35b93923b9bddbe076b1ca16b4bc769cb9",
+  "configuration_sha256": "1696ac1325ff18fceb0bde494af4f98694e53697bbc8c32204354be8094b269c",
   "accounting": "Families are work queues, not independently proven root causes. Case IDs and observations are not feature/defect counts. Candidate repairs do not close deployed findings.",
   "inputs_sha256": {
     "reports/2026-11-20-live-conformance/SUMMARY.json": "d899dbadfaf20f8d0cf4081114929836c9f431dd5217d9cdf5625b21cd234e34",
@@ -31,10 +31,16 @@
     "reports/2026-11-20-canonical-uri-qualification/macos-uri-pack.json": "d0517bfee2a8d62610621768aa8cedce5f0c8d360ed9705bbc070517bb20c804",
     "reports/2026-11-20-canonical-uri-qualification/linux-uri-pack.json": "60ee76a4fd46f309db3b8af7c283c46235a6f2441bbe036b23226f27538576ee",
     "reports/2026-11-20-canonical-uri-qualification/qualification-checks.json": "0ad777618e8e797527d2577b331ee1734a547590bf13d36a43af42a4d40cbabd",
+    "reports/2026-11-20-canonical-uri-live/live/n3-canonical-uri.json": "56f8c66a98850da5bb339093b4e54e3ff30c28d49b52a78b16b4fd09f940e458",
+    "reports/2026-11-20-canonical-uri-live/live/n4-canonical-uri.json": "90f77e29dd55db8a855f793510f66ea5579ccce823a26c7bc28dfeeb130c0640",
+    "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json": "f228d7aa4749dba2d4f6aaa50159e4c93b19abfe545a3568b5f93f4232dbb959",
+    "reports/2026-11-20-canonical-uri-live/owned/image-uri/results.json": "825389cebb58d4981d88e2d796859a8e7139f47de4d614a42b1356f05c4235a5",
+    "reports/2026-11-20-canonical-uri-qualification/unchanged-v01-candidate.json": "4481e802eca61922e02d41e96890e697379081b39dbe91f072bda7f2ea58ad4d",
     "reports/2026-11-20-backlog-baseline/qualification-limitations.json": "e10ddb22aa66c2e6d302f38f4a168f5e3de80600a117aa14f19de581ee67f7d3",
     "reports/2026-11-20-cleanup-qualification/complete-unit-summary.json": "aee1901c5fce00bfd78e67126df76812d9408f13a5696dedc687620228b6815b",
     "reports/2026-11-20-cleanup-qualification/failure-controls.json": "c1e38089e42d7856b56108cb4fb88b9bc9c92ba026c36734b69bfca142d60652",
     "reports/2026-11-20-backlog-baseline/linux-qualification-limitations.json": "0485e5c6b74cded1cfc2ed0b50f91a0b9b163a2ee4d9f4615dc614c72b4e135e",
+    "reports/2026-11-20-canonical-uri-live/owned/image-uri-lifecycle/results.json": "e070e6db1625d525206a32d14fefb5ac51b975066f5558d46a3b5e5b15be12f2",
     "reports/2026-11-20-live-conformance/observations/public-extra/results.json": "71115da850178bf70d30699933f1d0d091007aa5b899e29c82aa7d8324fb5630",
     "reports/2026-11-20-live-conformance/observations/live-more/n1/isobase-error-admission-0.1.json": "23caba749992d9a5d5f2503023c60c54258bb29c86b4f492671c647b66e78dac",
     "reports/2026-11-20-live-conformance/observations/live-more/n1/library-noncompletion-0.1.json": "fcd51294deb99be45deb67c293b57bc49c74ea5fd05da3ca0871ed4d8ca8023f",
@@ -649,13 +655,14 @@
     {
       "id": "URI_TRANSPORT",
       "title": "URI routing and source transport",
-      "next_action": "Qualify exact native images and demonstrator consumers, deploy canonical routing with context-scoped Trealla peer caches, then replay live URI/context cases; N6/N7/browser remain separate.",
+      "next_action": "Verify N6/N7 fixture and URI behavior and browser URI adoption separately; deployed native canonical/context controls pass.",
       "original_statuses": {
         "fail": 77
       },
       "production_dispositions": {
-        "open": 71,
-        "repaired_deployed": 2,
+        "superseded_assertion": 15,
+        "repaired_deployed": 11,
+        "open": 47,
         "fixture_precondition": 4
       },
       "case_ids": [
@@ -1284,8 +1291,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
+      "decisions": [
+        "SELF-URL-CONTEXT-CONTRACT-V02"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n3/node-uri-io-0.1.json",
@@ -1302,11 +1313,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -1345,11 +1357,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -1367,11 +1380,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -3451,8 +3465,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
+      "decisions": [
+        "SELF-URL-CONTEXT-CONTRACT-V02"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n4/node-uri-io-0.1.json",
@@ -3469,11 +3487,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -3512,11 +3531,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -3534,11 +3554,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -5726,8 +5747,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
+      "decisions": [
+        "SELF-URL-CONTEXT-CONTRACT-V02"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n5/node-uri-io-0.1.json",
@@ -5744,11 +5769,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -5766,11 +5792,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -5788,11 +5815,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -5810,11 +5838,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -5868,11 +5897,12 @@
       ],
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "TREALLA-CLAUSE-IO-CANDIDATE"
+        "TREALLA-CLAUSE-IO-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -13914,8 +13944,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
+      "decisions": [
+        "SELF-URL-CONTEXT-CONTRACT-V02"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -13932,11 +13966,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -13954,11 +13989,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -13976,11 +14012,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -14061,8 +14098,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
+      "decisions": [
+        "SELF-URL-CONTEXT-CONTRACT-V02"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -14079,11 +14120,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -14101,11 +14143,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -14123,11 +14166,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "superseded_assertion",
+      "diagnosis": "mixed_address_and_caller_visibility_assertion",
+      "candidate_disposition": "deployed_versioned_contract_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "SELF-URL-CONTEXT-CONTRACT-V02"
       ]
     },
     {
@@ -14145,11 +14189,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "canonical_address_and_versioned_context_contract",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "CANONICAL-URI-NATIVE-CANDIDATE"
+        "CANONICAL-URI-NATIVE-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -14188,11 +14233,12 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "protocol_implementation_defect",
-      "candidate_disposition": "verified_not_deployed",
+      "production_disposition": "repaired_deployed",
+      "diagnosis": "canonical_routing_and_public_clause_reflection",
+      "candidate_disposition": "deployed_verified",
       "decisions": [
-        "TREALLA-CLAUSE-IO-CANDIDATE"
+        "TREALLA-CLAUSE-IO-CANDIDATE",
+        "CANONICAL-URI-LIVE"
       ]
     },
     {
@@ -18463,6 +18509,190 @@
         }
       ],
       "note": "Version 0.2 separates caller visibility from explicit-URL routing; canonical alias credentials/topology/address/delivery assertions pass on both platforms. Old mixed 0.1 goals remain immutable and are not claimed to pass unchanged. These are candidate controls, not live observations; production dispositions remain open."
+    },
+    {
+      "id": "CANONICAL-URI-LIVE",
+      "selectors": [
+        {
+          "case_id": "NU-006",
+          "candidate_in": [
+            "swi",
+            "trealla",
+            "n3",
+            "n4",
+            "n5"
+          ]
+        },
+        {
+          "case_id_in": [
+            "NU-003",
+            "NU-011"
+          ],
+          "candidate_in": [
+            "trealla",
+            "n5"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_verified",
+        "diagnosis": "canonical_routing_and_public_clause_reflection"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n3-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n4-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri/results.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 6,
+          "status": "pass"
+        }
+      ],
+      "note": "Native 254ae3a and Trealla d451596 are deployed and source/engine audited. NU-003/006/011 goal bodies are unchanged from version 0.1. Live N3/N4/N5 and exact-image replays pass; this reconciles only the nine matching native/live failed observations, not N6/N7 setup or URI failures."
+    },
+    {
+      "id": "SELF-URL-CONTEXT-CONTRACT-V02",
+      "selectors": [
+        {
+          "case_id_in": [
+            "NU-001",
+            "NU-002",
+            "NU-004"
+          ],
+          "candidate_in": [
+            "swi",
+            "trealla",
+            "n3",
+            "n4",
+            "n5"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "superseded_assertion",
+        "candidate_disposition": "deployed_versioned_contract_verified",
+        "diagnosis": "mixed_address_and_caller_visibility_assertion"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n3-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n4-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri/results.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 14,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-qualification/unchanged-v01-candidate.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004"
+            ]
+          },
+          "minimum_matches": 6,
+          "status": "fail"
+        }
+      ],
+      "note": "Fifteen mixed address/visibility observations use the superseded expectation that a public self-URL restores the originating client namespace. Version 0.2 keeps canonical address, delivery and lifecycle assertions and separately verifies implicit-local visibility, explicit-URL isolation, retained toplevels and ordinary names. These controls pass on deployed N3/N4/N5 and exact images. The six old native assertions remain recorded as failures, not claimed to pass unchanged. N7 fixture creation failures are excluded from this classification."
     }
   ],
   "input_rows_without_execution": [
@@ -18536,6 +18766,28 @@
       ],
       "qualification_disposition": "resolved_in_local_test_candidate",
       "diagnosis": "aggregate_fixture_watchdog_budget"
+    },
+    {
+      "id": "TREALLA-SCOPED-PEER-CACHE",
+      "production_disposition": "repaired_deployed",
+      "note": "Root alias coalescing preserves client name isolation by keying hosted Trealla peer connections by context and canonical node. Retiring a context reclaims peer actors and sockets without affecting the surviving client; forged manager messages and reconnect-after-close are rejected. This release finding does not add to or subtract from the original failed-observation count.",
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri-lifecycle/results.json",
+          "selector": {
+            "case_id": "EXACT-IMAGE-PEER-RECLAMATION"
+          },
+          "minimum_matches": 2,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id": "NU-021"
+          },
+          "status": "pass"
+        }
+      ]
     }
   ],
   "counts": {
@@ -18544,10 +18796,10 @@
       "blocked": 387
     },
     "production_dispositions": {
-      "open": 207,
+      "open": 183,
       "blocked_precondition": 387,
-      "repaired_deployed": 32,
-      "superseded_assertion": 32,
+      "repaired_deployed": 41,
+      "superseded_assertion": 47,
       "passing_replay_cause_open": 1,
       "correct_preconditions_verified": 121,
       "fixture_precondition": 23

@@ -57,7 +57,7 @@
         "NU-",
         "URI-"
       ],
-      "next_action": "Qualify exact native images and demonstrator consumers, deploy canonical routing with context-scoped Trealla peer caches, then replay live URI/context cases; N6/N7/browser remain separate."
+      "next_action": "Verify N6/N7 fixture and URI behavior and browser URI adoption separately; deployed native canonical/context controls pass."
     },
     {
       "id": "LOCAL_RPC",
@@ -2365,6 +2365,190 @@
         }
       ],
       "note": "Version 0.2 separates caller visibility from explicit-URL routing; canonical alias credentials/topology/address/delivery assertions pass on both platforms. Old mixed 0.1 goals remain immutable and are not claimed to pass unchanged. These are candidate controls, not live observations; production dispositions remain open."
+    },
+    {
+      "id": "CANONICAL-URI-LIVE",
+      "selectors": [
+        {
+          "case_id": "NU-006",
+          "candidate_in": [
+            "swi",
+            "trealla",
+            "n3",
+            "n4",
+            "n5"
+          ]
+        },
+        {
+          "case_id_in": [
+            "NU-003",
+            "NU-011"
+          ],
+          "candidate_in": [
+            "trealla",
+            "n5"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "candidate_disposition": "deployed_verified",
+        "diagnosis": "canonical_routing_and_public_clause_reflection"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n3-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n4-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 3,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri/results.json",
+          "selector": {
+            "case_id_in": [
+              "NU-003",
+              "NU-006",
+              "NU-011"
+            ]
+          },
+          "minimum_matches": 6,
+          "status": "pass"
+        }
+      ],
+      "note": "Native 254ae3a and Trealla d451596 are deployed and source/engine audited. NU-003/006/011 goal bodies are unchanged from version 0.1. Live N3/N4/N5 and exact-image replays pass; this reconciles only the nine matching native/live failed observations, not N6/N7 setup or URI failures."
+    },
+    {
+      "id": "SELF-URL-CONTEXT-CONTRACT-V02",
+      "selectors": [
+        {
+          "case_id_in": [
+            "NU-001",
+            "NU-002",
+            "NU-004"
+          ],
+          "candidate_in": [
+            "swi",
+            "trealla",
+            "n3",
+            "n4",
+            "n5"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "superseded_assertion",
+        "candidate_disposition": "deployed_versioned_contract_verified",
+        "diagnosis": "mixed_address_and_caller_visibility_assertion"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n3-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n4-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 7,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri/results.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004",
+              "NU-014",
+              "NU-015",
+              "NU-016",
+              "NU-017"
+            ]
+          },
+          "minimum_matches": 14,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-qualification/unchanged-v01-candidate.json",
+          "selector": {
+            "case_id_in": [
+              "NU-001",
+              "NU-002",
+              "NU-004"
+            ]
+          },
+          "minimum_matches": 6,
+          "status": "fail"
+        }
+      ],
+      "note": "Fifteen mixed address/visibility observations use the superseded expectation that a public self-URL restores the originating client namespace. Version 0.2 keeps canonical address, delivery and lifecycle assertions and separately verifies implicit-local visibility, explicit-URL isolation, retained toplevels and ordinary names. These controls pass on deployed N3/N4/N5 and exact images. The six old native assertions remain recorded as failures, not claimed to pass unchanged. N7 fixture creation failures are excluded from this classification."
     }
   ],
   "additional_findings": [
@@ -2420,6 +2604,28 @@
       ],
       "qualification_disposition": "resolved_in_local_test_candidate",
       "diagnosis": "aggregate_fixture_watchdog_budget"
+    },
+    {
+      "id": "TREALLA-SCOPED-PEER-CACHE",
+      "production_disposition": "repaired_deployed",
+      "note": "Root alias coalescing preserves client name isolation by keying hosted Trealla peer connections by context and canonical node. Retiring a context reclaims peer actors and sockets without affecting the surviving client; forged manager messages and reconnect-after-close are rejected. This release finding does not add to or subtract from the original failed-observation count.",
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/owned/image-uri-lifecycle/results.json",
+          "selector": {
+            "case_id": "EXACT-IMAGE-PEER-RECLAMATION"
+          },
+          "minimum_matches": 2,
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-canonical-uri-live/live/n5-canonical-uri.json",
+          "selector": {
+            "case_id": "NU-021"
+          },
+          "status": "pass"
+        }
+      ]
     }
   ],
   "active_monitor_manifests": [
