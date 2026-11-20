@@ -93,4 +93,19 @@ class PortableTextTests(unittest.TestCase):
         h=self.run_case(case,[answer()],peer='http://127.0.0.1:1235')
         self.assertIn("rpc('http://127.0.0.1:1235'",h.calls[0][0]);self.assertNotIn('__PEER__',h.calls[0][0])
 
+    def test_peer_goal_survives_raw_presubstitution(self):
+        # Orchestration may substitute __PEER__ with the raw URL before execution.
+        case=json.loads(json.dumps(self.manifest['cases'][22]).replace('__PEER__','http://127.0.0.1:1235'))
+        h=self.run_case(case,[answer()],peer='http://127.0.0.1:1235')
+        self.assertIn("rpc('http://127.0.0.1:1235',",h.calls[0][0])
+    def test_input_reply_carries_prompt_reference(self):
+        prompt={'type':'prompt','pid':1234567890,'data':'Portable text','prompt_ref':'r-1'}
+        h=self.run_case({'execution':'input','reply':'"ab"','expected':'[a,b]'},[prompt,{'type':'responded'},answer()])
+        self.assertEqual(h.sent[0]['prompt_ref'],'r-1')
+
+    def test_quoted_atoms_escape_layout(self):
+        # ISO quoted tokens cannot hold a raw new line (ECLiPSe rejects one).
+        q=actor.prolog_quote_atom("p.\nq('x').\t\x01\\")
+        self.assertNotIn('\n',q);self.assertEqual(q,"'p.\\nq(''x'').\\t\\x1\\\\\\'")
+
 if __name__=='__main__':unittest.main()

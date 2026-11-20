@@ -97,7 +97,9 @@ def main():
                     invocation = command + ['query((' + goal + '),ok)', '100']
                     cwd = Path(command[0]).parent
                 else:
-                    invocation = command + ['-g', imports + '(catch((' + goal +
+                    # Load first, in its own -g: the goal may use operators
+                    # (!/2, @/2) that exist only once the modules are loaded.
+                    invocation = command + ['-g', imports.rstrip(','), '-g', '(catch((' + goal +
                         '),E,(writeq(E),nl,fail))->halt(0);halt(1))']
                     cwd = checkout
                 row = dict(candidate=name, suite=suite, id=case['id'], title=case['title'])

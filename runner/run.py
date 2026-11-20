@@ -336,9 +336,25 @@ def row_value(event: dict[str, Any], name: str) -> str:
     return value
 
 
+_QUOTE_ESCAPES = {"\\": "\\\\", "'": "''", "\n": "\\n", "\t": "\\t", "\r": "\\r"}
+
+
 def prolog_quote_atom(value: str) -> str:
-    """Render source text as a portable single-quoted Prolog atom."""
-    return "'" + value.replace("\\", "\\\\").replace("'", "''") + "'"
+    """Render source text as a portable single-quoted Prolog atom.
+
+    ISO quoted tokens cannot contain a raw new line, and some readers (for
+    example ECLiPSe without nl_in_quotes) reject one. Layout and other
+    control characters are therefore written as ISO escape sequences.
+    """
+    out = []
+    for ch in value:
+        if ch in _QUOTE_ESCAPES:
+            out.append(_QUOTE_ESCAPES[ch])
+        elif ord(ch) < 0x20 or ord(ch) == 0x7f:
+            out.append("\\x%x\\" % ord(ch))
+        else:
+            out.append(ch)
+    return "'" + "".join(out) + "'"
 
 
 def case_ac_001(candidate: Candidate) -> None:

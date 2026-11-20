@@ -67,13 +67,19 @@ def execute(candidate, case, peer=None, source_base=None):
     elif kind=='source_uri':
         uri=source_base.rstrip('/')+'/'+case['fixture']
         options='[session(true),src_uri('+actor.prolog_quote_atom(uri)+')]'
-    elif kind=='peer_goal':goal=goal.replace('__PEER__',actor.prolog_quote_atom(peer))
+    elif kind=='peer_goal':
+        # Manifests quote the token, like every other pack, so callers that
+        # substitute the raw peer URL beforehand still produce a valid atom.
+        goal=goal.replace("'__PEER__'",actor.prolog_quote_atom(peer)).replace('__PEER__',actor.prolog_quote_atom(peer))
     with session(candidate,options) as h:
         if kind=='input':
             h.call("input('Portable text',Text),Text=="+case['expected'],'[limit(1)]')
             prompt=h.recv('prompt')
             actor.require(prompt.get('pid')==h.shell and prompt.get('data')=='Portable text',repr(prompt))
-            h.send({'command':'toplevel_respond','pid':h.shell,'input':case['reply']})
+            reply={'command':'toplevel_respond','pid':h.shell,'input':case['reply']}
+            # Correlated prompts accept only a reply carrying their reference.
+            if 'prompt_ref' in prompt:reply['prompt_ref']=prompt['prompt_ref']
+            h.send(reply)
             ack=False;answer=False
             for _ in range(32):
                 event=h.recv();tag=event.get('type')
