@@ -3,9 +3,25 @@
 The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
 view. The dated sweep totals below retain their original observations.
 
-Updated **20 November 2026** after focused live verification of the RPC timeout repair. The latest complete sweep below predates this repair. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after URI/source triage and local repair qualification. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## URI/source repair candidate and fixture triage
+
+The [URI/source follow-up](reports/2026-11-20-uri-source-triage/REPORT.md)
+qualifies Trealla `d1ad920`: public `clause/2` preserves submitted `write/1`
+and `writeln/1` bodies and variable sharing. All 112 unit groups pass on each
+of macOS and Linux. The final regression fails on the prior source and passes
+on the repair. N5 remains on `e99126b`; the candidate does not close its finding.
+
+The owned adapter now authorizes both exact URL spellings it tests. With
+unchanged case goals, the final native selection records 17 pass / 9 fail on
+each platform. Four original owned credential-precondition failures are
+classified as fixture setup; no live finding is closed. The current inventory
+therefore has 207 unresolved failed observations, down from 211. Canonical
+returned addresses, Trealla's qualified local delivery and self-URL context
+expectations remain separate pending work. All prior reports stay immutable.
 
 ## Deployed RPC timeout validation
 

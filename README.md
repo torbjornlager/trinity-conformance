@@ -7,10 +7,19 @@ another runtime.
 
 ## Current consolidated results
 
+The [URI/source follow-up](reports/2026-11-20-uri-source-triage/REPORT.md)
+records a qualified, committed Trealla clause-reflection repair and corrected
+owned-fixture peer credentials. The current inventory contains **207 unresolved
+failed observations**. Four owned fixture observations are reconciled; no live
+finding is closed by this follow-up. The repair is not deployed. Its final
+112-group unit suites pass on macOS and Linux; the remaining URI/source pack
+still has nine failures per platform, with their separate causes retained.
+
+
 The [RPC timeout deployment follow-up](reports/2026-11-20-rpc-validation-live/REPORT.md)
 verifies the committed SWI/Trealla repairs on live N1–N5: all 100 unchanged
 timeout assertions pass. Primary ACTOR, OPEN exercise, prompt and throughput
-checks also pass. The current inventory records **211 unresolved failed
+checks also pass. That checkpoint recorded **211 unresolved failed
 observations**, down from 241; these are repeated evidence rows, not independent
 defects. This focused follow-up preserves the earlier complete sweep.
 

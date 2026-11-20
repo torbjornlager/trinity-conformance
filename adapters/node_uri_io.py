@@ -77,7 +77,9 @@ def main():
         for name in ('swi','trealla'):
             root=a.swi_root if name=='swi' else a.trealla_root
             peer='trealla' if name=='swi' else 'swi'
-            pairs='['+','.join(prolog_quote_atom(url)+"-'node-uri-io-fixture'" for url in urls.values())+']'
+            # Peer credentials are exact-URL keyed. Authorize both spellings this
+            # fixture asks the runtimes to use; production policy stays unchanged.
+            pairs='['+','.join(prolog_quote_atom(url)+"-'node-uri-io-fixture'" for base in urls.values() for url in (base,base+'/'))+']'
             options=f'profile(actor),auth(open),max_session_spawns_per_window(1000),peer_transport_tokens({pairs})'
             if name=='swi':
                 goal=f'use_module({prolog_quote_atom(str(root/"prolog/web_prolog.pl"))}),node({ports[name]},[{options}]),thread_get_message(stop)'
@@ -114,7 +116,7 @@ def main():
             try:node.wait(timeout=3)
             except subprocess.TimeoutExpired:node.kill();node.wait(timeout=2)
         for log in logs:log.close()
-    report=dict(suite=pack['suite'],adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),manifest_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest(),source_sha256=hashlib.sha256(source.encode()).hexdigest(),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ('pass','fail')})
+    report=dict(suite=pack['suite'],fixture_authorized_node_urls=[url for base in urls.values() for url in (base,base+'/')],adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),manifest_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest(),source_sha256=hashlib.sha256(source.encode()).hexdigest(),sources=sources,results=rows,counts={s:sum(r['status']==s for r in rows) for s in ('pass','fail')})
     (a.output/'results.json').write_text(json.dumps(report,indent=2)+'\n')
     return int(report['counts']['fail']>0)
 if __name__=='__main__':raise SystemExit(main())

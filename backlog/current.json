@@ -1,7 +1,7 @@
 {
   "format": 1,
   "source_report": "reports/2026-11-20-live-conformance",
-  "configuration_sha256": "4ff31b94ea311d5abce318b1b41a487899e367e30d3aab8d634c1c1095db3d94",
+  "configuration_sha256": "5d4916a12afe0492fbbfe0f1a1511eb756e21c84d1645342edb3c109d090263a",
   "accounting": "Families are work queues, not independently proven root causes. Case IDs and observations are not feature/defect counts. Candidate repairs do not close deployed findings.",
   "inputs_sha256": {
     "reports/2026-11-20-live-conformance/SUMMARY.json": "d899dbadfaf20f8d0cf4081114929836c9f431dd5217d9cdf5625b21cd234e34",
@@ -24,6 +24,10 @@
     "reports/2026-11-20-rpc-validation-live/live/n4-rpc-timeout.json": "a689b9d0414146025e554bfcfa7273bf2a1dea04b94fce259c9437970b2531aa",
     "reports/2026-11-20-rpc-validation-live/execution/image-rpc-summary.json": "149b6142f449f9985d0db93a801a501b8b8936017d1be1304a4cb6c25162e686",
     "reports/2026-11-20-rpc-validation-live/live/n5-rpc-timeout.json": "302cb5af80e0b3fe9d17384773fb6226bfbbaaeb7bee029c1be74ca7d728d6a7",
+    "reports/2026-11-20-uri-source-triage/alias-credentials-control.json": "b5c663c0a26b1e3c746b0f86590e820c5f13d36f78d5931752cb662fb8f0a94d",
+    "reports/2026-11-20-uri-source-triage/final-uri-pack.json": "698d3dbb27eb25cfd2cf240abef7b659292776c0f393568999df22f3d4ad4a10",
+    "reports/2026-11-20-uri-source-triage/linux-uri-pack.json": "c21ca12a54fc65a2c54a37e7c478e784aa3e57c3ecec3c6dcf6ff099f91e3af2",
+    "reports/2026-11-20-uri-source-triage/complete-unit-summary.json": "91575e1a419d604f158f77d3adf73f84894053b138b555298e7bee2f92f8f082",
     "reports/2026-11-20-backlog-baseline/qualification-limitations.json": "e10ddb22aa66c2e6d302f38f4a168f5e3de80600a117aa14f19de581ee67f7d3",
     "reports/2026-11-20-cleanup-qualification/complete-unit-summary.json": "aee1901c5fce00bfd78e67126df76812d9408f13a5696dedc687620228b6815b",
     "reports/2026-11-20-cleanup-qualification/failure-controls.json": "c1e38089e42d7856b56108cb4fb88b9bc9c92ba026c36734b69bfca142d60652",
@@ -642,13 +646,14 @@
     {
       "id": "URI_TRANSPORT",
       "title": "URI routing and source transport",
-      "next_action": "Separate aliases, lineage authorization and round-trip source transfer using controlled peers.",
+      "next_action": "Qualify canonical address/delivery repairs and split URL transport-context assertions; reflection candidate is verified but not deployed.",
       "original_statuses": {
         "fail": 77
       },
       "production_dispositions": {
-        "open": 75,
-        "repaired_deployed": 2
+        "open": 71,
+        "repaired_deployed": 2,
+        "fixture_precondition": 4
       },
       "case_ids": [
         "NU-001",
@@ -5821,7 +5826,11 @@
       "original_classification": "public_live_observation",
       "family": "URI_TRANSPORT",
       "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "verified_not_deployed",
+      "decisions": [
+        "TREALLA-CLAUSE-IO-CANDIDATE"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/live-more/n5/node-uri-io-0.1.json",
@@ -13934,8 +13943,11 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "fixture_precondition",
+      "diagnosis": "fixture_peer_credentials_missing",
+      "decisions": [
+        "URI-OWNED-PEER-CREDENTIALS"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -13952,8 +13964,11 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "fixture_precondition",
+      "diagnosis": "fixture_peer_credentials_missing",
+      "decisions": [
+        "URI-OWNED-PEER-CREDENTIALS"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -13970,8 +13985,11 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "fixture_precondition",
+      "diagnosis": "fixture_peer_credentials_missing",
+      "decisions": [
+        "URI-OWNED-PEER-CREDENTIALS"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -14078,8 +14096,11 @@
       ],
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
-      "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "production_disposition": "fixture_precondition",
+      "diagnosis": "fixture_peer_credentials_missing",
+      "decisions": [
+        "URI-OWNED-PEER-CREDENTIALS"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
@@ -14097,7 +14118,11 @@
       "original_classification": "owned_fixture_or_direct_api_not_live_endpoint",
       "family": "URI_TRANSPORT",
       "production_disposition": "open",
-      "diagnosis": "unclassified"
+      "diagnosis": "protocol_implementation_defect",
+      "candidate_disposition": "verified_not_deployed",
+      "decisions": [
+        "TREALLA-CLAUSE-IO-CANDIDATE"
+      ]
     },
     {
       "file": "reports/2026-11-20-live-conformance/observations/native/portable-text-0.2/swi-portable-text.json",
@@ -18118,6 +18143,181 @@
         }
       ],
       "note": "Committed repair deployed and verified on the corresponding runtime nodes. Exact-image and live unchanged assertions pass; omitted defaults remain unchanged. Original observations remain immutable."
+    },
+    {
+      "id": "URI-OWNED-PEER-CREDENTIALS",
+      "selectors": [
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
+          "candidate": "swi",
+          "case_id_in": [
+            "NU-009",
+            "NU-012",
+            "NU-013"
+          ]
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/native/node-uri-io/results.json",
+          "candidate": "trealla",
+          "case_id_in": [
+            "NU-008"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "fixture_precondition",
+        "diagnosis": "fixture_peer_credentials_missing"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-uri-source-triage/alias-credentials-control.json",
+          "selector": {
+            "case_id": "NU-009",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/final-uri-pack.json",
+          "selector": {
+            "case_id": "NU-009",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/linux-uri-pack.json",
+          "selector": {
+            "case_id": "NU-009",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/alias-credentials-control.json",
+          "selector": {
+            "case_id": "NU-012",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/final-uri-pack.json",
+          "selector": {
+            "case_id": "NU-012",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/linux-uri-pack.json",
+          "selector": {
+            "case_id": "NU-012",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/alias-credentials-control.json",
+          "selector": {
+            "case_id": "NU-013",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/final-uri-pack.json",
+          "selector": {
+            "case_id": "NU-013",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/linux-uri-pack.json",
+          "selector": {
+            "case_id": "NU-013",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/alias-credentials-control.json",
+          "selector": {
+            "case_id": "NU-008",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/final-uri-pack.json",
+          "selector": {
+            "case_id": "NU-008",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/linux-uri-pack.json",
+          "selector": {
+            "case_id": "NU-008",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Four owned native observations require explicit credentials for both tested logical URL spellings. Identical assertions pass with that fixture correction on both platforms. Production policy is unchanged; no live observation is closed by this decision."
+    },
+    {
+      "id": "TREALLA-CLAUSE-IO-CANDIDATE",
+      "selectors": [
+        {
+          "case_id": "NU-011",
+          "candidate_in": [
+            "trealla",
+            "n5"
+          ]
+        }
+      ],
+      "set": {
+        "candidate_disposition": "verified_not_deployed",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-uri-source-triage/final-uri-pack.json",
+          "selector": {
+            "case_id": "NU-011",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/linux-uri-pack.json",
+          "selector": {
+            "case_id": "NU-011",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/complete-unit-summary.json",
+          "selector": {
+            "case_id": "TREALLA-COMPLETE-UNIT",
+            "candidate": "macos"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-uri-source-triage/complete-unit-summary.json",
+          "selector": {
+            "case_id": "TREALLA-COMPLETE-UNIT",
+            "candidate": "linux"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Trealla d1ad920 restores public write/writeln clause reflection and variable sharing; final source passes all 112 unit groups on macOS and Linux. N5 still runs e99126b. This candidate does not close deployed NU-011 findings."
     }
   ],
   "input_rows_without_execution": [
@@ -18199,13 +18399,13 @@
       "blocked": 387
     },
     "production_dispositions": {
-      "open": 211,
+      "open": 207,
       "blocked_precondition": 387,
       "repaired_deployed": 32,
       "superseded_assertion": 32,
       "passing_replay_cause_open": 1,
       "correct_preconditions_verified": 121,
-      "fixture_precondition": 19
+      "fixture_precondition": 23
     },
     "excluded": 24
   }

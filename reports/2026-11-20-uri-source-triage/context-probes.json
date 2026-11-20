@@ -1,0 +1,16 @@
+{
+  "suite": "uri-context-diagnostics",
+  "source_file": "fixtures/node-uri-io/program.pl",
+  "cases": [
+    {
+      "id": "URI-CONTEXT-LOCAL",
+      "title": "Diagnostic actor visibility for localhost",
+      "goal": "actors(B),spawn(receive({stop->true}),P,[node(localhost),monitor(true)]),actors(Live),(nu_visible(P,Live)->Visible=true;Visible=false),send(P,stop),nu_done(P),nu_baseline(B),Visible==true"
+    },
+    {
+      "id": "URI-CONTEXT-URL",
+      "title": "Diagnostic actor visibility for $SELF",
+      "goal": "actors(B),spawn(receive({stop->true}),P,[node($SELF),monitor(true)]),actors(Live),(nu_visible(P,Live)->Visible=true;Visible=false),send(P,stop),nu_done(P),nu_baseline(B),Visible==false"
+    }
+  ]
+}
