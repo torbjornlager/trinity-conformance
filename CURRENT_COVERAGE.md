@@ -4,6 +4,24 @@ Updated **20 November 2026** after a fresh complete sweep of the admission relea
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
 
+## Focused regression follow-up
+
+The [targeted follow-up](reports/2026-11-20-regression-triage/REPORT.md)
+compares matching previous passes with the full sweep below. Its 124 changed
+observations comprise 121 N6 capacity refusals, two SWI NU-003 observations,
+and one N6 localhost transport error. All 55 supporting capacity assertions
+and LOCAL-001 pass after the expiry precondition; LOCAL-001 passes three
+consecutive repetitions. The earlier 66 library refusals already have passing
+paused controls. The exact localhost transport-error cause remains unproven.
+
+NU-003 reproduces on both unchanged SWI revisions: 3/1,000 failures on
+`a2ff186`, 2/1,000 on `e25b230`. A deterministic barrier confirms the existing
+retirement-order race. Source fix `0c11f2c` retires PID mappings before monitor
+notification; its new regression test and all eight native tiers pass, and
+the original NU-003 passes 1,000/1,000. This candidate is committed and pushed;
+consumer pins and live images still select the preceding runtime. The full
+sweep and its original failures below remain immutable.
+
 ## Current release
 
 Native SWI `e25b230` / 11.0.0, Trealla `2d5042b` / 3.14.20, ECLiPSe adapter `31dcdfc` and browser package `0d024e5` are the selected sources. The [admission deployment](reports/2026-11-19-public-admission/REPORT.md) documents configurable public 120-entry presets and their distinct accounting units. Engine versions and concurrency/resource bounds are unchanged. Browser-local execution has no server admission budget.

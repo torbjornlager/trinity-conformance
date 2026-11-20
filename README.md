@@ -7,6 +7,15 @@ another runtime.
 
 ## Current consolidated results
 
+The [focused regression follow-up](reports/2026-11-20-regression-triage/REPORT.md)
+rechecks 56 N6 assertions successfully after query expiry and identifies a
+pre-existing SWI actor-retirement race on both compared revisions. The source
+fix and deterministic regression test pass all native tiers plus 1,000
+unchanged NU-003 repetitions. The fix is pushed as `0c11f2c`; consumer pins
+and live images have not yet adopted it. Original full-sweep observations
+remain unchanged, and the earlier localhost transport-error cause remains
+unproven despite three passing replays.
+
 The [fresh 20 November sweep](reports/2026-11-20-live-conformance/REPORT.md)
 covers **78 manifests / 1,984 input rows** against the configurable admission
 release, including **9,262 live library observations** across the selected

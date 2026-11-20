@@ -1,0 +1,78 @@
+diff --git a/prolog/web_prolog/actors.pl b/prolog/web_prolog/actors.pl
+index 59208eb..d92d64c 100644
+--- a/prolog/web_prolog/actors.pl
++++ b/prolog/web_prolog/actors.pl
+@@ -778,2 +778,2 @@ actor_in_current_namespace(LocalPid) :-
+-%     - notify monitors with down messages,
+-%     - remove pid/thread mappings.
++%     - remove pid/thread mappings,
++%     - notify monitors with down messages.
+@@ -810,2 +809,0 @@ stop(Pid, Parent) :-
+-                    forall(retract(monitor(Other, GlobalPid, Ref)),
+-                           send_system(Other, down(GlobalPid, Ref, Reason))),
+@@ -813 +811,5 @@ stop(Pid, Parent) :-
+-                    retractall(thread_pid(_, Pid))
++                    retractall(thread_pid(_, Pid)),
++                    % Delivery can wake the observer before send_system/2
++                    % returns.  Its first actors/1 must already exclude Pid.
++                    forall(retract(monitor(Other, GlobalPid, Ref)),
++                           send_system(Other, down(GlobalPid, Ref, Reason)))
+diff --git a/tests/tiers/retirement_order_tests.pl b/tests/tiers/retirement_order_tests.pl
+new file mode 100644
+index 0000000..7038e84
+--- /dev/null
++++ b/tests/tiers/retirement_order_tests.pl
+@@ -0,0 +1,45 @@
++:- module(test_retirement_order, []).
++:- use_module('../../prolog/web_prolog/actors.pl').
++:- use_module(library(plunit)).
++
++:- dynamic delivery_barrier/6.
++:- multifile actors:hook_send/2, actors:hook_pid_retired/1.
++
++% A transport may deliver a notification before its send hook returns.
++% Hold that return until the observer has inspected the active actor list.
++actors:hook_send(To, down(Pid, Ref, Reason)) :-
++    test_retirement_order:delivery_barrier(To, Pid, Ref, Thread, Gate, _),
++    !,
++    thread_send_message(Thread, down(Pid, Ref, Reason)),
++    thread_get_message(Gate, release).
++
++actors:hook_pid_retired(Pid) :-
++    test_retirement_order:delivery_barrier(_, Pid, _, _, _, Events),
++    thread_send_message(Events, retired(Pid)).
++
++observe_at_delivery(Pid, Visible) :-
++    message_queue_create(Gate),
++    message_queue_create(Events),
++    setup_call_cleanup(
++        (self(Self), thread_self(Thread),
++         spawn(receive({finish -> true}), Pid), monitor(Pid, Ref),
++         assertz(delivery_barrier(Self, Pid, Ref, Thread, Gate, Events))),
++        setup_call_cleanup(
++            true,
++            (send(Pid, finish),
++             receive({down(Pid, Ref, true) -> true},
++                     [timeout(3), on_timeout(throw(missing_down))]),
++             actors(Visible)),
++            (thread_send_message(Gate, release),
++             thread_get_message(Events, retired(Pid), [timeout(3)]))),
++        (retractall(delivery_barrier(_, Pid, _, _, _, _)),
++         exit(Pid, kill),
++         message_queue_destroy(Gate), message_queue_destroy(Events))).
++
++:- begin_tests(retirement_order).
++
++test(down_is_delivered_after_the_actor_leaves_the_active_list) :-
++    observe_at_delivery(Pid, Visible),
++    assertion(\+ memberchk(Pid, Visible)).
++
++:- end_tests(retirement_order).
+diff --git a/tests/tiers/t0_actors.pl b/tests/tiers/t0_actors.pl
+index 9bef68d..e0eb7f7 100644
+--- a/tests/tiers/t0_actors.pl
++++ b/tests/tiers/t0_actors.pl
+@@ -22,0 +23 @@
++:- use_module('retirement_order_tests.pl', []).
+@@ -26,0 +28 @@ run_tier :-
++                retirement_order,

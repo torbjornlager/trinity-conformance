@@ -1,0 +1,18 @@
+mkdir: cannot create directory ‘/work’: Permission denied
+mkdir: cannot create directory ‘/work’: Permission denied
+Traceback (most recent call last):
+  File "/Users/lager/trinity-demonstrator/.trinity/conformance-delta-20261120/swi_replay.py", line 17, in <module>
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(one,['previous','current']))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 608, in result_iterator
+    yield fs.pop().result()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 445, in result
+    return self.__get_result()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 390, in __get_result
+    raise self._exception
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/lager/trinity-demonstrator/.trinity/conformance-delta-20261120/swi_replay.py", line 11, in one
+    subprocess.run(['docker','create','--name',name,'--network','none','--memory','1g','--cpus','2','--pids-limit','256','--no-healthcheck','--entrypoint','sh',image,'-c','exec sleep infinity'],check=True,stdout=subprocess.DEVNULL);subprocess.run(['docker','start',name],check=True,stdout=subprocess.DEVNULL);subprocess.run(['docker','exec',name,'mkdir','-p','/work/suite'],check=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'exec', 'conformance-delta-previous-20261120', 'mkdir', '-p', '/work/suite']' returned non-zero exit status 1.
