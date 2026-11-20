@@ -1,0 +1,305 @@
+[
+  {
+    "client": 1,
+    "event": {
+      "answer_terms": false,
+      "browser_pids": true,
+      "io_ack": true,
+      "protocol": "web_prolog_browser_actor",
+      "type": "transport_welcome",
+      "version": 1
+    }
+  },
+  {
+    "client": 1,
+    "event": {
+      "pid": 8602134636,
+      "type": "spawned"
+    }
+  },
+  {
+    "client": 1,
+    "goal": "(actors(B),self(Owner),spawn((self(Anchor),register(uri_alias_context,Anchor),send(Owner,anchor_ready),receive({stop->true})),P,[node('http://127.0.0.1:53391'),monitor(true)]),receive({anchor_ready->true},[timeout(4),on_timeout(throw(missing_anchor_ready))]),spawn((whereis(uri_alias_context,Found),send(Owner,alias_lookup(Found))),Lookup,[node('http://127.0.0.1:53391/'),monitor(true)]),receive({alias_lookup(Seen)->format('found(~q,~q)~n',[P,Seen]),Seen==P},[timeout(4),on_timeout(throw(missing_alias_lookup))]),nu_done(Lookup),send(P,stop),nu_done(P),nu_baseline(B)),ContractResult=passed"
+  },
+  {
+    "client": 1,
+    "event": {
+      "event": {
+        "data": "found(2895189274@'http://127.0.0.1:53391',browser_actor(7037544292,1343876149@localhost))",
+        "pid": 8602134636,
+        "stdout": "found(2895189274@'http://127.0.0.1:53391',browser_actor(7037544292,1343876149@localhost))\n",
+        "type": "output"
+      },
+      "request_id": "92ddfa14a99bc69ef734214d4670bfccbd504fbfc136f7a4ca527876e18ee0bd",
+      "type": "io_request"
+    }
+  },
+  {
+    "client": 1,
+    "event": {
+      "pid": 8602134636,
+      "type": "failure"
+    }
+  },
+  {
+    "client": 2,
+    "event": {
+      "answer_terms": false,
+      "browser_pids": true,
+      "io_ack": true,
+      "protocol": "web_prolog_browser_actor",
+      "type": "transport_welcome",
+      "version": 1
+    }
+  },
+  {
+    "client": 3,
+    "event": {
+      "answer_terms": false,
+      "browser_pids": true,
+      "io_ack": true,
+      "protocol": "web_prolog_browser_actor",
+      "type": "transport_welcome",
+      "version": 1
+    }
+  },
+  {
+    "client": 2,
+    "event": {
+      "pid": 3875723227,
+      "type": "spawned"
+    }
+  },
+  {
+    "client": 2,
+    "goal": "(actors(Before),self(Owner),spawn((self(Child),register(uri_client_alias,Child),whereis(uri_client_alias,Child),send(Owner,alias_ready),receive({probe(From)->send(From,alias_alive(Child))}),receive({probe(Again)->send(Again,alias_alive(Child))}),receive({stop->true})),P,[node('http://127.0.0.1:53391'),monitor(true)]),receive({alias_ready->true},[timeout(4),on_timeout(throw(alias_client_not_ready))])),ContractResult=passed"
+  },
+  {
+    "client": 2,
+    "event": {
+      "data": [
+        {
+          "Again": "Again",
+          "Before": "[3875723227@'http://localhost:53390']",
+          "Child": "Child",
+          "ContractResult": "passed",
+          "From": "From",
+          "Owner": "3875723227@'http://localhost:53390'",
+          "P": "1460877991@'http://127.0.0.1:53391'"
+        }
+      ],
+      "more": false,
+      "pid": 3875723227,
+      "type": "success"
+    }
+  },
+  {
+    "client": 3,
+    "event": {
+      "pid": 5283330896,
+      "type": "spawned"
+    }
+  },
+  {
+    "client": 3,
+    "goal": "(actors(Before),self(Owner),spawn((self(Child),register(uri_client_alias,Child),whereis(uri_client_alias,Child),send(Owner,alias_ready),receive({probe(From)->send(From,alias_alive(Child))}),receive({probe(Again)->send(Again,alias_alive(Child))}),receive({stop->true})),P,[node('http://127.0.0.1:53391/'),monitor(true)]),receive({alias_ready->true},[timeout(4),on_timeout(throw(alias_client_not_ready))])),ContractResult=passed"
+  },
+  {
+    "client": 3,
+    "event": {
+      "data": [
+        {
+          "Again": "Again",
+          "Before": "[5283330896@'http://localhost:53390']",
+          "Child": "Child",
+          "ContractResult": "passed",
+          "From": "From",
+          "Owner": "5283330896@'http://localhost:53390'",
+          "P": "1002880008@'http://127.0.0.1:53391'"
+        }
+      ],
+      "more": false,
+      "pid": 5283330896,
+      "type": "success"
+    }
+  },
+  {
+    "client": 2,
+    "goal": "(self(Owner),send(1460877991@'http://127.0.0.1:53391',probe(Owner)),receive({alias_alive(1460877991@'http://127.0.0.1:53391') -> true},[timeout(4),on_timeout(throw(alias_client_misrouted))])),ContractResult=passed"
+  },
+  {
+    "client": 2,
+    "event": {
+      "data": "Unknown message: alias_client_misrouted",
+      "details": "alias_client_misrouted",
+      "pid": 3875723227,
+      "type": "error"
+    }
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "transport_welcome",
+      "protocol": "web_prolog_browser_actor",
+      "io_ack": true,
+      "browser_pids": true,
+      "profile": "actor",
+      "sandbox": "blacklist",
+      "version": 1,
+      "answer_terms": false
+    }
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "spawned",
+      "pid": 2292296096
+    }
+  },
+  {
+    "client": 4,
+    "goal": "(actors(B),self(Owner),spawn((self(Anchor),register(uri_alias_context,Anchor),send(Owner,anchor_ready),receive({stop->true})),P,[node('http://localhost:53390'),monitor(true)]),receive({anchor_ready->true},[timeout(4),on_timeout(throw(missing_anchor_ready))]),spawn((whereis(uri_alias_context,Found),send(Owner,alias_lookup(Found))),Lookup,[node('http://localhost:53390/'),monitor(true)]),receive({alias_lookup(Seen)->format('found(~q,~q)~n',[P,Seen]),Seen==P},[timeout(4),on_timeout(throw(missing_alias_lookup))]),nu_done(Lookup),send(P,stop),nu_done(P),nu_baseline(B)),ContractResult=passed"
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "io_request",
+      "request_id": "browser-1000000028",
+      "event": {
+        "type": "output",
+        "pid": 2292296096,
+        "data": "found(6390527142@'http://localhost:53390',6390527142@'http://localhost:53390')",
+        "stdout": "found(6390527142@'http://localhost:53390',6390527142@'http://localhost:53390')\n"
+      }
+    }
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "success",
+      "pid": 2292296096,
+      "data": [
+        {
+          "B": "[2292296096@'http://127.0.0.1:53391']",
+          "Owner": "2292296096@'http://127.0.0.1:53391'",
+          "Anchor": "Anchor",
+          "P": "6390527142@'http://localhost:53390'",
+          "Found": "Found",
+          "Lookup": "5827275446@'http://localhost:53390'",
+          "Seen": "6390527142@'http://localhost:53390'",
+          "ContractResult": "passed"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "client": 4,
+    "goal": "AfterContract=ready"
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "success",
+      "pid": 2292296096,
+      "data": [
+        {
+          "AfterContract": "ready"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "down",
+      "pid": 2292296096,
+      "ref": 2292296096,
+      "reason": "kill"
+    }
+  },
+  {
+    "client": 4,
+    "event": {
+      "type": "halted",
+      "pid": 2292296096,
+      "reply": "true"
+    }
+  },
+  {
+    "client": 5,
+    "event": {
+      "type": "transport_welcome",
+      "protocol": "web_prolog_browser_actor",
+      "io_ack": true,
+      "browser_pids": true,
+      "profile": "actor",
+      "sandbox": "blacklist",
+      "version": 1,
+      "answer_terms": false
+    }
+  },
+  {
+    "client": 6,
+    "event": {
+      "type": "transport_welcome",
+      "protocol": "web_prolog_browser_actor",
+      "io_ack": true,
+      "browser_pids": true,
+      "profile": "actor",
+      "sandbox": "blacklist",
+      "version": 1,
+      "answer_terms": false
+    }
+  },
+  {
+    "client": 5,
+    "event": {
+      "type": "spawned",
+      "pid": 2051339735
+    }
+  },
+  {
+    "client": 5,
+    "goal": "(actors(Before),self(Owner),spawn((self(Child),register(uri_client_alias,Child),whereis(uri_client_alias,Child),send(Owner,alias_ready),receive({probe(From)->send(From,alias_alive(Child))}),receive({probe(Again)->send(Again,alias_alive(Child))}),receive({stop->true})),P,[node('http://localhost:53390'),monitor(true)]),receive({alias_ready->true},[timeout(4),on_timeout(throw(alias_client_not_ready))])),ContractResult=passed"
+  },
+  {
+    "client": 5,
+    "event": {
+      "type": "success",
+      "pid": 2051339735,
+      "data": [
+        {
+          "Before": "[2051339735@'http://127.0.0.1:53391']",
+          "Owner": "2051339735@'http://127.0.0.1:53391'",
+          "Child": "Child",
+          "From": "From",
+          "Again": "Again",
+          "P": "7651764550@'http://localhost:53390'",
+          "ContractResult": "passed"
+        }
+      ],
+      "more": false
+    }
+  },
+  {
+    "client": 6,
+    "event": {
+      "type": "spawned",
+      "pid": 1951097074
+    }
+  },
+  {
+    "client": 6,
+    "goal": "(actors(Before),self(Owner),spawn((self(Child),register(uri_client_alias,Child),whereis(uri_client_alias,Child),send(Owner,alias_ready),receive({probe(From)->send(From,alias_alive(Child))}),receive({probe(Again)->send(Again,alias_alive(Child))}),receive({stop->true})),P,[node('http://localhost:53390/'),monitor(true)]),receive({alias_ready->true},[timeout(4),on_timeout(throw(alias_client_not_ready))])),ContractResult=passed"
+  },
+  {
+    "client": 6,
+    "event": {
+      "type": "error",
+      "pid": 1951097074,
+      "data": "alias_client_not_ready"
+    }
+  }
+]

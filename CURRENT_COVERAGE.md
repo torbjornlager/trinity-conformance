@@ -3,9 +3,25 @@
 The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
 view. The dated sweep totals below retain their original observations.
 
-Updated **20 November 2026** after URI/source triage and local repair qualification. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after canonical URI and context qualification. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## Canonical URI and context candidate
+
+The [canonical URI follow-up](reports/2026-11-20-canonical-uri-qualification/REPORT.md)
+records 44/44 on both macOS and Linux against version `node-uri-io-0.2`.
+The previous sources record 32 pass / 12 fail under the same case goals,
+with both literal aliases authorized for the old exact-key credential fixture.
+Only an empty root path is canonicalized; non-root paths and authority,
+scheme and port distinctions remain intact. Credentials, topology and controls
+share the canonical key. Client context assertions are now separate from
+address assertions, and Trealla's peer cache preserves ordinary-name isolation
+between hosted clients. Real-peer lifecycle checks observe remote reclamation
+through an independent connection. No production pins or services changed.
+The 207 unresolved historical failed observations remain open; candidate
+passes do not retire deployed findings. N6, N7 and browser URI follow-up and
+a fresh full sweep remain pending.
 
 ## URI/source repair candidate and fixture triage
 
@@ -19,9 +35,8 @@ The owned adapter now authorizes both exact URL spellings it tests. With
 unchanged case goals, the final native selection records 17 pass / 9 fail on
 each platform. Four original owned credential-precondition failures are
 classified as fixture setup; no live finding is closed. The current inventory
-therefore has 207 unresolved failed observations, down from 211. Canonical
-returned addresses, Trealla's qualified local delivery and self-URL context
-expectations remain separate pending work. All prior reports stay immutable.
+therefore has 207 unresolved failed observations, down from 211. The next candidate qualification above addresses canonical returned addresses,
+qualified local delivery and versioned self-URL context assertions. All prior reports stay immutable.
 
 ## Deployed RPC timeout validation
 

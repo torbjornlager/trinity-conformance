@@ -7,6 +7,15 @@ another runtime.
 
 ## Current consolidated results
 
+The [canonical URI qualification](reports/2026-11-20-canonical-uri-qualification/REPORT.md)
+records **44/44** version 0.2 URI/context checks on both macOS and Linux,
+compared with **32 pass / 12 fail** on the previous sources under the same
+case goals. Native SWI and Trealla canonicalize empty root paths together with
+peer credentials and topology. Explicit URL contexts remain separate, and
+Trealla's outgoing connections preserve client name isolation. This candidate
+is not deployed; the inventory still contains **207 unresolved failed
+observations**. Historical reports remain unchanged.
+
 The [URI/source follow-up](reports/2026-11-20-uri-source-triage/REPORT.md)
 records a qualified, committed Trealla clause-reflection repair and corrected
 owned-fixture peer credentials. The current inventory contains **207 unresolved
@@ -874,3 +883,8 @@ The `node-uri-io-0.1` selection runs the same trailing-slash, public-source I/O,
 source-less output and ping-pong assertions in both native directions. See its
 [profile](profiles/node-uri-io-0.1.md) and
 [development qualification](reports/2026-11-06-node-uri-io/README.md).
+
+The maintained adapter now defaults to `node-uri-io-0.2`. Its [versioned
+profile](profiles/node-uri-io-0.2.md) separates address and client-context
+assertions and adds canonical credential/topology, halt, delivery and independent
+client controls. Version 0.1 remains available with an explicit `--manifest`.
