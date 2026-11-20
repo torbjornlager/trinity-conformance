@@ -1,8 +1,21 @@
 # Current Web Prolog conformance coverage
 
+The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
+view. The dated sweep totals below retain their original observations.
+
 Updated **20 November 2026** after focused live verification of the retirement repair. The latest complete sweep below predates this repair. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
 
 [Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+
+## Local cleanup qualification
+
+The [cleanup follow-up](reports/2026-11-20-cleanup-qualification/REPORT.md)
+clears both first-batch Trealla qualification blockers in local test source:
+all 111 unit groups pass on macOS and Linux with 30 seconds per check.
+The fixes use explicit descendant readiness and unconditional fixture cleanup,
+and isolate the five unchanged cache properties. The production cache capacity
+and runtime cleanup implementation are unchanged. This does not change the
+live source selection or close the remaining language findings.
 
 ## Deployed retirement repair
 
@@ -82,7 +95,7 @@ The run also records 95 paced live HTTP prompt observations on N2/N3/N4/N5/N7 an
 
 The three current-image private ACTOR gates pass 45 release plus seven source-directive cases each. Authenticated and anonymous retained HTTP contexts pass 3/3 each, client naming passes 16/16, bounded noncompletion passes 3/3, and enabled owned HTTP prompts pass 19/19 per native runtime. Runner tooling passes all 114 unit tests. Live prompt counts and all twelve directed ACTOR interoperation pairs are in the full report.
 
-The retained-context selection records **46 pass / 11 fail / 4 blocked**, with six passing closure controls. Source/export and attachment-instrumentation limits remain explicit. The real Chromium browser compatibility selection records **4 pass / 2 fail**, retaining B-SV-006 in Worker and main modes. MC-028/029 preserve their original URI expectations; portable-text, document, deadline, HTTP-field and public receive findings retain their raw scope and outcomes.
+The retained-context selection records **46 pass / 11 fail / 4 blocked**, with six passing closure controls. Source/export and attachment-instrumentation limits remain explicit. The real Chromium browser compatibility selection records **4 pass / 2 fail**, retaining B-SV-006 in Worker and main modes. Monitor packs 0.1 retain the superseded atom-only MC-028/029 expectations. Active packs 0.2 follow the recorded 17 November URI-text contract; their focused verification is in the current issue inventory. Portable-text, document, deadline, HTTP-field and public receive findings retain their raw scope and outcomes.
 
 No runtime, installed engine, assertion, live setting or quota was changed by the sweep. Persistent service/container image identities match the before snapshot, and owned fixture containers were removed. Private admin operations, public browser UI, all security boundaries and external ISO obligations are not certified.
 

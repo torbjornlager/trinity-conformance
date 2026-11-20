@@ -7,6 +7,20 @@ another runtime.
 
 ## Current consolidated results
 
+The [cleanup qualification follow-up](reports/2026-11-20-cleanup-qualification/REPORT.md)
+resolves both first-batch Trealla qualification blockers in the local test
+harness. All 111 unit check groups pass on macOS and Linux. Runtime cleanup
+code, deployment pins and live services are unchanged; the pending RPC
+candidate is preserved. The earlier failed runs remain linked in the issue
+inventory.
+
+Start with the [current issue inventory](CURRENT_ISSUES.md) for unresolved
+findings, exact follow-up evidence, superseded assertions and candidate-only
+repairs. The [first backlog batch](reports/2026-11-20-backlog-baseline/REPORT.md)
+records the URI contract/documentation correction, prompt fixture repair and
+local numeric-timeout fixes. Production pins and services are unchanged by
+that batch.
+
 The [live retirement repair verification](reports/2026-11-20-retirement-live/REPORT.md)
 records deployment of native SWI `0c11f2c` on N0–N4 and admin. Both N3 and
 N4 pass all 118 primary ACTOR cases and 100 unchanged NU-003 repetitions;

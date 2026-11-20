@@ -125,6 +125,12 @@ def answer(base, fields, value, ref=None):
             f"wrong prompt answer: {event!r}")
 
 
+def fixture_preflight(base):
+    """Verify retained-session routes once; always attempt to close the probe."""
+    with session(base, None):
+        pass
+
+
 def check(base, require_by_default=False):
     with ExitStack() as stack:
         correlation = None if require_by_default else True
@@ -656,7 +662,22 @@ def main():
         parser.error("provide at least one engine endpoint")
     manifest = json.loads(MANIFEST.read_text())
     results = []
+    preconditions = []
     for engine, endpoint in endpoints:
+        try:
+            fixture_preflight(endpoint)
+        except (AssertionError, KeyError, ValueError, OSError) as error:
+            detail = str(error)
+            preconditions.append(dict(engine=engine, endpoint=endpoint,
+                                      status="error", detail=detail))
+            results.extend(dict(id=case['id'], engine=engine, status="blocked",
+                                blocker="Retained HTTP fixture preflight failed: "+detail)
+                           for case in manifest['cases'])
+            if args.visitor_ownership:
+                results.append(dict(id="visitor-ownership", engine=engine, status="blocked",
+                                    blocker="Retained HTTP fixture preflight failed: "+detail))
+            continue
+        preconditions.append(dict(engine=engine, endpoint=endpoint, status="pass"))
         for case in manifest["cases"]:
             result = {"id": case["id"], "engine": engine}
             try:
@@ -717,9 +738,10 @@ def main():
             else:
                 result["status"] = "pass"
             results.append(result)
-    passed = all(result["status"] == "pass" for result in results)
+    passed = (all(item['status'] == 'pass' for item in preconditions)
+              and all(result["status"] == "pass" for result in results))
     report = {"suite": manifest["suite"], "status": "pass" if passed else "fail",
-              "results": results}
+              "preconditions": preconditions, "results": results}
     rendered = json.dumps(report, indent=2) + "\n"
     if args.output:
         args.output.write_text(rendered)

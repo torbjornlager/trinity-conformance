@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "id": "URI-TEXT-DECISION",
+      "status": "observed",
+      "source_repository": "/Users/lager/trinity-demonstrator",
+      "source_revision": "605f8406e243787fc60e40629e44da1bcefc1b23",
+      "path": "DEVIATIONS.md",
+      "line": 25,
+      "sha256": "922ca1e8ea2e2fdf2e6f502e75852476ec391e8434d6505a21e6b8eebfea25ea",
+      "excerpt": "| 2026-11-17 | A URI is an atom, a string object, or a proper list of characters or codes; anything else raises `type_error(atom_or_string, Value)` before any request is made. This covers `node/1`, the node in an actor address `Id@Node` (`send/2,3`, `monitor/2`, `exit/2`), the destination of `rpc/2,3` and `promise/3,4`, and `src_uri/1`. The `Host:Port` shorthand is no longer accepted by SWI, Trealla or SWI-WASM, as on ECLiPSe. A text node in `Id@Node` names the same actor as the atom, and `Id@localhost` names the local node on every engine. A pending node is never bound. | Author-directed decision, replacing an atom-only proposal of the previous day. Engines previously differed: some accepted only atoms, SWI and Trealla resolved `Host:Port`, and SWI did not treat `Id@localhost` as local. One rule on every engine makes addresses portable across nodes. Supersedes the Host:Port part of \"URI representation validation\" below. Deployed to N1\u2013N5, N7 and the N0\u2013N6 browser runtime on 17 November 2026. Pinned by the conformance packs `uri-atoms-0.1`, `manual-option-sources-0.1` (URI-007 to URI-011) and `creation-validation-0.1`, and by the native, Trealla and SWI-WASM URI tests. |",
+      "committed_sha256": "922ca1e8ea2e2fdf2e6f502e75852476ec391e8434d6505a21e6b8eebfea25ea",
+      "working_tree_changed": false
+    },
+    {
+      "id": "TIMEOUT-NUMERIC",
+      "status": "observed",
+      "source_repository": "/Users/lager/trinity-demonstrator",
+      "source_revision": "605f8406e243787fc60e40629e44da1bcefc1b23",
+      "path": "web/manual.html",
+      "line": 1012,
+      "sha256": "9b7be0c729cffbf6aa318cb27d163384f9d5eec46a6d256f09e03fc4261defad",
+      "excerpt": "<p><code>timeout/1</code> requests a destination-side execution timeout; <code>http_timeout/1</code> sets the caller\u2019s transport timeout. Both require numbers of seconds; negative values are normalised to zero. Omission leaves the corresponding default in effect. These are separate settings, each using its first occurrence, and every occurrence is validated before source preparation or dispatch.</p>",
+      "committed_sha256": "b07e23bc922e316959a7167424e0db824c059a833acc6fe8a1354811ca09ee7a",
+      "working_tree_changed": true
+    },
+    {
+      "id": "STALE-URI-MANUAL",
+      "status": "observed",
+      "sha256": "b07e23bc922e316959a7167424e0db824c059a833acc6fe8a1354811ca09ee7a",
+      "excerpt": "<p>Every API argument or option that takes a URI or node URL requires an atom, for example <code>'https://n3.example'</code>. This rule applies consistently to RPC and promise destinations, source URIs, the <code>node/1</code> spawn option, and the node component of a canonical pid. Strings, character lists, code lists, numbers and compound terms are not accepted as URI values. Callers constructing URI text in another representation must convert it to an atom before passing it to the API.</p>",
+      "disposition": "Corrected from the later author-directed decision; not a new language change."
+    }
+  ],
+  "precedence": "Recorded author-directed 17 November URI decision supersedes the earlier atom-only proposal and stale HTML. Numeric explicit RPC/promise timeouts remain the shared rule."
+}

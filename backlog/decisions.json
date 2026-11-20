@@ -1,0 +1,1937 @@
+{
+  "source_report": "reports/2026-11-20-live-conformance",
+  "exclude_classification_prefixes": [
+    "out_of_scope",
+    "invalid_",
+    "overlapping_",
+    "superseded_transport",
+    "first_attempt",
+    "first_public"
+  ],
+  "families": [
+    {
+      "id": "CAPACITY",
+      "title": "N6 retained-query scheduling",
+      "case_prefixes": [],
+      "next_action": "Use expiry/owned-query cleanup at phase boundaries; keep concurrency bounds."
+    },
+    {
+      "id": "MONITOR_CONTRACT",
+      "title": "Monitor URI contract drift",
+      "case_prefixes": [
+        "MC-028",
+        "MC-029"
+      ],
+      "next_action": "Use version 0.2 and the recorded 17 November contract; retain 0.1 evidence."
+    },
+    {
+      "id": "MONITOR",
+      "title": "Other monitor behavior",
+      "case_prefixes": [
+        "MC-",
+        "BN-"
+      ],
+      "next_action": "Isolate each remaining monitor assertion with controlled peers."
+    },
+    {
+      "id": "RPC_TIMEOUT",
+      "title": "RPC/promise timeout validation",
+      "case_prefixes": [
+        "RPC-TIME-"
+      ],
+      "next_action": "Qualify numeric-option candidate fixes; preserve omitted defaults and review destination/transport separation."
+    },
+    {
+      "id": "HTTP_OPTIONS",
+      "title": "HTTP option vocabulary and fields",
+      "case_prefixes": [
+        "HTTP-FIELD-",
+        "HTTP-CTL-"
+      ],
+      "next_action": "Compare approved option vocabulary, then test rejection before dispatch with a recording peer."
+    },
+    {
+      "id": "URI_TRANSPORT",
+      "title": "URI routing and source transport",
+      "case_prefixes": [
+        "NU-",
+        "URI-"
+      ],
+      "next_action": "Separate aliases, lineage authorization and round-trip source transfer using controlled peers."
+    },
+    {
+      "id": "LOCAL_RPC",
+      "title": "Same-node RPC and caller-side source",
+      "case_prefixes": [
+        "LOCAL-"
+      ],
+      "next_action": "Separate producer profile/setup from source preparation and local ownership."
+    },
+    {
+      "id": "TEXT",
+      "title": "Portable text and prompt wire protocol",
+      "case_prefixes": [
+        "TXT-"
+      ],
+      "next_action": "Supply controlled source routes and correlated prompt references; retain language literal assertions."
+    },
+    {
+      "id": "CONTEXT",
+      "title": "Client contexts and promise ownership",
+      "case_prefixes": [
+        "CTX-",
+        "CP-",
+        "HCTX-",
+        "OL-"
+      ],
+      "next_action": "Investigate foreign collection and round-trip restoration separately; leave blocked routes explicit."
+    },
+    {
+      "id": "RECEIVE",
+      "title": "Selective receive and guard handling",
+      "case_prefixes": [
+        "SR-",
+        "RG-"
+      ],
+      "next_action": "Reproduce SR-015 with exact goals and fix receive-body semantics without changing the case."
+    },
+    {
+      "id": "BROWSER_SUPERVISOR",
+      "title": "Browser supervisor recovery",
+      "case_prefixes": [
+        "B-SV-"
+      ],
+      "next_action": "Reproduce B-SV-006 in Worker/main and repair sibling preservation and valid retry."
+    },
+    {
+      "id": "LIFECYCLE",
+      "title": "Supervisor lifecycle and callbacks",
+      "case_prefixes": [
+        "SL-",
+        "LC-"
+      ],
+      "next_action": "Resolve N7 source/profile preconditions, then isolate lifecycle/validation behavior."
+    },
+    {
+      "id": "PROMPT_FIXTURE",
+      "title": "Retained HTTP prompt fixture",
+      "case_prefixes": [
+        "PT-"
+      ],
+      "next_action": "Use the enabled disposable adapter and one preflight; missing routes block execution and fail qualification."
+    },
+    {
+      "id": "ERRORS",
+      "title": "Error envelopes and partial pages",
+      "case_prefixes": [
+        "ER-",
+        "IBD-",
+        "PE-"
+      ],
+      "next_action": "Separate profile boundaries, page protocol and error payload assertions."
+    },
+    {
+      "id": "REFERENCES",
+      "title": "Reference types and ownership",
+      "case_prefixes": [
+        "RF-"
+      ],
+      "next_action": "Reproduce with distinct identities and supported profiles."
+    },
+    {
+      "id": "INTROSPECTION",
+      "title": "Runtime introspection",
+      "case_prefixes": [
+        "RT-"
+      ],
+      "next_action": "Verify remaining observations after N6 expiry controls."
+    },
+    {
+      "id": "SUCCESSOR",
+      "title": "Successor option validation",
+      "case_prefixes": [
+        "SU-"
+      ],
+      "next_action": "Verify remaining N7 validation against the shared contract."
+    },
+    {
+      "id": "LIBRARY",
+      "title": "Library and noncompletion",
+      "case_prefixes": [
+        "STDLIB-"
+      ],
+      "next_action": "Separate capacity refusals from producer lifecycle and finite-answer assertions."
+    },
+    {
+      "id": "ADMISSION",
+      "title": "Call admission and tutorial availability",
+      "case_prefixes": [
+        "CA-",
+        "DEMO-",
+        "OPT-"
+      ],
+      "next_action": "Verify public profile/service preconditions before changing language behavior."
+    }
+  ],
+  "decisions": [
+    {
+      "id": "N6-CAPACITY-LIBRARY",
+      "selectors": [
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-011",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-045",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-031",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-060",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-039",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-058",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-021",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-016",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-008",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-051",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-034",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-005",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-044",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-012",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-036",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-047",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-046",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-048",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-024",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-023",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-061",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-042",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-010",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-020",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-029",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-062",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-018",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-013",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-033",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-053",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-025",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-038",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-017",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-064",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-065",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-006",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-054",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-050",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-037",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-043",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-066",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-052",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-040",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-009",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-015",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-028",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-032",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-059",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-056",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-022",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-019",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-063",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-007",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-030",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-027",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-014",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-055",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-049",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-001",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-057",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-035",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-041",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-library/n6/standard-library-0.1.json",
+          "case_id": "STDLIB-026",
+          "detail_contains": "query_limit_exceeded"
+        }
+      ],
+      "set": {
+        "family": "CAPACITY",
+        "production_disposition": "correct_preconditions_verified",
+        "diagnosis": "orchestration_capacity_precondition"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-011"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-045"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-031"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-060"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-039"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-058"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-021"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-016"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-008"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-051"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-034"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-005"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-044"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-012"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-036"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-047"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-046"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-048"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-024"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-023"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-061"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-042"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-010"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-020"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-029"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-062"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-018"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-013"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-033"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-053"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-025"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-038"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-017"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-064"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-065"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-006"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-054"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-050"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-037"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-043"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-066"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-052"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-040"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-009"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-015"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-028"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-032"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-059"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-056"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-022"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-019"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-063"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-007"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-030"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-027"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-014"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-055"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-049"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-001"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-057"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-035"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-041"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-controls/n6-paused-library.json",
+          "selector": {
+            "case_id": "STDLIB-026"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "66 exact assertions pass after the documented retention-expiry precondition; original refusals remain."
+    },
+    {
+      "id": "N6-CAPACITY-SUPPORTING",
+      "selectors": [
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/partial-page-errors-0.1.json",
+          "case_id": "PE-017",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/reference-contracts-0.1.json",
+          "case_id": "RF-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-005",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-010",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-013",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-009",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-007",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-014",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-016",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-018",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-019",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-006",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-008",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-015",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-011",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-012",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-001",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-017",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/rpc-timeout-0.1.json",
+          "case_id": "RPC-TIME-020",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-HTTP-001",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-005",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-001",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-HTTP-005",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-HTTP-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-HTTP-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/runtime-introspection-0.1.json",
+          "case_id": "RT-HTTP-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-015",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-013",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-009",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-019",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-012",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-008",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-001",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-018",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-005",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-020",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-006",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-010",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-007",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-011",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-017",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-004",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/successor-validation-0.1.json",
+          "case_id": "SU-HTTP-014",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/uri-atoms-0.1.json",
+          "case_id": "OPT-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/uri-atoms-0.1.json",
+          "case_id": "OPT-002",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/uri-atoms-0.1.json",
+          "case_id": "URI-003",
+          "detail_contains": "query_limit_exceeded"
+        },
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/uri-atoms-0.1.json",
+          "case_id": "OPT-001",
+          "detail_contains": "query_limit_exceeded"
+        }
+      ],
+      "set": {
+        "family": "CAPACITY",
+        "production_disposition": "correct_preconditions_verified",
+        "diagnosis": "orchestration_capacity_precondition"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "PE-017"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RF-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-005"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-010"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-013"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-009"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-007"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-014"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-016"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-018"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-019"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-006"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-008"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-015"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-011"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-012"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-001"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-017"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RPC-TIME-020"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-HTTP-001"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-005"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-001"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-HTTP-005"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-HTTP-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-HTTP-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "RT-HTTP-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-015"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-013"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-009"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-019"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-012"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-008"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-001"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-018"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-005"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-020"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-006"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-010"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-007"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-011"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-017"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-004"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "SU-HTTP-014"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "OPT-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "OPT-002"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "URI-003"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "OPT-001"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "55 exact assertions pass after the documented retention-expiry precondition; original refusals remain."
+    },
+    {
+      "id": "SWI-RETIREMENT-DEPLOYED",
+      "selectors": [
+        {
+          "case_id": "NU-003",
+          "candidate_in": [
+            "swi",
+            "n3",
+            "n4"
+          ],
+          "detail_contains": "actor_baseline_changed"
+        }
+      ],
+      "set": {
+        "production_disposition": "repaired_deployed",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-retirement-live/live/n3-nu003.json",
+          "selector": {
+            "case_id": "NU-003"
+          },
+          "status": "pass",
+          "minimum_matches": 100
+        },
+        {
+          "file": "reports/2026-11-20-retirement-live/live/n4-nu003.json",
+          "selector": {
+            "case_id": "NU-003"
+          },
+          "status": "pass",
+          "minimum_matches": 100
+        }
+      ],
+      "note": "Native 0c11f2c is deployed; N3/N4 each pass 100 unchanged repetitions. Other URI failures remain open."
+    },
+    {
+      "id": "N6-LOCAL-REPLAY",
+      "selectors": [
+        {
+          "file": "reports/2026-11-20-live-conformance/observations/live-more/n6/local-node-rpc-0.1.json",
+          "case_id": "LOCAL-001"
+        }
+      ],
+      "set": {
+        "production_disposition": "passing_replay_cause_open"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-regression-triage/n6/results.json",
+          "selector": {
+            "case_id": "LOCAL-001"
+          },
+          "status": "pass",
+          "minimum_matches": 3
+        }
+      ],
+      "note": "Three passing replays do not establish the cause of the original transport error."
+    },
+    {
+      "id": "MONITOR-URI-VERSION",
+      "selectors": [
+        {
+          "case_id_in": [
+            "MC-028",
+            "MC-029"
+          ]
+        }
+      ],
+      "set": {
+        "production_disposition": "superseded_assertion",
+        "diagnosis": "stale_contract_assertion"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/contract-review.json",
+          "selector": {
+            "case_id": "URI-TEXT-DECISION"
+          },
+          "status": "observed"
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/browser-monitor-text.json",
+          "selector": {},
+          "status": "pass",
+          "minimum_matches": 6
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/live-monitor-text.json",
+          "selector": {},
+          "minimum_matches": 12
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/monitor-contracts-v2.json",
+          "selector": {},
+          "minimum_matches": 100
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/monitor-preflight-v2.json",
+          "selector": {},
+          "minimum_matches": 50
+        }
+      ],
+      "note": "The author-directed 17 November decision accepts URI text, including monitor targets. Version 0.2 verifies real delivery to the same actor; the atom-only 0.1 cases and old reports remain unchanged."
+    },
+    {
+      "id": "PROMPT-ROUTE-PRECONDITION",
+      "selectors": [
+        {
+          "file_contains": "/extras/prompt-http.json",
+          "detail_contains": "HTTP 404"
+        }
+      ],
+      "set": {
+        "production_disposition": "fixture_precondition",
+        "diagnosis": "fixture_route_disabled"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/http-prompts.json",
+          "selector": {},
+          "status": "pass",
+          "minimum_matches": 38
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/prompt-disabled.json",
+          "selector": {},
+          "status": "blocked",
+          "minimum_matches": 19
+        }
+      ],
+      "note": "Standalone Trealla requires http_sessions(true). Both enabled fixtures pass all 38 assertions. New preflight blocks cases and returns a failing run when the route is absent."
+    },
+    {
+      "id": "RPC-NUMERIC-CANDIDATE-SWI",
+      "selectors": [
+        {
+          "candidate": "swi",
+          "case_id_in": [
+            "RPC-TIME-001",
+            "RPC-TIME-002",
+            "RPC-TIME-010",
+            "RPC-TIME-011"
+          ]
+        }
+      ],
+      "set": {
+        "candidate_disposition": "verified_not_deployed",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-001",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-002",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-010",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-011",
+            "candidate": "swi"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "SWI explicitly supplied variable/none timeouts now fail validation before dispatch; omitted defaults remain unchanged. Production findings remain open pending qualification/deployment."
+    },
+    {
+      "id": "RPC-NUMERIC-CANDIDATE-TREALLA",
+      "selectors": [
+        {
+          "candidate": "trealla",
+          "case_id_in": [
+            "RPC-TIME-003",
+            "RPC-TIME-012"
+          ]
+        }
+      ],
+      "set": {
+        "candidate_disposition": "verified_not_deployed",
+        "diagnosis": "protocol_implementation_defect"
+      },
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-003",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        },
+        {
+          "file": "reports/2026-11-20-backlog-baseline/validation-candidate.json",
+          "selector": {
+            "case_id": "RPC-TIME-012",
+            "candidate": "trealla"
+          },
+          "status": "pass"
+        }
+      ],
+      "note": "Trealla explicitly supplied infinite timeouts are rejected as non-numeric. Production findings remain open pending qualification/deployment."
+    }
+  ],
+  "additional_findings": [
+    {
+      "id": "TPL-SANDBOX-CASCADE",
+      "production_disposition": "production_unchanged",
+      "note": "Resolved in the local test candidate. The fixed 100 ms snapshot raced grandchild startup; an explicit readiness message preserves the four-actor and cascade assertions. Session cleanup now runs on failure/exception too. Both complete unit suites pass, and injected failures still fail promptly while reclaiming all four actors. Production runtime cleanup code is unchanged.",
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/qualification-limitations.json",
+          "selector": {
+            "case_id": "TPL-SANDBOX-CASCADE"
+          },
+          "status": "error",
+          "minimum_matches": 2
+        },
+        {
+          "file": "reports/2026-11-20-cleanup-qualification/complete-unit-summary.json",
+          "selector": {
+            "case_id": "TREALLA-COMPLETE-UNIT",
+            "candidate": "macos"
+          }
+        },
+        {
+          "file": "reports/2026-11-20-cleanup-qualification/failure-controls.json",
+          "selector": {
+            "case_id": "T145-FAILURE-CLEANUP"
+          },
+          "minimum_matches": 2
+        }
+      ],
+      "qualification_disposition": "resolved_in_local_test_candidate",
+      "diagnosis": "fixture_readiness_race_and_failure_cleanup"
+    },
+    {
+      "id": "TPL-CACHE-EVICTION-LINUX",
+      "production_disposition": "production_unchanged",
+      "note": "Resolved in the local test candidate. Five unchanged production-sized cache properties shared one 30-second watchdog; a timing probe completed the old aggregate in 27.6 seconds. Each property now has a fresh process and the same 30-second watchdog, plus a reclamation check. All five bodies and the real cache capacity 100 are unchanged. Complete macOS and Linux unit suites pass; the aggregate entry point remains available.",
+      "proofs": [
+        {
+          "file": "reports/2026-11-20-backlog-baseline/linux-qualification-limitations.json",
+          "selector": {},
+          "status": "error",
+          "minimum_matches": 2
+        },
+        {
+          "file": "reports/2026-11-20-cleanup-qualification/complete-unit-summary.json",
+          "selector": {
+            "case_id": "TREALLA-COMPLETE-UNIT",
+            "candidate": "linux"
+          }
+        }
+      ],
+      "qualification_disposition": "resolved_in_local_test_candidate",
+      "diagnosis": "aggregate_fixture_watchdog_budget"
+    }
+  ],
+  "active_monitor_manifests": [
+    "monitor-contracts-0.2",
+    "monitor-preflight-0.2"
+  ]
+}

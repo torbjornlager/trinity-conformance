@@ -1,0 +1,47 @@
+diff --git a/README.md b/README.md
+index 1bc43b2..643e46d 100644
+--- a/README.md
++++ b/README.md
+@@ -144,2 +144,3 @@ retain supported text forms and are checked before source loading or dispatch;
+-unknown variables are not instantiated by matching the `Host:Port` shorthand.
+-RPC/promise accept that shorthand with a text host and integer port. This is
++unknown variables remain unbound. The author-directed 17 November contract
++accepts atoms, string objects and proper character/code lists consistently.
++The `Host:Port` compound shorthand is rejected before dispatch. This is
+@@ -148 +149 @@ source origin policy, redirects, TLS or permitted schemes. See the shared manual
+-for the runtime-specific text forms. The bounded regression report is in
++for the common text forms. The bounded regression report is in
+diff --git a/prolog/web_prolog/rpc.pl b/prolog/web_prolog/rpc.pl
+index 60ca774..21b5aff 100644
+--- a/prolog/web_prolog/rpc.pl
++++ b/prolog/web_prolog/rpc.pl
+@@ -274,2 +274,3 @@ validate_client_value(remote_timeout, Value) :- !,
+-    % Preserve the existing unspecified-timeout and negative-timeout rules.
+-    normalize_requested_timeout(Value, _).
++    % Omission uses an internal sentinel; an explicitly supplied timeout
++    % must be numeric before source preparation or request dispatch.
++    normalize_timeout(Value, _).
+diff --git a/tests/tiers/node/rpc_options_tests.pl b/tests/tiers/node/rpc_options_tests.pl
+index 9b36712..cb675ab 100644
+--- a/tests/tiers/node/rpc_options_tests.pl
++++ b/tests/tiers/node/rpc_options_tests.pl
+@@ -90,4 +90,15 @@ test(native_source_text_representations,
+-test(existing_timeout_conventions) :-
+-    rpc:validate_client_options(rpc,[timeout(Unspecified),timeout(none),
+-                                    timeout(-1),http_timeout(-1)]),
+-    assertion(var(Unspecified)),
++test(explicit_timeout_requires_number_before_source_or_dispatch,
++     [forall((member(Kind,[rpc,promise]),member(Value,[_ ,none,infinite])))]) :-
++    copy_term(Value,Before),
++    aggregate_all(count,rpc:promise_state(_,_,_,_,_,_,_),CountBefore),
++    catch(invoke(Kind,17,[src_uri('http://127.0.0.1:1/never'),timeout(Value)]),Error,true),
++    assertion(nonvar(Error)),
++    (var(Value) -> assertion(Error=error(instantiation_error,_))
++    ; assertion(Error=error(type_error(number,Value),_))),
++    assertion(Value=@=Before),
++    aggregate_all(count,rpc:promise_state(_,_,_,_,_,_,_),CountAfter),
++    assertion(CountBefore==CountAfter).
++test(omitted_and_numeric_timeout_conventions) :-
++    rpc:validate_client_options(rpc,[]),
++    rpc:normalize_requested_timeout(none,none),
++    rpc:validate_client_options(rpc,[timeout(-1),http_timeout(-1)]),

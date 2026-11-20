@@ -10,7 +10,7 @@ import sys
 from context_release import validate
 
 ROOT=Path(__file__).resolve().parents[1]
-MANIFEST=ROOT/'cases/monitor-contracts-0.1.json'
+MANIFEST=ROOT/'cases/monitor-contracts-0.2.json'
 
 
 def fingerprint(paths):

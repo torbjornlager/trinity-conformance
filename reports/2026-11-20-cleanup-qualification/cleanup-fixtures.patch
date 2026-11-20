@@ -1,0 +1,74 @@
+diff --git a/http_cache_eviction_tests.pl b/http_cache_eviction_tests.pl
+index 0b76117..7242b46 100644
+--- a/http_cache_eviction_tests.pl
++++ b/http_cache_eviction_tests.pl
+@@ -2 +2 @@
+-:- module(http_cache_eviction_tests,[run/0]).
++:- module(http_cache_eviction_tests,[run/0,run/1]).
+@@ -15,4 +15,15 @@ run :-
+-    setup_call_cleanup(true,
+-      (fifo_overflow, multiple_evictions, checkout_before_eviction,
+-       concurrent_checkout, interrupted_eviction),
+-      clear_cache),
++    forall(cache_case(Case),run(Case)),
++    writeln('HTTP cache eviction: all regressions passed').
++
++% Each property creates at least one full production-sized cache. The unit
++% runner gives each its own process/watchdog, just like the other fixtures.
++% Keep run/0 for an aggregate run, and check reclamation after every property.
++cache_case(fifo_overflow).
++cache_case(multiple_evictions).
++cache_case(checkout_before_eviction).
++cache_case(concurrent_checkout).
++cache_case(interrupted_eviction).
++
++run(Case) :-
++    cache_case(Case),
++    setup_call_cleanup(true,call(Case),clear_cache),
+@@ -21 +32 @@ run :-
+-    writeln('HTTP cache eviction: all regressions passed').
++    format('HTTP cache eviction ~w: reclamation verified~n',[Case]).
+diff --git a/tests.pl b/tests.pl
+index f063208..f07c29c 100644
+--- a/tests.pl
++++ b/tests.pl
+@@ -1789 +1789 @@ t145 :-
+-    Source = 'root :- spawn(child, _, [src_predicates([child/0, grandchild/0])]), receive({}). child :- spawn(grandchild, _, [src_predicates([grandchild/0])]), receive({}). grandchild :- receive({}).',
++    Source = 'root(Owner) :- spawn(child(Owner), _, [src_predicates([child/1, grandchild/1])]), receive({}). child(Owner) :- spawn(grandchild(Owner), _, [src_predicates([grandchild/1])]), receive({}). grandchild(Owner) :- self(Pid), send(Owner, t145_tree_ready(Pid)), receive({}).',
+@@ -1793,4 +1793,10 @@ t145 :-
+-    toplevel_spawn(Session,
+-                   [target(Me),session(true),link(false)|SourceOptions]),
+-    Spawn0 = spawn(root, Root,
+-                   [src_predicates([root/0,child/0,grandchild/0])]),
++    setup_call_cleanup(
++      toplevel_spawn(Session,
++                     [target(Me),session(true),link(false)|SourceOptions]),
++      t145_tree(Session, Me),
++      toplevel_halt(Session, true)),
++    format("145. nested link tutorial source copying and cascade ok~n").
++
++t145_tree(Session, Me) :-
++    Spawn0 = spawn(root(Me), Root,
++                   [src_predicates([root/1,child/1,grandchild/1])]),
+@@ -1804 +1810,4 @@ t145 :-
+-    sleep(0.1),
++    % Root startup does not imply that its descendants have started. The
++    % grandchild signals only after both source-copying generations complete.
++    receive({t145_tree_ready(Grandchild) -> true},
++            [timeout(2),on_timeout(throw(t145_tree_ready_timeout))]),
+@@ -1830,3 +1839 @@ t145 :-
+-            [timeout(2),on_timeout(throw(t145_cascade_timeout))]),
+-    toplevel_halt(Session, true),
+-    format("145. nested link tutorial source copying and cascade ok~n").
++            [timeout(2),on_timeout(throw(t145_cascade_timeout))]).
+diff --git a/tools/test.sh b/tools/test.sh
+index 91248b1..b170cca 100755
+--- a/tools/test.sh
++++ b/tools/test.sh
+@@ -219,2 +219,4 @@ run_unit() {
+-    run_with_timeout "HTTP continuation cache eviction cleanup" \
+-        "$TPL" -g "consult('$ROOT/http_cache_eviction_tests.pl'),(catch(http_cache_eviction_tests:run,E,(writeq(E),nl,fail))->halt;halt(1))"
++    for cache_case in fifo_overflow multiple_evictions checkout_before_eviction concurrent_checkout interrupted_eviction; do
++        run_with_timeout "HTTP continuation cache eviction $cache_case" \
++            "$TPL" -g "consult('$ROOT/http_cache_eviction_tests.pl'),(catch(http_cache_eviction_tests:run($cache_case),E,(writeq(E),nl,fail))->halt;halt(1))"
++    done

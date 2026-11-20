@@ -1,0 +1,49 @@
+diff --git a/README.md b/README.md
+index 5261cca..70359c6 100644
+--- a/README.md
++++ b/README.md
+@@ -1896,3 +1896,6 @@ before source fetching or resource creation. Only one normalised `timeout/1`
+-is forwarded when the explicit option is present. Without it, legacy transport
+-`timeout/1` handling (nonnegative numbers or `infinite`) is unchanged. Yield
+-timeouts govern the local wait. No remote execution timeout option is added.
++is forwarded when the explicit option is present. An explicitly supplied `timeout/1` now also requires a number, as specified by
++the shared client-option contract; omit the option to retain the default.
++`infinite`, `none` and uninstantiated values are rejected before source loading
++or dispatch. The existing transport projection is retained in this preflight
++repair; separate destination execution deadlines remain conformance work. Yield
++timeouts govern the local wait.
+diff --git a/rpc.pl b/rpc.pl
+index 6b9818f..3da7e95 100644
+--- a/rpc.pl
++++ b/rpc.pl
+@@ -132 +132 @@ request_option_type(once,language_boolean).
+-request_option_type(timeout,timeout).
++request_option_type(timeout,number).
+@@ -232 +232 @@ base_path_prefix(BasePath, Prefix) :-
+-%     - http_timeout(+Number), timeout(+SecondsOrInfinite),
++%     - http_timeout(+Number), timeout(+Number),
+diff --git a/rpc_option_tests.pl b/rpc_option_tests.pl
+index 1c1b02c..b0552db 100644
+--- a/rpc_option_tests.pl
++++ b/rpc_option_tests.pl
+@@ -12,0 +13 @@ rpc_option_tests :-
++    explicit_timeout_errors,
+@@ -65,0 +67,6 @@ option_value_errors :-
++explicit_timeout_errors :-
++    forall(member(Value-Formal,[_-instantiation_error,none-type_error(number,none),infinite-type_error(number,infinite)]),
++      (expect_client_error(rpc('http://invalid',true,[src_uri('http://invalid/source'),timeout(Value)]),Formal,rpc:rpc/3),
++       expect_client_error(promise('http://invalid',true,Ref,[src_uri('http://invalid/source'),timeout(Value)]),Formal,rpc:promise/4),var(Ref))),
++    writeln('explicit timeout validation precedes source preparation and allocation: ok').
++
+@@ -92 +99 @@ option_supported_vectors :-
+-    Options=[limit(2),limit(3),timeout(infinite),redirect(true),max_redirect(3),
++    Options=[limit(2),limit(3),timeout(30),redirect(true),max_redirect(3),
+@@ -106 +113 @@ option_supported_vectors :-
+-           timeout(infinite),redirect(true),max_redirect(3),cacert_file('ca.pem')],
++           timeout(30),redirect(true),max_redirect(3),cacert_file('ca.pem')],
+@@ -111 +118 @@ rpc_options_live_test(Port) :-
+-    findall(X,rpc(URI,member(X,[a,b,c]),[limit(1),limit(2),timeout(infinite),
++    findall(X,rpc(URI,member(X,[a,b,c]),[limit(1),limit(2),timeout(30),
+@@ -114 +121 @@ rpc_options_live_test(Port) :-
+-    promise(URI,X=ok,Ref,[template(X-X),offset(0),limit(1),timeout(infinite)]),
++    promise(URI,X=ok,Ref,[template(X-X),offset(0),limit(1),timeout(30)]),
