@@ -1,0 +1,95 @@
+{
+  "suite": "local-node-rpc-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "7f38269eebb9d7475d1ab153e9c3fc56a817f69adc8f93871a92ff14959e5bc2",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "LOCAL-001",
+      "case_index": 0,
+      "title": "RPC resolves localhost and pages through the local stateless endpoint",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ],
+      "duration_ms": 428
+    },
+    {
+      "id": "LOCAL-002",
+      "case_index": 1,
+      "title": "RPC source is temporary and is not retained by a later local call",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ],
+      "duration_ms": 896
+    },
+    {
+      "id": "LOCAL-003",
+      "case_index": 2,
+      "title": "Promise resolves localhost and preserves goal/template variable separation",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ],
+      "duration_ms": 637
+    },
+    {
+      "id": "LOCAL-004",
+      "case_index": 3,
+      "title": "Local promise failure remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ],
+      "duration_ms": 798
+    },
+    {
+      "id": "LOCAL-005",
+      "case_index": 4,
+      "title": "Local promise exception remains an answer term",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([passed],false).\n"
+        }
+      ],
+      "duration_ms": 824
+    },
+    {
+      "id": "LOCAL-006",
+      "case_index": 5,
+      "title": "The caller fetches URI source before dispatch to localhost",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got \"error(error(profile_violation(isobase,goal(receive({echo(_6597,_6598)->_6597!echo(_6598),echo_actor}))),context(profile_policy:profile_check_goal/2,'goal is not available in the effective profile'))).\\n\"",
+      "duration_ms": 726
+    },
+    {
+      "id": "LOCAL-007",
+      "case_index": 6,
+      "title": "Local promise prepares URI source in the caller",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected 'success([passed],false).', got 'failure.\\n'",
+      "duration_ms": 813
+    }
+  ],
+  "counts": {
+    "pass": 5,
+    "fail": 2
+  }
+}

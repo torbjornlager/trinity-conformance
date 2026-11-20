@@ -1,0 +1,114 @@
+{
+  "runs": [
+    {
+      "label": "swi-portable-text",
+      "report": "swi-portable-text.json",
+      "exit_code": 1,
+      "command": [
+        "/usr/bin/python3",
+        "runner/run.py",
+        "--manifest",
+        "cases/portable-text-0.2.json",
+        "--candidate",
+        "swi",
+        "--ws-url",
+        "ws://127.0.0.1:50717/ws",
+        "--advertised-profile",
+        "actor",
+        "--timeout",
+        "5",
+        "--peer",
+        "http://127.0.0.1:33489",
+        "--source-base",
+        "http://127.0.0.1:39333",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-uri-20261120/native/portable-text-0.2/swi-portable-text.json"
+      ],
+      "peer": "trealla"
+    },
+    {
+      "label": "trealla-portable-text",
+      "report": "trealla-portable-text.json",
+      "exit_code": 1,
+      "command": [
+        "/usr/bin/python3",
+        "runner/run.py",
+        "--manifest",
+        "cases/portable-text-0.2.json",
+        "--candidate",
+        "trealla",
+        "--ws-url",
+        "ws://127.0.0.1:33489/ws",
+        "--advertised-profile",
+        "actor",
+        "--timeout",
+        "5",
+        "--peer",
+        "http://127.0.0.1:50717",
+        "--source-base",
+        "http://127.0.0.1:39333",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-uri-20261120/native/portable-text-0.2/trealla-portable-text.json"
+      ],
+      "peer": "swi"
+    }
+  ],
+  "sources": {
+    "swi": {
+      "revision": "254ae3add4ee1d00342bdfaeaf85b87b0e10e5d0",
+      "archive_sha256": "7e4a2c0302ae1bc65a47e57df68c74489395b1ec158c979e9031b954983b3b62",
+      "checkout": "/tmp/portable-text-8l2pxfvt/swi",
+      "excluded_working_tree_status": ""
+    },
+    "trealla": {
+      "revision": "c6d2d685f13e1c3e0d147318da6bcac83e01609f",
+      "archive_sha256": "eaf5bc3f94acbb80c71a67dd4c752e679cf13724daf922578ec3476dcf1c9b67",
+      "checkout": "/tmp/portable-text-8l2pxfvt/trealla",
+      "excluded_working_tree_status": ""
+    }
+  },
+  "nodes": {
+    "swi": {
+      "url": "http://127.0.0.1:50717",
+      "pid": 18198,
+      "command": [
+        "/usr/bin/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/tmp/portable-text-8l2pxfvt/swi/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,50717),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):50717),tcp_listen(S,128),node:node(50717,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open),load_uri_allowed_origins(['http://127.0.0.1:39333'])]),thread_get_message(stop)"
+      ]
+    },
+    "trealla": {
+      "url": "http://127.0.0.1:33489",
+      "pid": 18210,
+      "command": [
+        "/opt/trealla/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(33489,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:33489'),profile(actor),sandbox(blacklist),auth(open),trusted_proxy_ranges(['127.0.0.1']),load_uri_allowed_origins(['http://127.0.0.1:39333']),load_uri_allowed_ip_ranges(['127.0.0.1'])]),thread_get_message(stop)"
+      ]
+    }
+  },
+  "inputs": {
+    "cases/portable-text-0.2.json": "d85c47aedfce4dc205ce1d0dd03cd784bd70525381fb2d37bdf27f5225dd6941",
+    "profiles/portable-text-0.2.md": "d8c877b426d18fce0752257cbdec75a651311ede76723c167f73bf4efd877a6a",
+    "runner/run.py": "73d0c99117a3e167e3f621bcb1d893d936463bdc76a5a087a2dcfbe03e3afdb9",
+    "runner/portable_text.py": "8112b984316d7a4d1e97ff394ba474cb3ef421f6bb6f635005b618719a1ee3a6",
+    "fixtures/portable-text/portable-text.pl": "ea4bfe5f9cefb9e59801ab0f76e327374b1904be00439dbc9c110ba212184ad3",
+    "adapters/local_portable_text.py": "d168ae9af65df4d61137c408ac3288a68e8fb030403f8b2a9a831f247cf77711",
+    "adapters/local_promises.py": "33e9d0ae03c5d019fdcf30e730e86cdb4ff568a20885b315dd16bbf53cd91d86"
+  },
+  "configuration": "ACTOR/blacklist; unchanged reader defaults",
+  "engine_hashes": {
+    "/usr/bin/swipl": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a",
+    "/opt/trealla/tpl": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a"
+  },
+  "source_fixture": "http://127.0.0.1:39333",
+  "experimental_swi_configuration": false,
+  "trusted_loopback_transport": true,
+  "source_requests": [
+    "\"GET /portable-text.pl HTTP/1.1\" 200 -",
+    "\"GET /portable-text.pl HTTP/1.1\" 200 -"
+  ]
+}

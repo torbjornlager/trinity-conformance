@@ -1,0 +1,105 @@
+{
+  "suite": "wire-capabilities-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "dfbca8f42566b52da14683f8aa614dc4e81980db370aee834fed8434a64c2cfc",
+  "scope": "required",
+  "results": [
+    {
+      "id": "WP-001",
+      "case_index": 0,
+      "title": "Combined spawn/query correlation negotiation and per-command reply IDs",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": "web-prolog-sync-spawn-v1",
+        "replies": [
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "spawned",
+            "pid": 7780909284,
+            "request_id": "baseline-good"
+          },
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "error",
+            "data": "error(syntax_error(src_text), spawn / 3)",
+            "request_id": "baseline-bad"
+          }
+        ]
+      },
+      "duration_ms": 2142
+    },
+    {
+      "id": "WP-002",
+      "case_index": 1,
+      "title": "Legacy toplevel-correlation offer remains accepted",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": "web-prolog-sync-v1",
+        "replies": [
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "spawned",
+            "pid": 9701765750
+          },
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "error",
+            "data": "error(syntax_error(src_text), spawn / 3)"
+          }
+        ]
+      },
+      "duration_ms": 2080
+    },
+    {
+      "id": "WP-003",
+      "case_index": 2,
+      "title": "Unnegotiated actor transport remains accepted",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": null,
+        "replies": [
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "spawned",
+            "pid": 4279417443
+          },
+          {
+            "type": "error",
+            "data": "Unknown toplevel session for this connection",
+            "pid": 99999999999
+          },
+          {
+            "type": "error",
+            "data": "error(syntax_error(src_text), spawn / 3)"
+          }
+        ]
+      },
+      "duration_ms": 2113
+    }
+  ],
+  "counts": {
+    "pass": 3
+  }
+}

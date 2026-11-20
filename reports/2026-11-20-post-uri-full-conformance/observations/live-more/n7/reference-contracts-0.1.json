@@ -1,0 +1,111 @@
+{
+  "suite": "reference-contracts-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "40ef37c59c63005c53f15223591d82d9007db08c25a3cac5666700edbf7b2df8",
+  "scope": "required",
+  "results": [
+    {
+      "id": "RF-001",
+      "case_index": 0,
+      "title": "A reference call is deterministic and two calls return distinct opaque references",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8081545616,
+        "data": [
+          {
+            "R": "R",
+            "A": "9722377449",
+            "B": "7471279537",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2011
+    },
+    {
+      "id": "RF-002",
+      "case_index": 1,
+      "title": "An opaque reference retains identity through an application message",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4969783962,
+        "data": [
+          {
+            "S": "4969783962@'https://n7.elfenbenstornet.se'",
+            "R": "2092659333",
+            "C": "2092659333",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2076
+    },
+    {
+      "id": "RF-003",
+      "case_index": 2,
+      "title": "A bounded series of reference calls contains no duplicate values",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1973225587,
+        "data": [
+          {
+            "R": "R",
+            "Refs": "[1726995751,8823601213,9148868929,5013187636,9649710435,5252678556,6281435285,4155392800,9344822086,4789250298,6669634724,7251804642,7852196353,8694147691,1435575003,3482817634,2631401488,5116185397,3159851469,...]",
+            "Unique": "[1435575003,1726995751,2631401488,3159851469,3298409131,3482817634,3993110871,4070695718,4155392800,4285919361,4789250298,5013187636,5116185397,5252678556,5785386576,6035492434,6281435285,6565520345,6669634724,...]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2122
+    },
+    {
+      "id": "RF-004",
+      "case_index": 3,
+      "title": "Stateless HTTP rejects the ACTOR primitive and remains usable",
+      "status": "fail",
+      "detail": "ConformanceFailure: {'type': 'success', 'data': [{'R': '6326298624'}], 'more': False}",
+      "duration_ms": 917
+    },
+    {
+      "id": "RF-005",
+      "case_index": 4,
+      "title": "relation profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-006",
+      "case_index": 5,
+      "title": "isobase profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-007",
+      "case_index": 6,
+      "title": "isotope profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-008",
+      "case_index": 7,
+      "title": "actor profile policy admits reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    }
+  ],
+  "counts": {
+    "pass": 3,
+    "fail": 1,
+    "blocked": 4
+  }
+}

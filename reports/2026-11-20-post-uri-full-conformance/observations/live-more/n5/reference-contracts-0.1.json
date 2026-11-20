@@ -1,0 +1,123 @@
+{
+  "suite": "reference-contracts-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "40ef37c59c63005c53f15223591d82d9007db08c25a3cac5666700edbf7b2df8",
+  "scope": "required",
+  "results": [
+    {
+      "id": "RF-001",
+      "case_index": 0,
+      "title": "A reference call is deterministic and two calls return distinct opaque references",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3072633958,
+        "data": [
+          {
+            "R": "R",
+            "A": "1000019041",
+            "B": "1000019042",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2003
+    },
+    {
+      "id": "RF-002",
+      "case_index": 1,
+      "title": "An opaque reference retains identity through an application message",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2596503180,
+        "data": [
+          {
+            "S": "2596503180@'https://n5.elfenbenstornet.se'",
+            "R": "1000019052",
+            "C": "1000019052",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2118
+    },
+    {
+      "id": "RF-003",
+      "case_index": 2,
+      "title": "A bounded series of reference calls contains no duplicate values",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2115591020,
+        "data": [
+          {
+            "R": "R",
+            "Refs": "[1000019062,1000019063,1000019064,1000019065,1000019066,1000019067,1000019068,1000019069,1000019070,1000019071,1000019072,1000019073,1000019074,1000019075,1000019076,1000019077,1000019078,1000019079,1000019080,1000019081,1000019082,1000019083,1000019084,1000019085,1000019086,1000019087,1000019088,1000019089,1000019090,1000019091,1000019092,1000019093]",
+            "Unique": "[1000019062,1000019063,1000019064,1000019065,1000019066,1000019067,1000019068,1000019069,1000019070,1000019071,1000019072,1000019073,1000019074,1000019075,1000019076,1000019077,1000019078,1000019079,1000019080,1000019081,1000019082,1000019083,1000019084,1000019085,1000019086,1000019087,1000019088,1000019089,1000019090,1000019091,1000019092,1000019093]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2111
+    },
+    {
+      "id": "RF-004",
+      "case_index": 3,
+      "title": "Stateless HTTP rejects the ACTOR primitive and remains usable",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([healthy],false).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "{\"type\":\"error\",\"data\":\"error(profile_violation(isobase,goal(make_ref(_5261))),context(profile_policy:profile_check_goal\\/2,'goal is not available in the effective profile'))\"}"
+        },
+        {
+          "http_status": 200,
+          "body": "success([healthy],false).\n"
+        }
+      ],
+      "duration_ms": 1805
+    },
+    {
+      "id": "RF-005",
+      "case_index": 4,
+      "title": "relation profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-006",
+      "case_index": 5,
+      "title": "isobase profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-007",
+      "case_index": 6,
+      "title": "isotope profile policy rejects reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    },
+    {
+      "id": "RF-008",
+      "case_index": 7,
+      "title": "actor profile policy admits reference creation without binding its argument",
+      "status": "blocked",
+      "detail": "compiled policy fixture; cannot inspect through public endpoint"
+    }
+  ],
+  "counts": {
+    "pass": 4,
+    "blocked": 4
+  }
+}

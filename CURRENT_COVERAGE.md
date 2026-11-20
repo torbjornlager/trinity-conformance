@@ -3,9 +3,25 @@
 The [current issue inventory](CURRENT_ISSUES.md) is the authoritative triage
 view. The dated sweep totals below retain their original observations.
 
-Updated **20 November 2026** after canonical URI and context deployment. The latest complete sweep below predates these focused follow-ups. The inventory contains **78 manifests / 1,984 input rows**, at suite revision `aeb1329`. **It is not all-green.** Repeated versions, modes and routes are not independent language features; blocked assertions are not passes.
+Updated **20 November 2026** after the full post-upgrade conformance run.
+Repeated versions, modes and routes are observations, not independent defects
+or a conformance percentage. Blocked assertions are not passes.
 
-[Full report](reports/2026-11-20-live-conformance/REPORT.md) · [per-file results](reports/2026-11-20-live-conformance/SUMMARY.json) · [case inventory](reports/2026-11-20-live-conformance/verification.json) · [frozen inputs](reports/2026-11-20-live-conformance/suite-inputs.json).
+The [fresh full conformance run](reports/2026-11-20-post-uri-full-conformance/REPORT.md) covers
+**81 manifests / 2,081 input rows** against the upgraded live
+nodes. All primary public selections pass: N0 1; N1/N2/N6 12 each;
+N3/N4/N5/N7 118 each. Broader failures, diagnostics, profile exclusions and
+4 input rows without execution observations are retained in the report.
+N5 automatically restarted during the library run, leaving 51 retained-session
+assertions incomplete; those connection failures are reported separately. The complete library,
+prompt, cross-node and owned-fixture selections are freshly recorded.
+
+This is fresh execution evidence. The earlier **183-observation** figure belongs
+to a reviewed historical repair inventory and is not this sweep's failure count.
+[Per-file outcomes](reports/2026-11-20-post-uri-full-conformance/SUMMARY.json),
+[case accounting](reports/2026-11-20-post-uri-full-conformance/verification.json) and
+[frozen inputs](reports/2026-11-20-post-uri-full-conformance/suite-inputs.json) define the new scope.
+No runtime source, deployment setting or quota was changed during testing.
 
 ## Canonical URI and context deployment
 
@@ -15,7 +31,7 @@ exact SWI/Trealla images and all **136** visible OPEN exercise checks in the SWI
 image. Both CI jobs, all 36 integration groups and the broader live smoke gates
 pass. Nine unchanged failure observations are repaired and fifteen mixed
 address/visibility assertions are superseded with separate context controls.
-The inventory now has **183 unresolved failed observations**; these are repeated
+That release checkpoint retained **183 unresolved failed observations**; these are repeated
 evidence rows, not independent defects. This focused replay preserves the
 historical full sweep. Other-runtime URI follow-up remains separate.
 

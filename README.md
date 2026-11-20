@@ -7,13 +7,29 @@ another runtime.
 
 ## Current consolidated results
 
+The [fresh full conformance run](reports/2026-11-20-post-uri-full-conformance/REPORT.md) covers
+**81 manifests / 2,081 input rows** against the upgraded live
+nodes. All primary public selections pass: N0 1; N1/N2/N6 12 each;
+N3/N4/N5/N7 118 each. Broader failures, diagnostics, profile exclusions and
+4 input rows without execution observations are retained in the report.
+N5 automatically restarted during the library run, leaving 51 retained-session
+assertions incomplete; those connection failures are reported separately. The complete library,
+prompt, cross-node and owned-fixture selections are freshly recorded.
+
+This is fresh execution evidence. The earlier **183-observation** figure belongs
+to a reviewed historical repair inventory and is not this sweep's failure count.
+[Per-file outcomes](reports/2026-11-20-post-uri-full-conformance/SUMMARY.json),
+[case accounting](reports/2026-11-20-post-uri-full-conformance/verification.json) and
+[frozen inputs](reports/2026-11-20-post-uri-full-conformance/suite-inputs.json) define the new scope.
+No runtime source, deployment setting or quota was changed during testing.
+
 The [canonical URI deployment](reports/2026-11-20-canonical-uri-live/REPORT.md)
 verifies **63/63 live URI/context checks** across N3/N4/N5, **44/44** against the
 exact SWI/Trealla images and all **136** visible OPEN exercise checks in the SWI
 image. Both CI jobs, all 36 integration groups and the broader live smoke gates
 pass. Nine unchanged failure observations are repaired and fifteen mixed
 address/visibility assertions are superseded with separate context controls.
-The inventory now has **183 unresolved failed observations**; these are repeated
+That release checkpoint retained **183 unresolved failed observations**; these are repeated
 evidence rows, not independent defects. This focused replay preserves the
 historical full sweep. Other-runtime URI follow-up remains separate.
 
@@ -68,7 +84,7 @@ race reproduction and source repair. The N6 localhost transport-error cause
 remains unproven despite three passing replays. Original full-sweep results
 remain unchanged.
 
-The [fresh 20 November sweep](reports/2026-11-20-live-conformance/REPORT.md)
+The [preceding 20 November sweep](reports/2026-11-20-live-conformance/REPORT.md)
 covers **78 manifests / 1,984 input rows** against the configurable admission
 release, including **9,262 live library observations** across the selected
 transports. **It is not all-green.** All four ACTOR nodes pass their 118-case

@@ -1,0 +1,263 @@
+{
+  "suite": "admission-marker-controls-0.1",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "7c2e2ee209ad7b2bc6d6555ead43a75274f6cbb52ee5c64fd84f3841f4922689",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "AMC-001",
+      "case_index": 0,
+      "title": "Ordinary query exception retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5329554371,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5329554371,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(throw(admission_runtime_error))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Unknown message: admission_runtime_error",
+              "details": "admission_runtime_error",
+              "pid": 5329554371,
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5329554371,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 5329554371,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5329554371
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5329554371,
+              "reason": "true",
+              "ref": "5329554371@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5329554371,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": "Unknown message: admission_runtime_error",
+          "details": "admission_runtime_error",
+          "pid": 5329554371,
+          "type": "error"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5329554371,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2096
+    },
+    {
+      "id": "AMC-002",
+      "case_index": 1,
+      "title": "Ordinary logical failure retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5556267099,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5556267099,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(fail)),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5556267099,
+              "type": "failure"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5556267099,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 5556267099,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5556267099
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5556267099,
+              "reason": "true",
+              "ref": "5556267099@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5556267099,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "pid": 5556267099,
+          "type": "failure"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5556267099,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2090
+    }
+  ],
+  "counts": {
+    "observed": 2
+  }
+}

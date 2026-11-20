@@ -1,0 +1,136 @@
+{
+  "suite": "standard-naming-errors-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "e3ab851c48cf32272b36c493827aad2131a254c2feb4b4a284e19ea24c3881f2",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "STDERR-APPLICATION-BARE",
+      "case_index": 0,
+      "title": "User legacy-shaped exception remains an application term",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1066220966,
+        "data": [
+          {
+            "E": "name_is_in_use(application_token)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1974
+    },
+    {
+      "id": "STDERR-APPLICATION-WRAPPED",
+      "case_index": 1,
+      "title": "User error formal and context are preserved",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2872696797,
+        "data": [
+          {
+            "E": "error(process_already_has_a_name(application_token),application_context)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2163
+    },
+    {
+      "id": "STDERR-NAMED-TOPLEVEL",
+      "case_index": 2,
+      "title": "Unknown named synchronous target has common existence error",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1740724222,
+        "data": [
+          {
+            "Answer": "Answer",
+            "E": "error(existence_error(actor_name,standard_error_missing_name),context(toplevel_actors:toplevel_call_synch/4,'no actor registered under name'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2069
+    },
+    {
+      "id": "STDERR-MISSING-START",
+      "case_index": 3,
+      "title": "Missing start option preserves child identity and output",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1645417612,
+        "data": [
+          {
+            "Pid": "Pid",
+            "E": "error(existence_error(option,start(standard_error_child)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2083
+    },
+    {
+      "id": "STDERR-REGISTRY",
+      "case_index": 4,
+      "title": "Registration conflicts preserve the winner and use common formals",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1298018306,
+        "data": [
+          {
+            "S": "1298018306@'https://n5.elfenbenstornet.se'",
+            "P": "1607740891",
+            "Q": "2351780745",
+            "Taken": "error(permission_error(register,actor_name,standard_error_taken),context(actors:register/2,'ordinary registration conflict'))",
+            "Named": "error(permission_error(register,process,1607740891),context(actors:register/2,'ordinary registration conflict'))",
+            "Found": "1607740891",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2150
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-BARE",
+      "case_index": 5,
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(name_is_in_use(application_token)).\n"
+        }
+      ],
+      "duration_ms": 170
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-WRAPPED",
+      "case_index": 6,
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(error(process_already_has_a_name(application_token),application_context)).\n"
+        }
+      ],
+      "duration_ms": 826
+    }
+  ],
+  "counts": {
+    "pass": 7
+  }
+}

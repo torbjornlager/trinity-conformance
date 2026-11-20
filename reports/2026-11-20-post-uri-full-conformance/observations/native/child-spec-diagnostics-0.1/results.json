@@ -1,0 +1,116 @@
+{
+  "suite": "child-spec-diagnostics-0.1",
+  "mode": "blacklist",
+  "results": [
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SVD-001",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Added": "ok",
+            "After": "[info(existing,8512539432@'http://localhost:53499',worker,temporary)]",
+            "BaselineResult": "passed",
+            "Before": "[info(existing,8512539432@'http://localhost:53499',worker,temporary)]",
+            "E": "error(existence_error(option,start(retry)),supervisor)",
+            "Existing": "8512539432@'http://localhost:53499'",
+            "Final": "[info(existing,8512539432@'http://localhost:53499',worker,temporary),info(retry,9623317312@'http://localhost:53499',worker,temporary)]",
+            "From": "From",
+            "From2": "From2",
+            "Invalid": "child(retry,[])",
+            "Me": "Me",
+            "New": "9623317312@'http://localhost:53499'",
+            "R1": "4083918346",
+            "R2": "9728923443",
+            "Rejected": "Rejected",
+            "Retry": "child(retry,[start((self(_),9556563213@'http://localhost:53499'!retry_started(_),receive({never->true}))),restart(temporary)])",
+            "S": "9556563213@'http://localhost:53499'",
+            "Specs": "[child(existing,[start((self(_),9556563213@'http://localhost:53499'!existing_started(_),receive({ping(_)->_!existing_ok,receive({ping(_)->_!existing_ok,receive({never->true})})}))),restart(temporary)])]",
+            "Sup": "3028254750@'http://localhost:53499'"
+          }
+        ],
+        "more": false,
+        "pid": 9556563213,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "swi",
+      "mode": "blacklist",
+      "id": "SVD-002",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(existence_error(option,start(a)),supervisor)",
+            "P": "P",
+            "S": "5437182327@'http://localhost:53499'",
+            "Specs": "[child(a,[])]"
+          }
+        ],
+        "more": false,
+        "pid": 5437182327,
+        "type": "success"
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SVD-001",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2259910494,
+        "data": [
+          {
+            "S": "2259910494@'http://127.0.0.1:52537'",
+            "Me": "Me",
+            "From": "From",
+            "From2": "From2",
+            "Specs": "[child(existing,[start((self(_),2259910494@'http://127.0.0.1:52537'!existing_started(_),receive({ping(_)->_!existing_ok,receive({ping(_)->_!existing_ok,receive({never->true})})}))),restart(temporary)])]",
+            "Invalid": "child(retry,[])",
+            "Retry": "child(retry,[start((self(_),2259910494@'http://127.0.0.1:52537'!retry_started(_),receive({never->true}))),restart(temporary)])",
+            "Sup": "1649002247",
+            "Existing": "1345222572",
+            "R1": "1000000016",
+            "Before": "[info(existing,1345222572,worker,temporary)]",
+            "Rejected": "Rejected",
+            "E": "error(existence_error(option,start(retry)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+            "After": "[info(existing,1345222572,worker,temporary)]",
+            "Added": "ok",
+            "New": "1990340164",
+            "R2": "1000000027",
+            "Final": "[info(existing,1345222572,worker,temporary),info(retry,1990340164,worker,temporary)]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    },
+    {
+      "candidate": "trealla",
+      "mode": "blacklist",
+      "id": "SVD-002",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2029724263,
+        "data": [
+          {
+            "S": "2029724263@'http://127.0.0.1:52537'",
+            "Specs": "[child(a,[])]",
+            "P": "P",
+            "E": "error(existence_error(option,start(a)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      }
+    }
+  ],
+  "swi_fixture_ws_command_budget": 1000,
+  "manifest_sha256": "92aa0265a42f30f8c3a865a8d64c6538ca567c32005e5f282edb7d08d4912089"
+}

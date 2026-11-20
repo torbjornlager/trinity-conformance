@@ -1,0 +1,176 @@
+{
+  "suite": "creation-validation-0.1",
+  "candidate": "n3",
+  "profile": "actor",
+  "endpoint": "https://n3.elfenbenstornet.se",
+  "manifest_sha256": "6d0e5b27ab139b44c225a626f20151139aa53034622e46b358e0f944cca73405",
+  "scope": "required",
+  "results": [
+    {
+      "id": "CV-001",
+      "case_index": 0,
+      "title": "Unknown spawn options identify the option family",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVOptions1": "[unknown(creation_probe)]",
+            "CVSelf": "4291203476@'https://n3.elfenbenstornet.se'",
+            "E": "error(domain_error(spawn_option,unknown(creation_probe)),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "P"
+          }
+        ],
+        "more": false,
+        "pid": 4291203476,
+        "type": "success"
+      },
+      "duration_ms": 2142
+    },
+    {
+      "id": "CV-002",
+      "case_index": 1,
+      "title": "Option lists and entries must be instantiated and proper",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVOptions1": "[monitor(true)|bad]",
+            "CVOptions2": "[_]",
+            "CVSelf": "5244835985@'https://n3.elfenbenstornet.se'",
+            "E1": "error(instantiation_error,context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(type_error(list,[monitor(true)|bad]),context(actors:spawn/3,'invalid spawn option'))",
+            "E3": "error(instantiation_error,context(actors:spawn/3,'invalid spawn option'))",
+            "Option": "Option",
+            "Options": "Options",
+            "P": "P",
+            "Q": "Q",
+            "R": "R"
+          }
+        ],
+        "more": false,
+        "pid": 5244835985,
+        "type": "success"
+      },
+      "duration_ms": 2068
+    },
+    {
+      "id": "CV-003",
+      "case_index": 2,
+      "title": "Boolean and node values reject invalid types",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVOptions1": "[link(maybe)]",
+            "CVOptions2": "[monitor(1)]",
+            "CVOptions3": "[node(42)]",
+            "CVSelf": "6987949678@'https://n3.elfenbenstornet.se'",
+            "E1": "error(domain_error(boolean,maybe),context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(type_error(atom,1),context(actors:spawn/3,'invalid spawn option'))",
+            "E3": "error(type_error(atom_or_string,42),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "P",
+            "Q": "Q",
+            "R": "R"
+          }
+        ],
+        "more": false,
+        "pid": 6987949678,
+        "type": "success"
+      },
+      "duration_ms": 2108
+    },
+    {
+      "id": "CV-004",
+      "case_index": 3,
+      "title": "Later duplicate occurrences are validated",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVOptions1": "[session(true),session(maybe)]",
+            "CVOptions2": "[link(true),link(maybe)]",
+            "CVOptions3": "[period(1),period(0)]",
+            "CVSelf": "5261143279@'https://n3.elfenbenstornet.se'",
+            "E1": "error(domain_error(boolean,maybe),context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(domain_error(boolean,maybe),context(toplevel_actors:toplevel_spawn/2,'invalid spawn wrapper option'))",
+            "E3": "error(domain_error(supervisor_period,0),context(supervisor_actor:supervisor_spawn/3,'invalid spawn wrapper option'))",
+            "P": "P",
+            "Sup": "Sup",
+            "T": "T"
+          }
+        ],
+        "more": false,
+        "pid": 5261143279,
+        "type": "success"
+      },
+      "duration_ms": 2101
+    },
+    {
+      "id": "CV-005",
+      "case_index": 4,
+      "title": "Wrapper-only options are separated and first scalar setting wins",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(9314668191@'https://n3.elfenbenstornet.se',[true],false)",
+            "BaselineResult": "passed",
+            "CVOptions1": "[timeout(2),on_timeout(throw(first_session_setting_not_preserved))]",
+            "CVOptions2": "[strategy(one_for_one),intensity(0),period(0.25),monitor(true)]",
+            "CVOptions3": "[timeout(2),on_timeout(throw(missing_supervisor_down))]",
+            "CVOptions4": "[timeout(2),on_timeout(throw(missing_wrapper_answer))]",
+            "CVOptions5": "[session(false),session(true),monitor(true)]",
+            "CVOptions6": "[strategy(one_for_one)]",
+            "CVOptions7": "[session(false)]",
+            "CVSelf": "4270653907@'https://n3.elfenbenstornet.se'",
+            "Children": "[]",
+            "E1": "error(domain_error(spawn_option,session(false)),context(actors:spawn/3,'invalid spawn option'))",
+            "E2": "error(domain_error(spawn_option,strategy(one_for_one)),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "P",
+            "Q": "Q",
+            "Sup": "7784121217@'https://n3.elfenbenstornet.se'",
+            "T": "9314668191@'https://n3.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4270653907,
+        "type": "success"
+      },
+      "duration_ms": 2148
+    },
+    {
+      "id": "CV-006",
+      "case_index": 5,
+      "title": "Validation precedes source loading and application activation",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "CVOptions1": "[src_uri('file:///definitely-missing-creation-validation.pl'),unknown(creation_probe)]",
+            "CVOptions2": "[timeout(2),on_timeout(throw(missing_valid_start))]",
+            "CVOptions3": "[timeout(2),on_timeout(throw(missing_valid_down))]",
+            "CVOptions4": "[timeout(0),on_timeout(true)]",
+            "CVOptions5": "[monitor(true)]",
+            "CVSelf": "8123405957@'https://n3.elfenbenstornet.se'",
+            "E": "error(domain_error(spawn_option,unknown(creation_probe)),context(actors:spawn/3,'invalid spawn option'))",
+            "P": "3374924694@'https://n3.elfenbenstornet.se'",
+            "Rejected": "Rejected",
+            "S": "8123405957@'https://n3.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 8123405957,
+        "type": "success"
+      },
+      "duration_ms": 2103
+    }
+  ],
+  "counts": {
+    "pass": 6
+  }
+}

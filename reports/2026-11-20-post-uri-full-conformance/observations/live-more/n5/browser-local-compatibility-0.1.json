@@ -1,0 +1,61 @@
+{
+  "suite": "browser-local-compatibility-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "154a0cd7e16f69e879c420474156acde95059d055723639d9c169cffd7c01ed1",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "B-LN-002",
+      "case_index": 0,
+      "title": "Occupied names and already named pids preserve original registrations",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'failure', 'pid': 2093000588}; preceding events were []",
+      "duration_ms": 2044
+    },
+    {
+      "id": "B-LN-006",
+      "case_index": 1,
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2175379116,
+        "data": [
+          {
+            "Name": "ln_case_006",
+            "S": "2175379116@'https://n5.elfenbenstornet.se'",
+            "From": "From",
+            "P": "1977836030",
+            "Loser": "Loser",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),context(actors:register/2,'ordinary registration conflict'))",
+            "Found": "1977836030",
+            "Failed": "Failed",
+            "Failure": "error(domain_error(source_uri,'file:///definitely-missing-local-naming-conformance.pl'),source_policy:fetch_source_uri/2)",
+            "Absent": "undefined",
+            "Sup": "2127607007",
+            "Published": "2127607007",
+            "Children": "[]",
+            "Gone": "undefined",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2182
+    },
+    {
+      "id": "B-SV-006",
+      "case_index": 2,
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected success, got {'type': 'failure', 'pid': 2801943209}; preceding events were []",
+      "duration_ms": 2083
+    }
+  ],
+  "counts": {
+    "fail": 2,
+    "pass": 1
+  }
+}

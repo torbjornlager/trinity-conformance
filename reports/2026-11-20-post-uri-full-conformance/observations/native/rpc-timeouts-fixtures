@@ -1,0 +1,2096 @@
+{
+  "scope": "supporting HTTP deadline and execution-timeout checks; disposable fixtures, no profile certification",
+  "sources": {
+    "swi": {
+      "root": "/opt/swi-prolog-node",
+      "revision": "254ae3add4ee1d00342bdfaeaf85b87b0e10e5d0",
+      "dirty": false,
+      "changed_files": {}
+    },
+    "trealla": {
+      "root": "/work/trealla",
+      "revision": "c6d2d685f13e1c3e0d147318da6bcac83e01609f",
+      "dirty": false,
+      "changed_files": {}
+    },
+    "gnu": {
+      "root": "/work/gnu",
+      "revision": "487e76f3921f305d841d4e38d688e201899caaee",
+      "dirty": false,
+      "changed_files": {}
+    }
+  },
+  "executables": {
+    "/usr/lib/swipl/bin/aarch64-linux/swipl": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a",
+    "/opt/trealla/tpl": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a",
+    "/work/gnu/isobase/query-worker": "c29d8c5d604e22127a2c4f7a1e6541813f855626fa99a820eb0f8f2da939cf04"
+  },
+  "runner_sha256": "8fcae35cef61e50c2169ec052cbeeddcfd79726503bbcc4d7be99e3791382ae3",
+  "counts": {
+    "pass": 61,
+    "fail": 20
+  },
+  "results": [
+    {
+      "candidate": "swi",
+      "title": "execution/HTTP limits are independent and first wins",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "timeout": [
+              "0.7"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 183
+    },
+    {
+      "candidate": "swi",
+      "title": "promise execution timeout is normalized and forwarded",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "timeout": [
+              "0"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 166
+    },
+    {
+      "candidate": "swi",
+      "title": "node URI path prefix is retained",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 158
+    },
+    {
+      "candidate": "swi",
+      "title": "omission leaves execution timeout unspecified",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 160
+    },
+    {
+      "candidate": "swi",
+      "title": "values above 300 seconds are accepted",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "timeout": [
+              "301"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 175
+    },
+    {
+      "candidate": "swi",
+      "title": "negative HTTP limit is immediate transport timeout",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,<stream>(0xaaaabacc4a00)),context(http_stream:http_read_line/3,_7574))\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(true)"
+            ],
+            "template": [
+              "(v)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 166
+    },
+    {
+      "candidate": "swi",
+      "title": "zero HTTP promise yields transport error answer",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(=(_1,ok))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 145
+    },
+    {
+      "candidate": "swi",
+      "title": "RPC whole-request deadline: headers",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,<stream>(0xaaab14cb8a00)),context(http_stream:http_read_line/3,_7922))\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_headers(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 244
+    },
+    {
+      "candidate": "swi",
+      "title": "promise whole-request deadline: headers",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_headers(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 259
+    },
+    {
+      "candidate": "swi",
+      "title": "RPC whole-request deadline: body",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,<stream>(0xaaab0e98aa00)),context(system:read_term/3,_23950))\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_body(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 263
+    },
+    {
+      "candidate": "swi",
+      "title": "promise whole-request deadline: body",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_body(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 310
+    },
+    {
+      "candidate": "swi",
+      "title": "RPC whole-request deadline: drip",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_drip(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 748
+    },
+    {
+      "candidate": "swi",
+      "title": "promise whole-request deadline: drip",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_drip(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 777
+    },
+    {
+      "candidate": "swi",
+      "title": "each page gets its own HTTP deadline",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_pages(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_pages(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "1"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 306
+    },
+    {
+      "candidate": "swi",
+      "title": "source fetching is independent of HTTP request deadline",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/source.pl",
+          "query": {}
+        },
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(helper(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "src_text": [
+              "helper(ok).\r\n"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 447
+    },
+    {
+      "candidate": "swi",
+      "title": "remote execution errors are propagated unchanged",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(v)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "timeout": [
+              "0.2"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 173
+    },
+    {
+      "candidate": "swi",
+      "title": "promises preserve remote execution error answers",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/call",
+          "query": {
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(fixture_resource)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "timeout": [
+              "0.2"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 150
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution/HTTP limits are independent and first wins",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 54
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise execution timeout is normalized and forwarded",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 64
+    },
+    {
+      "candidate": "trealla",
+      "title": "node URI path prefix is retained",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/prefix/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 52
+    },
+    {
+      "candidate": "trealla",
+      "title": "omission leaves execution timeout unspecified",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 54
+    },
+    {
+      "candidate": "trealla",
+      "title": "values above 300 seconds are accepted",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 53
+    },
+    {
+      "candidate": "trealla",
+      "title": "negative HTTP limit is immediate transport timeout",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,'$stream'(3)),getline/2)\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(true)"
+            ],
+            "template": [
+              "(v)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 51
+    },
+    {
+      "candidate": "trealla",
+      "title": "zero HTTP promise yields transport error answer",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(_1=ok)"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 62
+    },
+    {
+      "candidate": "trealla",
+      "title": "RPC whole-request deadline: headers",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,'$stream'(3)),getline/2)\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/headers/call",
+          "query": {
+            "goal": [
+              "(fixture_headers(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 155
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise whole-request deadline: headers",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/headers/call",
+          "query": {
+            "goal": [
+              "(fixture_headers(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 168
+    },
+    {
+      "candidate": "trealla",
+      "title": "RPC whole-request deadline: body",
+      "status": "fail",
+      "stdout": "error(timeout_error(read,'$stream'(3)),getline/2)\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/body/call",
+          "query": {
+            "goal": [
+              "(fixture_body(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 163
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise whole-request deadline: body",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/body/call",
+          "query": {
+            "goal": [
+              "(fixture_body(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 169
+    },
+    {
+      "candidate": "trealla",
+      "title": "RPC whole-request deadline: drip",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/drip/call",
+          "query": {
+            "goal": [
+              "(fixture_drip(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 671
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise whole-request deadline: drip",
+      "status": "fail",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/drip/call",
+          "query": {
+            "goal": [
+              "(fixture_drip(_4))"
+            ],
+            "template": [
+              "(v(_4))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 668
+    },
+    {
+      "candidate": "trealla",
+      "title": "each page gets its own HTTP deadline",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/pages/call",
+          "query": {
+            "goal": [
+              "(fixture_pages(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "1"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        },
+        {
+          "path": "/pages/call",
+          "query": {
+            "goal": [
+              "(fixture_pages(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "1"
+            ],
+            "limit": [
+              "1"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 177
+    },
+    {
+      "candidate": "trealla",
+      "title": "source fetching is independent of HTTP request deadline",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/source.pl",
+          "query": {}
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "goal": [
+              "(helper(_1))"
+            ],
+            "template": [
+              "(v(_1))"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ],
+            "src_text": [
+              "helper(ok).\n"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 312
+    },
+    {
+      "candidate": "trealla",
+      "title": "remote execution errors are propagated unchanged",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/resource/call",
+          "query": {
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(v)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 59
+    },
+    {
+      "candidate": "trealla",
+      "title": "promises preserve remote execution error answers",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/resource/call",
+          "query": {
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(fixture_resource)"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ],
+            "format": [
+              "prolog"
+            ],
+            "once": [
+              "false"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 69
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution/HTTP limits are independent and first wins",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "timeout": [
+              "0.69999999999999996"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 8
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise execution timeout is normalized and forwarded",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "timeout": [
+              "0"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu",
+      "title": "node URI path prefix is retained",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/prefix/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu",
+      "title": "omission leaves execution timeout unspecified",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu",
+      "title": "values above 300 seconds are accepted",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "timeout": [
+              "301"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu",
+      "title": "negative HTTP limit is immediate transport timeout",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu",
+      "title": "zero HTTP promise yields transport error answer",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 5
+    },
+    {
+      "candidate": "gnu",
+      "title": "RPC whole-request deadline: headers",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/headers/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_headers(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 115
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise whole-request deadline: headers",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/headers/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_headers(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 107
+    },
+    {
+      "candidate": "gnu",
+      "title": "RPC whole-request deadline: body",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/body/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_body(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 107
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise whole-request deadline: body",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/body/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_body(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 116
+    },
+    {
+      "candidate": "gnu",
+      "title": "RPC whole-request deadline: drip",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/drip/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_drip(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 108
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise whole-request deadline: drip",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/drip/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_drip(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(V0=ok)"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 112
+    },
+    {
+      "candidate": "gnu",
+      "title": "each page gets its own HTTP deadline",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/pages/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_pages(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        },
+        {
+          "path": "/pages/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_pages(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "1"
+            ],
+            "limit": [
+              "1"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 128
+    },
+    {
+      "candidate": "gnu",
+      "title": "source fetching is independent of HTTP request deadline",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/source.pl",
+          "query": {}
+        },
+        {
+          "path": "/fast/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(helper(V0))"
+            ],
+            "template": [
+              "(v(V0))"
+            ],
+            "src_text": [
+              "helper(ok).\n\n"
+            ],
+            "once": [
+              "false"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 261
+    },
+    {
+      "candidate": "gnu",
+      "title": "remote execution errors are propagated unchanged",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/resource/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(v)"
+            ],
+            "once": [
+              "false"
+            ],
+            "timeout": [
+              "0.20000000000000001"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "gnu",
+      "title": "promises preserve remote execution error answers",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [
+        {
+          "path": "/resource/call",
+          "query": {
+            "format": [
+              "prolog"
+            ],
+            "goal": [
+              "(fixture_resource)"
+            ],
+            "template": [
+              "(fixture_resource)"
+            ],
+            "once": [
+              "false"
+            ],
+            "timeout": [
+              "0.20000000000000001"
+            ],
+            "offset": [
+              "0"
+            ],
+            "limit": [
+              "10000000000"
+            ]
+          }
+        }
+      ],
+      "duration_ms": 6
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 0.03s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 215
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 1s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 469
+    },
+    {
+      "candidate": "swi",
+      "title": "promise execution limit -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 191
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 0.03s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 364
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 1s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 399
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise execution limit -> swi",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 374
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 0.03s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 47
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 1s and owner clamp -> swi",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 325
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise execution limit -> swi",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 45
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 0.03s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 557
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 1s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 606
+    },
+    {
+      "candidate": "swi",
+      "title": "promise execution limit -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 561
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 0.03s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 462
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 1s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 463
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise execution limit -> trealla",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 482
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 0.03s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 411
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 1s and owner clamp -> trealla",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 415
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise execution limit -> trealla",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 415
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 0.03s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 180
+    },
+    {
+      "candidate": "swi",
+      "title": "execution limit 1s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 464
+    },
+    {
+      "candidate": "swi",
+      "title": "promise execution limit -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 186
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 0.03s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 354
+    },
+    {
+      "candidate": "trealla",
+      "title": "execution limit 1s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 356
+    },
+    {
+      "candidate": "trealla",
+      "title": "promise execution limit -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 369
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 0.03s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 39
+    },
+    {
+      "candidate": "gnu",
+      "title": "execution limit 1s and owner clamp -> gnu",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 314
+    },
+    {
+      "candidate": "gnu",
+      "title": "promise execution limit -> gnu",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 36
+    },
+    {
+      "candidate": "swi",
+      "title": "application exception resembling old deadline marker stays unchanged -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 171
+    },
+    {
+      "candidate": "trealla",
+      "title": "application exception resembling old deadline marker stays unchanged -> gnu",
+      "status": "pass",
+      "stdout": "",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 81
+    },
+    {
+      "candidate": "gnu",
+      "title": "application exception resembling old deadline marker stays unchanged -> gnu",
+      "status": "pass",
+      "stdout": "{\"type\":\"success\",\"answers\":[\"ok\"],\"more\":false}\n",
+      "stderr": "",
+      "requests": [],
+      "duration_ms": 14
+    }
+  ]
+}

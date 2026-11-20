@@ -1,0 +1,136 @@
+{
+  "suite": "standard-naming-errors-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "e3ab851c48cf32272b36c493827aad2131a254c2feb4b4a284e19ea24c3881f2",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "STDERR-APPLICATION-BARE",
+      "case_index": 0,
+      "title": "User legacy-shaped exception remains an application term",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3041977512,
+        "data": [
+          {
+            "E": "name_is_in_use(application_token)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1986
+    },
+    {
+      "id": "STDERR-APPLICATION-WRAPPED",
+      "case_index": 1,
+      "title": "User error formal and context are preserved",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6800045618,
+        "data": [
+          {
+            "E": "error(process_already_has_a_name(application_token),application_context)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2112
+    },
+    {
+      "id": "STDERR-NAMED-TOPLEVEL",
+      "case_index": 2,
+      "title": "Unknown named synchronous target has common existence error",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2997522764,
+        "data": [
+          {
+            "Answer": "Answer",
+            "E": "error(existence_error(actor_name,standard_error_missing_name),context(actor:send/2,'no actor registered under name'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2109
+    },
+    {
+      "id": "STDERR-MISSING-START",
+      "case_index": 3,
+      "title": "Missing start option preserves child identity and output",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4776566098,
+        "data": [
+          {
+            "Pid": "Pid",
+            "E": "error(existence_error(option,start(standard_error_child)),supervisor_spawn/3)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2109
+    },
+    {
+      "id": "STDERR-REGISTRY",
+      "case_index": 4,
+      "title": "Registration conflicts preserve the winner and use common formals",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4347047436,
+        "data": [
+          {
+            "S": "4347047436@'https://n7.elfenbenstornet.se'",
+            "P": "1423968147@'https://n7.elfenbenstornet.se'",
+            "Q": "9926113557@'https://n7.elfenbenstornet.se'",
+            "Taken": "error(permission_error(register,actor_name,standard_error_taken),register/2)",
+            "Named": "error(permission_error(register,process,1423968147@'https://n7.elfenbenstornet.se'),register/2)",
+            "Found": "1423968147@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2120
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-BARE",
+      "case_index": 5,
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(name_is_in_use(application_token)).\n"
+        }
+      ],
+      "duration_ms": 118
+    },
+    {
+      "id": "STDERR-WIRE-APPLICATION-WRAPPED",
+      "case_index": 6,
+      "title": "Uncaught legacy-shaped application exception crosses HTTP unchanged",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(error(process_already_has_a_name(application_token), application_context)).\n"
+        }
+      ],
+      "duration_ms": 823
+    }
+  ],
+  "counts": {
+    "pass": 7
+  }
+}

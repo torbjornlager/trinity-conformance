@@ -1,0 +1,69 @@
+{
+  "suite": "child-spec-diagnostics-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "92aa0265a42f30f8c3a865a8d64c6538ca567c32005e5f282edb7d08d4912089",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "SVD-001",
+      "case_index": 0,
+      "title": "Dynamic validation with stage-specific wait diagnostics",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 1312761823,
+        "data": [
+          {
+            "S": "1312761823@'https://n5.elfenbenstornet.se'",
+            "Me": "Me",
+            "From": "From",
+            "From2": "From2",
+            "Specs": "[child(existing,[start((self(_),1312761823@'https://n5.elfenbenstornet.se'!existing_started(_),receive({ping(_)->_!existing_ok,receive({ping(_)->_!existing_ok,receive({never->true})})}))),restart(temporary)])]",
+            "Invalid": "child(retry,[])",
+            "Retry": "child(retry,[start((self(_),1312761823@'https://n5.elfenbenstornet.se'!retry_started(_),receive({never->true}))),restart(temporary)])",
+            "Sup": "2389815272",
+            "Existing": "2187310206",
+            "R1": "1000011490",
+            "Before": "[info(existing,2187310206,worker,temporary)]",
+            "Rejected": "Rejected",
+            "E": "error(existence_error(option,start(retry)),context(supervisor_actor:supervisor_spawn_child/3,'invalid child specification'))",
+            "After": "[info(existing,2187310206,worker,temporary)]",
+            "Added": "ok",
+            "New": "2817982006",
+            "R2": "1000011501",
+            "Final": "[info(existing,2187310206,worker,temporary),info(retry,2817982006,worker,temporary)]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2412
+    },
+    {
+      "id": "SVD-002",
+      "case_index": 1,
+      "title": "Runtime-bound child validation with entry output marker",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 3001384127,
+        "data": [
+          {
+            "S": "3001384127@'https://n5.elfenbenstornet.se'",
+            "Specs": "[child(a,[])]",
+            "P": "P",
+            "E": "error(existence_error(option,start(a)),context(supervisor_actor:supervisor_spawn/3,'invalid child specification'))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1797
+    }
+  ],
+  "counts": {
+    "observed": 2
+  }
+}

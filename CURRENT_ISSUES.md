@@ -1,5 +1,10 @@
 # Current conformance issues
 
+Latest execution: [full post-upgrade sweep](reports/2026-11-20-post-uri-full-conformance/REPORT.md), with
+[fresh per-file outcomes](reports/2026-11-20-post-uri-full-conformance/SUMMARY.json). The inventory below is the
+reviewed **historical baseline**, not a count of failures reproduced by that
+new sweep. Its original classifications and repair links are preserved.
+
 The primary deployment checks pass. The broader contract backlog remains open.
 
 **This is the current triage view.** [Historical full sweep](reports/2026-11-20-live-conformance/REPORT.md) · [Machine inventory](backlog/current.json) · [Reviewed decisions](backlog/decisions.json).
