@@ -1,0 +1,12 @@
+{
+  "source_inputs_unchanged": true,
+  "orchestration": "Copied from the 20 Nov sweep; only paths, dates and pins changed except as listed",
+  "other_changes": [
+    "browser lab base image rebuilt (local/conformance-browser-lab:20261121) because the 20261119 image was removed by host cleanup",
+    "verify_completion.py: runner self-test count 123 -> 126 (suite a7a4a7b adds three runner tests)",
+    "live-controls/n6-paused-more.json written with zero rows after the run: n6_controls.py writes it only when replaying N6 capacity refusals, and there were none",
+    "report scripts orchestration/build_report.py, orchestration/render_report.py, orchestration/validate_report.py, orchestration/update_indexes.py, update_current.py: trinity-conformance root points at a worktree checked out at a7a4a7b (branch claude/post-release-conformance-20261121) instead of the local main checkout, which is behind a7a4a7b"
+  ],
+  "current_browser": "Uses the 4c784f9 package (byte-identical runtime files to b5ec41d apart from provenance) in a rebuilt browser lab: node:22-bookworm-slim + Debian Chromium 156 + Playwright 1.62.1 tooling",
+  "renderer": "REPORT.md is rendered by render_report_20261121.py; the 20 Nov render_report.py hard-codes that run's narrative"
+}

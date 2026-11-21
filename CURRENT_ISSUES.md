@@ -1,7 +1,8 @@
 # Current conformance issues
 
-Latest execution: [full post-upgrade sweep](reports/2026-11-20-post-uri-full-conformance/REPORT.md), with
-[fresh per-file outcomes](reports/2026-11-20-post-uri-full-conformance/SUMMARY.json). The inventory below is the
+Latest execution: [full post-release sweep](reports/2026-11-21-post-release-conformance/REPORT.md), with
+[fresh per-file outcomes](reports/2026-11-21-post-release-conformance/SUMMARY.json) and a
+[row-level comparison with 20 November](reports/2026-11-21-post-release-conformance/COMPARISON.json). The inventory below is the
 reviewed **historical baseline**, not a count of failures reproduced by that
 new sweep. Its original classifications and repair links are preserved.
 

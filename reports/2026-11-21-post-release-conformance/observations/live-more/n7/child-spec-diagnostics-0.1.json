@@ -1,0 +1,69 @@
+{
+  "suite": "child-spec-diagnostics-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "92aa0265a42f30f8c3a865a8d64c6538ca567c32005e5f282edb7d08d4912089",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "SVD-001",
+      "case_index": 0,
+      "title": "Dynamic validation with stage-specific wait diagnostics",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 8420951419,
+        "data": [
+          {
+            "S": "8420951419@'https://n7.elfenbenstornet.se'",
+            "Me": "Me",
+            "From": "From",
+            "From2": "From2",
+            "Specs": "[child(existing,[start((self(Me),8420951419@'https://n7.elfenbenstornet.se'!existing_started(Me),receive({ping(From)->From!existing_ok,receive({ping(From2)->From2!existing_ok,receive({never->true})})}))),restart(temporary)])]",
+            "Invalid": "child(retry,[])",
+            "Retry": "child(retry,[start((self(Me),8420951419@'https://n7.elfenbenstornet.se'!retry_started(Me),receive({never->true}))),restart(temporary)])",
+            "Sup": "6580887363@'https://n7.elfenbenstornet.se'",
+            "Existing": "6895500321@'https://n7.elfenbenstornet.se'",
+            "R1": "6837255817",
+            "Before": "[info(existing,6895500321@'https://n7.elfenbenstornet.se',worker,temporary)]",
+            "Rejected": "Rejected",
+            "E": "error(existence_error(option,start(retry)),supervisor_spawn/3)",
+            "After": "[info(existing,6895500321@'https://n7.elfenbenstornet.se',worker,temporary)]",
+            "Added": "ok",
+            "New": "9091280421@'https://n7.elfenbenstornet.se'",
+            "R2": "5388224048",
+            "Final": "[info(existing,6895500321@'https://n7.elfenbenstornet.se',worker,temporary),info(retry,9091280421@'https://n7.elfenbenstornet.se',worker,temporary)]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2077
+    },
+    {
+      "id": "SVD-002",
+      "case_index": 1,
+      "title": "Runtime-bound child validation with entry output marker",
+      "status": "observed",
+      "observation": {
+        "type": "success",
+        "pid": 8411512004,
+        "data": [
+          {
+            "S": "8411512004@'https://n7.elfenbenstornet.se'",
+            "Specs": "[child(a,[])]",
+            "P": "P",
+            "E": "error(existence_error(option,start(a)),supervisor_spawn/3)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2136
+    }
+  ],
+  "counts": {
+    "observed": 2
+  }
+}

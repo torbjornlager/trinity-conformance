@@ -1,0 +1,243 @@
+{
+  "suite": "admission-marker-controls-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "7c2e2ee209ad7b2bc6d6555ead43a75274f6cbb52ee5c64fd84f3841f4922689",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "AMC-001",
+      "case_index": 0,
+      "title": "Ordinary query exception retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "version": 1,
+              "protocol": "web_prolog_browser_actor",
+              "browser_pids": true,
+              "io_ack": true,
+              "prompt_correlation": true
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 3611075666
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3611075666,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(throw(admission_runtime_error))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "error",
+              "pid": 3611075666,
+              "data": "admission_runtime_error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 3611075666,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 3611075666,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 3611075666
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 3611075666,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "error",
+          "pid": 3611075666,
+          "data": "admission_runtime_error"
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 3611075666,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2114
+    },
+    {
+      "id": "AMC-002",
+      "case_index": 1,
+      "title": "Ordinary logical failure retains the entry marker",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "transport_welcome",
+              "version": 1,
+              "protocol": "web_prolog_browser_actor",
+              "browser_pids": true,
+              "io_ack": true,
+              "prompt_correlation": true
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "spawned",
+              "pid": 5496346978
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5496346978,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(fail)),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "failure",
+              "pid": 5496346978
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5496346978,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "success",
+              "pid": 5496346978,
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5496346978
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "type": "halted",
+              "pid": 5496346978,
+              "reply": "true"
+            }
+          }
+        ],
+        "terminal": {
+          "type": "failure",
+          "pid": 5496346978
+        },
+        "entry_response": {
+          "type": "success",
+          "pid": 5496346978,
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2102
+    }
+  ],
+  "counts": {
+    "observed": 2
+  }
+}

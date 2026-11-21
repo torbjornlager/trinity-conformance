@@ -1,0 +1,180 @@
+{
+  "runs": [
+    {
+      "label": "swi-promise-diagnostics-to-swi",
+      "exit_code": 0,
+      "report": "swi-promise-diagnostics-to-swi.json",
+      "command": [
+        "/usr/bin/python3",
+        "runner/baseline.py",
+        "--manifest",
+        "cases/promise-diagnostics-0.1.json",
+        "--url",
+        "ws://127.0.0.1:52213/ws",
+        "--candidate",
+        "swi",
+        "--profile",
+        "actor",
+        "--timeout",
+        "8",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-release-20261121/procps-rerun/promise-diagnostics/swi-promise-diagnostics-to-swi.json",
+        "--peer",
+        "http://127.0.0.1:52213"
+      ]
+    },
+    {
+      "label": "swi-promise-diagnostics-to-trealla",
+      "exit_code": 0,
+      "report": "swi-promise-diagnostics-to-trealla.json",
+      "command": [
+        "/usr/bin/python3",
+        "runner/baseline.py",
+        "--manifest",
+        "cases/promise-diagnostics-0.1.json",
+        "--url",
+        "ws://127.0.0.1:52213/ws",
+        "--candidate",
+        "swi",
+        "--profile",
+        "actor",
+        "--timeout",
+        "8",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-release-20261121/procps-rerun/promise-diagnostics/swi-promise-diagnostics-to-trealla.json",
+        "--peer",
+        "http://127.0.0.1:48671"
+      ]
+    },
+    {
+      "label": "trealla-promise-diagnostics-to-swi",
+      "exit_code": 0,
+      "report": "trealla-promise-diagnostics-to-swi.json",
+      "command": [
+        "/usr/bin/python3",
+        "runner/baseline.py",
+        "--manifest",
+        "cases/promise-diagnostics-0.1.json",
+        "--url",
+        "ws://127.0.0.1:48671/ws",
+        "--candidate",
+        "trealla",
+        "--profile",
+        "actor",
+        "--timeout",
+        "8",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-release-20261121/procps-rerun/promise-diagnostics/trealla-promise-diagnostics-to-swi.json",
+        "--peer",
+        "http://127.0.0.1:52213"
+      ]
+    },
+    {
+      "label": "trealla-promise-diagnostics-to-trealla",
+      "exit_code": 0,
+      "report": "trealla-promise-diagnostics-to-trealla.json",
+      "command": [
+        "/usr/bin/python3",
+        "runner/baseline.py",
+        "--manifest",
+        "cases/promise-diagnostics-0.1.json",
+        "--url",
+        "ws://127.0.0.1:48671/ws",
+        "--candidate",
+        "trealla",
+        "--profile",
+        "actor",
+        "--timeout",
+        "8",
+        "--report",
+        "/Users/lager/trinity-demonstrator/.trinity/conformance-post-release-20261121/procps-rerun/promise-diagnostics/trealla-promise-diagnostics-to-trealla.json",
+        "--peer",
+        "http://127.0.0.1:48671"
+      ]
+    }
+  ],
+  "sources": {
+    "conformance": {
+      "path": "/Users/lager/trinity-demonstrator/.trinity/conformance-post-release-20261121/suite-snapshot",
+      "revision": "a7a4a7bd5600f14e24e83396ba9b4a699ea072f3",
+      "status": ""
+    },
+    "swi": {
+      "path": "/opt/swi-prolog-node",
+      "revision": "9239028bcb09aa9f8a421db8773e74451d24e12e",
+      "status": ""
+    },
+    "trealla": {
+      "path": "/work/trealla",
+      "revision": "6b7616ccd5a3277f337c463b490870fb2d84ef1a",
+      "status": ""
+    },
+    "demonstrator": {
+      "path": "/app",
+      "revision": "6fc9db8139ebffefc4c8eb51f8003212538269b1",
+      "status": ""
+    }
+  },
+  "inputs": {
+    "cases/promise-yield-0.1.json": "883eaa720211ef3863595379f950c61cbaffd5b06f849f7e97277db162e4a8a4",
+    "cases/promise-diagnostics-0.1.json": "21cf3a50b2517b66b2391f97a66450768b3c38d22d65b18028c1344c23f2d1dc",
+    "profiles/promise-yield-0.1.md": "7ef9112be4cd4474e869799b00bd8719945490890e7b6394fb240480f3043454",
+    "cases/interop-http-0.1.json": "1cda53f3c9964fa0d4c11a3f2c339455ed194e20ebc39083ecaeb568b957a51f",
+    "runner/baseline.py": "e42c21a32a00c2db40aa5359b87b271835d984819696d06318337e409e2c81e3",
+    "runner/run.py": "b167e75f2434273cd5822e1c1efcf94d05c3e67184b8dba75e9981675bd2ec7e",
+    "adapters/local_promises.py": "33e9d0ae03c5d019fdcf30e730e86cdb4ff568a20885b315dd16bbf53cd91d86"
+  },
+  "versions": {
+    "swi": "SWI-Prolog version 11.0.0 for aarch64-linux",
+    "trealla": "trealla(3,14,20,[])"
+  },
+  "nodes": {
+    "swi": {
+      "url": "http://127.0.0.1:52213",
+      "pid": 381,
+      "command": [
+        "/usr/lib/swipl/bin/aarch64-linux/swipl",
+        "-f",
+        "none",
+        "-q",
+        "-g",
+        "use_module(library(sgml)),use_module(library(option)),consult('/opt/swi-prolog-node/load.pl'),set_setting(http:public_host,'127.0.0.1'),set_setting(http:public_port,52213),set_setting(http:public_scheme,http),use_module(library(socket)),tcp_socket(S),tcp_bind(S,ip(127,0,0,1):52213),tcp_listen(S,128),node:node(52213,[tcp_socket(S),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "profile": "actor",
+      "sandbox": "blacklist",
+      "auth": "open, disposable loopback fixture"
+    },
+    "trealla": {
+      "url": "http://127.0.0.1:48671",
+      "pid": 389,
+      "command": [
+        "/opt/trealla/tpl",
+        "-g",
+        "use_module(web_prolog),use_module(distribution),web_prolog:web_prolog_node(48671,[bind_address('127.0.0.1'),node_url('http://127.0.0.1:48671'),profile(actor),sandbox(blacklist),auth(open)]),thread_get_message(stop)"
+      ],
+      "profile": "actor",
+      "sandbox": "blacklist",
+      "auth": "open, disposable loopback fixture"
+    }
+  },
+  "swi_source_input": {
+    "mode": "strict pinned dependency",
+    "pin_path": "/app/dependencies/swi-prolog-node.json",
+    "pin_sha256": "aa653ee52bba69fb039c42a1d24caeb2f7f16198e2efbfd032aab03fa1d5be70",
+    "pin_revision": "9239028bcb09aa9f8a421db8773e74451d24e12e",
+    "candidate_base_revision": "9239028bcb09aa9f8a421db8773e74451d24e12e"
+  },
+  "temporary_nodes_stopped": true,
+  "engine_hashes": {
+    "/usr/lib/swipl/bin/aarch64-linux/swipl": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a",
+    "/opt/trealla/tpl": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a"
+  },
+  "preservation": {
+    "native_prolog": true,
+    "trealla_sources": true,
+    "engines": true,
+    "library": true,
+    "live": true,
+    "dependency_pin": true
+  }
+}

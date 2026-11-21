@@ -1,0 +1,140 @@
+{
+  "suite": "promise-yield-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "883eaa720211ef3863595379f950c61cbaffd5b06f849f7e97277db162e4a8a4",
+  "scope": "required",
+  "results": [
+    {
+      "id": "PY-001",
+      "case_index": 0,
+      "title": "Default timeout preserves the promise for retry",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1251306356,
+        "data": [
+          {
+            "X": "X",
+            "R": "5609490200@'https://n7.elfenbenstornet.se'",
+            "Early": "timeout",
+            "A": "success([ok],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2101
+    },
+    {
+      "id": "PY-002",
+      "case_index": 1,
+      "title": "Timeout callback runs once and preserves retry and unrelated data",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8445094142,
+        "data": [
+          {
+            "S": "8445094142@'https://n7.elfenbenstornet.se'",
+            "X": "X",
+            "R": "1207725358@'https://n7.elfenbenstornet.se'",
+            "Early": "waiting",
+            "A": "success([ok],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2108
+    },
+    {
+      "id": "PY-003",
+      "case_index": 2,
+      "title": "Once returns the complete first slice without continuation",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5298556471,
+        "data": [
+          {
+            "X": "X",
+            "R": "6953309477@'https://n7.elfenbenstornet.se'",
+            "A": "success([a,b],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1586
+    },
+    {
+      "id": "PY-004",
+      "case_index": 3,
+      "title": "Logical failure and remote exceptions arrive as distinct answers",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3523616269,
+        "data": [
+          {
+            "R": "6042260179@'https://n7.elfenbenstornet.se'",
+            "A": "failure",
+            "R2": "4138342035@'https://n7.elfenbenstornet.se'",
+            "B": "error(promise_probe_error)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2213
+    },
+    {
+      "id": "PY-005",
+      "case_index": 4,
+      "title": "Unknown and collected references raise the documented existence error",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8289809079,
+        "data": [
+          {
+            "Missing": "1554967778",
+            "E": "error(existence_error(promise,1554967778),yield/3)",
+            "R": "5406116166@'https://n7.elfenbenstornet.se'",
+            "A": "success([true],false)",
+            "E2": "error(existence_error(promise,5406116166@'https://n7.elfenbenstornet.se'),yield/3)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1997
+    },
+    {
+      "id": "PY-006",
+      "case_index": 5,
+      "title": "Invalid wait options do not consume the promise",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3573259535,
+        "data": [
+          {
+            "X": "X",
+            "R": "8640394936@'https://n7.elfenbenstornet.se'",
+            "E": "error(type_error(number,bad),yield/3)",
+            "A": "success([ok],false)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2122
+    }
+  ],
+  "counts": {
+    "pass": 6
+  }
+}

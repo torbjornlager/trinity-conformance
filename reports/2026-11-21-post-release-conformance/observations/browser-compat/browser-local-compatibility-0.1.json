@@ -1,0 +1,140 @@
+{
+  "suite": "browser-local-compatibility-0.1",
+  "manifest_sha256": "154a0cd7e16f69e879c420474156acde95059d055723639d9c169cffd7c01ed1",
+  "runtime_files_sha256": {
+    "web/vendor/swi-wasm-node.js": "da3380252608853f6dff987315ceb763e9ad4a544659fc689abaa2c94ea1d8a7",
+    "web/swi_wasm_actor_worker.js": "4e11737a98ba03bba3917b4ac57f3951d6b543fb3c4ef692944e8b5794387d92",
+    "web/swipl-bundle.js": "89de2f2158cadfdd118b09190de215bbe61d16a0e4632542d8b95c7d0194ee0b"
+  },
+  "package_manifest_sha256": "9cf7d60b15bb77c6e62ef04ff1ed03019bad8d4167a68b6b2b7e8a0b3b92195e",
+  "results": [
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "B-LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "observation": {
+        "type": "success",
+        "pid": 7927362996,
+        "data": [
+          {
+            "Name": "ln_case_002",
+            "P": "4400086037@localhost",
+            "Other": "ln_case_002_other",
+            "S": "7927362996@localhost",
+            "Q": "2670765500@localhost",
+            "Taken": "error(permission_error(register,actor_name,ln_case_002),register/2)",
+            "Already": "error(permission_error(register,actor_name,ln_case_002_other),register/2)",
+            "Found": "4400086037@localhost",
+            "Absent": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "B-LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "observation": {
+        "type": "success",
+        "pid": 9410625325,
+        "data": [
+          {
+            "Name": "ln_case_006",
+            "Published": "6025338102@localhost",
+            "P": "9530056284@localhost",
+            "Children": "[]",
+            "Sup": "6025338102@localhost",
+            "S": "9410625325@localhost",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),supervisor_spawn/3)",
+            "Found": "9530056284@localhost",
+            "Failure": "error(supervisor_startup_error('src_uri origin is not allowed in SWI-WASM: file://'),supervisor_spawn/3)",
+            "Absent": "undefined",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-worker",
+      "id": "B-SV-006",
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "observation": {
+        "type": "failure",
+        "pid": 2204483934
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"pid\":2204483934}\n    at /work/current-suite/adapters/wasm_actor_cases.cjs:36:103"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "B-LN-002",
+      "title": "Occupied names and already named pids preserve original registrations",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_002",
+            "S": "main@localhost",
+            "P": "6546932648@localhost",
+            "Q": "3999375551@localhost",
+            "Other": "ln_case_002_other",
+            "Taken": "error(permission_error(register,actor_name,ln_case_002),register/2)",
+            "Already": "error(permission_error(register,actor_name,ln_case_002_other),register/2)",
+            "Found": "6546932648@localhost",
+            "Absent": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "B-LN-006",
+      "title": "Named creation rejects occupancy and releases failed startup reservations",
+      "observation": {
+        "type": "success",
+        "data": [
+          {
+            "Name": "ln_case_006",
+            "S": "main@localhost",
+            "Published": "7104468406@localhost",
+            "P": "3046472038@localhost",
+            "Children": "[]",
+            "Sup": "7104468406@localhost",
+            "Taken": "error(permission_error(register,actor_name,ln_case_006),supervisor_spawn/3)",
+            "Found": "3046472038@localhost",
+            "Failure": "error(supervisor_startup_error('src_uri origin is not allowed in SWI-WASM: file://'),supervisor_spawn/3)",
+            "Absent": "undefined",
+            "Gone": "undefined",
+            "LibraryCheck": "passed"
+          }
+        ],
+        "more": false
+      },
+      "status": "pass"
+    },
+    {
+      "candidate": "swi-wasm-main",
+      "id": "B-SV-006",
+      "title": "Dynamic rejection preserves siblings and allows valid retry",
+      "observation": {
+        "type": "failure",
+        "more": false
+      },
+      "status": "fail",
+      "detail": "Error: {\"type\":\"failure\",\"more\":false}\n    at /work/current-suite/adapters/wasm_actor_cases.cjs:36:103"
+    }
+  ],
+  "counts": {
+    "pass": 4,
+    "fail": 2
+  }
+}

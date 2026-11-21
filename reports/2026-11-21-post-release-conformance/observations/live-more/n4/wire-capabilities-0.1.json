@@ -1,0 +1,108 @@
+{
+  "suite": "wire-capabilities-0.1",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "dfbca8f42566b52da14683f8aa614dc4e81980db370aee834fed8434a64c2cfc",
+  "scope": "required",
+  "results": [
+    {
+      "id": "WP-001",
+      "case_index": 0,
+      "title": "Combined spawn/query correlation negotiation and per-command reply IDs",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": "web-prolog-sync-spawn-v1",
+        "replies": [
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:aadf86f55b2bdf53\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "pid": 9261790055,
+            "request_id": "baseline-good",
+            "type": "spawned"
+          },
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:aadf86f55b2bdf53\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "data": "Syntax error: line 1: end_of_file",
+            "details": "error(syntax_error(end_of_file),_)",
+            "request_id": "baseline-bad",
+            "type": "error"
+          }
+        ]
+      },
+      "duration_ms": 2097
+    },
+    {
+      "id": "WP-002",
+      "case_index": 1,
+      "title": "Legacy toplevel-correlation offer remains accepted",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": "web-prolog-sync-v1",
+        "replies": [
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:c94fcb239122a5f6\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "pid": 7741788320,
+            "type": "spawned"
+          },
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:c94fcb239122a5f6\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "data": "Syntax error: line 1: end_of_file",
+            "details": "error(syntax_error(end_of_file),_)",
+            "type": "error"
+          }
+        ]
+      },
+      "duration_ms": 2095
+    },
+    {
+      "id": "WP-003",
+      "case_index": 2,
+      "title": "Unnegotiated actor transport remains accepted",
+      "status": "pass",
+      "observation": {
+        "negotiated_subprotocol": null,
+        "replies": [
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:397d2e64be0023cf\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "pid": 2176984733,
+            "type": "spawned"
+          },
+          {
+            "data": "Not authorized to access session 99999999999",
+            "details": "error(authorization_error(\"anon:397d2e64be0023cf\",session(99999999999@'https://n4.elfenbenstornet.se')),_)",
+            "type": "error"
+          },
+          {
+            "data": "Syntax error: line 1: end_of_file",
+            "details": "error(syntax_error(end_of_file),_)",
+            "type": "error"
+          }
+        ]
+      },
+      "duration_ms": 2097
+    }
+  ],
+  "counts": {
+    "pass": 3
+  }
+}

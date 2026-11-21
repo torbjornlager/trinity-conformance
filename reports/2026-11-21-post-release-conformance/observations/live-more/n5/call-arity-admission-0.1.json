@@ -1,0 +1,255 @@
+{
+  "suite": "call-arity-admission-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "dc3fc6595f09fe84ca1a6455082340a3cf405277b0ce72ee57d6b965a895d857",
+  "scope": "required",
+  "results": [
+    {
+      "id": "CA-001",
+      "case_index": 0,
+      "title": "Literal builtin closure retains argument sharing",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2553016557,
+        "data": [
+          {
+            "A": "kept",
+            "B": "kept",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "CA-002",
+      "case_index": 1,
+      "title": "Closure prefix arguments precede appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2700935230,
+        "data": [
+          {
+            "V": "leftright",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "CA-003",
+      "case_index": 2,
+      "title": "Private closure receives 1 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1031766585,
+        "data": [
+          {
+            "V": "V",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2097
+    },
+    {
+      "id": "CA-004",
+      "case_index": 3,
+      "title": "Private closure receives 2 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1508792702,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2112
+    },
+    {
+      "id": "CA-005",
+      "case_index": 4,
+      "title": "Private closure receives 3 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1701652712,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2092
+    },
+    {
+      "id": "CA-006",
+      "case_index": 5,
+      "title": "Private closure receives 4 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1380049648,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2107
+    },
+    {
+      "id": "CA-007",
+      "case_index": 6,
+      "title": "Private closure receives 5 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2995151789,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2099
+    },
+    {
+      "id": "CA-008",
+      "case_index": 7,
+      "title": "Private closure receives 6 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2410926635,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2082
+    },
+    {
+      "id": "CA-009",
+      "case_index": 8,
+      "title": "Private closure receives 7 appended arguments",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1062562615,
+        "data": [
+          {
+            "V": "a",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2128
+    },
+    {
+      "id": "CA-010",
+      "case_index": 9,
+      "title": "A failing completed builtin call preserves caller variables",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2615673703,
+        "data": [
+          {
+            "A": "A",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2092
+    },
+    {
+      "id": "CA-011",
+      "case_index": 10,
+      "title": "Whitelist rejection preserves the session",
+      "status": "not_applicable",
+      "detail": "requires a different sandbox mode"
+    },
+    {
+      "id": "CA-012",
+      "case_index": 11,
+      "title": "Whitelist rejection preserves the session",
+      "status": "not_applicable",
+      "detail": "requires a different sandbox mode"
+    },
+    {
+      "id": "CA-013",
+      "case_index": 12,
+      "title": "Whitelist rejection preserves the session",
+      "status": "pass",
+      "observation": {
+        "rejection": {
+          "type": "error",
+          "data": "error(permission_error(call,sandboxed,halt),context(sandbox_policy:sandbox_check_goal/4,runtime_state))"
+        },
+        "recovery": {
+          "type": "success",
+          "pid": 1632445366,
+          "data": [
+            {
+              "RejectionRecovery": "ok"
+            }
+          ],
+          "more": false
+        }
+      },
+      "duration_ms": 2099
+    },
+    {
+      "id": "CA-014",
+      "case_index": 13,
+      "title": "Nested module-qualified callbacks retain module denial",
+      "status": "pass",
+      "observation": {
+        "rejection": {
+          "type": "error",
+          "data": "error(permission_error(call,sandboxed,system:shell(a,b,c,d)),context(sandbox_policy:sandbox_check_goal/4,module_qualification))"
+        },
+        "recovery": {
+          "type": "success",
+          "pid": 1820010043,
+          "data": [
+            {
+              "RejectionRecovery": "ok"
+            }
+          ],
+          "more": false
+        }
+      },
+      "duration_ms": 2117
+    }
+  ],
+  "counts": {
+    "pass": 12,
+    "not_applicable": 2
+  }
+}

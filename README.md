@@ -7,7 +7,21 @@ another runtime.
 
 ## Current consolidated results
 
-The [fresh full conformance run](reports/2026-11-20-post-uri-full-conformance/REPORT.md) covers
+The [full conformance run after the 21 November release](reports/2026-11-21-post-release-conformance/REPORT.md) covers
+**81 manifests / 2,081 input rows** against the live nodes. All primary
+public selections pass: N0 1; N1/N2/N6 12 each; N3/N4/N5/N7 118 each. Compared row by row
+with 20 November, **263 rows now pass, 6 newly fail and 129 still fail**
+(failed rows 399 → 135). The new failures are receive-guard controls RG-001..003/005..007 on
+Trealla, caused by trealla-port `7a8e8ce`; live N5 was rolled back after the sweep. No N6
+capacity refusals and no automatic restarts occurred. 4 input rows without execution
+observations are retained in the report.
+
+This is fresh execution evidence, separate from the historical **183-observation** repair inventory.
+[Per-file outcomes](reports/2026-11-21-post-release-conformance/SUMMARY.json), [comparison](reports/2026-11-21-post-release-conformance/COMPARISON.json),
+[case accounting](reports/2026-11-21-post-release-conformance/verification.json) and [frozen inputs](reports/2026-11-21-post-release-conformance/suite-inputs.json) define the scope.
+No runtime, deployment setting or quota changed during testing.
+
+The [20 November full conformance run](reports/2026-11-20-post-uri-full-conformance/REPORT.md) covers
 **81 manifests / 2,081 input rows** against the upgraded live
 nodes. All primary public selections pass: N0 1; N1/N2/N6 12 each;
 N3/N4/N5/N7 118 each. Broader failures, diagnostics, profile exclusions and
