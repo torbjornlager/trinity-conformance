@@ -1,0 +1,54 @@
+{
+  "suite": "cross-node-actor-0.1",
+  "schema_version": 1,
+  "required_advertised_profile": "actor",
+  "protocol_version": 1,
+  "status": "draft",
+  "scope": "required",
+  "fixture": "Two or more public ACTOR nodes that authenticate to each other as peers. Each pair case runs from every caller node over every ordered pair of distinct nodes; __A__ and __B__ are node origins and __TAG__ is a fresh integer per combination.",
+  "cases": [
+    {
+      "id": "XN-001",
+      "title": "An actor on one node can send to an actor another connection spawned on a third node",
+      "requirement": "third_party_send",
+      "topology": "pair",
+      "goal": "self(S),spawn(receive({xn_hello(__TAG__)->S!xn_got(__TAG__)},[timeout(6),on_timeout(S!xn_missing(__TAG__))]),R,[node('__B__')]),spawn(R!xn_hello(__TAG__),_,[node('__A__')]),receive({xn_got(__TAG__)->true;xn_missing(__TAG__)->throw(xn_message_lost)},[timeout(10),on_timeout(throw(xn_no_report))])",
+      "provenance": [
+        "trinity-demonstrator:docs/THIRD_PARTY_SEND_PLAN.md"
+      ]
+    },
+    {
+      "id": "XN-002",
+      "title": "A pid from self/1 is qualified with its node and can be replied to from a third node",
+      "requirement": "qualified_pid",
+      "topology": "pair",
+      "check": "XnPid is Id@'__A__' when __A__ is not the caller",
+      "goal": "self(S),spawn(receive({xn_ping(F)->F!xn_pong},[timeout(6),on_timeout(true)]),R,[node('__B__')]),spawn((self(Me),R!xn_ping(Me),receive({xn_pong->S!xn_ok(__TAG__,Me)},[timeout(6),on_timeout(S!xn_no_reply(__TAG__,Me))])),_,[node('__A__')]),receive({xn_ok(__TAG__,XnPid)->true;xn_no_reply(__TAG__,XnPid)->throw(xn_reply_lost(XnPid))},[timeout(12),on_timeout(throw(xn_no_report))])",
+      "provenance": [
+        "trinity-demonstrator:docs/THIRD_PARTY_SEND_PLAN.md"
+      ]
+    },
+    {
+      "id": "XN-003",
+      "title": "Ping-pong completes with the two actors placed on any two nodes",
+      "requirement": "third_party_send",
+      "topology": "pair",
+      "source": "xn_ping(0,Pong):-!,Pong!xn_finished. xn_ping(N,Pong):-self(Me),Pong!xn_ping(Me),receive({xn_pong->true},[timeout(8),on_timeout(exit(xn_ping_stalled))]),N1 is N-1,xn_ping(N1,Pong). xn_pong:-receive({xn_finished->true;xn_ping(P)->P!xn_pong,xn_pong},[timeout(8),on_timeout(exit(xn_pong_stalled))]).",
+      "goal": "spawn(xn_pong,Pong,[node('__B__'),src_predicates([xn_pong/0]),monitor(true)]),spawn(xn_ping(3,Pong),Ping,[node('__A__'),src_predicates([xn_ping/2]),monitor(true)]),receive({down(Pong,_,R1)->true},[timeout(20),on_timeout(R1=xn_no_down)]),receive({down(Ping,_,R2)->true},[timeout(5),on_timeout(R2=xn_no_down)]),(R1==true,R2==true->true;throw(xn_outcome(R1,R2)))",
+      "provenance": [
+        "trinity-demonstrator:web/tutorial.html:ping_pong_remote",
+        "trinity-demonstrator:docs/THIRD_PARTY_SEND_PLAN.md"
+      ]
+    },
+    {
+      "id": "XN-004",
+      "title": "A browser connection cannot send to or exit an actor another connection owns",
+      "requirement": "connection_ownership",
+      "topology": "node",
+      "provenance": [
+        "eclipse-node:experiments/eclipse-clp/probe_actor_pingpong.pl:check_foreign_commands/2",
+        "trinity-demonstrator:docs/THIRD_PARTY_SEND_PLAN.md"
+      ]
+    }
+  ]
+}
