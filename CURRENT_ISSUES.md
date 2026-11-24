@@ -1,8 +1,8 @@
 # Current conformance issues
 
-Latest execution: [full post-release sweep](reports/2026-11-21-post-release-conformance/REPORT.md), with
-[fresh per-file outcomes](reports/2026-11-21-post-release-conformance/SUMMARY.json) and a
-[row-level comparison with 20 November](reports/2026-11-21-post-release-conformance/COMPARISON.json). The inventory below is the
+Latest execution: [full sweep after the 24 November releases](reports/2026-11-24-post-xn-conformance/REPORT.md), with
+[fresh per-file outcomes](reports/2026-11-24-post-xn-conformance/SUMMARY.json) and a
+[row-level comparison with 21 November](reports/2026-11-24-post-xn-conformance/COMPARISON.json). The inventory below is the
 reviewed **historical baseline**, not a count of failures reproduced by that
 new sweep. Its original classifications and repair links are preserved.
 

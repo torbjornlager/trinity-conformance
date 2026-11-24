@@ -1,0 +1,345 @@
+{
+  "suite": "partial-page-errors-0.1",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "4011cbb4127f9b90a4b711631b4f986fdb699960887261e3a029a0d5bb1f24c2",
+  "scope": "required",
+  "results": [
+    {
+      "id": "PE-001",
+      "case_index": 0,
+      "title": "An exception before any solution is reported immediately",
+      "status": "fail",
+      "detail": "ConformanceFailure: HTTP outcome {'http_status': 429, 'body': '{\"type\": \"error\", \"code\": \"capacity\", \"data\": \"Public engine capacity reached; retry shortly\"}'}",
+      "duration_ms": 66
+    },
+    {
+      "id": "PE-002",
+      "case_index": 1,
+      "title": "A short partial page precedes its pending error",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a, b], true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1671
+    },
+    {
+      "id": "PE-003",
+      "case_index": 2,
+      "title": "An error found by full-page lookahead follows the full page",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a, b], true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1602
+    },
+    {
+      "id": "PE-004",
+      "case_index": 3,
+      "title": "Partial pages after a nonzero offset advance by returned count",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([b], true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1607
+    },
+    {
+      "id": "PE-005",
+      "case_index": 4,
+      "title": "Once discards a pending error after delivering its first slice",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a, b], false).\n"
+        }
+      ],
+      "duration_ms": 794
+    },
+    {
+      "id": "PE-006",
+      "case_index": 5,
+      "title": "Once finishes a full slice without retaining a later error",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a], false).\n"
+        }
+      ],
+      "duration_ms": 800
+    },
+    {
+      "id": "PE-007",
+      "case_index": 6,
+      "title": "An exception during offset skipping does not create an empty success page",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 803
+    },
+    {
+      "id": "PE-008",
+      "case_index": 7,
+      "title": "Running-time exhaustion does not publish a truncated success",
+      "status": "fail",
+      "detail": "ConformanceFailure: expected formal error 'resource_error(time)', got 'success([a], true).\\n'",
+      "duration_ms": 1813
+    },
+    {
+      "id": "PE-009",
+      "case_index": 8,
+      "title": "Toplevel preserves a short partial page before an exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 6311158079,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 6311158079,
+          "data": "page_boom"
+        }
+      ],
+      "duration_ms": 129
+    },
+    {
+      "id": "PE-010",
+      "case_index": 9,
+      "title": "Toplevel delivers a pending exception after an exact full page",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2295118442,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 2295118442,
+          "data": "page_boom"
+        }
+      ],
+      "duration_ms": 2107
+    },
+    {
+      "id": "PE-011",
+      "case_index": 10,
+      "title": "Toplevel stop discards a pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2968126002,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "stop",
+          "pid": 2968126002
+        },
+        {
+          "type": "success",
+          "pid": 2968126002,
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 2114
+    },
+    {
+      "id": "PE-012",
+      "case_index": 11,
+      "title": "A session accepts a fresh call after delivering the pending exception",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2918879940,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 2918879940,
+          "data": "page_boom"
+        },
+        {
+          "type": "success",
+          "pid": 2918879940,
+          "data": [
+            {
+              "X": "fresh"
+            }
+          ],
+          "more": false
+        }
+      ],
+      "duration_ms": 2113
+    },
+    {
+      "id": "PE-013",
+      "case_index": 12,
+      "title": "Toplevel reports an exception before any solution immediately",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "error",
+          "pid": 3731673958,
+          "data": "page_boom"
+        }
+      ],
+      "duration_ms": 2077
+    },
+    {
+      "id": "PE-014",
+      "case_index": 13,
+      "title": "An omitted HTTP limit does not turn an exception into a partial success",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 139
+    },
+    {
+      "id": "PE-015",
+      "case_index": 14,
+      "title": "An omitted HTTP limit does not turn an exception into a partial success with once",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 782
+    },
+    {
+      "id": "PE-016",
+      "case_index": 15,
+      "title": "An omitted toplevel limit reports the exception without a partial page",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "error",
+          "pid": 8521697856,
+          "data": "page_boom"
+        }
+      ],
+      "duration_ms": 1181
+    },
+    {
+      "id": "PE-017",
+      "case_index": 16,
+      "title": "A very large explicit HTTP limit remains finite",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a, b], true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 918
+    },
+    {
+      "id": "PE-018",
+      "case_index": 17,
+      "title": "A very large explicit toplevel limit remains finite",
+      "status": "pass",
+      "observation": [
+        {
+          "type": "success",
+          "pid": 2832219999,
+          "data": [
+            {
+              "X": "a"
+            },
+            {
+              "X": "b"
+            }
+          ],
+          "more": true
+        },
+        {
+          "type": "error",
+          "pid": 2832219999,
+          "data": "page_boom"
+        }
+      ],
+      "duration_ms": 1189
+    }
+  ],
+  "counts": {
+    "fail": 2,
+    "pass": 16
+  }
+}

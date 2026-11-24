@@ -1,0 +1,209 @@
+{
+  "suite": "supervisor-common-0.1",
+  "candidate": "n5",
+  "profile": "actor",
+  "endpoint": "https://n5.elfenbenstornet.se",
+  "manifest_sha256": "0caaa5ef868ad7b0f76063617da79d8a49ce3a5396be8eb30aa02be8ac4bc1f5",
+  "scope": "supporting",
+  "results": [
+    {
+      "id": "SUP-001",
+      "case_index": 0,
+      "title": "Empty supervisor has common inspection and count formats",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1662017038,
+        "data": [
+          {
+            "Sup": "3102557909",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2097
+    },
+    {
+      "id": "SUP-002",
+      "case_index": 1,
+      "title": "Inspection exposes type and restart policy in start order",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1762510297,
+        "data": [
+          {
+            "Sup": "2629034427@'https://n5.elfenbenstornet.se'",
+            "A": "2443980480",
+            "B": "2549524588",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2997
+    },
+    {
+      "id": "SUP-003",
+      "case_index": 2,
+      "title": "Stopped supervisors are not counted as active supervisors or negative workers",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1155740147,
+        "data": [
+          {
+            "Sup": "1703913126",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1314
+    },
+    {
+      "id": "SUP-004",
+      "case_index": 3,
+      "title": "Respawn returns its new pid and retains child order",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1010285152,
+        "data": [
+          {
+            "Sup": "1544418604",
+            "Old": "3110981080",
+            "B": "1950129326",
+            "New": "1212520200",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2284
+    },
+    {
+      "id": "SUP-005",
+      "case_index": 4,
+      "title": "A non-atom child id raises an atom type error without binding nested variables",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2004869972,
+        "data": [
+          {
+            "N": "N",
+            "Sup": "Sup",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 1759
+    },
+    {
+      "id": "SUP-006",
+      "case_index": 5,
+      "title": "An unbound child id raises an instantiation error",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1359635500,
+        "data": [
+          {
+            "Id": "Id",
+            "Sup": "Sup",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2104
+    },
+    {
+      "id": "SUP-007",
+      "case_index": 6,
+      "title": "Child-management id errors precede contact with the supervisor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2807398080,
+        "data": [
+          {
+            "Id": "Id",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2146
+    },
+    {
+      "id": "SUP-008",
+      "case_index": 7,
+      "title": "All initial ids are validated before actor creation",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2302241116,
+        "data": [
+          {
+            "Before": "[2302241116@'https://n5.elfenbenstornet.se']",
+            "Sup": "Sup",
+            "After": "[2302241116@'https://n5.elfenbenstornet.se']",
+            "Sorted": "[2302241116@'https://n5.elfenbenstornet.se']",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2110
+    },
+    {
+      "id": "SUP-009",
+      "case_index": 8,
+      "title": "Creation waits for child setup but not the application goal",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1778707407,
+        "data": [
+          {
+            "Sup": "2729959041@'https://n5.elfenbenstornet.se'",
+            "Pid": "2823398666",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2317
+    },
+    {
+      "id": "SUP-010",
+      "case_index": 9,
+      "title": "Halt waits for a busy child to finish shutdown",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1381690816,
+        "data": [
+          {
+            "Parent": "1381690816@'https://n5.elfenbenstornet.se'",
+            "Source": "'manual_hold(hold(Observer),State,done,State) :- self(Me), send(Observer,manual_holding(Me)), receive({release -> true}).'",
+            "Sup": "2945251280",
+            "Child": "1962197146",
+            "Request": "1000016555",
+            "Waiter": "1893667688",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2017
+    }
+  ],
+  "counts": {
+    "pass": 10
+  }
+}

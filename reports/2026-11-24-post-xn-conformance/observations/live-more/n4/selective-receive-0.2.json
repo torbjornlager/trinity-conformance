@@ -1,0 +1,599 @@
+{
+  "suite": "selective-receive-0.2",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "a3d05016115d1a38f07429916d5ce4b0233b6780cbdad81e52abb9addd64c8da",
+  "scope": "required",
+  "results": [
+    {
+      "id": "SR-001",
+      "case_index": 0,
+      "title": "One-sided matching preserves message variables and sharing",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "accepted",
+            "B": "accepted",
+            "BaselineResult": "passed",
+            "C": "C",
+            "Distinct": "retained",
+            "S": "7446308552@'https://n4.elfenbenstornet.se'",
+            "Shared": "retained",
+            "U": "left",
+            "V": "right",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z"
+          }
+        ],
+        "more": false,
+        "pid": 7446308552,
+        "type": "success"
+      },
+      "duration_ms": 151
+    },
+    {
+      "id": "SR-002",
+      "case_index": 1,
+      "title": "Deferred messages retain order across deferred and native queues",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "sr_a(1)",
+            "B": "sr_b(2)",
+            "BaselineResult": "passed",
+            "C": "sr_a(3)",
+            "D": "sr_b(4)",
+            "S": "4133408797@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4133408797,
+        "type": "success"
+      },
+      "duration_ms": 2101
+    },
+    {
+      "id": "SR-003",
+      "case_index": 2,
+      "title": "Failing and ordinarily throwing guards retain messages and roll back bindings",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Outcome": "retained",
+            "S": "5760966670@'https://n4.elfenbenstornet.se'",
+            "Tentative": "Tentative",
+            "ThrownBinding": "ThrownBinding",
+            "Value": "1",
+            "X": "X",
+            "Y": "Y"
+          }
+        ],
+        "more": false,
+        "pid": 5760966670,
+        "type": "success"
+      },
+      "duration_ms": 2125
+    },
+    {
+      "id": "SR-004",
+      "case_index": 3,
+      "title": "A guard uses only its first solution and shares bindings with the body",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "G": "G",
+            "Results": "[one-one]",
+            "S": "1497217503@'https://n4.elfenbenstornet.se'",
+            "Seen": "Seen"
+          }
+        ],
+        "more": false,
+        "pid": 1497217503,
+        "type": "success"
+      },
+      "duration_ms": 2141
+    },
+    {
+      "id": "SR-005",
+      "case_index": 4,
+      "title": "Selected body failure and exception consume only their selected messages",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Error": "sr_body",
+            "S": "2632046055@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2632046055,
+        "type": "success"
+      },
+      "duration_ms": 2098
+    },
+    {
+      "id": "SR-006",
+      "case_index": 5,
+      "title": "A selected body cut cannot prune caller alternatives",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Choice": "Choice",
+            "Choices": "[one,two]",
+            "Fallback": "kept",
+            "Me": "7938043664@'https://n4.elfenbenstornet.se'",
+            "S": "S",
+            "V": "V"
+          }
+        ],
+        "more": false,
+        "pid": 7938043664,
+        "type": "success"
+      },
+      "duration_ms": 2053
+    },
+    {
+      "id": "SR-007",
+      "case_index": 6,
+      "title": "One selection exposes all body alternatives without selecting a second message or clause",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "7721511277@'https://n4.elfenbenstornet.se'",
+            "X": "X",
+            "Xs": "[a,b]"
+          }
+        ],
+        "more": false,
+        "pid": 7721511277,
+        "type": "success"
+      },
+      "duration_ms": 2129
+    },
+    {
+      "id": "SR-008",
+      "case_index": 7,
+      "title": "Message arrival order takes priority over clause textual order",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "7629397806@'https://n4.elfenbenstornet.se'",
+            "Selected": "older"
+          }
+        ],
+        "more": false,
+        "pid": 7629397806,
+        "type": "success"
+      },
+      "duration_ms": 2080
+    },
+    {
+      "id": "SR-009",
+      "case_index": 8,
+      "title": "First accepting clause commits even when its body fails",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "2147365784@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2147365784,
+        "type": "success"
+      },
+      "duration_ms": 2128
+    },
+    {
+      "id": "SR-010",
+      "case_index": 9,
+      "title": "Exception from the first accepting body cannot select a later clause or message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "sr_selected_error",
+            "S": "6427960094@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 6427960094,
+        "type": "success"
+      },
+      "duration_ms": 2095
+    },
+    {
+      "id": "SR-011",
+      "case_index": 10,
+      "title": "Failed partial pattern matching is rolled back before the next clause",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "a",
+            "B": "b",
+            "BaselineResult": "passed",
+            "S": "1113000934@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 1113000934,
+        "type": "success"
+      },
+      "duration_ms": 2112
+    },
+    {
+      "id": "SR-012",
+      "case_index": 11,
+      "title": "An ordinary throwing guard rolls back before another clause accepts the same message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "7",
+            "BaselineResult": "passed",
+            "Binding": "Binding",
+            "S": "2953936812@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2953936812,
+        "type": "success"
+      },
+      "duration_ms": 2081
+    },
+    {
+      "id": "SR-013",
+      "case_index": 12,
+      "title": "A successful guard may bind the received variable and shares that binding with its body",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "4939094796@'https://n4.elfenbenstornet.se'",
+            "X": "X",
+            "Y": "bound"
+          }
+        ],
+        "more": false,
+        "pid": 4939094796,
+        "type": "success"
+      },
+      "duration_ms": 2102
+    },
+    {
+      "id": "SR-014",
+      "case_index": 13,
+      "title": "Guard alternatives after its first success are never invoked",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "G": "G",
+            "Gs": "[first]",
+            "S": "7759317603@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 7759317603,
+        "type": "success"
+      },
+      "duration_ms": 2102
+    },
+    {
+      "id": "SR-015",
+      "case_index": 14,
+      "title": "Body cut prunes its own alternatives while preserving caller choices",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Inner": "Inner",
+            "Outer": "Outer",
+            "S": "S",
+            "Xs": "[one-a,two-a]"
+          }
+        ],
+        "more": false,
+        "pid": 8383254945,
+        "type": "success"
+      },
+      "duration_ms": 2091
+    },
+    {
+      "id": "SR-016",
+      "case_index": 15,
+      "title": "Empty clauses accept nothing and preserve queued message order",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Expired": "yes",
+            "M": "sr_empty(1)",
+            "M2": "sr_empty(2)",
+            "S": "3832009005@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 3832009005,
+        "type": "success"
+      },
+      "duration_ms": 2120
+    },
+    {
+      "id": "SR-017",
+      "case_index": 16,
+      "title": "Timeout zero inspects queued messages and default timeout action succeeds",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "2115296848@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 2115296848,
+        "type": "success"
+      },
+      "duration_ms": 2113
+    },
+    {
+      "id": "SR-018",
+      "case_index": 17,
+      "title": "Timeout callback retains every alternative and its variable bindings",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "X": "X",
+            "Xs": "[a,b]"
+          }
+        ],
+        "more": false,
+        "pid": 4774460009,
+        "type": "success"
+      },
+      "duration_ms": 2087
+    },
+    {
+      "id": "SR-019",
+      "case_index": 18,
+      "title": "Timeout callback failure determines the receive outcome",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 8698619162,
+        "type": "success"
+      },
+      "duration_ms": 2119
+    },
+    {
+      "id": "SR-020",
+      "case_index": 19,
+      "title": "Timeout callback exception is propagated with its original payload",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "error(sr_timeout,application)"
+          }
+        ],
+        "more": false,
+        "pid": 6152987453,
+        "type": "success"
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "SR-021",
+      "case_index": 20,
+      "title": "An expired absolute deadline uses the timeout callback and preserves skipped messages",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Expired": "yes",
+            "Now": "1795550501.974598",
+            "Past": "1795550500.974598",
+            "S": "6341051998@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 6341051998,
+        "type": "success"
+      },
+      "duration_ms": 2087
+    },
+    {
+      "id": "SR-022",
+      "case_index": 21,
+      "title": "Relative zero timeout takes precedence over a future absolute deadline",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Future": "1795550506.0893345",
+            "Now": "1795550504.0893345",
+            "S": "7775307504@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 7775307504,
+        "type": "success"
+      },
+      "duration_ms": 2175
+    },
+    {
+      "id": "SR-023",
+      "case_index": 22,
+      "title": "Relative positive timeout takes precedence over an expired absolute deadline",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Now": "1795550506.1696239",
+            "Past": "1795550505.1696239",
+            "S": "9605242129@'https://n4.elfenbenstornet.se'",
+            "Selected": "message"
+          }
+        ],
+        "more": false,
+        "pid": 9605242129,
+        "type": "success"
+      },
+      "duration_ms": 2083
+    },
+    {
+      "id": "SR-024",
+      "case_index": 23,
+      "title": "Default receive and on_timeout without a deadline accept a supplied message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "1032897390@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 1032897390,
+        "type": "success"
+      },
+      "duration_ms": 2027
+    },
+    {
+      "id": "SR-025",
+      "case_index": 24,
+      "title": "Unmatched arrival traffic does not restart a positive receive timeout",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "5941996748@'https://n4.elfenbenstornet.se'",
+            "S": "9246686373@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 9246686373,
+        "type": "success"
+      },
+      "duration_ms": 2270
+    },
+    {
+      "id": "SR-026",
+      "case_index": 25,
+      "title": "Delayed send with a supplied identifier returns and delivers",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "3107705452@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 3107705452,
+        "type": "success"
+      },
+      "duration_ms": 2006
+    },
+    {
+      "id": "SR-027",
+      "case_index": 26,
+      "title": "Cancel acknowledges a scheduled identifier and prevents its delivery",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "S": "2260719894@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 2260719894,
+        "type": "success"
+      },
+      "duration_ms": 2196
+    },
+    {
+      "id": "SR-028",
+      "case_index": 27,
+      "title": "A future absolute deadline accepts a later arriving message",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "End": "1795550518.6682062",
+            "Now": "1795550516.6682062",
+            "S": "8608925018@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 8608925018,
+        "type": "success"
+      },
+      "duration_ms": 1953
+    },
+    {
+      "id": "SR-029",
+      "case_index": 28,
+      "title": "Unmatched arrival traffic does not extend an absolute receive deadline",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "End": "1795550518.8873286",
+            "Now": "1795550518.7873287",
+            "P": "5666308972@'https://n4.elfenbenstornet.se'",
+            "S": "5571267285@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 5571267285,
+        "type": "success"
+      },
+      "duration_ms": 2230
+    }
+  ],
+  "counts": {
+    "pass": 29
+  }
+}

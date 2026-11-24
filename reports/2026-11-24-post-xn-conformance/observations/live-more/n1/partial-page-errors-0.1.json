@@ -1,0 +1,222 @@
+{
+  "suite": "partial-page-errors-0.1",
+  "candidate": "n1",
+  "profile": "isobase",
+  "endpoint": "https://n1.elfenbenstornet.se",
+  "manifest_sha256": "4011cbb4127f9b90a4b711631b4f986fdb699960887261e3a029a0d5bb1f24c2",
+  "scope": "required",
+  "results": [
+    {
+      "id": "PE-001",
+      "case_index": 0,
+      "title": "An exception before any solution is reported immediately",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 782
+    },
+    {
+      "id": "PE-002",
+      "case_index": 1,
+      "title": "A short partial page precedes its pending error",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a,b],true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1600
+    },
+    {
+      "id": "PE-003",
+      "case_index": 2,
+      "title": "An error found by full-page lookahead follows the full page",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a,b],true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1623
+    },
+    {
+      "id": "PE-004",
+      "case_index": 3,
+      "title": "Partial pages after a nonzero offset advance by returned count",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([b],true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1599
+    },
+    {
+      "id": "PE-005",
+      "case_index": 4,
+      "title": "Once discards a pending error after delivering its first slice",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a,b],false).\n"
+        }
+      ],
+      "duration_ms": 813
+    },
+    {
+      "id": "PE-006",
+      "case_index": 5,
+      "title": "Once finishes a full slice without retaining a later error",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a],false).\n"
+        }
+      ],
+      "duration_ms": 795
+    },
+    {
+      "id": "PE-007",
+      "case_index": 6,
+      "title": "An exception during offset skipping does not create an empty success page",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 811
+    },
+    {
+      "id": "PE-008",
+      "case_index": 7,
+      "title": "Running-time exhaustion does not publish a truncated success",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(error(resource_error(time),_3266)).\n"
+        }
+      ],
+      "duration_ms": 1782
+    },
+    {
+      "id": "PE-009",
+      "case_index": 8,
+      "title": "Toplevel preserves a short partial page before an exception",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-010",
+      "case_index": 9,
+      "title": "Toplevel delivers a pending exception after an exact full page",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-011",
+      "case_index": 10,
+      "title": "Toplevel stop discards a pending exception",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-012",
+      "case_index": 11,
+      "title": "A session accepts a fresh call after delivering the pending exception",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-013",
+      "case_index": 12,
+      "title": "Toplevel reports an exception before any solution immediately",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-014",
+      "case_index": 13,
+      "title": "An omitted HTTP limit does not turn an exception into a partial success",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 67
+    },
+    {
+      "id": "PE-015",
+      "case_index": 14,
+      "title": "An omitted HTTP limit does not turn an exception into a partial success with once",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 806
+    },
+    {
+      "id": "PE-016",
+      "case_index": 15,
+      "title": "An omitted toplevel limit reports the exception without a partial page",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    },
+    {
+      "id": "PE-017",
+      "case_index": 16,
+      "title": "A very large explicit HTTP limit remains finite",
+      "status": "pass",
+      "observation": [
+        {
+          "http_status": 200,
+          "body": "success([a,b],true).\n"
+        },
+        {
+          "http_status": 200,
+          "body": "error(page_boom).\n"
+        }
+      ],
+      "duration_ms": 1625
+    },
+    {
+      "id": "PE-018",
+      "case_index": 17,
+      "title": "A very large explicit toplevel limit remains finite",
+      "status": "not_applicable",
+      "detail": "requires actor"
+    }
+  ],
+  "counts": {
+    "pass": 11,
+    "not_applicable": 7
+  }
+}

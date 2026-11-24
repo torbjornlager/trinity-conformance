@@ -1,0 +1,1527 @@
+{
+  "suite": "admission-paths-0.1",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "06220e862e4b1c30188cfd9aef67704bf2ff9d665257b0578f755943edd00aff",
+  "scope": "diagnostic",
+  "results": [
+    {
+      "id": "AP-001",
+      "case_index": 0,
+      "title": "Valid initial children: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5438398053,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5438398053,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([child(probe,[start(receive({never->true})),restart(temporary)])],Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5471695030,
+              "reason": "true",
+              "ref": "5471695030@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,9547204440@'https://n4.elfenbenstornet.se',worker,temporary)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "5438398053@'https://n4.elfenbenstornet.se'",
+                  "Sup": "5471695030@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 5438398053,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5438398053,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 5438398053,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5438398053
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5438398053,
+              "reason": "true",
+              "ref": "5438398053@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5438398053,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,9547204440@'https://n4.elfenbenstornet.se',worker,temporary)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "5438398053@'https://n4.elfenbenstornet.se'",
+              "Sup": "5471695030@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 5438398053,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5438398053,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2195
+    },
+    {
+      "id": "AP-002",
+      "case_index": 1,
+      "title": "Valid initial children: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5813265527,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5813265527,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!initial_specs([child(probe,[start(receive({never->true})),restart(temporary)])]),receive({initial_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),supervisor_spawn(Specs,Sup,[monitor(true)]),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2226333805,
+              "reason": "true",
+              "ref": "2226333805@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,6653050924@'https://n4.elfenbenstornet.se',worker,temporary)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "5813265527@'https://n4.elfenbenstornet.se'",
+                  "S": "5813265527@'https://n4.elfenbenstornet.se'",
+                  "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+                  "Sup": "2226333805@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 5813265527,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 5813265527,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 5813265527,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 5813265527
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5813265527,
+              "reason": "true",
+              "ref": "5813265527@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5813265527,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,6653050924@'https://n4.elfenbenstornet.se',worker,temporary)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "5813265527@'https://n4.elfenbenstornet.se'",
+              "S": "5813265527@'https://n4.elfenbenstornet.se'",
+              "Specs": "[child(probe,[start(receive({never->true})),restart(temporary)])]",
+              "Sup": "2226333805@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 5813265527,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 5813265527,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "AP-003",
+      "case_index": 2,
+      "title": "Missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4432082431,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4432082431,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(supervisor_spawn([child(probe,[])],Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "4432082431@'https://n4.elfenbenstornet.se'",
+                  "Rejected": "Rejected"
+                }
+              ],
+              "more": false,
+              "pid": 4432082431,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4432082431,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 4432082431,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 4432082431
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4432082431,
+              "reason": "true",
+              "ref": "4432082431@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4432082431,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "4432082431@'https://n4.elfenbenstornet.se'",
+              "Rejected": "Rejected"
+            }
+          ],
+          "more": false,
+          "pid": 4432082431,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 4432082431,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 1997
+    },
+    {
+      "id": "AP-004",
+      "case_index": 3,
+      "title": "Missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7142138565,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7142138565,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!invalid_specs([child(probe,[])]),receive({invalid_specs(Specs)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(supervisor_spawn(Specs,Rejected),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "7142138565@'https://n4.elfenbenstornet.se'",
+                  "Rejected": "Rejected",
+                  "S": "7142138565@'https://n4.elfenbenstornet.se'",
+                  "Specs": "[child(probe,[])]"
+                }
+              ],
+              "more": false,
+              "pid": 7142138565,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7142138565,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 7142138565,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 7142138565
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7142138565,
+              "reason": "true",
+              "ref": "7142138565@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7142138565,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "7142138565@'https://n4.elfenbenstornet.se'",
+              "Rejected": "Rejected",
+              "S": "7142138565@'https://n4.elfenbenstornet.se'",
+              "Specs": "[child(probe,[])]"
+            }
+          ],
+          "more": false,
+          "pid": 7142138565,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 7142138565,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2106
+    },
+    {
+      "id": "AP-005",
+      "case_index": 4,
+      "title": "Dynamic valid child: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9629265842,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9629265842,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[start(receive({never->true})),restart(temporary)]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1680151356,
+              "reason": "shutdown",
+              "ref": "1680151356@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1723821451,
+              "reason": "true",
+              "ref": "1723821451@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,1680151356@'https://n4.elfenbenstornet.se',worker,temporary)]",
+                  "Error": "Error",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "9629265842@'https://n4.elfenbenstornet.se'",
+                  "Reply": "ok",
+                  "Sup": "1723821451@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 9629265842,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 9629265842,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 9629265842,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 9629265842
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9629265842,
+              "reason": "true",
+              "ref": "9629265842@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 9629265842,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,1680151356@'https://n4.elfenbenstornet.se',worker,temporary)]",
+              "Error": "Error",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "9629265842@'https://n4.elfenbenstornet.se'",
+              "Reply": "ok",
+              "Sup": "1723821451@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 9629265842,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 9629265842,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2220
+    },
+    {
+      "id": "AP-006",
+      "case_index": 5,
+      "title": "Dynamic valid child: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4109972552,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4109972552,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[start(receive({never->true})),restart(temporary)])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4268528878,
+              "reason": "shutdown",
+              "ref": "4268528878@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 2702833671,
+              "reason": "true",
+              "ref": "2702833671@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[info(probe,4268528878@'https://n4.elfenbenstornet.se',worker,temporary)]",
+                  "Error": "Error",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "4109972552@'https://n4.elfenbenstornet.se'",
+                  "Reply": "ok",
+                  "S": "4109972552@'https://n4.elfenbenstornet.se'",
+                  "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+                  "Sup": "2702833671@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 4109972552,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4109972552,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 4109972552,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 4109972552
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4109972552,
+              "reason": "true",
+              "ref": "4109972552@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4109972552,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[info(probe,4268528878@'https://n4.elfenbenstornet.se',worker,temporary)]",
+              "Error": "Error",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "4109972552@'https://n4.elfenbenstornet.se'",
+              "Reply": "ok",
+              "S": "4109972552@'https://n4.elfenbenstornet.se'",
+              "Spec": "child(probe,[start(receive({never->true})),restart(temporary)])",
+              "Sup": "2702833671@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 4109972552,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 4109972552,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "AP-007",
+      "case_index": 6,
+      "title": "Dynamic missing start: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4236557785,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4236557785,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),PatternState=literal,catch(supervisor_spawn_child(Sup,child(probe,[]),Reply),Error,true),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 5026519954,
+              "reason": "true",
+              "ref": "5026519954@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "PatternState": "literal",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "4236557785@'https://n4.elfenbenstornet.se'",
+                  "Reply": "Reply",
+                  "Sup": "5026519954@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 4236557785,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 4236557785,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 4236557785,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 4236557785
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4236557785,
+              "reason": "true",
+              "ref": "4236557785@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 4236557785,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "PatternState": "literal",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "4236557785@'https://n4.elfenbenstornet.se'",
+              "Reply": "Reply",
+              "Sup": "5026519954@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 4236557785,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 4236557785,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2040
+    },
+    {
+      "id": "AP-008",
+      "case_index": 7,
+      "title": "Dynamic missing start: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1032450510,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1032450510,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(supervisor_spawn([],Sup,[monitor(true)]),(var(Spec)->PatternState=unbound;PatternState=bound(Spec)),self(S),S!dynamic_spec(child(probe,[])),receive({dynamic_spec(Spec)->Matched=yes},[timeout(0),on_timeout(Matched=no)]),(Matched==yes->catch(supervisor_spawn_child(Sup,Spec,Reply),Error,true);Reply=not_dispatched),supervisor_which_children(Sup,Children),supervisor_halt(Sup),receive({down(Sup,Sup,_)->true},[timeout(2),on_timeout(throw(missing_probe_data))]))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7787554929,
+              "reason": "true",
+              "ref": "7787554929@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Children": "[]",
+                  "Error": "error(existence_error(option,start(probe)),supervisor)",
+                  "Matched": "yes",
+                  "PatternState": "unbound",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "1032450510@'https://n4.elfenbenstornet.se'",
+                  "Reply": "Reply",
+                  "S": "1032450510@'https://n4.elfenbenstornet.se'",
+                  "Spec": "child(probe,[])",
+                  "Sup": "7787554929@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 1032450510,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 1032450510,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 1032450510,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 1032450510
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1032450510,
+              "reason": "true",
+              "ref": "1032450510@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 1032450510,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Children": "[]",
+              "Error": "error(existence_error(option,start(probe)),supervisor)",
+              "Matched": "yes",
+              "PatternState": "unbound",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "1032450510@'https://n4.elfenbenstornet.se'",
+              "Reply": "Reply",
+              "S": "1032450510@'https://n4.elfenbenstornet.se'",
+              "Spec": "child(probe,[])",
+              "Sup": "7787554929@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 1032450510,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 1032450510,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2108
+    },
+    {
+      "id": "AP-009",
+      "case_index": 8,
+      "title": "Unknown option before missing source: literal",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8418480857,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 8418480857,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(catch(spawn(true,Rejected,[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": "Domain error: spawn_option' expected, found unknown(admission_probe)' (invalid spawn option)",
+              "details": "error(domain_error(spawn_option,unknown(admission_probe)),_)",
+              "type": "error"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 8418480857,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "no"
+                }
+              ],
+              "more": false,
+              "pid": 8418480857,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 8418480857
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8418480857,
+              "reason": "true",
+              "ref": "8418480857@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 8418480857,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": "Domain error: spawn_option' expected, found unknown(admission_probe)' (invalid spawn option)",
+          "details": "error(domain_error(spawn_option,unknown(admission_probe)),_)",
+          "type": "error"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "no"
+            }
+          ],
+          "more": false,
+          "pid": 8418480857,
+          "type": "success"
+        },
+        "execution_entered": false
+      },
+      "duration_ms": 2047
+    },
+    {
+      "id": "AP-010",
+      "case_index": 9,
+      "title": "Unknown option before missing source: runtime",
+      "status": "observed",
+      "observation": {
+        "complete": true,
+        "transcript": [
+          {
+            "direction": "send",
+            "message": {
+              "command": "transport_hello",
+              "version": 1,
+              "browser_pids": true,
+              "io_ack": true
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "answer_terms": false,
+              "browser_pids": true,
+              "io_ack": true,
+              "protocol": "web_prolog_browser_actor",
+              "type": "transport_welcome",
+              "version": 1
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_spawn",
+              "options": "[session(true)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7065480724,
+              "type": "spawned"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7065480724,
+              "goal": "(self(ProbeSelf),ProbeSelf!admission_probe_entered,(self(S),S!creation_options([src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]),receive({creation_options(Options)->true},[timeout(2),on_timeout(throw(missing_probe_data))]),catch(spawn(true,Rejected,Options),Error,true),nonvar(Error),var(Rejected))),ProbeComplete=completed",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+                  "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+                  "ProbeComplete": "completed",
+                  "ProbeSelf": "7065480724@'https://n4.elfenbenstornet.se'",
+                  "Rejected": "Rejected",
+                  "S": "7065480724@'https://n4.elfenbenstornet.se'"
+                }
+              ],
+              "more": false,
+              "pid": 7065480724,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_call",
+              "pid": 7065480724,
+              "goal": "receive({admission_probe_entered->ProbeEntry=yes},[timeout(0),on_timeout(ProbeEntry=no)])",
+              "options": "[limit(1)]"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "data": [
+                {
+                  "ProbeEntry": "yes"
+                }
+              ],
+              "more": false,
+              "pid": 7065480724,
+              "type": "success"
+            }
+          },
+          {
+            "direction": "send",
+            "message": {
+              "command": "toplevel_halt",
+              "pid": 7065480724
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7065480724,
+              "reason": "true",
+              "ref": "7065480724@'https://n4.elfenbenstornet.se'",
+              "type": "down"
+            }
+          },
+          {
+            "direction": "receive",
+            "message": {
+              "pid": 7065480724,
+              "reply": "true",
+              "type": "halted"
+            }
+          }
+        ],
+        "terminal": {
+          "data": [
+            {
+              "Error": "error(domain_error(spawn_option,unknown(admission_probe)),context(actors:spawn/3,'invalid spawn option'))",
+              "Options": "[src_uri('file:///definitely-missing-admission-probe.pl'),unknown(admission_probe)]",
+              "ProbeComplete": "completed",
+              "ProbeSelf": "7065480724@'https://n4.elfenbenstornet.se'",
+              "Rejected": "Rejected",
+              "S": "7065480724@'https://n4.elfenbenstornet.se'"
+            }
+          ],
+          "more": false,
+          "pid": 7065480724,
+          "type": "success"
+        },
+        "entry_response": {
+          "data": [
+            {
+              "ProbeEntry": "yes"
+            }
+          ],
+          "more": false,
+          "pid": 7065480724,
+          "type": "success"
+        },
+        "execution_entered": true
+      },
+      "duration_ms": 2077
+    }
+  ],
+  "counts": {
+    "observed": 10
+  }
+}

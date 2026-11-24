@@ -1,0 +1,614 @@
+{
+  "suite": "monitor-preflight-0.2",
+  "candidate": "n7",
+  "profile": "actor",
+  "endpoint": "https://n7.elfenbenstornet.se",
+  "manifest_sha256": "90a1f8ed6794f11a1743144d59aa053758b5954ffccfda3e3e6030a35d2ce48f",
+  "scope": "required",
+  "results": [
+    {
+      "id": "MC-001",
+      "case_index": 0,
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6351778333,
+        "data": [
+          {
+            "P": "5354230827@'https://n7.elfenbenstornet.se'",
+            "R": "R",
+            "Rs": "[2377034861]",
+            "A": "2377034861",
+            "B": "4228671677",
+            "C": "1636572040",
+            "Extra": "Extra",
+            "Why": "Why",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2106
+    },
+    {
+      "id": "MC-002",
+      "case_index": 1,
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3304495206,
+        "data": [
+          {
+            "S": "3304495206@'https://n7.elfenbenstornet.se'",
+            "P": "9594484669@'https://n7.elfenbenstornet.se'",
+            "R": "3066304832",
+            "F": "5590154270@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "MC-003",
+      "case_index": 2,
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3762236894,
+        "data": [
+          {
+            "S": "3762236894@'https://n7.elfenbenstornet.se'",
+            "P": "9585102649@'https://n7.elfenbenstornet.se'",
+            "R": "6399049661",
+            "One": "[ok]",
+            "Two": "[ok]",
+            "Three": "[ok]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2120
+    },
+    {
+      "id": "MC-004",
+      "case_index": 3,
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8829378057,
+        "data": [
+          {
+            "S": "8829378057@'https://n7.elfenbenstornet.se'",
+            "P": "6329721480@'https://n7.elfenbenstornet.se'",
+            "R": "1115094663",
+            "F": "1477160136@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2085
+    },
+    {
+      "id": "MC-005",
+      "case_index": 4,
+      "title": "An uninstantiated monitor target is rejected even when a local name exists",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6318196367,
+        "data": [
+          {
+            "MCNamedPid": "5038063233@'https://n7.elfenbenstornet.se'",
+            "P": "P",
+            "R": "R",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "MC-006",
+      "case_index": 5,
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6169793566,
+        "data": [
+          {
+            "S": "6169793566@'https://n7.elfenbenstornet.se'",
+            "P": "7163391866@'https://n7.elfenbenstornet.se'",
+            "R": "R",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2119
+    },
+    {
+      "id": "MC-007",
+      "case_index": 6,
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3645021812,
+        "data": [
+          {
+            "MC1Self": "3645021812@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "5985378142@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "9240259062",
+            "O": "O",
+            "MC1Variable": "true",
+            "MC1Before": "MC1Before",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2091
+    },
+    {
+      "id": "MC-008",
+      "case_index": 7,
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8014372193,
+        "data": [
+          {
+            "MC1Self": "8014372193@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "3764199088@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "7612961189",
+            "Tail": "Tail",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|Tail]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2136
+    },
+    {
+      "id": "MC-009",
+      "case_index": 8,
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7052415017,
+        "data": [
+          {
+            "MC1Self": "7052415017@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "6425158755@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "1504219244",
+            "O": "O",
+            "MC1Variable": "false",
+            "MC1Before": "[O]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2057
+    },
+    {
+      "id": "MC-010",
+      "case_index": 9,
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1296646163,
+        "data": [
+          {
+            "MC1Self": "1296646163@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "5856247926@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "9728659439",
+            "O": "O",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,O]",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2122
+    },
+    {
+      "id": "MC-011",
+      "case_index": 10,
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6515350456,
+        "data": [
+          {
+            "MC1Self": "6515350456@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "2385509938@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "8703609909",
+            "MC1Variable": "false",
+            "MC1Before": "bad",
+            "MC1Outcome": "raised(type_error(list,bad))",
+            "MC1E": "type_error(list,bad)",
+            "MC1Actual": "type_error(list,bad)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2089
+    },
+    {
+      "id": "MC-012",
+      "case_index": 11,
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8524976118,
+        "data": [
+          {
+            "MC1Self": "8524976118@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "2725066895@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "9076005665",
+            "MC1Variable": "false",
+            "MC1Before": "[flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush|bad]))",
+            "MC1E": "type_error(list,[flush|bad])",
+            "MC1Actual": "type_error(list,[flush|bad])",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2145
+    },
+    {
+      "id": "MC-013",
+      "case_index": 12,
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6581962433,
+        "data": [
+          {
+            "MC1Self": "6581962433@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "7416428958@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "1151617299",
+            "MC1Variable": "false",
+            "MC1Before": "[unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2056
+    },
+    {
+      "id": "MC-014",
+      "case_index": 13,
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3859400079,
+        "data": [
+          {
+            "MC1Self": "3859400079@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "2292434544@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "3531712125",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(true)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(true)))",
+            "MC1E": "domain_error(demonitor_option,flush(true))",
+            "MC1Actual": "domain_error(demonitor_option,flush(true))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2104
+    },
+    {
+      "id": "MC-015",
+      "case_index": 14,
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7015067256,
+        "data": [
+          {
+            "MC1Self": "7015067256@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "9076359381@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "9588439290",
+            "MC1Variable": "false",
+            "MC1Before": "[flush(a,b)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(a,b)))",
+            "MC1E": "domain_error(demonitor_option,flush(a,b))",
+            "MC1Actual": "domain_error(demonitor_option,flush(a,b))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2095
+    },
+    {
+      "id": "MC-016",
+      "case_index": 15,
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7417457866,
+        "data": [
+          {
+            "MC1Self": "7417457866@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "6494324722@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "7949195561",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,unknown]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,unknown))",
+            "MC1E": "domain_error(demonitor_option,unknown)",
+            "MC1Actual": "domain_error(demonitor_option,unknown)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2120
+    },
+    {
+      "id": "MC-017",
+      "case_index": 16,
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5154140144,
+        "data": [
+          {
+            "MC1Self": "5154140144@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "6671771109@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "8001376980",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(false)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(false)))",
+            "MC1E": "domain_error(demonitor_option,flush(false))",
+            "MC1Actual": "domain_error(demonitor_option,flush(false))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2093
+    },
+    {
+      "id": "MC-018",
+      "case_index": 17,
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6270056195,
+        "data": [
+          {
+            "MC1Self": "6270056195@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "7473625122@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "7367048976",
+            "MC1Variable": "false",
+            "MC1Before": "[7]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,7))",
+            "MC1E": "domain_error(demonitor_option,7)",
+            "MC1Actual": "domain_error(demonitor_option,7)",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2102
+    },
+    {
+      "id": "MC-026",
+      "case_index": 18,
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3480082393,
+        "data": [
+          {
+            "R": "R",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "X": "X",
+            "MC2Outcome": "raised(instantiation_error)",
+            "MC2E": "instantiation_error",
+            "MC2Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2091
+    },
+    {
+      "id": "MC-027",
+      "case_index": 19,
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 6417505095,
+        "data": [
+          {
+            "Node": "Node",
+            "R": "R",
+            "MC1Outcome": "raised(instantiation_error)",
+            "MC1E": "instantiation_error",
+            "MC1Actual": "instantiation_error",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "MC-028",
+      "case_index": 20,
+      "title": "URI quoted text in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 4389750124,
+        "data": [
+          {
+            "P": "5016185304@'https://n7.elfenbenstornet.se'",
+            "Id": "5016185304@'https://n7.elfenbenstornet.se'",
+            "R": "3675612988",
+            "Other": "1234490683",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2121
+    },
+    {
+      "id": "MC-029",
+      "case_index": 21,
+      "title": "URI code list in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8098567959,
+        "data": [
+          {
+            "P": "5604258682@'https://n7.elfenbenstornet.se'",
+            "Id": "5604258682@'https://n7.elfenbenstornet.se'",
+            "R": "7098520547",
+            "Other": "6865187782",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2076
+    },
+    {
+      "id": "MC-030",
+      "case_index": 22,
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5099237994,
+        "data": [
+          {
+            "MC1Self": "5099237994@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "7445058226@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "8620318227",
+            "X": "X",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush(X)]",
+            "MC1Outcome": "raised(domain_error(demonitor_option,flush(X)))",
+            "MC1E": "domain_error(demonitor_option,flush(X))",
+            "MC1Actual": "domain_error(demonitor_option,flush(X))",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2107
+    },
+    {
+      "id": "MC-031",
+      "case_index": 23,
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 9208074238,
+        "data": [
+          {
+            "Options": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Self": "9208074238@'https://n7.elfenbenstornet.se'",
+            "MC1Pid": "8988466369@'https://n7.elfenbenstornet.se'",
+            "MC1Ref": "1190456512",
+            "MC1Variable": "false",
+            "MC1Before": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]",
+            "MC1Outcome": "raised(type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]))",
+            "MC1E": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "MC1Actual": "type_error(list,[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad])",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2108
+    },
+    {
+      "id": "MC-032",
+      "case_index": 24,
+      "title": "URI character list in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 8130219622,
+        "data": [
+          {
+            "P": "4966408709@'https://n7.elfenbenstornet.se'",
+            "Id": "4966408709@'https://n7.elfenbenstornet.se'",
+            "R": "3475155674",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2101
+    }
+  ],
+  "counts": {
+    "pass": 25
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "copying-isolation-0.1",
+  "scope": "required",
+  "candidate": "n5",
+  "endpoint": "wss://n5.elfenbenstornet.se/ws",
+  "manifest_sha256": "b7c0d35c88fbb9edbc4205a0e946767e5c97f4685645de9d40dca73f5fa0be19",
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2544079162,
+        "data": [
+          {
+            "S": "2544079162@'https://n5.elfenbenstornet.se'",
+            "Me": "Me",
+            "P": "3051153209",
+            "Embedded": "3051153209",
+            "Self": "3051153209",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2047
+    },
+    {
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1111653533,
+        "data": [
+          {
+            "S": "1111653533@'https://n5.elfenbenstornet.se'",
+            "X": "parent",
+            "P": "1936389637",
+            "Value": "child",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2107
+    },
+    {
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1438138971,
+        "data": [
+          {
+            "S": "1438138971@'https://n5.elfenbenstornet.se'",
+            "A": "A",
+            "B": "B",
+            "C": "C",
+            "P": "2136545175",
+            "R1": "inside",
+            "R2": "inside",
+            "U": "parent_received",
+            "V": "V",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2115
+    },
+    {
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1433858747,
+        "data": [
+          {
+            "S": "1433858747@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[alpha,beta]",
+            "P": "2330094704",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3054494189,
+        "data": [
+          {
+            "S": "3054494189@'https://n5.elfenbenstornet.se'",
+            "Tag": "Tag",
+            "Data": "Data",
+            "Rows": "[first-(A-A),second-pair(C,D)]",
+            "P": "2280877662",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "A": "A",
+            "B": "A",
+            "C": "C",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2103
+    },
+    {
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 1767788526,
+        "data": [
+          {
+            "S": "1767788526@'https://n5.elfenbenstornet.se'",
+            "V": "V",
+            "Before": "[parent]",
+            "Initial": "Initial",
+            "Changed": "[changed]",
+            "P": "2020546192",
+            "Values": "Values",
+            "Q": "2013742158",
+            "Sibling": "[right]",
+            "After": "[parent]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2132
+    }
+  ]
+}

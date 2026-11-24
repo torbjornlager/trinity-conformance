@@ -1,0 +1,154 @@
+{
+  "format": "direct-runner-observations-v1",
+  "suite": "copying-isolation-0.1",
+  "scope": "required",
+  "candidate": "n7",
+  "endpoint": "wss://n7.elfenbenstornet.se/ws",
+  "manifest_sha256": "b7c0d35c88fbb9edbc4205a0e946767e5c97f4685645de9d40dca73f5fa0be19",
+  "counts": {
+    "pass": 6,
+    "fail": 0
+  },
+  "results": [
+    {
+      "id": "CI-001",
+      "title": "Spawn output pid is substituted inside the child goal",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2586177943,
+        "data": [
+          {
+            "S": "2586177943@'https://n7.elfenbenstornet.se'",
+            "Me": "Me",
+            "P": "4426235471@'https://n7.elfenbenstornet.se'",
+            "Embedded": "4426235471@'https://n7.elfenbenstornet.se'",
+            "Self": "4426235471@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2102
+    },
+    {
+      "id": "CI-002",
+      "title": "Parent and child bindings remain independent",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2613738015,
+        "data": [
+          {
+            "S": "2613738015@'https://n7.elfenbenstornet.se'",
+            "X": "parent",
+            "P": "5158332646@'https://n7.elfenbenstornet.se'",
+            "Value": "child",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2175
+    },
+    {
+      "id": "CI-003",
+      "title": "Goal and message copies preserve sharing without sharing variable identity",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 3372085066,
+        "data": [
+          {
+            "S": "3372085066@'https://n7.elfenbenstornet.se'",
+            "A": "A",
+            "B": "B",
+            "C": "C",
+            "P": "9368829290@'https://n7.elfenbenstornet.se'",
+            "R1": "inside",
+            "R2": "inside",
+            "U": "parent_received",
+            "V": "V",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2062
+    },
+    {
+      "id": "CI-004",
+      "title": "Text source supplies child predicates in clause order",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 7343800198,
+        "data": [
+          {
+            "S": "7343800198@'https://n7.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[alpha,beta]",
+            "P": "6948062830@'https://n7.elfenbenstornet.se'",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2082
+    },
+    {
+      "id": "CI-005",
+      "title": "Clause-list source preserves order and within-clause variable sharing",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 2734852283,
+        "data": [
+          {
+            "S": "2734852283@'https://n7.elfenbenstornet.se'",
+            "Tag": "Tag",
+            "Data": "Data",
+            "Rows": "[first-(A-A),second-pair(C,D)]",
+            "P": "2818485941@'https://n7.elfenbenstornet.se'",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "A": "A",
+            "B": "A",
+            "C": "C",
+            "D": "D",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2113
+    },
+    {
+      "id": "CI-006",
+      "title": "Sibling private databases and parent source remain isolated",
+      "status": "pass",
+      "observation": {
+        "type": "success",
+        "pid": 5892666181,
+        "data": [
+          {
+            "S": "5892666181@'https://n7.elfenbenstornet.se'",
+            "V": "V",
+            "Before": "[parent]",
+            "Initial": "Initial",
+            "Changed": "[changed]",
+            "P": "5124517042@'https://n7.elfenbenstornet.se'",
+            "Values": "Values",
+            "Q": "5599422971@'https://n7.elfenbenstornet.se'",
+            "Sibling": "[right]",
+            "After": "[parent]",
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false
+      },
+      "duration_ms": 2097
+    }
+  ]
+}

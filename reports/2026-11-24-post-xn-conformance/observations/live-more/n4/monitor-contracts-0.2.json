@@ -1,0 +1,1077 @@
+{
+  "suite": "monitor-contracts-0.2",
+  "candidate": "n4",
+  "profile": "actor",
+  "endpoint": "https://n4.elfenbenstornet.se",
+  "manifest_sha256": "805642f6869da2bf1ea92f5bbda25e9e39c85672d80733b238569f78c7b82481",
+  "scope": "Shared ACTOR monitor contract; four runtime language modes, remote loss/confirmation mapped separately",
+  "results": [
+    {
+      "id": "MC-001",
+      "case_index": 0,
+      "title": "Registered local name resolves to canonical pid with fresh independent references",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "5939590240",
+            "B": "6718670169",
+            "BaselineResult": "passed",
+            "C": "2302348395",
+            "Extra": "Extra",
+            "P": "9813650010@'https://n4.elfenbenstornet.se'",
+            "R": "R",
+            "Rs": "[5939590240]",
+            "Why": "Why"
+          }
+        ],
+        "more": false,
+        "pid": 3742608317,
+        "type": "success"
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "MC-002",
+      "case_index": 1,
+      "title": "Application-supplied down message does not discharge the actual monitor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "F": "8068144719@'https://n4.elfenbenstornet.se'",
+            "P": "5940550208@'https://n4.elfenbenstornet.se'",
+            "R": "4228438054",
+            "S": "4844016408@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4844016408,
+        "type": "success"
+      },
+      "duration_ms": 2140
+    },
+    {
+      "id": "MC-003",
+      "case_index": 2,
+      "title": "Both demonitor arities are deterministic idempotent and preserve queued data without flush",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "One": "[ok]",
+            "P": "9098603310@'https://n4.elfenbenstornet.se'",
+            "R": "2119177028",
+            "S": "3820897658@'https://n4.elfenbenstornet.se'",
+            "Three": "[ok]",
+            "Two": "[ok]"
+          }
+        ],
+        "more": false,
+        "pid": 3820897658,
+        "type": "success"
+      },
+      "duration_ms": 2061
+    },
+    {
+      "id": "MC-004",
+      "case_index": 3,
+      "title": "Foreign actor cannot withdraw the owner monitor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "F": "2779950213@'https://n4.elfenbenstornet.se'",
+            "P": "5777320825@'https://n4.elfenbenstornet.se'",
+            "R": "8221565744",
+            "S": "8012593646@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 8012593646,
+        "type": "success"
+      },
+      "duration_ms": 2114
+    },
+    {
+      "id": "MC-005",
+      "case_index": 4,
+      "title": "An uninstantiated monitor target is rejected without binding target or output",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "P",
+            "R": "R"
+          }
+        ],
+        "more": false,
+        "pid": 8797837062,
+        "type": "success"
+      },
+      "duration_ms": 2044
+    },
+    {
+      "id": "MC-006",
+      "case_index": 5,
+      "title": "An uninstantiated demonitor reference is rejected without consuming a notification",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "4138629412@'https://n4.elfenbenstornet.se'",
+            "R": "R",
+            "S": "3165970606@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 3165970606,
+        "type": "success"
+      },
+      "duration_ms": 2123
+    },
+    {
+      "id": "MC-007",
+      "case_index": 6,
+      "title": "Demonitor preflight rejects O and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "O": "O"
+          }
+        ],
+        "more": false,
+        "pid": 1413332896,
+        "type": "success"
+      },
+      "duration_ms": 2172
+    },
+    {
+      "id": "MC-008",
+      "case_index": 7,
+      "title": "Demonitor preflight rejects [flush|Tail] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Tail": "Tail"
+          }
+        ],
+        "more": false,
+        "pid": 4308949895,
+        "type": "success"
+      },
+      "duration_ms": 2084
+    },
+    {
+      "id": "MC-009",
+      "case_index": 8,
+      "title": "Demonitor preflight rejects [O] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "O": "O"
+          }
+        ],
+        "more": false,
+        "pid": 7561298330,
+        "type": "success"
+      },
+      "duration_ms": 2082
+    },
+    {
+      "id": "MC-010",
+      "case_index": 9,
+      "title": "Demonitor preflight rejects [flush,O] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "O": "O"
+          }
+        ],
+        "more": false,
+        "pid": 1887837520,
+        "type": "success"
+      },
+      "duration_ms": 2121
+    },
+    {
+      "id": "MC-011",
+      "case_index": 10,
+      "title": "Demonitor preflight rejects bad and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 3316591344,
+        "type": "success"
+      },
+      "duration_ms": 2118
+    },
+    {
+      "id": "MC-012",
+      "case_index": 11,
+      "title": "Demonitor preflight rejects [flush|bad] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 8196898377,
+        "type": "success"
+      },
+      "duration_ms": 2089
+    },
+    {
+      "id": "MC-013",
+      "case_index": 12,
+      "title": "Demonitor preflight rejects [unknown] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 9246916647,
+        "type": "success"
+      },
+      "duration_ms": 2104
+    },
+    {
+      "id": "MC-014",
+      "case_index": 13,
+      "title": "Demonitor preflight rejects [flush(true)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 8999960320,
+        "type": "success"
+      },
+      "duration_ms": 2079
+    },
+    {
+      "id": "MC-015",
+      "case_index": 14,
+      "title": "Demonitor preflight rejects [flush(a,b)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 5485342588,
+        "type": "success"
+      },
+      "duration_ms": 2085
+    },
+    {
+      "id": "MC-016",
+      "case_index": 15,
+      "title": "Demonitor preflight rejects [flush,unknown] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 4742420459,
+        "type": "success"
+      },
+      "duration_ms": 2148
+    },
+    {
+      "id": "MC-017",
+      "case_index": 16,
+      "title": "Demonitor preflight rejects [flush,flush(false)] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 8759728405,
+        "type": "success"
+      },
+      "duration_ms": 2081
+    },
+    {
+      "id": "MC-018",
+      "case_index": 17,
+      "title": "Demonitor preflight rejects [7] and preserves monitor/mailbox",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed"
+          }
+        ],
+        "more": false,
+        "pid": 5082576613,
+        "type": "success"
+      },
+      "duration_ms": 2086
+    },
+    {
+      "id": "LM-001",
+      "case_index": 18,
+      "title": "Spawn monitoring preserves immediate success failure exception and explicit exit",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "7117213175@'https://n4.elfenbenstornet.se'",
+            "F": "4577561284@'https://n4.elfenbenstornet.se'",
+            "K": "3582640310@'https://n4.elfenbenstornet.se'",
+            "P": "5536195313@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4237048262,
+        "type": "success"
+      },
+      "duration_ms": 2108
+    },
+    {
+      "id": "LM-002",
+      "case_index": 19,
+      "title": "Explicit and spawn-time monitors are independent and preserve unrelated data",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "5546169704@'https://n4.elfenbenstornet.se'",
+            "R": "9088625152",
+            "S": "1675301373@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 1675301373,
+        "type": "success"
+      },
+      "duration_ms": 2107
+    },
+    {
+      "id": "LM-003",
+      "case_index": 20,
+      "title": "Monitoring a terminated actor yields no_process with the returned reference",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "5108831968@'https://n4.elfenbenstornet.se'",
+            "R": "7520154687"
+          }
+        ],
+        "more": false,
+        "pid": 8868961633,
+        "type": "success"
+      },
+      "duration_ms": 2087
+    },
+    {
+      "id": "LM-004",
+      "case_index": 21,
+      "title": "Child termination leaves its linked parent alive",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "C": "5481211767@'https://n4.elfenbenstornet.se'",
+            "Child": "Child",
+            "Me": "Me",
+            "Parent": "8881122520@'https://n4.elfenbenstornet.se'",
+            "S": "9196914182@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 9196914182,
+        "type": "success"
+      },
+      "duration_ms": 2136
+    },
+    {
+      "id": "LM-005",
+      "case_index": 22,
+      "title": "A three-generation cascade delivers exact notifications under one deadline",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "C": "C",
+            "CP": "CP",
+            "CR": "2606030540",
+            "Child": "5599806954@'https://n4.elfenbenstornet.se'",
+            "D": "1795549695.4580925",
+            "G": "G",
+            "GP": "GP",
+            "GR": "7877726377",
+            "Grand": "3952985755@'https://n4.elfenbenstornet.se'",
+            "R": "R",
+            "Root": "8652058037@'https://n4.elfenbenstornet.se'",
+            "S": "3876941058@'https://n4.elfenbenstornet.se'",
+            "T": "1795549693.4580925"
+          }
+        ],
+        "more": false,
+        "pid": 3876941058,
+        "type": "success"
+      },
+      "duration_ms": 2189
+    },
+    {
+      "id": "LM-006",
+      "case_index": 23,
+      "title": "Demonitor withdrawal and scoped flush preserve unrelated monitors and messages",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Drop": "3861964595",
+            "Flush": "7518767983",
+            "Keep": "8267503992",
+            "Other": "7993834002",
+            "P": "2231058201@'https://n4.elfenbenstornet.se'",
+            "Q": "4149973242@'https://n4.elfenbenstornet.se'",
+            "S": "3340034952@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 3340034952,
+        "type": "success"
+      },
+      "duration_ms": 2008
+    },
+    {
+      "id": "SW-001",
+      "case_index": 24,
+      "title": "Replies can be collected in a different order from requests",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "P": "9712238184@'https://n4.elfenbenstornet.se'",
+            "R1": "5226572030",
+            "R2": "3895802406"
+          }
+        ],
+        "more": false,
+        "pid": 9388687031,
+        "type": "success"
+      },
+      "duration_ms": 2078
+    },
+    {
+      "id": "SW-002",
+      "case_index": 25,
+      "title": "Output mismatch consumes only the selected reply",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "Again": "consumed",
+            "Barrier": "5751234965",
+            "BaselineResult": "passed",
+            "P": "4689489379@'https://n4.elfenbenstornet.se'",
+            "R1": "5290294552",
+            "R2": "5524580387"
+          }
+        ],
+        "more": false,
+        "pid": 5723277370,
+        "type": "success"
+      },
+      "duration_ms": 2081
+    },
+    {
+      "id": "SW-003",
+      "case_index": 26,
+      "title": "A timed-out server yield can collect a later reply",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Early": "waiting",
+            "P": "8863976423@'https://n4.elfenbenstornet.se'",
+            "R": "9658534588",
+            "S": "8288564448@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 8288564448,
+        "type": "success"
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "SW-004",
+      "case_index": 27,
+      "title": "Timeout callbacks preserve bindings failure exceptions and alternatives",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Bound": "bound",
+            "Error": "wait_callback",
+            "P": "3874273203@'https://n4.elfenbenstornet.se'",
+            "R": "3329940786",
+            "S": "9681501589@'https://n4.elfenbenstornet.se'",
+            "V": "V",
+            "Values": "[one,two]"
+          }
+        ],
+        "more": false,
+        "pid": 9681501589,
+        "type": "success"
+      },
+      "duration_ms": 2128
+    },
+    {
+      "id": "SW-005",
+      "case_index": 28,
+      "title": "Synchronous and monitored asynchronous waits report server death",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "server_down(sw_death)",
+            "E2": "server_down(sw_death)",
+            "Mon": "9804869245",
+            "Other": "4895801900",
+            "Other2": "3781211420",
+            "P": "6760841839@'https://n4.elfenbenstornet.se'",
+            "Q": "5499717808@'https://n4.elfenbenstornet.se'",
+            "R": "1358929811",
+            "S": "4000221339@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4000221339,
+        "type": "success"
+      },
+      "duration_ms": 2128
+    },
+    {
+      "id": "SW-006",
+      "case_index": 29,
+      "title": "Monitored wait cleanup preserves unrelated state across timeout mismatch and exception",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B": "8386280191",
+            "BaselineResult": "passed",
+            "E": "sw_timeout",
+            "Early": "waiting",
+            "M2": "3481298624",
+            "M3": "8718173032",
+            "Mon": "1639451621",
+            "Other": "8077028306",
+            "P": "9557709156@'https://n4.elfenbenstornet.se'",
+            "R": "4831049488",
+            "R2": "6857734844",
+            "R3": "5425357622",
+            "S": "5518411942@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 5518411942,
+        "type": "success"
+      },
+      "duration_ms": 2096
+    },
+    {
+      "id": "TW-001",
+      "case_index": 30,
+      "title": "Caller targeting and independent query variables",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(3427603557@'https://n4.elfenbenstornet.se',[ok],false)",
+            "BaselineResult": "passed",
+            "E": "error(domain_error(synchronous_toplevel_target,other),context(toplevel_actors:toplevel_call_synch/4,'invalid synchronous toplevel option'))",
+            "P": "3427603557@'https://n4.elfenbenstornet.se'",
+            "S": "7069080180@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 7069080180,
+        "type": "success"
+      },
+      "duration_ms": 2138
+    },
+    {
+      "id": "TW-002",
+      "case_index": 31,
+      "title": "Timeout outcome and callback bindings failure exceptions and commitment",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "success(1956931437@'https://n4.elfenbenstornet.se',[true],false)",
+            "Barrier": "success(1956931437@'https://n4.elfenbenstornet.se',[true],false)",
+            "BaselineResult": "passed",
+            "C": "success(1956931437@'https://n4.elfenbenstornet.se',[true],false)",
+            "D": "success(1956931437@'https://n4.elfenbenstornet.se',[true],false)",
+            "E": "tw_callback",
+            "Me": "Me",
+            "P": "1956931437@'https://n4.elfenbenstornet.se'",
+            "S": "4750584429@'https://n4.elfenbenstornet.se'",
+            "V": "V",
+            "Vs": "[first]"
+          }
+        ],
+        "more": false,
+        "pid": 4750584429,
+        "type": "success"
+      },
+      "duration_ms": 2135
+    },
+    {
+      "id": "TW-003",
+      "case_index": 32,
+      "title": "Late timed-out answer cannot satisfy the next synchronous wait",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(1238857967@'https://n4.elfenbenstornet.se',[fresh],false)",
+            "BaselineResult": "passed",
+            "Early": "Early",
+            "First": "success(1238857967@'https://n4.elfenbenstornet.se',[a],true)",
+            "Last": "success(1238857967@'https://n4.elfenbenstornet.se',[c],false)",
+            "Late": "Late",
+            "Me": "Me",
+            "Me2": "Me2",
+            "P": "1238857967@'https://n4.elfenbenstornet.se'",
+            "S": "2142699126@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 2142699126,
+        "type": "success"
+      },
+      "duration_ms": 2074
+    },
+    {
+      "id": "TW-004",
+      "case_index": 33,
+      "title": "Output mismatch consumes selected slice and continuation advances",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(4746677755@'https://n4.elfenbenstornet.se',[c,d],false)",
+            "BaselineResult": "passed",
+            "P": "4746677755@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 3782722769,
+        "type": "success"
+      },
+      "duration_ms": 2094
+    },
+    {
+      "id": "TW-005",
+      "case_index": 34,
+      "title": "Termination during wait preserves independent and spawn monitors",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "toplevel_down(tw_death)",
+            "P": "2041777955@'https://n4.elfenbenstornet.se'",
+            "R": "3303260982"
+          }
+        ],
+        "more": false,
+        "pid": 5625654496,
+        "type": "success"
+      },
+      "duration_ms": 2054
+    },
+    {
+      "id": "TW-006",
+      "case_index": 35,
+      "title": "Synchronous wait preserves asynchronous answers and unrelated messages",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(9457824722@'https://n4.elfenbenstornet.se',[sync],false)",
+            "BaselineResult": "passed",
+            "P": "9457824722@'https://n4.elfenbenstornet.se'",
+            "R": "9474798080",
+            "S": "8869238625@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 8869238625,
+        "type": "success"
+      },
+      "duration_ms": 2152
+    },
+    {
+      "id": "MC-019",
+      "case_index": 36,
+      "title": "Toplevel private monitors preserve public monitors through default timeout callback success failure exception and cleanup",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "A",
+            "B": "success(8934419856@'https://n4.elfenbenstornet.se',[true],false)",
+            "Barrier": "success(8934419856@'https://n4.elfenbenstornet.se',[true],false)",
+            "BaselineResult": "passed",
+            "C": "success(8934419856@'https://n4.elfenbenstornet.se',[true],false)",
+            "D": "success(8934419856@'https://n4.elfenbenstornet.se',[true],false)",
+            "E": "tw_callback",
+            "Keep": "3943087124",
+            "Me": "Me",
+            "P": "8934419856@'https://n4.elfenbenstornet.se'",
+            "S": "1231494639@'https://n4.elfenbenstornet.se'",
+            "V": "V",
+            "Vs": "[first]"
+          }
+        ],
+        "more": false,
+        "pid": 1231494639,
+        "type": "success"
+      },
+      "duration_ms": 2699
+    },
+    {
+      "id": "MC-020",
+      "case_index": 37,
+      "title": "Toplevel call and next private monitors preserve public monitors through successful and timed-out paging",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "A": "success(5826492738@'https://n4.elfenbenstornet.se',[fresh],false)",
+            "BaselineResult": "passed",
+            "Early": "Early",
+            "First": "success(5826492738@'https://n4.elfenbenstornet.se',[a],true)",
+            "Keep": "9546664731",
+            "Last": "success(5826492738@'https://n4.elfenbenstornet.se',[c],false)",
+            "Late": "Late",
+            "Me": "Me",
+            "Me2": "Me2",
+            "P": "5826492738@'https://n4.elfenbenstornet.se'",
+            "S": "8791729812@'https://n4.elfenbenstornet.se'",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 8791729812,
+        "type": "success"
+      },
+      "duration_ms": 2101
+    },
+    {
+      "id": "MC-021",
+      "case_index": 38,
+      "title": "Toplevel target death discharges private wait while preserving exactly the public references",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "toplevel_down(tw_death)",
+            "P": "7171054260@'https://n4.elfenbenstornet.se'",
+            "R": "8327997099"
+          }
+        ],
+        "more": false,
+        "pid": 2889559886,
+        "type": "success"
+      },
+      "duration_ms": 1466
+    },
+    {
+      "id": "MC-022",
+      "case_index": 39,
+      "title": "Server synchronous private monitors preserve public references through success timeout failure exception and cleanup",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "mc_wait_error",
+            "Early": "waiting",
+            "Keep": "3326374404",
+            "P": "1130243477@'https://n4.elfenbenstornet.se'",
+            "S": "4725876035@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 4725876035,
+        "type": "success"
+      },
+      "duration_ms": 2158
+    },
+    {
+      "id": "MC-023",
+      "case_index": 40,
+      "title": "Server target death discharges private waits without extra notifications or suppressing other references",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "E": "server_down(sw_death)",
+            "E2": "server_down(sw_death)",
+            "Mon": "5525517067",
+            "Other": "6621257705",
+            "Other2": "3886061336",
+            "P": "7356684179@'https://n4.elfenbenstornet.se'",
+            "Q": "3999890645@'https://n4.elfenbenstornet.se'",
+            "R": "5655377503",
+            "S": "5845320153@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 5845320153,
+        "type": "success"
+      },
+      "duration_ms": 2085
+    },
+    {
+      "id": "MC-024",
+      "case_index": 41,
+      "title": "Monitored asynchronous server wait cleanup preserves only public monitors after timeout mismatch and exception",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "B": "8400443837",
+            "BaselineResult": "passed",
+            "E": "sw_timeout",
+            "Early": "waiting",
+            "M2": "7769742117",
+            "M3": "8715088398",
+            "Mon": "7086652218",
+            "Other": "4697285955",
+            "P": "9719789277@'https://n4.elfenbenstornet.se'",
+            "R": "2695325597",
+            "R2": "1241625106",
+            "R3": "6365653564",
+            "S": "7691122911@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 7691122911,
+        "type": "success"
+      },
+      "duration_ms": 2065
+    },
+    {
+      "id": "MC-025",
+      "case_index": 42,
+      "title": "Supervisor control and child monitors preserve independent public references through inspection termination deletion and halt",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Child": "4578082615@'https://n4.elfenbenstornet.se'",
+            "ChildRef": "2204276818",
+            "Keep": "8470630602",
+            "Sup": "4819936786@'https://n4.elfenbenstornet.se'"
+          }
+        ],
+        "more": false,
+        "pid": 5920996269,
+        "type": "success"
+      },
+      "duration_ms": 2138
+    },
+    {
+      "id": "MC-026",
+      "case_index": 43,
+      "title": "Both demonitor arities reject uninstantiated references without binding them",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "R": "R",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 8818157205,
+        "type": "success"
+      },
+      "duration_ms": 1988
+    },
+    {
+      "id": "MC-027",
+      "case_index": 44,
+      "title": "Uninstantiated node in a monitor target is rejected before returning a reference",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Node": "Node",
+            "R": "R"
+          }
+        ],
+        "more": false,
+        "pid": 4468127529,
+        "type": "success"
+      },
+      "duration_ms": 2127
+    },
+    {
+      "id": "MC-028",
+      "case_index": 45,
+      "title": "URI quoted text in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Id": "3985375491",
+            "Other": "2555805269",
+            "P": "3985375491@'https://n4.elfenbenstornet.se'",
+            "R": "1493238472"
+          }
+        ],
+        "more": false,
+        "pid": 8925008756,
+        "type": "success"
+      },
+      "duration_ms": 2139
+    },
+    {
+      "id": "MC-029",
+      "case_index": 46,
+      "title": "URI code list in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Id": "8630677342",
+            "Other": "4004106758",
+            "P": "8630677342@'https://n4.elfenbenstornet.se'",
+            "R": "2391675616"
+          }
+        ],
+        "more": false,
+        "pid": 6357127862,
+        "type": "success"
+      },
+      "duration_ms": 2090
+    },
+    {
+      "id": "MC-030",
+      "case_index": 47,
+      "title": "An invalid later option preserves a variable nested in an incorrect arity",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "X": "X"
+          }
+        ],
+        "more": false,
+        "pid": 8345627431,
+        "type": "success"
+      },
+      "duration_ms": 2114
+    },
+    {
+      "id": "MC-031",
+      "case_index": 48,
+      "title": "Long malformed option list is rejected with its complete original culprit",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Options": "[flush,flush,flush,flush,flush,flush,flush,flush,flush,flush,flush|bad]"
+          }
+        ],
+        "more": false,
+        "pid": 2719664188,
+        "type": "success"
+      },
+      "duration_ms": 2111
+    },
+    {
+      "id": "MC-032",
+      "case_index": 49,
+      "title": "URI character list in a monitor target denotes the same local actor",
+      "status": "pass",
+      "observation": {
+        "data": [
+          {
+            "BaselineResult": "passed",
+            "Id": "9544793543",
+            "P": "9544793543@'https://n4.elfenbenstornet.se'",
+            "R": "6098263147"
+          }
+        ],
+        "more": false,
+        "pid": 9357185673,
+        "type": "success"
+      },
+      "duration_ms": 2106
+    }
+  ],
+  "counts": {
+    "pass": 50
+  }
+}

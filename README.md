@@ -7,7 +7,23 @@ another runtime.
 
 ## Current consolidated results
 
-The [full conformance run after the 21 November release](reports/2026-11-21-post-release-conformance/REPORT.md) covers
+The [full conformance run after the 24 November releases](reports/2026-11-24-post-xn-conformance/REPORT.md) covers
+**82 manifests / 2,085 input rows** against the live nodes. All primary
+public selections pass: N0 1; N1/N2/N6 12 each; N3/N4/N5/N7 118 each. The new
+`cross-node-actor-0.1` pack passes on all 148 combinations over N3, N4, N5 and N7, from every caller.
+Compared row by row with 21 November, **6 rows now pass, 52 newly fail and 133 still fail**.
+Of the new failures, 41 are N5 standard-library rows that ran while N5 was killed at its memory
+limit and restarted (20:06 UTC); 8 are a synchronous remote toplevel regression from trealla-port
+`fd0907a` (fixed on branch `sync-reply-route`, not yet released); 3 are owned-fixture Trealla-to-Trealla
+replies without peer credentials, a node-to-node trust question. 4 input rows without
+execution observations are retained in the report.
+
+This is fresh execution evidence, separate from the historical **183-observation** repair inventory.
+[Per-file outcomes](reports/2026-11-24-post-xn-conformance/SUMMARY.json), [comparison](reports/2026-11-24-post-xn-conformance/COMPARISON.json),
+[case accounting](reports/2026-11-24-post-xn-conformance/verification.json) and [frozen inputs](reports/2026-11-24-post-xn-conformance/suite-inputs.json) define the scope.
+No runtime, deployment setting or quota changed during testing.
+
+The [21 November full conformance run](reports/2026-11-21-post-release-conformance/REPORT.md) covers
 **81 manifests / 2,081 input rows** against the live nodes. All primary
 public selections pass: N0 1; N1/N2/N6 12 each; N3/N4/N5/N7 118 each. Compared row by row
 with 20 November, **263 rows now pass, 6 newly fail and 129 still fail**

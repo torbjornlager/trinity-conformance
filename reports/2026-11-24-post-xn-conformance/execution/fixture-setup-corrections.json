@@ -1,0 +1,12 @@
+{
+  "source_inputs_unchanged": true,
+  "orchestration": "Copied from the 21 Nov sweep; only paths, dates and pins changed except as listed",
+  "other_changes": [
+    "browser lab base image rebuilt (local/conformance-browser-lab:20261124: node:22-bookworm-slim, Debian Chromium 156) because the 20261121 image was removed by host cleanup",
+    "added cross_node_live.py for the new cross-node-actor-0.1 manifest, run after the final admission phase; final_export.py and verify_completion.py wait for it",
+    "live-controls/n6-paused-more.json written with zero rows after the run: n6_controls.py writes it only when replaying N6 capacity refusals, and there were none",
+    "report scripts write to a scratch clone of trinity-conformance checked out at 8e34080",
+    "build_report.py: live-more/<node>/cross-node-actor-0.1.json rows are classified invalid_harness_pair_topology_requires_cross_node_runner; the generic per-node runner has no handler for pair-topology cases, and live-controls/cross-node-actor-0.1.json holds the real cross-node results"
+  ],
+  "current_browser": "Uses the 1d6ee0d package (the deployed browser runtime) in the rebuilt browser lab"
+}

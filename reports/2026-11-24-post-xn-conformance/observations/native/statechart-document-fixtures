@@ -1,0 +1,171 @@
+{
+  "scope": "supporting disposable-node statechart document checks; no release certification",
+  "origin": "http://127.0.0.1:45737",
+  "counts": {
+    "pass": 1,
+    "fail": 9
+  },
+  "sources": {
+    "swi": {
+      "root": "/opt/swi-prolog-node",
+      "revision": "67f0b175a914e648304e2a1ddc5e3c8aea2a3843",
+      "dirty": false,
+      "changed_files": {}
+    },
+    "trealla": {
+      "root": "/work/trealla",
+      "revision": "a5fe0141ea4053ff0c930d445763aee903f52f11",
+      "dirty": false,
+      "changed_files": {}
+    }
+  },
+  "executables": {
+    "/usr/lib/swipl/bin/aarch64-linux/swipl": "1e1140d429debafb266adaf1a68582ce513216ef8ba2f41df9fb3d93990b6d1a",
+    "/opt/trealla/tpl": "7f3cf36e86fb5ffe0a2710c7d4a7096925d2da14895c4fda273a18ae11d4bc8a"
+  },
+  "runner_sha256": "f27b7c0aaead4b22fc2177ae403352cc3d2c58647f626dc96ce2bb97c8ba34e5",
+  "results": [
+    {
+      "candidate": "swi",
+      "title": "local document base",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "",
+      "duration_ms": 5172
+    },
+    {
+      "candidate": "trealla",
+      "title": "local document base",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "",
+      "duration_ms": 7274
+    },
+    {
+      "candidate": "swi",
+      "title": "caller fetch with destination source disabled -> swi",
+      "status": "fail",
+      "fetches": [
+        "/docs/root.xml"
+      ],
+      "expected_fetches": [
+        "/docs/root.xml"
+      ],
+      "stdout": "",
+      "stderr": "Warning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaafbe0b000,0xaaaafbe0b100)\nWarning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaafbe0b000,0xaaaafbe0b100)\n",
+      "duration_ms": 228
+    },
+    {
+      "candidate": "trealla",
+      "title": "caller fetch with destination source disabled -> swi",
+      "status": "pass",
+      "fetches": [
+        "/docs/root.xml"
+      ],
+      "expected_fetches": [
+        "/docs/root.xml"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "duration_ms": 2316
+    },
+    {
+      "candidate": "swi",
+      "title": "remote document base -> swi",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "Warning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaae66f5800,0xaaaae66f5700)\nWarning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaae66f5800,0xaaaae66f5700)\n",
+      "duration_ms": 5185
+    },
+    {
+      "candidate": "trealla",
+      "title": "remote document base -> swi",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "",
+      "duration_ms": 7277
+    },
+    {
+      "candidate": "swi",
+      "title": "caller fetch with destination source disabled -> trealla",
+      "status": "fail",
+      "fetches": [],
+      "expected_fetches": [
+        "/docs/root.xml"
+      ],
+      "stdout": "error(remote_spawn_failed(\"error(permission_error(load,source_uri,'http://127.0.0.1:45737/docs/root.xml'),context(source_policy:fetch_source_uri/2,'src_uri/1 is disabled until load_uri_allowed_origins/1 is configured'))\"),context(actor:remote_request_spawn/3,'remote node reported spawn failure'))\n",
+      "stderr": "Warning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaaf358b000,0xaaaaf358b100)\nWarning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaaf358b000,0xaaaaf358b100)\n",
+      "duration_ms": 230
+    },
+    {
+      "candidate": "trealla",
+      "title": "caller fetch with destination source disabled -> trealla",
+      "status": "fail",
+      "fetches": [],
+      "expected_fetches": [
+        "/docs/root.xml"
+      ],
+      "stdout": "error(remote_error('error(permission_error(load,source_uri,\\'http://127.0.0.1:45737/docs/root.xml\\'),context(source_policy:fetch_source_uri/2,\\'src_uri/1 is disabled until load_uri_allowed_origins/1 is configured\\'))'),distribution)\n",
+      "stderr": "",
+      "duration_ms": 2261
+    },
+    {
+      "candidate": "swi",
+      "title": "remote document base -> trealla",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "Warning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaaf2755b00,0xaaaaf229e500)\nWarning: [Thread main] Ambiguous operation on stream pair <stream>(0xaaaaf2755b00,0xaaaaf229e500)\n",
+      "duration_ms": 5207
+    },
+    {
+      "candidate": "trealla",
+      "title": "remote document base -> trealla",
+      "status": "fail",
+      "fetches": [
+        "/docs/parent.xml"
+      ],
+      "expected_fetches": [
+        "/docs/parent.xml",
+        "/docs/child.xml"
+      ],
+      "stdout": "missing_relative_document\n",
+      "stderr": "",
+      "duration_ms": 7285
+    }
+  ]
+}
